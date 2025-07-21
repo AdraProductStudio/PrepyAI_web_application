@@ -12,7 +12,12 @@ const JsonData = () => {
     const [myDetails, setMyDetails] = useState(new Object())
 
     const jsonOnly = {
-
+        sidebar_data: [
+            {
+                name: 'Dashboard',
+                route: 'student_dashboard',
+                icon: Icons.Dashboard
+            },]
     }
 
     const jsxJson = {

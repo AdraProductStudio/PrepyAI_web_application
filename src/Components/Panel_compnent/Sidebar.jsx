@@ -61,7 +61,7 @@ const Sidebar = ({
     const headerFun = () => {
         return <React.Fragment>
             <div className='w-100'>
-                <h5>Header name</h5>
+                <h5 className='logo-text'>Prepy AI</h5>
             </div>
         </React.Fragment>
     }

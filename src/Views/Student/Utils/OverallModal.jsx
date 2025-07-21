@@ -1,5 +1,6 @@
-import {useCommonState, useCustomNavigate, useDispatch } from "Components/CustomHooks";
+import { useCommonState, useCustomNavigate, useDispatch } from "Components/CustomHooks";
 import ModalComponent from "Components/Modal/Modal";
+import UploadTestPaperModal from "../Docs/UploadTestPaperModal ";
 
 
 export function OverallModel() {
@@ -9,10 +10,10 @@ export function OverallModel() {
 
     function modalHeaderFun() {
         switch (commonState?.modal?.from) {
-            case "Home":
+            case "student_dashboard":
                 switch (commonState?.modal?.type) {
-                    case "":
-                        return <h5></h5>
+                    case "upload_test":
+                        return <h5 className="fw-bold mb-4">Upload Test Paper</h5>
 
                     default:
                         break;
@@ -26,10 +27,11 @@ export function OverallModel() {
 
     function modalBodyFun() {
         switch (commonState?.modal?.from) {
-            case "Home":
+            case "student_dashboard":
                 switch (commonState?.modal?.type) {
-                    case " ":
-                        return
+                    case "upload_test":
+                        return <UploadTestPaperModal />
+                       
 
                     default:
                         break;

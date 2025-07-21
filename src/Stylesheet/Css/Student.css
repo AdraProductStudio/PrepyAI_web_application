@@ -1,0 +1,158 @@
+/* Text */
+.logo-text {
+    font-family: "Merienda", cursive;
+    font-size: 32px !important;
+    background: var(--Brand-color-btn, linear-gradient(90deg, #EC008C 0%, #FC6767 100%));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+
+/* Button */
+.toggler-btn1 {
+    background: white !important;
+    border: none !important;
+    font-size: 24px;
+    cursor: pointer;
+    color: rgb(0, 0, 0) !important;
+}
+
+/* nav-link */
+.navmenu {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.navlink-sidebar,
+.navlink-sidebar svg path {
+    color: gray;
+    stroke: gray;
+    font-weight: 600;
+}
+
+.navlink-sidebar.active {
+    background-color: var(--btn-brand-bg-color);
+    color: #28304B !important;
+}
+
+.navlink-sidebar:hover {
+    background: #ff6c968d;
+    color: #ffffff !important;
+}
+
+.navlink-sidebar.active:hover {
+    background-color: var(--btn-brand-bg-color);
+}
+
+.navlink-sidebar.active,
+.navlink-sidebar.active svg path,
+.navlink-sidebar:hover svg path {
+    color: #FFFFFF !important;
+    stroke: #ffffff !important;
+    /* background-color: #2D5BFF !important; */
+    background: linear-gradient(92deg, #EC008C -4.15%, #FC6767 64.99%);
+}
+
+.sidebar-text {
+    white-space: nowrap;
+    font-size: 15px;
+    font-family: "Manrope";
+    font-weight: 600;
+}
+/* scroll */
+.custom-scroll::-webkit-scrollbar{
+    display: none;
+}
+.scroll-scroll {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+/* table */
+.time-table-container {
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  max-width: 100%;
+  overflow-x: auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.title {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.time-table-grid {
+  display: grid;
+  grid-template-columns: 100px repeat(6, minmax(100px, 1fr));
+  gap: 1px;
+  background-color: #eee;
+}
+
+.grid-header-cell {
+  background: #fff;
+  padding: 10px;
+  text-align: center;
+  font-weight: 500;
+  color: #999;
+  border: 1px dashed #ccc;
+}
+
+.grid-day-label {
+  background: #fff;
+  padding: 10px;
+  text-align: left;
+  font-weight: 500;
+  color: #8b9fe2;
+  border: 1px dashed #ccc;
+}
+
+.grid-cell {
+  background: #fff;
+  border: 1px dashed #ccc;
+  text-align: center;
+  padding: 5px;
+  min-height: 60px;
+}
+
+.subject-box {
+  font-weight: 500;
+  font-size: 0.9rem;
+  white-space: pre-line;
+}
+.custom-calendar {
+  /* padding: 10px; */
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+  width: 100%;
+  max-width:450px;
+  margin: auto;
+  border: none;
+}
+
+/* Optional hover style */
+.custom-calendar .react-calendar__tile:hover {
+  background: #f0f4ff;
+  color: #000;
+}
+
+/* Selected date */
+.custom-calendar .react-calendar__tile--active {
+  background: #4a90e2;
+  color: #fff;
+  border-radius: 8px;
+}
+
+/* Today highlight */
+.custom-calendar .react-calendar__tile--now {
+  background: #e3f2fd;
+  border-radius: 8px;
+  font-weight: bold;
+}

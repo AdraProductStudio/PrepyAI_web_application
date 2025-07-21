@@ -163,7 +163,7 @@ const { actions, reducer } = commonSlice;
 
 export const {
     update_login_data, update_app_data,
-    update_error, login_reducer, logout,
+    update_error,updateModalShow, login_reducer, logout,
     update_tab_render_app_data
 
 } = actions;

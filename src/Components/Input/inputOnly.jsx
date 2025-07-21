@@ -1,6 +1,7 @@
 import React from 'react'
 import { Form, InputGroup } from 'react-bootstrap'
 
+
 const InputOnly = ({
     componnetFrom, 
     placeholder,
@@ -8,7 +9,8 @@ const InputOnly = ({
     change, 
     keyDown,
     className, 
-    type
+    type,
+   
 }) => {
     return (
         <InputGroup>
@@ -19,6 +21,7 @@ const InputOnly = ({
                 onChange={change}
                 onKeyDown={keyDown}
                 className={className}
+               
             />
         </InputGroup>
     )

@@ -2,7 +2,8 @@
 
 * {
   font-weight: 400;
-  font-family: "Inter", sans-serif;
+  /* font-family: "Inter", sans-serif; */
+  font-family: "Poppins";
   font-optical-sizing: auto;
   font-style: normal;
 }
@@ -34,7 +35,7 @@
   --home-main-content-bg: #F1F1FF;
   --home-main-content-padding: 3rem 0 3rem 0;
 
-  --main-background-color: #EBF1FF;
+  --main-background-color: #F9F9F9;
   --main-content-padding-y: .7rem 0rem .4rem 0rem;
 
   --page-main-content-padding-y: 1rem .2rem;
@@ -107,7 +108,7 @@ body {
 
 /* sidebar  */
 .sidebar {
-  width: var(--sidebar-width);
+  /* width: var(--sidebar-width); */
   height: var(--root-height);
   padding: var(--sidebar-y-padding) 0;
   background: var(--sidebar-background-color) !important;

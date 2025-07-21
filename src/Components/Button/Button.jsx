@@ -1,5 +1,6 @@
 import React from "react";
 
+
 const ButtonComponent = ({ 
   componentFrom,
   title,
@@ -8,7 +9,8 @@ const ButtonComponent = ({
   className,
   type,
   clickFunction,
-  btnDisable
+  btnDisable,
+  style,
 }) => {
 
 
@@ -20,8 +22,12 @@ const ButtonComponent = ({
       onClick={clickFunction}
       title={title}
       disabled={btnDisable}
+      style={style}
+     
+      
     >
       {buttonName}
+      
     </button>
   );
 };
