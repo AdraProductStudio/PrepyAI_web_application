@@ -1,4 +1,3 @@
-import React from 'react';
 import classnames from 'classnames';
 import { usePagination, DOTS } from "Components/CustomHooks";
 import "Stylesheet/Scss/Pagination.scss";
@@ -7,12 +6,13 @@ import { updateCurrentPage } from 'Slices/Common_Slice/Common_slice';
 
 
 const Pagination = ({
-    totalCount,
-    siblingCount = 1,
-    currentPage,
-    pageSize,
-    className
-  }) =>{;
+  totalCount,
+  siblingCount = 1,
+  currentPage,
+  pageSize,
+  className
+}) => {
+  ;
   const dispatch = useDispatch();
   const paginationRange = usePagination({
     currentPage,
@@ -46,7 +46,7 @@ const Pagination = ({
       >
         <div className="arrow left" />
       </li>
-      {paginationRange?.map((pageNumber,pageInd) => {
+      {paginationRange?.map((pageNumber, pageInd) => {
         if (pageNumber === DOTS) {
           return <li className="pagination-item dots" key={pageInd}>&#8230;</li>;
         }

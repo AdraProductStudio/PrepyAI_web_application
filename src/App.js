@@ -12,7 +12,7 @@ function App() {
 
       <Routes>
         <Route element={<InitializeProjectSetup />}>
-          <Route index element={<Login />} />
+          <Route index element={<h5>login page</h5>} />
           <Route path="*" element={<Error />} />
         </Route>
       </Routes>

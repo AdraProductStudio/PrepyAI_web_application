@@ -79,63 +79,63 @@ const commonSlice = createSlice({
                     return
             }
         },
-        update_login_data(state, action) {
-            const [key, value] = Object.entries(action.payload)[0] || [];
-            state.login_data[key] = value || '';
-        },
+        // update_login_data(state, action) {
+        //     const [key, value] = Object.entries(action.payload)[0] || [];
+        //     state.login_data[key] = value || '';
+        // },
         update_error(state, action) {
             const { Err, Toast_Type } = action.payload || {};
             state.error.Err = Err || null;
             state.error.Toast_Type = Toast_Type || null;
         },
 
-        //Api 
-        login_reducer(state, actions) {
-            const { type, data } = actions.payload || {};
-            switch (type) {
-                case "request":
-                    state.app_data.buttonSpinner = true;
-                    state.app_data.token = null;
-                    state.app_data.user_role = null;
-                    break;
-                case "response":
-                    let decrypt_logs;
-                    let update_cookie_log;
-                    let roleKey = data?.role?.split(" ")?.join("");
+        // //Api 
+        // login_reducer(state, actions) {
+        //     const { type, data } = actions.payload || {};
+        //     switch (type) {
+        //         case "request":
+        //             state.app_data.buttonSpinner = true;
+        //             state.app_data.token = null;
+        //             state.app_data.user_role = null;
+        //             break;
+        //         case "response":
+        //             let decrypt_logs;
+        //             let update_cookie_log;
+        //             let roleKey = data?.role?.split(" ")?.join("");
 
-                    if (Cookies.get('project_log')) decrypt_logs = decryption();
-                    if (decrypt_logs) {
-                        if (roleKey && !decrypt_logs?.hasOwnProperty(roleKey)) {
-                            update_cookie_log = {
-                                ...decrypt_logs,
-                                [roleKey]: data || {}
-                            };
-                        } else {
-                            update_cookie_log = { ...decrypt_logs };
-                        }
-                    }
-                    else {
-                        update_cookie_log = {
-                            [roleKey]: data || {}
-                        }
-                    }
+        //             if (Cookies.get('project_log')) decrypt_logs = decryption();
+        //             if (decrypt_logs) {
+        //                 if (roleKey && !decrypt_logs?.hasOwnProperty(roleKey)) {
+        //                     update_cookie_log = {
+        //                         ...decrypt_logs,
+        //                         [roleKey]: data || {}
+        //                     };
+        //                 } else {
+        //                     update_cookie_log = { ...decrypt_logs };
+        //                 }
+        //             }
+        //             else {
+        //                 update_cookie_log = {
+        //                     [roleKey]: data || {}
+        //                 }
+        //             }
 
-                    const encrypted_logs = encryption(update_cookie_log);
-                    Cookies.set('project_log', encrypted_logs);
+        //             const encrypted_logs = encryption(update_cookie_log);
+        //             Cookies.set('project_log', encrypted_logs);
 
-                    state.app_data.buttonSpinner = false;
-                    state.app_data.token = data?.token || '';
-                    state.app_data.user_role = data?.role || '';
-                    break;
-                case "failure":
-                    state.app_data.buttonSpinner = false;
-                    state.error.Err = data?.message || 'Login failed';
-                    state.error.Toast_Type = data?.Toast_Type || "error";
-                    break;
-                default:
-                    return
-            }
-        },
+        //             state.app_data.buttonSpinner = false;
+        //             state.app_data.token = data?.token || '';
+        //             state.app_data.user_role = data?.role || '';
+        //             break;
+        //         case "failure":
+        //             state.app_data.buttonSpinner = false;
+        //             state.error.Err = data?.message || 'Login failed';
+        //             state.error.Toast_Type = data?.Toast_Type || "error";
+        //             break;
+        //         default:
+        //             return
+        //     }
+        // },
         logout(state, actions) {
             view_logout();
 
@@ -162,9 +162,10 @@ function setErrorState(state, action) {
 const { actions, reducer } = commonSlice;
 
 export const {
-    update_login_data, update_app_data,
-    update_error, login_reducer, logout,
-    update_tab_render_app_data
+    update_app_data, update_error,
+    // update_login_data,
+    // login_reducer,
+    logout, update_tab_render_app_data
 
 } = actions;
 

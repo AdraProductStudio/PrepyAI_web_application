@@ -1,5 +1,5 @@
 import useCommonState, { useCustomNavigate, useDispatch } from "ResuableFunctions/CustomHooks";
-import ModalComponent from "Components/Modal/Modal"; 
+import ModalComponent from "../../../Components/Modal/Modal";
 
 
 export function OverallModel() {

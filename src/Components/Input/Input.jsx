@@ -30,8 +30,8 @@ const Input = ({
                     {mandatory ? <span className='text-danger ms-1'>*</span> : null}
                 </Form.Label>
                 :
-                null
-            }
+                null}
+
             <Form.Control
                 type={type} id={htmlFor}
                 accept={accept}
@@ -45,10 +45,7 @@ const Input = ({
                 max={max} min={min}
             />
 
-            <span className='eye_button' onClick={eyeFunction}>
-                {eyeIcon}
-            </span>
-
+            <span className='eye_button' onClick={eyeFunction}> {eyeIcon} </span>
             {inputError ? <p className='text-danger pt-2 ps-1 fs-15'> {inputError} </p> : null}
         </div>
     )

@@ -1,5 +1,4 @@
 import ButtonComponent from 'Components/Button/Button'
-import React from 'react'
 import SpinnerComponent from './Spinner'
 
 const ButtonSpinner = ({ is_spinner, title, className, btnDisable, clickFunction }) => {

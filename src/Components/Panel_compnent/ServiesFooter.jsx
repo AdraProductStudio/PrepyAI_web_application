@@ -7,8 +7,7 @@ import { updateEntriesCount } from 'Slices/Common_Slice/Common_slice'
 
 const ServiesFooter = () => {
     const { commonState } = useCommonState();
-    const dispatch = useDispatch()
-
+    const dispatch = useDispatch();
 
     return (
         <Card className='w-100 mt-2 px-0 py-1 rounded border-0'>

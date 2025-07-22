@@ -88,36 +88,10 @@ To install all required packages, run:
 ```
 ---
 
-## Add vite.config.js in the root folder
-```bash
-'
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import path from 'path'
-
-export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    alias: {
-      'Components': path.resolve(__dirname, 'src/Components'),
-      'ResuableFunctions': path.resolve(__dirname, 'src/ResuableFunctions'),
-      'Stylesheet': path.resolve(__dirname, 'src/Stylesheet'),
-      'Assets': path.resolve(__dirname, 'src/Assets'),
-      'Services': path.resolve(__dirname, 'src/Services'),
-      'Security': path.resolve(__dirname, 'src/Security'),
-      'Utils': path.resolve(__dirname, 'src/Utils'),
-      'Views': path.resolve(__dirname, 'src/Views'),
-    }
-  }
-})
-'
-```
----
-
 ## Basic env 
 
 ```bash
-  VITE_APP_API_URL = 
-  VITE_APP_CRYPTO_SECRET_KEY =
+  REACT_APP_API_URL = 
+  REACT_APP_CRYPTO_SECRET_KEY =
 ```
 ---
