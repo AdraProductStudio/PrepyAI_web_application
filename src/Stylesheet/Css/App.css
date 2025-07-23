@@ -1,8 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 
 * {
-  font-weight: 400;
-  font-family: "Inter", sans-serif;
+  font-family: "Manrope", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
 }
@@ -94,7 +93,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
-  /* user-select: none; */
 }
 
 .eye-absolute {
@@ -195,7 +193,7 @@ body {
 }
 
 .navlink-sidebar:hover {
-  background: #2d5bff;
+  background: #2D5BFF;
   color: #ffffff !important;
 }
 
@@ -208,7 +206,6 @@ body {
 .navlink-sidebar:hover svg path {
   color: #ffffff !important;
   stroke: #ffffff !important;
-  /* background-color: #2D5BFF !important; */
   background: linear-gradient(92deg, #3b5bcf -4.15%, #2d5bff 64.99%);
 }
 
@@ -351,6 +348,7 @@ header {
   }
 }
 
+
 /* InterviewForm.css */
 
 .interview-container {
@@ -358,7 +356,7 @@ header {
   background-color: #fff;
   border-radius: 12px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.07);
-  font-family: "Segoe UI", sans-serif;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .interview-parameters {
@@ -432,11 +430,13 @@ header {
   }
 }
 
+
+
 .interview-bandwidth-container {
   background: #f9fbfc;
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
 }
 
 .section-title {
@@ -470,12 +470,13 @@ header {
   vertical-align: middle;
 }
 
+
 .scroll-container {
   width: 100%;
   overflow-x: auto;
   overflow-y: auto;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .delete-icon {
