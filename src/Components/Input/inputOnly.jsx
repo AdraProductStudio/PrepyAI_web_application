@@ -10,6 +10,7 @@ const InputOnly = ({
     keyDown,
     className, 
     type,
+    style
    
 }) => {
     return (
@@ -21,6 +22,7 @@ const InputOnly = ({
                 onChange={change}
                 onKeyDown={keyDown}
                 className={className}
+                style={style}
                
             />
         </InputGroup>

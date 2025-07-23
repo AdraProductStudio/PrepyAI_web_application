@@ -1,6 +1,7 @@
 import { useCommonState, useCustomNavigate, useDispatch } from "Components/CustomHooks";
 import ModalComponent from "Components/Modal/Modal";
 import UploadTestPaperModal from "../Docs/UploadTestPaperModal ";
+import EditorModal from "../Docs/ EditorModal";
 
 
 export function OverallModel() {
@@ -31,8 +32,9 @@ export function OverallModel() {
                 switch (commonState?.modal?.type) {
                     case "upload_test":
                         return <UploadTestPaperModal />
-                       
-
+                        
+                    case "upload_notes":
+                        return <EditorModal/>
                     default:
                         break;
                 }

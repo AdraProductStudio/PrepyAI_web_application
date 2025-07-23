@@ -190,7 +190,7 @@ const JsonDataStudent = () => {
                         { "name": "Economics.pdf", "type": "file", "path": "Books Upload/Economics.pdf" },
                         { "name": "Accountancy.pdf", "type": "file", "path": "Books Upload/Accountancy.pdf" },
                         { "name": "BusinessStudies.pdf", "type": "file", "path": "Books Upload/BusinessStudies.pdf" },
-                        { "name": "Sociology.pdf", "type": "file", "path": "Books Upload/Sociology.pdf" }
+                      
                     ]
                 },
                 {
@@ -369,24 +369,16 @@ const JsonDataStudent = () => {
                         { "name": "Economics.pdf", "type": "file", "path": "Books Upload/Economics.pdf" },
                         { "name": "Accountancy.pdf", "type": "file", "path": "Books Upload/Accountancy.pdf" },
                         { "name": "BusinessStudies.pdf", "type": "file", "path": "Books Upload/BusinessStudies.pdf" },
-                        { "name": "Sociology.pdf", "type": "file", "path": "Books Upload/Sociology.pdf" }
-                    ]
-                },
-                {
-                    "name": "Attachments",
-                    "type": "folder",
-                    "path": "12th/A_Section/Attachments",
-                    "children": [
-                        { "name": "Timetable.docx", "type": "file", "path": "Attachments/Timetable.docx" },
-                        { "name": "Syllabus.pdf", "type": "file", "path": "Attachments/Syllabus.pdf" },
-                        { "name": "ExamPattern.pdf", "type": "file", "path": "Attachments/ExamPattern.pdf" },
-                        { "name": "Notices.pdf", "type": "file", "path": "Attachments/Notices.pdf" },
-                        { "name": "Assignment1.pdf", "type": "file", "path": "Attachments/Assignment1.pdf" },
-                        { "name": "Assignment2.pdf", "type": "file", "path": "Attachments/Assignment2.pdf" },
-                        { "name": "PTMNotice.pdf", "type": "file", "path": "Attachments/PTMNotice.pdf" },
-                        { "name": "ExtraClassInfo.pdf", "type": "file", "path": "Attachments/ExtraClassInfo.pdf" },
-                        { "name": "FeeStructure.pdf", "type": "file", "path": "Attachments/FeeStructure.pdf" },
-                        { "name": "TransportDetails.pdf", "type": "file", "path": "Attachments/TransportDetails.pdf" }
+                        { "name": "Sociology.pdf", "type": "file", "path": "Books Upload/Sociology.pdf" },
+                         { "name": "Physics.pdf", "type": "file", "path": "Books Upload/Physics.pdf" },
+                        { "name": "Chemistry.pdf", "type": "file", "path": "Books Upload/Chemistry.pdf" },
+                        { "name": "Biology.pdf", "type": "file", "path": "Books Upload/Biology.pdf" },
+                        { "name": "Maths.pdf", "type": "file", "path": "Books Upload/Maths.pdf" },
+                        { "name": "English.pdf", "type": "file", "path": "Books Upload/English.pdf" },
+                        { "name": "Computer.pdf", "type": "file", "path": "Books Upload/Computer.pdf" },
+                        { "name": "History.pdf", "type": "file", "path": "Books Upload/History.pdf" },
+                        { "name": "Geography.pdf", "type": "file", "path": "Books Upload/Geography.pdf" },
+                    
                     ]
                 }
             ]

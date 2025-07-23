@@ -10,26 +10,16 @@ const FolderCard = ({ item }) => {
 
 
     return (
-        <div className="card p-2 h-100 border-0 " style={{ borderRadius: "12px", background: "#FFF", }}  >
+        <div className="card p-3 h-100 border-0 " style={{ borderRadius: "12px", background: "#FFF", }}  >
             {/* Header */}
             <div className="d-flex flex-wrap justify-content-between align-items-center mb-2">
                 <div className="col-12 col-md-8 ">
-                    <h5 className="heading-1 mb-3">{item?.name || ""}</h5>
+                    <h5 className="heading-1 mb-2">{item?.name || ""}</h5>
                     <p className="text-muted small mb-0">
                         Created on : {item?.created_on || ""}
                     </p>
                 </div>
                 <div className="col-12 col-md-4 d-flex justify-content-end">
-                    {/* <ButtonComponent
-                        type="button"
-                        className="btn"
-                        buttonName={
-                            item?.status
-                                ? item?.status.charAt(0).toUpperCase() + item?.status.slice(1)
-                                : ""
-                        }
-                        clickFunction={() => handleFolderClick(item)}
-                    /> */}
                     <ButtonComponent
                         type="button"
                         className="btn py-2 ms-2"
@@ -42,7 +32,7 @@ const FolderCard = ({ item }) => {
             <hr className="divider mt-1" />
 
             {/* File List */}
-            <div className="my-b ">
+            <div className="my-b mt-2">
                 {item?.children?.map(
                     (folder, index) =>
                         folder?.type === "folder" && (
@@ -55,7 +45,7 @@ const FolderCard = ({ item }) => {
                                     <span>{Icons.bookIcon}</span> {/* Replace with your icon */}
                                     <span>{folder?.name}</span>
                                 </div>
-                                <span className="text-muted">: {folder?.children?.length || 0}</span>
+                                <span className="text-blod p-2">: {folder?.children?.length || 0}</span>
                             </div>
                         )
                 )}

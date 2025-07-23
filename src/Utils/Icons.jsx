@@ -232,14 +232,14 @@ const bookIcon = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" 
 
 </svg>
 
-const noOfstudentsIcon = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+const noOfstudentsIcon = <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 20 20" fill="none">
     <path d="M7.63411 9.05817C7.55078 9.04984 7.45078 9.04984 7.35911 9.05817C5.37578 8.9915 3.80078 7.3665 3.80078 5.3665C3.80078 3.32484 5.45078 1.6665 7.50078 1.6665C9.54245 1.6665 11.2008 3.32484 11.2008 5.3665C11.1924 7.3665 9.61745 8.9915 7.63411 9.05817Z" stroke="#6C6C6C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     <path d="M13.6747 3.3335C15.2914 3.3335 16.5914 4.64183 16.5914 6.25016C16.5914 7.82516 15.3414 9.1085 13.7831 9.16683C13.7164 9.1585 13.6414 9.1585 13.5664 9.16683" stroke="#6C6C6C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     <path d="M3.46758 12.1335C1.45091 13.4835 1.45091 15.6835 3.46758 17.0252C5.75924 18.5585 9.51758 18.5585 11.8092 17.0252C13.8259 15.6752 13.8259 13.4752 11.8092 12.1335C9.52591 10.6085 5.76758 10.6085 3.46758 12.1335Z" stroke="#6C6C6C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     <path d="M15.2832 16.6665C15.8832 16.5415 16.4499 16.2998 16.9165 15.9415C18.2165 14.9665 18.2165 13.3582 16.9165 12.3832C16.4582 12.0332 15.8999 11.7998 15.3082 11.6665" stroke="#6C6C6C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 
-const deleteIcon = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+const deleteIcon = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="none">
     <path d="M14 3.98665C11.78 3.76665 9.54667 3.65332 7.32 3.65332C6 3.65332 4.68 3.71999 3.36 3.85332L2 3.98665" stroke="#E73C3C" strokeLinecap="round" strokeLinejoin="round" />
     <path d="M5.66602 3.31337L5.81268 2.44004C5.91935 1.80671 5.99935 1.33337 7.12602 1.33337H8.87268C9.99935 1.33337 10.086 1.83337 10.186 2.44671L10.3327 3.31337" stroke="#E73C3C" strokeLinecap="round" strokeLinejoin="round" />
     <path d="M12.5669 6.09338L12.1336 12.8067C12.0603 13.8534 12.0003 14.6667 10.1403 14.6667H5.86026C4.00026 14.6667 3.94026 13.8534 3.86693 12.8067L3.43359 6.09338" stroke="#E73C3C" strokeLinecap="round" strokeLinejoin="round" />

@@ -179,7 +179,7 @@ const Header = ({
     <HeaderCard
       cardClassName='w-100 border-0 header-card shadow-sm'
       cardTitleClassName="row justify-content-end mb-0"
-      cardBodyClassName='py-3 header-body'
+      cardBodyClassName='py-2 header-body'
       cardContent={headerContentFunc()}
     />
 

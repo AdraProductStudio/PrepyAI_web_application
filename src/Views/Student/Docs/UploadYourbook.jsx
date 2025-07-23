@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import InputOnly from 'Components/Input/inputOnly';
 import Icons from 'Utils/Icons';
 import Image from 'Utils/Image';
-import { Container } from 'react-bootstrap';
+import { Card, Container } from 'react-bootstrap';
+import ButtonComponent from 'Components/Button/Button';
+import { IconBase } from 'react-icons';
+import DashboardCard from 'Components/DashboardCard /DashboardCard ';
 
 const UploadYourbook = () => {
     const [searchValue, setSearchValue] = useState("");
@@ -31,61 +34,55 @@ const UploadYourbook = () => {
             performance: "Good"
         },
         {
-            id: 3,
+            id: 4,
             title: "Math Algebra",
             chapters: 10,
             questionSets: 5,
             performance: "Good"
         },
         {
-            id: 3,
+            id: 5,
             title: "Math Algebra",
             chapters: 10,
             questionSets: 5,
             performance: "Good"
         },
         {
-            id: 3,
+            id: 6,
             title: "Math Algebra",
             chapters: 10,
             questionSets: 5,
             performance: "Good"
         },
         {
-            id: 3,
+            id: 7,
             title: "Math Algebra",
             chapters: 10,
             questionSets: 5,
             performance: "Good"
         },
         {
-            id: 3,
+            id: 8,
             title: "Math Algebra",
             chapters: 10,
             questionSets: 5,
             performance: "Good"
         },
         {
-            id: 3,
+            id: 9,
             title: "Math Algebra",
             chapters: 10,
             questionSets: 5,
             performance: "Good"
         },
         {
-            id: 3,
+            id: 10,
             title: "Math Algebra",
             chapters: 10,
             questionSets: 5,
             performance: "Good"
         },
-        {
-            id: 3,
-            title: "Math Algebra",
-            chapters: 10,
-            questionSets: 5,
-            performance: "Good"
-        },
+ 
 
     ];
 
@@ -95,269 +92,26 @@ const UploadYourbook = () => {
     );
 
     return (
-        // <Container
-        //     className="bg-white p-4 rounded"
-        //     style={{ height: '84.8vh', display: 'flex', flexDirection: 'column', }}
-        // >
-        //     {/* Top Section */}
-        //     <div className="row mb-4 justify-content-between align-items-stretch">
-        //         <div className="col-12 col-md-6 col-lg-4 mb-2">
-        //             <button
-        //                 className="btn w-100 h-100 d-flex align-items-center justify-content-center gap-2 px-4 py-2 rounded"
-        //                 style={{
-        //                     border: '2px dashed #E73C3C',
-        //                     backgroundColor: 'white',
-        //                     color: '#E73C3C',
-        //                 }}
-        //             >
-        //                 {Icons.UploadIcon}
-        //                 <span style={{ color: "#000" }}>Upload Your Book</span>
-        //             </button>
-        //         </div>
-
-        //         <div className="col-12 col-md-6 col-lg-4 mb-2">
-        //             <div
-        //                 className="input-group h-100 d-flex flex-columns align-items-center shadow-sm rounded"
-        //                 style={{
-        //                     border: '2px solid rgb(186, 184, 184)',
-        //                     padding: '0.5rem',
-        //                     backgroundColor: 'white',
-        //                 }}
-        //             >
-        //                 <InputOnly
-        //                     type="text"
-        //                     className="form-control border-0"
-        //                     placeholder="Search..."
-        //                     value={searchValue}
-        //                     change={(e) => setSearchValue(e.target.value)}
-        //                 />
-        //             </div>
-        //         </div>
-        //     </div>
-
-        //     <hr />
-
-        //     {/* Scrollable Card Section */}
-        //     {/* <div className='d-flex' style={{ overflowY: 'auto', flexGrow: 1,}}>
-        //         <div className="row  d-flex flex-column  " >
-        //             {filteredBooks.map((book) => (
-        //                 <div className="col-12 col-sm-6 col-lg-6" key={book.id}>
-        //                     <div className="p-3 rounded border bg-light-subtle h-100">
-        //                         <div className="d-flex justify-content-between align-items-center mb-2">
-        //                             <h6 className="mb-0 text-dark">{book.title}</h6>
-        //                             <div className="text-danger cursor-pointer">{Icons.Delete}</div>
-        //                         </div>
-        //                         <hr className="my-2" />
-        //                         <div className="d-flex justify-content-around align-items-center">
-        //                             <div
-        //                                 className="me-3 d-flex align-items-center justify-content-center rounded"
-        //                                 style={{ width: '60px', height: '70px', fontWeight: 'bold' }}
-        //                             >
-        //                                 <img
-        //                                     src={Image.Pdf}
-        //                                     alt="PDF"
-        //                                     className="img-fluid"
-        //                                     style={{ maxHeight: '100%', maxWidth: '100%' }}
-        //                                 />
-        //                             </div>
-        //                             <div>
-        //                                 <p className="mb-1 text-secondary">
-        //                                     Chapters: <span className="fw-bold text-dark">{book.chapters}</span>
-        //                                 </p>
-        //                                 <p className="mb-1 text-secondary">
-        //                                     Question sets: <span className="fw-bold text-dark">{book.questionSets}</span>
-        //                                 </p>
-        //                                 <p className="mb-0 text-secondary">
-        //                                     Performance: <span className="text-primary">{book.performance}</span>
-        //                                 </p>
-        //                             </div>
-        //                         </div>
-        //                     </div>
-        //                 </div>
-        //             ))}
-        //         </div>
-        //     </div> */}
-        //     <div
-        //         className="d-flex"
-        //         style={{
-        //             overflowY: 'auto',
-        //             flexGrow: 1,
-        //             maxHeight: '650px', 
-        //             paddingRight: '8px',
-        //         }}
-        //     >
-        //         <div className="row g-3 w-100"> 
-        //             {filteredBooks.map((book) => (
-        //                 <div className="col-12 col-md-6 py-2 px-2" key={book.id}>
-        //                     <div
-        //                         className="p-3 rounded border bg-light-subtle h-100"
-        //                         style={{ minHeight: '180px' }} 
-        //                     >
-        //                         <div className="d-flex justify-content-between align-items-center mb-2">
-        //                             <h6 className="mb-0 text-dark">{book.title}</h6>
-        //                             <div className="text-danger cursor-pointer">{Icons.Delete}</div>
-        //                         </div>
-        //                         <hr className="my-2" />
-        //                         <div className="d-flex justify-content-around align-items-center mt-4">
-        //                             <div
-        //                                 className="me-3 d-flex align-items-center justify-content-center rounded"
-        //                                 style={{ width: '60px', height: '70px', fontWeight: 'bold' }}
-        //                             >
-        //                                 <img
-        //                                     src={Image.Pdf}
-        //                                     alt="PDF"
-        //                                     className="img-fluid"
-        //                                     style={{ maxHeight: '100%', maxWidth: '100%' }}
-        //                                 />
-        //                             </div>
-        //                             <div>
-        //                                 <p className="mb-1 text-secondary">
-        //                                     Chapters: <span className="fw-bold text-dark">{book.chapters}</span>
-        //                                 </p>
-        //                                 <p className="mb-1 text-secondary">
-        //                                     Question sets: <span className="fw-bold text-dark">{book.questionSets}</span>
-        //                                 </p>
-        //                                 <p className="mb-0 text-secondary">
-        //                                     Performance: <span className="text-primary">{book.performance}</span>
-        //                                 </p>
-        //                             </div>
-        //                         </div>
-        //                     </div>
-        //                 </div>
-        //             ))}
-        //         </div>
-        //     </div>
-
-
-        // </Container>
-        // <Container
-        //     className="bg-white p-4 rounded"
-        //     style={{ height: '84.8vh', display: 'flex', flexDirection: 'column' }}
-        // >
-        //     {/* Top Section */}
-        //     <div className="row mb-4 g-3 justify-content-between align-items-stretch">
-        //         <div className="col-12 col-sm-6 col-lg-4">
-        //             <button
-        //                 className="btn w-100 h-100 d-flex align-items-center justify-content-center gap-2 px-4 py-2 rounded"
-        //                 style={{
-        //                     border: '2px dashed #E73C3C',
-        //                     backgroundColor: 'white',
-        //                     color: '#E73C3C',
-        //                 }}
-        //             >
-        //                 {Icons.UploadIcon}
-        //                 <span style={{ color: '#000' }}>Upload Your Book</span>
-        //             </button>
-        //         </div>
-
-        //         <div className="col-12 col-sm-6 col-lg-4">
-        //             <div
-        //                 className="input-group h-100 d-flex flex-column justify-content-center shadow-sm rounded"
-        //                 style={{
-        //                     border: '2px solid rgb(186, 184, 184)',
-        //                     padding: '0.5rem',
-        //                     backgroundColor: 'white',
-        //                 }}
-        //             >
-        //                 <InputOnly
-        //                     type="text"
-        //                     className="form-control border-0"
-        //                     placeholder="Search..."
-        //                     value={searchValue}
-        //                     change={(e) => setSearchValue(e.target.value)}
-        //                 />
-        //             </div>
-        //         </div>
-        //     </div>
-
-        //     <hr />
-
-        //     {/* Scrollable Card Section */}
-        //     <div
-        //         className="d-flex"
-        //         style={{
-        //             overflowY: 'auto',
-        //             flexGrow: 1,
-        //             maxHeight: '650px',
-        //             paddingRight: '8px',
-        //         }}
-        //     >
-        //         <div className="row g-3 w-100">
-        //             {filteredBooks.map((book) => (
-        //                 <div className="col-12 col-md-6 col-xl-4" key={book.id}>
-        //                     <div
-        //                         className="p-3 rounded border bg-light-subtle h-100 d-flex flex-column justify-content-between"
-        //                         style={{ minHeight: '200px' }}
-        //                     >
-        //                         <div className="d-flex justify-content-between align-items-center mb-2">
-        //                             <h6 className="mb-0 text-dark">{book.title}</h6>
-        //                             <div className="text-danger cursor-pointer">{Icons.Delete}</div>
-        //                         </div>
-
-        //                         <hr className="my-2" />
-
-        //                         <div className="d-flex justify-content-around align-items-center mt-3">
-        //                             <div
-        //                                 className="me-3 d-flex align-items-center justify-content-center rounded"
-        //                                 style={{ width: '60px', height: '70px' }}
-        //                             >
-        //                                 <img
-        //                                     src={Image.Pdf}
-        //                                     alt="PDF"
-        //                                     className="img-fluid"
-        //                                     style={{ maxHeight: '100%', maxWidth: '100%' }}
-        //                                 />
-        //                             </div>
-        //                             <div>
-        //                                 <p className="mb-1 text-secondary">
-        //                                     Chapters: <span className="fw-bold text-dark">{book.chapters}</span>
-        //                                 </p>
-        //                                 <p className="mb-1 text-secondary">
-        //                                     Question sets: <span className="fw-bold text-dark">{book.questionSets}</span>
-        //                                 </p>
-        //                                 <p className="mb-0 text-secondary">
-        //                                     Performance: <span className="text-primary">{book.performance}</span>
-        //                                 </p>
-        //                             </div>
-        //                         </div>
-        //                     </div>
-        //                 </div>
-        //             ))}
-        //         </div>
-        //     </div>
-        // </Container>
-        <Container
-            className="bg-white p-4 rounded"
-            style={{ height: '84.8vh', display: 'flex', flexDirection: 'column' }}
-        >
+        <>
+          
+        <Container className="bg-white p-4 rounded" style={{ height: '85.8vh', display: 'flex', flexDirection: 'column' }}>
             {/* Top Section */}
-            <div className="row mb-4 g-3 justify-content-between align-items-stretch">
+          
+            <div className="row g-3 justify-content-between align-items-stretch">
                 <div className="col-12 col-sm-6 col-lg-4">
-                    <button
-                        className="btn w-100 h-100 d-flex align-items-center justify-content-center gap-2 px-4 py-2 rounded"
-                        style={{
-                            border: '2px dashed #E73C3C',
-                            backgroundColor: 'white',
-                            color: '#E73C3C',
-                        }}
-                    >
-                        {Icons.UploadIcon}
-                        <span style={{ color: '#000' }}>Upload Your Book</span>
-                    </button>
+                    <ButtonComponent
+                        type="button"
+                        className="btn p-1"
+                        style={{ color: '#E73C3C', border: '2px dashed #E73C3C'}}
+                        buttonName={<span className='d-flex d-flex align-items-center px-2 gap-2'>{Icons.UploadIcon} Upload Your Book</span>}
+                    />
                 </div>
 
                 <div className="col-12 col-sm-6 col-lg-4">
-                    <div
-                        className="input-group h-100 d-flex flex-column justify-content-center shadow-sm rounded"
-                        style={{
-                            border: '2px solid rgb(186, 184, 184)',
-                            padding: '0.5rem',
-                            backgroundColor: 'white',
-                        }}
-                    >
+                    <div className="input-group h-100 d-flex flex-column justify-content-center  rounded">
                         <InputOnly
                             type="text"
-                            className="form-control border-0"
+                            className="form-control border-1"
                             placeholder="Search..."
                             value={searchValue}
                             change={(e) => setSearchValue(e.target.value)}
@@ -365,38 +119,22 @@ const UploadYourbook = () => {
                     </div>
                 </div>
             </div>
-
             <hr />
-
             {/* Scrollable Card Section */}
-            <div
-                className="d-flex"
-                style={{
-                    overflowY: 'auto',
-                    flexGrow: 1,
-                    maxHeight: '650px',
-                    paddingRight: '8px',
-                }}
-            >
-                <div className="row g-3 w-100">
+            <div className="d-flex custom-scroll "style={{overflowY: 'auto', flexGrow: 1, maxHeight: '790px'}}>
+                <div className="row g-3 ">
                     {filteredBooks.map((book) => (
-                        <div className="col-12 col-md-6 p-2" key={book.id}>
-                            <div
-                                className="p-3 rounded border bg-light-subtle h-100 d-flex flex-column justify-content-between"
-                                style={{ minHeight: '200px' }}
-                            >
-                                <div className="d-flex justify-content-between align-items-center mb-2">
+                        <div className="col-12 col-md-6 p-1" key={book.id}>
+                            <div className="p-4 rounded border-0 shadow bg-light-subtle h-100 d-flex flex-column justify-content-between"style={{ minHeight: '200px' }} >
+                                <div className="d-flex justify-content-between align-items-center mb-">
                                     <h6 className="mb-0 text-dark">{book.title}</h6>
-                                    <div className="text-danger cursor-pointer">{Icons.deleteIcon}</div>
+                                    <div className="text-danger cursor-pointer ">{Icons.deleteIcon }</div>
                                 </div>
-
                                 <hr className="my-2" />
-
                                 <div className="d-flex justify-content-around align-items-center mt-3">
                                     <div
                                         className="me-3 d-flex align-items-center justify-content-center rounded"
-                                        style={{ width: '60px', height: '70px' }}
-                                    >
+                                        style={{ width: '60px', height: '70px' }} >
                                         <img
                                             src={Image.Pdf}
                                             alt="PDF"
@@ -422,9 +160,7 @@ const UploadYourbook = () => {
                 </div>
             </div>
         </Container>
-
-
-
+        </>
     );
 };
 

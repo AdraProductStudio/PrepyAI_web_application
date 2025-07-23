@@ -13,9 +13,9 @@ const History = () => {
 
             <Card
                 className="card px-2 py-1 border-0"
-                style={{ height: "53.8vh", maxHeight: "69vh" }}
+                style={{ height: "57.8vh", maxHeight: "69vh" }}
             >
-                <Card.Body className="d-flex flex-column h-100">
+                <Card.Body className="d-flex flex-column h-100 p-1">
 
                     <div>
                         <Card.Title className="mb-1 greeting-text">History</Card.Title>
@@ -23,26 +23,17 @@ const History = () => {
                     </div>
 
 
-                    <div className="custom-scroll" style={{ overflowY: "auto", flex: 1, paddingRight: "6px" }} >
+                    <div className="custom-scroll" style={{ overflowY: "auto", flex: 1 }} >
                         {jsonOnly?.historyData2.map((item, idx) => (
                             <Card
                                 key={idx}
-                                className="mb-2 shadow-sm border-0 rounded-3 position-relative"
+                                className="mb-2 shadow-sm border-0 rounded-3 position-relative overflow-hidden"
                             >
-                                <Badge
-                                    className="position-absolute top-0 end-0 m-0 px-2 py-1"
-                                    style={{
-                                        borderRadius: "10px",
-                                        fontSize: "0.6rem",
-                                        zIndex: 1,
-                                        backgroundColor: "#dbe2feff",
-                                        color: "#FFF"
-                                    }}
-                                >
+                                <div className="m-0 px-2 py-1 student_dashboard_badge">
                                     {item.status}
-                                </Badge>
+                                </div>
 
-                                <Card.Body className="d-flex align-items-center flex-wrap rounded border p-3 small mt-">
+                                <Card.Body className="d-flex align-items-center flex-wrap rounded border p-3 small">
                                     <img
                                         src={Image.Pdf}
                                         alt="pdf"

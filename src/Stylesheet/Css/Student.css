@@ -150,9 +150,53 @@
   border-radius: 8px;
 }
 
-/* Today highlight */
+/* highlight */
 .custom-calendar .react-calendar__tile--now {
   background: #e3f2fd;
   border-radius: 8px;
   font-weight: bold;
 }
+
+.student_dashboard_badge{
+  position: absolute;
+  top: 0rem;
+  right: 0;
+  background-color:#DDE2FF;
+  color: #4258D6;
+  padding: .5rem;
+  font-size: .7rem;
+}
+
+.custom-scroll .card-body{
+  padding: 2rem 1rem 1.5rem 1rem !important;
+}
+
+/* .MainContent {
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar1 {
+  width: 250px;
+}
+
+.logo-text {
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.toggler-btn1 {
+  font-size: 1.5rem;
+  border: none;
+  background: none;
+} */
+ 
+ /* Notes */
+.NotesTitle p{
+    font-size: 20px !important;
+}
+.NotesDate p{
+    font-size:12px !important ;
+}
+
+
