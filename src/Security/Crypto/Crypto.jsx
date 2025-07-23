@@ -2,7 +2,7 @@ import CryptoJS from "crypto-js";
 
 
 
-const { REACT_APP_CRYPTO_SECRET_KEY } = import.meta.env;
+const { REACT_APP_CRYPTO_SECRET_KEY } = process.env;
 
 // Encrypt data
 export function encryptData(data) {
@@ -22,6 +22,7 @@ export function decryptData(ciphertext) {
 
         const bytes = CryptoJS.TripleDES.decrypt(fixedCiphertext, REACT_APP_CRYPTO_SECRET_KEY);
         if (!bytes?.sigBytes) return null
+        
         const originalData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
         return originalData;
     } catch (error) {

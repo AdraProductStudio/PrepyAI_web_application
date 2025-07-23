@@ -1,6 +1,6 @@
 import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks';
-import { update_login_data } from 'Views/Common/Slices/Common_slice';
-import { handleLogin } from 'Views/Common/Actions/Common_action';
+// import { update_login_data } from 'Views/Common/Slices/Common_slice';
+// import { handleLogin } from 'Views/Common/Actions/Common_action';
 import Icons from 'Utils/Icons';
 import { useState } from 'react';
 
@@ -12,12 +12,7 @@ const JsonData = () => {
     const [myDetails, setMyDetails] = useState(new Object())
 
     const jsonOnly = {
-        sidebar_data: [
-            {
-                name: 'Dashboard',
-                route: 'student_dashboard',
-                icon: Icons.Dashboard
-            },]
+
     }
 
     const jsxJson = {
@@ -29,10 +24,10 @@ const JsonData = () => {
                 category: "input",
                 placeholder: "Username",
                 value: commonState?.login_data?.username || '',
-                change: (e) => dispatch(update_login_data({ username: e.target.value })),
-                keyDown: (e) => {
-                    if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-                },
+                // change: (e) => dispatch(update_login_data({ username: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
                 divClassName: "mb-3",
                 isMandatory: false,
                 Err: commonState?.app_data?.validated && !commonState?.login_data?.username ? "username required" : null
@@ -44,11 +39,11 @@ const JsonData = () => {
                 placeholder: "Password",
                 className: "pe-5",
                 value: commonState?.login_data?.password || '',
-                change: (e) => dispatch(update_login_data({ password: e.target.value })),
-                keyDown: (e) => {
-                    if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-                },
-                eyeFunction: () => dispatch(update_login_data({ showPassword: !commonState?.login_data?.showPassword })),
+                // change: (e) => dispatch(update_login_data({ password: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                // eyeFunction: () => dispatch(update_login_data({ showPassword: !commonState?.login_data?.showPassword })),
                 eyeIcon: commonState?.login_data?.showPassword ? Icons?.EyeClose : Icons?.EyeOpen,
                 divClassName: "mb-1",
                 isMandatory: false,

@@ -9,20 +9,14 @@ export function SearchComponent({ className, placeholder }) {
     const { search_value, search_clicked } = useSelector(state => state.commonState);
 
     function handleSearchClicked() {
-        if (search_value) {
-            dispatch(updateSearchClickedTrue())
-        } else {
-            dispatch(updateToast({ type: "error", message: "search field should not be empty" }))
-        }
+        if (search_value) dispatch(updateSearchClickedTrue())
+        else dispatch(updateToast({ type: "error", message: "search field should not be empty" }))
     }
 
     function handleSearchEnter(event) {
         if (event.code === "Enter") {
-            if (search_value) {
-                dispatch(updateSearchClickedTrue())
-            } else {
-                dispatch(updateToast({ type: "error", message: "search field should not be empty" }))
-            }
+            if (search_value) dispatch(updateSearchClickedTrue())
+            else dispatch(updateToast({ type: "error", message: "search field should not be empty" }))
         }
     }
 

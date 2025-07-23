@@ -1,34 +1,21 @@
 import Modal from 'react-bootstrap/Modal';
 import { useDispatch } from 'react-redux';
-import { updateModalShow } from 'Views/Common/Slices/Common_slice';
+import { updateModalShow } from 'Slices/Common_Slice/Common_slice';
 
 const ModalComponent = ({
-  componentFrom,
-  show,
-  modalSize,
-  modalClassname,
-  modalDialogClassName,
-  modalClickOutsideHide,
-  modalFullscreen,
-  modalCentered,
-  modalCloseButton,
+  show, modalSize, modalClassname,
+  modalDialogClassName, modalClickOutsideHide,
+  modalFullscreen, modalCentered, modalCloseButton,
 
-  showModalHeader,
-  modalHeaderTitleClassname,
-  modalHeaderClassname,
-  modalHeader,
+  showModalHeader, modalHeaderTitleClassname,
+  modalHeaderClassname, modalHeader,
 
-  modalBodyClassname,
-  modalBody,
-
-  showModalFooter,
-  modalFooterClassname,
-  modalFooter,
+  modalBodyClassname, modalBody,
+  showModalFooter, modalFooterClassname, modalFooter
 }) => {
   const dispatch = useDispatch();
 
   return (
-
     <Modal
       show={show}
       size={modalSize}
@@ -37,38 +24,28 @@ const ModalComponent = ({
       centered={modalCentered}
       contentClassName={modalClassname}
       dialogClassName={modalDialogClassName}
-      onHide={() => dispatch(updateModalShow({ show: false, size: null, modal_from: null, modal_type: null, modal_close_btn: false }))}
+      onHide={() => dispatch(updateModalShow())}
     >
 
-      {/* Header */}
-      {
-        showModalHeader ? <Modal.Header closeButton={modalCloseButton} className={modalHeaderClassname}>
+      {showModalHeader ?
+        <Modal.Header closeButton={modalCloseButton} className={modalHeaderClassname}>
           <Modal.Title className={modalHeaderTitleClassname}>
             {modalHeader}
           </Modal.Title>
         </Modal.Header>
-          :
-          null
-      }
+        :
+        null}
 
-
-
-      {/* Body */}
       <Modal.Body className={modalBodyClassname}>
         {modalBody}
       </Modal.Body>
 
-
-      {/* Footer */}
-      {
-        showModalFooter ? <Modal.Footer className={modalFooterClassname}>
+      {showModalFooter ?
+        <Modal.Footer className={modalFooterClassname}>
           {modalFooter}
         </Modal.Footer>
-          :
-          null
-      }
-
-
+        :
+        null}
     </Modal>
   )
 }

@@ -1,6 +1,4 @@
-import React from 'react'
 import { Form, InputGroup } from 'react-bootstrap'
-
 
 const InputOnly = ({
     componnetFrom, 
@@ -9,9 +7,7 @@ const InputOnly = ({
     change, 
     keyDown,
     className, 
-    type,
-    style
-   
+    type
 }) => {
     return (
         <InputGroup>
@@ -22,8 +18,6 @@ const InputOnly = ({
                 onChange={change}
                 onKeyDown={keyDown}
                 className={className}
-                style={style}
-               
             />
         </InputGroup>
     )

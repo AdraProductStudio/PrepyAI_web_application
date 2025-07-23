@@ -1,4 +1,3 @@
-import React from 'react';
 import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks';
 import JsonData from 'Views/Common/utils/JsonData';
 import { Inputfunctions } from 'ResuableFunctions/Inputfunctions';

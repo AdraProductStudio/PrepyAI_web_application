@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { toast } from 'react-toastify';
 import { Outlet } from 'react-router-dom';
 import { update_error, update_tab_render_app_data } from '../Slices/Common_slice';
@@ -18,12 +18,8 @@ export const InitializeProjectSetup = () => {
         dispatch(update_app_data({ type: "dimension", data: sizer }))
     }, [])
 
-    window.addEventListener('online', () => {
-        dispatch(update_app_data({ type: 'internet_status', data: true }))
-    });
-    window.addEventListener('offline', () => {
-        dispatch(update_app_data({ type: 'internet_status', data: false }))
-    });
+    window.addEventListener('online', () => dispatch(update_app_data({ type: 'internet_status', data: true })));
+    window.addEventListener('offline', () => dispatch(update_app_data({ type: 'internet_status', data: false })));
 
     useEffect(() => {
         if (commonState?.error?.Err) {

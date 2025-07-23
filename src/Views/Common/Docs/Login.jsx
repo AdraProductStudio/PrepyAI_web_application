@@ -1,7 +1,6 @@
 import React from 'react'
 import LoginForm from 'Components/Form/LoginForm'
 import { Card, CardBody } from 'react-bootstrap'
-import Icons from 'Utils/Icons'
 
 const Login = () => {
   return (

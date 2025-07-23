@@ -20,25 +20,16 @@ const SelectBox = ({
             {label ?
                 <Form.Label htmlFor={htmlFor} className={labelClassName}>
                     {label}
-
-                    {
-                        mandatory ?
-                            <span className='text-danger ms-1'>*</span>
-                            :
-                            null
-                    }
-
+                    {mandatory ? <span className='text-danger ms-1'>*</span> : null}
                 </Form.Label>
                 :
                 null
             }
             <Form.Select size={selectBoxSize} className={className} disabled={disableSelectBox} onChange={change} value={value}>
                 {componentFrom !== "Entries" ? <option value="">Select</option> : null}
-                {
-                    selectOptions?.map((value, ind) => {
-                        return <option value={value} key={ind}>{value}</option>
-                    })
-                }
+                {selectOptions?.map((value, ind) => {
+                    return <option value={value} key={ind}>{value}</option>
+                })}
             </Form.Select>
         </Fragment>
     )
