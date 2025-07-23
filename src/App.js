@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import Error from "Views/Common/Docs/error";
 import { InitializeProjectSetup } from "Views/Common/Docs/InitializeProjectSetup";
 import Login from "Views/Common/Docs/Login";
+import StudentDashboard from "Views/Student/Docs/StudentDashboard";
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
 
       <Routes>
         <Route element={<InitializeProjectSetup />}>
-          <Route index element={<h5>login page</h5>} />
+          <Route index element={<StudentDashboard/>} />
           <Route path="*" element={<Error />} />
         </Route>
       </Routes>
