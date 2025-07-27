@@ -1,27 +1,21 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import OffCanvas from 'Components/Offcanvas/OffCanvas';
 import NavLinkComp from 'Components/Router_components/NavLink';
-
+import Img from 'Components/Img/Img';
+import Image from 'Utils/Image';
 
 const Sidebar = ({
-    menuOptions,
-    responsiveOn,
-    offCanvasShow,
-    handleCanvasOpenOrClose,
-
-    header,
+    menuOptions, responsiveOn,
+    offCanvasShow, handleCanvasOpenOrClose,
     companyLogo,
-    user_role,
-
-    footer,
-    footerClickFunction
 }) => {
+
     const hanldeButton = (v) => {
         return <>
             <div className="col-3 pb-1 text-center">
                 {v.icon}
             </div>
-            <div className="col text-start">
+            <div className="col text-start route_content">
                 <p className='mb-0'>{v.name}</p>
             </div>
         </>
@@ -30,14 +24,14 @@ const Sidebar = ({
     const headerFun = () => {
         return <React.Fragment>
             <div className='w-100'>
-                <h5>Header name</h5>
+                <Img src={Image?.logo} alt="website logo" className='website_logo' />
             </div>
         </React.Fragment>
     }
 
     const bodyContent = () => {
-        return <nav className='navmenu w-100 pe-3'>
-            <ul className='w-100 px-1 '>
+        return <nav className='navmenu w-100'>
+            <ul className='w-100 px-1 mt-3'>
                 {menuOptions?.map((v, i) => (
                     !v?.sub_routes ?
                         <li className="list-unstyled w-100" key={i}>
@@ -77,12 +71,10 @@ const Sidebar = ({
         </nav >
     }
 
-
     return (
-        <>
-            <div className={`sidebar d-none ${responsiveOn !== '' ? `d-${responsiveOn}-block` : 'd-block'}`}>
+        <Fragment>
+            <div className={`sidebar d-none ${responsiveOn ? `d-${responsiveOn}-block` : 'd-block'}`}>
                 <div className="container-fluid">
-                    {/* header */}
                     <div className="sidebar-header position-relative">
                         <div className="row h-100 align-items-center justify-content-center sidebar-header-underline">
                             <div className="col text-center">
@@ -91,7 +83,6 @@ const Sidebar = ({
                         </div>
                     </div>
 
-                    {/* body */}
                     <div className="sidebar-body">
                         {bodyContent()}
                     </div>
@@ -110,7 +101,7 @@ const Sidebar = ({
                 offcanvasBodyClassname="sidebar-body-without-footer"
                 canvasBody={bodyContent()}
             />
-        </>
+        </Fragment>
     )
 }
 

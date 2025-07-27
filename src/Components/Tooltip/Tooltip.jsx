@@ -16,7 +16,7 @@ const Tooltip = ({ tooltip_content }) => {
             }
         >
             <span className="cup ms-1">
-                {Icons.infoIcon}
+                {Icons.info_icon}
             </span>
         </OverlayTrigger>
     )

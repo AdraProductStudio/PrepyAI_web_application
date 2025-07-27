@@ -12,11 +12,16 @@ const ReactPaginateComp = () => {
       pageCount={150}
       previousLabel="<"
       renderOnZeroPageCount={null}
-      containerClassName="pagination-container w-100"
+      containerClassName="pagination justify-content-end"
       pageClassName="page-item"
       pageLinkClassName="page-link"
-      activeClassName="active-page"
-      disabledClassName="disabled-page"
+      previousClassName="page-item"
+      previousLinkClassName="page-link"
+      nextClassName="page-item"
+      nextLinkClassName="page-link"
+      breakClassName="page-item"
+      breakLinkClassName="page-link"
+      activeClassName="active"
     />
   )
 }

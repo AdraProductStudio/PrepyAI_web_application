@@ -1,12 +1,8 @@
 const ButtonComponent = ({ 
-  componentFrom,
-  title,
-  buttonName,
-  as,
-  className,
-  type,
-  clickFunction,
-  btnDisable
+  title, buttonName, as,
+  className, type,
+  clickFunction, btnDisable,
+  children
 }) => {
 
 
@@ -19,7 +15,7 @@ const ButtonComponent = ({
       title={title}
       disabled={btnDisable}
     >
-      {buttonName}
+      {children || buttonName}
     </button>
   );
 };

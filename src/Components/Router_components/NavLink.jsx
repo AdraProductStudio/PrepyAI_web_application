@@ -1,16 +1,14 @@
 import { NavLink } from 'react-router-dom'
 
 const NavLinkComp = ({
-  componentFrom,
-  to,
-  title,
-  className,
-  clickFunction
+  to, title, end, children,
+  className, clickFunction,
+
 }) => {
 
   return (
-    <NavLink to={to} className={`${className}`} onClick={clickFunction} end>
-      {title}
+    <NavLink to={to} className={`${className}`} onClick={clickFunction} end={end || false}>
+      {children || title}
     </NavLink>
   )
 }

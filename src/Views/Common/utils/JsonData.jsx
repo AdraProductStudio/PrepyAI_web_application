@@ -1,15 +1,13 @@
-import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks';
+import { useCommonState } from 'Components/CustomHooks';
 // import { update_login_data } from 'Views/Common/Slices/Common_slice';
 // import { handleLogin } from 'Views/Common/Actions/Common_action';
 import Icons from 'Utils/Icons';
-import { useState } from 'react';
 
 const JsonData = () => {
     //main selectors
-    const dispatch = useDispatch();
-    const navigate = useCustomNavigate();
+    // const dispatch = useDispatch();
+    // const navigate = useCustomNavigate();
     const { commonState } = useCommonState();
-    const [myDetails, setMyDetails] = useState(new Object())
 
     const jsonOnly = {
 

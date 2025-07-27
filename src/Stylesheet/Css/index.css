@@ -15,11 +15,6 @@
   z-index: 1;
 }
 
-.home_data_table{
-  height: 80%;
-  overflow-y: scroll;
-}
-
 /* main  */
 .form-control.is-invalid,
 .was-validated .form-control:invalid {
@@ -98,12 +93,6 @@
   user-select: none;
 }
 
-.dashboard-icon {
-  background-color: #C71943;
-  padding: .3rem;
-  border-radius: 8px;
-}
-
 .form-control:focus {
   color: var(--bs-body-color);
   background-color: var(--bs-body-bg);
@@ -119,158 +108,13 @@
   font-size: .85rem;
 }
 
-.custom-success {
-  --bs-btn-color: #fff;
-  --bs-btn-bg: #0AA50E;
-  --bs-btn-border-color: #0AA50E;
-  --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #0AA50E;
-  --bs-btn-hover-border-color: #0AA50E;
-  --bs-btn-focus-shadow-rgb: 60, 153, 110;
-  --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #0AA50E;
-  --bs-btn-active-border-color: #0AA50E;
-  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: #0AA50E;
-  --bs-btn-disabled-border-color: #0AA50E;
+.overflowY {
+  overflow-y: auto;
 }
 
-/* multiple image select css  */
-.file-atc-box {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
+.recharts-layer.recharts-pie-sector path:focus {
+  outline: none !important;
 }
-
-.file-image {
-  width: 130px;
-  height: 85px;
-  background-size: cover;
-  border-radius: 5px;
-  margin-right: 15px;
-  background-color: #eaecf1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  color: #475f7b;
-  padding: 3px;
-}
-
-.file-image img {
-  max-width: 100%;
-  max-height: 100%;
-  border-radius: 4px;
-}
-
-.file-detail {
-  flex: 1;
-  width: calc(100% - 210px);
-}
-
-.file-detail h6 {
-  word-break: break-all;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 20px;
-  margin-bottom: 8px;
-}
-
-.file-detail p {
-  font-size: 12px;
-  color: #8194aa;
-  line-height: initial;
-  font-weight: 400;
-  margin-bottom: 8px;
-}
-
-.file-actions {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.file-action-btn {
-  font-size: 12px;
-  color: #8194aa;
-  line-height: 20px;
-  font-weight: 400;
-  margin-bottom: 0;
-  padding: 0;
-  background-color: transparent;
-  border: none;
-  text-decoration: underline;
-  margin-right: 15px;
-  cursor: pointer;
-}
-
-.file-action-btn:hover {
-  color: #3d546f;
-  text-decoration: underline;
-}
-
-.file-atc-box:last-child {
-  margin-bottom: 0;
-}
-
-.buyAndSell_model_height {
-  height: 45rem !important;
-  overflow-y: scroll !important;
-}
-
-.crm_model_no_data_height {
-  height: 35rem !important;
-  overflow-y: hidden !important;
-}
-
-.blog-main-content-height {
-  height: 43rem;
-}
-
-.placeholder-blog-image {
-  height: 12rem;
-}
-
-.feedback-success {
-  border-radius: 4px !important;
-  border: 1px solid #00B087 !important;
-  background: rgba(22, 192, 152, 0.38) !important;
-  color: #008767 !important;
-}
-
-.feedback-danger {
-  border-radius: 4px !important;
-  border: 1px solid #DF0404 !important;
-  background: #FFC5C5 !important;
-  color: #DF0404 !important;
-}
-
-.selcted_analytics_button_active {
-  border-bottom: 2px solid blue !important;
-  border-radius: 0px !important;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.line_graph_glow_height {
-  height: 25rem;
-}
-
-@media (min-width:1500px) {
-  .profile-main-data {
-    width: 40% !important;
-  }
-
-  .post_details_width {
-    width: 20% !important;
-  }
-}
-
-
-
 
 /* ----------------------------------------------------
     404 Area
@@ -328,9 +172,6 @@
   padding: 150px 0 170px;
 }
 
-.recharts-layer.recharts-pie-sector path:focus {
-  outline: none !important;
-}
 
 @media (max-width: 1199px) {
   .ltn__404-area-1 .error-404-title {
@@ -364,18 +205,242 @@
   }
 }
 
-
-
-.accordion_animation_sub_menu {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease-in-out;
+/* ----------------------------------------------------
+    Prepy designs css
+---------------------------------------------------- */
+.layout_main {
+  background-color: var(--main-background-color);
+  height: var(--root-height);
 }
 
-.accordion_animation_sub_menu.open {
-  max-height: 500px;
+.website_logo {
+  width: 8rem !important;
+  height: 2.5rem;
 }
 
-.overflowY {
+.student_dashboard_icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 12px;
+  background-color: #FFEAF0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Timetable styles */
+.table.timetable th,
+.table.timetable td {
+  padding: 0.85rem;
+  text-align: center;
+  font-size: .8rem;
+}
+
+.timetable_heading {
+  border: none !important;
+  color: #3657BE !important;
+  text-wrap: nowrap;
+}
+
+.table.timetable th {
+  font-weight: bold;
+}
+
+.table.timetable .periods {
+  border-left: 1px dashed #dee2e6 !important;
+  border-right: 1px dashed #dee2e6 !important;
+  border-top: 1px solid #dee2e6 !important;
+  border-bottom: 1px solid #dee2e6 !important;
+}
+
+.table.timetable tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.activity_card_body {
+  height: 15rem !important;
+  overflow-y: auto;
+}
+
+.activity_bell_icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 12px;
+  background-color: #F0F0F0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grade_by_classroom {
+  color: #3657BE;
+  font-size: 14px;
+}
+
+.border_bottom_dashed {
+  border-bottom: 1px dashed gray !important;
+}
+
+.display_notes {
+  height: 15rem;
+}
+
+.display_notes_content {
+  color: rgba(0, 0, 0, 0.60);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.student_overview_main {
+  height: calc(100vh - var(--header-height) - 3.5rem);
+  padding: 1rem 0;
+}
+
+.small_header_content_main {
+  height: calc(100vh - var(--header-height) - 5.5rem);
+  padding: 1rem 0;
+}
+
+.overview_calender_icon {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+  background-color: #F0F0F0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.student_overview_content {
+  background-color: #F0F0F0;
+  border-radius: 10px;
+  padding: .8rem;
+  width: 45%;
+}
+
+.student_overview_table_height {
+  height: calc(100vh - var(--header-height) - 23.5rem);
   overflow-y: scroll;
+}
+
+.students_list_table thead th {
+  background-color: #F6F6F6;
+  color: #1F1D39;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.test_conducted_chart_height {
+  height: 27rem !important;
+}
+
+.input-group-start-icon {
+  position: absolute;
+  left: 1rem;
+  top: 0.5rem;
+  z-index: 10;
+}
+
+.staff_table_heading,
+.student_table_heading {
+  color: #3657BE !important;
+  font-weight: 500;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.staff_table_data tr td,
+.student_table_data tr td {
+  color: #1F1D39 !important;
+  font-weight: 400;
+  font-size: 15px;
+  text-align: center;
+  align-content: center;
+}
+
+.no_data_found_image {
+  width: 10rem;
+  height: 10rem;
+  margin-bottom: 1rem;
+}
+
+.theme_secondary_color {
+  background-color: var(--theme-secondary-color) !important;
+}
+
+.admin_classroom_overview_navlink {
+  color: #A6A6A6 !important;
+  padding: 0 0 .7rem 0 !important;
+  margin: 0 1.4rem 0 0 !important;
+  text-decoration: none !important;
+}
+
+.admin_classroom_overview_navlink.active {
+  color: black !important;
+  border-bottom: 1px solid black !important;
+}
+
+.admin_classroom_overview_table_height {
+  height: calc(100vh - var(--header-height) - 37.5rem);
+  overflow-y: scroll;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.copy_icon_absolute {
+  position: absolute;
+  left: 0rem;
+  top: 0.3rem;
+  z-index: 1;
+}
+
+.option_icon_bg {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 12px;
+  background: #F0F0F0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subject_overview_table_height {
+  height: calc(var(--root-height) - (var(--header-height) + 19rem));
+}
+
+td {
+  align-items: middle;
+  text-align: center;
+}
+
+.sechdule_test_layout {
+  height: calc(var(--root-height) - (var(--header-height) + 4rem));
+  padding: 2rem 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.schedule_option {
+  text-decoration: none;
+  color: black;
+  display: inline-block;
+  width: 100%;
+  padding: 1rem;
+}
+
+.schedule_option .title {
+  font-weight: bold;
+  display: block;
+}
+
+.schedule_option .description {
+  color: #8B8B8B;
+  font-size: 14px;
+}
+
+.schedule_option.active {
+  border-radius: 6px;
+  background: #FFEEF3;
 }

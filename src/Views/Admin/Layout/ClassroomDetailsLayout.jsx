@@ -1,0 +1,58 @@
+import ClassroomOverviewChart from "Components/Charts/ClassroomOverviewChart";
+import TestPerformanceChart from "Components/Charts/TestPerformanceChart";
+import LinkComponent from "Components/Router_components/LinkComponent";
+import { Card } from "react-bootstrap";
+import { NavLink, Outlet, useParams } from "react-router-dom";
+import Icons from "Utils/Icons";
+
+const ClassroomDetailsLayout = () => {
+    const { id } = useParams();
+
+    return (
+        <div className="h-100">
+            <div className="container-fluid">
+                <div className="w-100 border-bottom pb-3">
+                    <LinkComponent to="/admin_dashboard/classrooms" className="brand-link-color">
+                        <span>{Icons.back_button_icon_blue}</span>
+                        <span className="align-middle">12th - A Section</span>
+                    </LinkComponent>
+                </div>
+                <div className="w-100 row py-3">
+                    <div className="col-4">
+                        <Card className="shadow-sm border-0 rounded-4 h-100">
+                            <Card.Header className="py-3 border-0 bg-transparent">
+                                Classroom Overview
+                            </Card.Header>
+                            <Card.Body>
+                                <ClassroomOverviewChart />
+                            </Card.Body>
+                        </Card>
+                    </div>
+                    <div className="col-8 p-1">
+                        <Card className="h-100 border-0 rounded-4 shadow-sm test_conducted_chart_height">
+                            <Card.Header className="bg-transparent border-0 pt-3">
+                                <h6 className="mb-2">Test Conducted</h6>
+                            </Card.Header>
+                            <Card.Body>
+                                <TestPerformanceChart />
+                            </Card.Body>
+                        </Card>
+                    </div>
+                    <div className="col-12 p-1">
+                        <Card className="h-100 border-0 rounded-4 shadow-sm">
+                            <Card.Header className="bg-transparent border-0 pt-3">
+                                <NavLink to={`/admin_dashboard/classrooms/${id}/teachers`} className="admin_classroom_overview_navlink">Teachers</NavLink>
+                                <NavLink to={`/admin_dashboard/classrooms/${id}/students`} className="admin_classroom_overview_navlink">Students</NavLink>
+                            </Card.Header>
+                            <Card.Body className="admin_classroom_overview_table_height mt-3">
+                                <Outlet />
+                            </Card.Body>
+                        </Card>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default ClassroomDetailsLayout;

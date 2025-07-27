@@ -1,39 +1,43 @@
 
-import { useDispatch, useSelector } from 'react-redux';
 import InputOnly from 'Components/Input/inputOnly';
-import { clearSearch, updateSearchValue, updateSearchClickedTrue, updateToast } from 'Views/Common/Slice/Common_slice';
 import Icons from 'Utils/Icons';
+import { useCommonState, useDispatch } from 'Components/CustomHooks';
+import { update_error, update_search } from 'Views/Common/Slices/Common_slice';
 
-export function SearchComponent({ className, placeholder }) {
+export function SearchComponent({ className, placeholder, onClick }) {
     const dispatch = useDispatch();
-    const { search_value, search_clicked } = useSelector(state => state.commonState);
+    const { commonState } = useCommonState();
 
     function handleSearchClicked() {
-        if (search_value) dispatch(updateSearchClickedTrue())
-        else dispatch(updateToast({ type: "error", message: "search field should not be empty" }))
+        if (commonState?.search?.value) {
+            if (typeof onClick === 'function') onClick();
+        }
+        else dispatch(update_error({ Toast_Type: "error", Err: "search field should not be empty" }))
     }
 
     function handleSearchEnter(event) {
         if (event.code === "Enter") {
-            if (search_value) dispatch(updateSearchClickedTrue())
-            else dispatch(updateToast({ type: "error", message: "search field should not be empty" }))
+            if (commonState?.search?.value) {
+                if (typeof onClick === 'function') onClick();
+            }
+            else dispatch(update_error({ Toast_Type: "error", Err: "search field should not be empty" }))
         }
     }
 
     return (
-        <div className="position-relative col-xxl-3">
+        <div className="position-relative w-100">
             <InputOnly
                 type="text"
                 className={className}
                 placeholder={placeholder}
-                change={(e) => dispatch(updateSearchValue(e.target.value))}
+                change={(e) => dispatch(update_search({ value: e.target.value || '', clicked: false }))}
                 keyDown={handleSearchEnter}
-                value={search_value}
+                value={commonState?.search?.value || ''}
             />
 
             <span className="input-group-start-icon">{Icons.searchIcon}</span>
-            {search_value ? <span className="input-group-end-icon-two cursor-pointer" onClick={handleSearchClicked}>{Icons.searchIcon}</span> : null}
-            <span className={`${!search_clicked ? "pe-none" : 'cursor-pointer'} input-group-end-icon-one`} onClick={() => dispatch(clearSearch())}>{Icons.searchCancelIcon}</span>
+            {/* {commonState?.search?.value ? <span className="input-group-end-icon-two cursor-pointer" onClick={handleSearchClicked}>{Icons.searchIcon}</span> : null}
+            <span className={`${!commonState?.search?.clicked ? "pe-none" : 'cursor-pointer'} input-group-end-icon-one`} onClick={() => dispatch(update_search({ value: '', clicked: false }))}>{Icons.searchCancelIcon}</span> */}
         </div>
     );
 

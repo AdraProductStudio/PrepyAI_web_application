@@ -1,6 +1,6 @@
 import Modal from 'react-bootstrap/Modal';
 import { useDispatch } from 'react-redux';
-import { updateModalShow } from 'Slices/Common_Slice/Common_slice';
+import { updateModalShow } from 'Views/Common/Slices/Common_slice';
 
 const ModalComponent = ({
   show, modalSize, modalClassname,
@@ -24,7 +24,7 @@ const ModalComponent = ({
       centered={modalCentered}
       contentClassName={modalClassname}
       dialogClassName={modalDialogClassName}
-      onHide={() => dispatch(updateModalShow())}
+      onHide={() => dispatch(updateModalShow({}))}
     >
 
       {showModalHeader ?

@@ -49,12 +49,12 @@ const commonSlice = createSlice({
             state.app_data.user_id = user_id || '';
         },
         updateModalShow(state, actions) {
-            const { show, size, modal_from, modal_type, modal_close_btn } = actions.payload;
+            const { show, size, modal_from, modal_type, close_btn } = actions.payload;
             state.modal.show = show
             state.modal.size = size || "md"
             state.modal.from = modal_from || null
             state.modal.type = modal_type || null
-            state.modal.close_btn = modal_close_btn || false
+            state.modal.close_btn = close_btn || false
         },
         update_app_data(state, action) {
             const { type, data } = action.payload;
@@ -87,6 +87,11 @@ const commonSlice = createSlice({
             const { Err, Toast_Type } = action.payload || {};
             state.error.Err = Err || null;
             state.error.Toast_Type = Toast_Type || null;
+        },
+        update_search(state, action) {
+            const { value, clicked } = action.payload || {};
+            state.search.value = value || '';
+            state.search.clicked = clicked || false;
         },
 
         // //Api 
@@ -163,6 +168,7 @@ const { actions, reducer } = commonSlice;
 
 export const {
     update_app_data, update_error,
+    updateModalShow, update_search,
     // update_login_data,
     // login_reducer,
     logout, update_tab_render_app_data

@@ -3,19 +3,18 @@ import { Card } from "react-bootstrap";
 import Icons from "Utils/Icons";
 
 export default function ClassroomCard({
-    cardClassName = "col-3 m-3 shadow border-0",
+    cardClassName = "col-3",
     cardBodyClassName = "p-0",
     cardTitleClassName = "p-4 pb-3 border-bottom",
-    onclick, data
+    buttonName, onclick, data
 }) {
     const items = [{ icons: Icons?.no_of_students, content: 'No of Students', count: data?.no_of_stu || 0 }, { icons: Icons?.no_of_subjects, content: 'No of Subjects', count: data?.no_of_books || 0 }]
 
-
     return (
-        <Card className={cardClassName}>
+        <Card className={`shadow-sm border-0 ${cardClassName}`}>
             <Card.Body className={cardBodyClassName}>
                 <Card.Title className={cardTitleClassName}>
-                    <div className="w-100 d-flex align-items-center">
+                    <div className="w-100 d-flex">
                         <div className="col-10">
                             <h6>{data?.title || ''}</h6>
                             <p className="text-secondary fs-13 mb-0">Created on: {data?.date || ''}</p>
@@ -47,8 +46,8 @@ export default function ClassroomCard({
 
                     <ButtonComponent
                         type="button"
-                        className="btn btn-secondary w-100 mt-1"
-                        buttonName="View Subjects"
+                        className="btn theme_secondary_color text-light w-100 mt-1"
+                        buttonName={buttonName || "Button"}
                         clickFunction={onclick}
                     />
                 </div>
