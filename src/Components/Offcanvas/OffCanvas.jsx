@@ -1,37 +1,27 @@
+import { useDispatch } from 'Components/CustomHooks';
 import React from 'react'
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import { update_app_data } from 'Views/Common/Slices/Common_slice';
 
 const OffCanvas = ({
-    componentFrom,
-
-    offcanvasClassname,
-    offcanvasPlacement,
-    offcanvasHeaderClassname,
-    canvasHeader,
-    offcanvasHeaderTitleClassname,
-
-    offcanvasBodyClassname,
-    canvasBody,
-
-    offCanvasShow,
-    handleCanvasOpenOrClose,
-    offcanvasResponsive,
-
-    canvasFooter
+    offcanvasClassname, offcanvasPlacement, offcanvasHeaderClassname,
+    canvasHeader, offcanvasHeaderTitleClassname,
+    offcanvasBodyClassname, canvasBody, offcanvasCloseButton,
+    offCanvasShow, offcanvasResponsive, canvasFooter
 }) => {
+    const dispatch = useDispatch();
 
     return (
-
         <Offcanvas
             show={offCanvasShow}
-            onHide={handleCanvasOpenOrClose}
+            onHide={offcanvasCloseButton ? () => dispatch(update_app_data({ type: "canvas", data: {} })) : null}
             responsive={offcanvasResponsive}
             backdrop="static"
             className={offcanvasClassname}
-            placement={offcanvasPlacement}>
+            placement={offcanvasPlacement} >
 
             <Offcanvas.Header
-                closeButton
+                closeButton={offcanvasCloseButton}
                 className={offcanvasHeaderClassname}>
                 <Offcanvas.Title className={offcanvasHeaderTitleClassname}>
                     {canvasHeader}
@@ -49,38 +39,3 @@ const OffCanvas = ({
 }
 
 export default OffCanvas;
-
-
-//how to use offcanvas EXAMPLE:
-
-// const [offCanvasShow, setoffCanvasShow] = useState(false)
-//   const handleCanvasOpenOrClose = () => setoffCanvasShow(!offCanvasShow)
-//   const canvasBody = () => {
-//     return (
-//       <>
-//         hii
-//       </>
-//     )
-//   }
-
-//   return (
-//     <>
-//       <ButtonComponent
-//         type={"button"}
-//         className={"btn"}
-//         clickFunction={handleCanvasOpenOrClose}
-//         title="Launch"
-//         buttonName="Launch"
-//       />
-
-//       <OffCanvas
-//         offCanvasShow={offCanvasShow}
-
-//         offcanvasClassname={"rounded-end-4 border-0"}
-//         // offcanvasResponsive={"lg"}
-
-//         handleCanvasOpenOrClose={handleCanvasOpenOrClose}
-//         canvasBody={canvasBody()}
-//       />
-//     </>
-//   );

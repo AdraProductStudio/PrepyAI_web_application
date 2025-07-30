@@ -23,14 +23,14 @@ const TeachersDetails = () => {
                 </thead>
                 <tbody className="staff_table_data">
                     {table_data?.map((row, index) => (
-                        <tr>
-                            <td key={index} className="text-center">{index + 1}</td>
-                            <td key={index} className="text-center">{row?.staff_name}</td>
-                            <td key={index} className="text-center">{row?.subject}</td>
-                            <td key={index} className="text-center">{row?.contact_no}</td>
-                            <td key={index} className="text-center">{row?.email}</td>
-                            <td key={index} className="text-center">{row?.qualification}</td>
-                            <td key={index} className="text-center">
+                        <tr key={index}>
+                            <td className="text-center">{index + 1}</td>
+                            <td className="text-center">{row?.staff_name}</td>
+                            <td className="text-center">{row?.subject}</td>
+                            <td className="text-center">{row?.contact_no}</td>
+                            <td className="text-center">{row?.email}</td>
+                            <td className="text-center">{row?.qualification}</td>
+                            <td className="text-center">
                                 <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.edit_icon} />
                                 <ButtonComponent type="button" className="btn-transparent`" buttonName={Icons?.delete_icons} />
                             </td>

@@ -2,7 +2,6 @@ import ButtonComponent from "Components/Button/Button";
 import { Card } from "react-bootstrap"
 import Icons from "Utils/Icons";
 
-
 const ActivityCard = () => {
     function dynamicContent() {
         const path = window.location.pathname;

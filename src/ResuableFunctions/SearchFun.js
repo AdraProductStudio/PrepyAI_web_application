@@ -8,13 +8,6 @@ export function SearchComponent({ className, placeholder, onClick }) {
     const dispatch = useDispatch();
     const { commonState } = useCommonState();
 
-    function handleSearchClicked() {
-        if (commonState?.search?.value) {
-            if (typeof onClick === 'function') onClick();
-        }
-        else dispatch(update_error({ Toast_Type: "error", Err: "search field should not be empty" }))
-    }
-
     function handleSearchEnter(event) {
         if (event.code === "Enter") {
             if (commonState?.search?.value) {

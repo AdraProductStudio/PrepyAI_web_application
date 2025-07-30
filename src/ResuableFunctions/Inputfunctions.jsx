@@ -8,6 +8,8 @@ import Icons from "Utils/Icons";
 import Checkbox from "Components/Input/Checkbox";
 
 export function Inputfunctions(funBy) {
+    if (!funBy || funBy.length === 0) return null;
+    
     return funBy?.map((ipVal, iPInd) => {
         switch (ipVal?.category) {
             case "heading":
@@ -22,159 +24,160 @@ export function Inputfunctions(funBy) {
                 </div>
 
             case "select":
-                return <div className={ipVal?.divClassName} >
-                    {
-                        ipVal?.type !== "normal_select" ?
-                            <Fragment>
-                                <ReactDropdownSelect
-                                    multi={ipVal?.multi}
-                                    name={ipVal?.name}
-                                    isMandatory={ipVal?.isMandatory}
-                                    options={ipVal?.options}
-                                    labelField="label"
-                                    valueField="label"
-                                    create={ipVal?.create}
-                                    value={ipVal?.value}
-                                    change={ipVal?.change}
-                                    className='rounded filter-select-dropdown'
-                                    disabled={ipVal?.disabled}
-                                />
-                                <div className='text-danger pt-2 ps-1 fs-15'>
-                                    {ipVal?.Err}
-                                </div>
-                            </Fragment>
-                            :
-                            <Fragment>
-                                <SelectBox
-                                    selectOptions={ipVal?.options}
-                                    value={ipVal?.value}
-                                    change={ipVal?.change}
-                                    label={ipVal?.name}
-                                    labelClassName="text-secondary mb-0 fs-14"
-                                    mandatory={ipVal?.isMandatory}
-                                    disableSelectBox={ipVal?.disabled}
-                                />
-                                <div className='text-danger pt-2 ps-1 fs-15'>
-                                    {ipVal?.Err}
-                                </div>
-                            </Fragment>
-                    }
-                </div >
-
-            case "input":
-                return ipVal?.type === "file" ?
-                    <Fragment>
-                        <div className={`cursor-pointer ${ipVal?.divClassName} ${ipVal?.value?.length >= ipVal?.fileLength ? 'pe-none' : ''}`} onClick={() => document.getElementById('file_upload').click()} key={iPInd}>
-                            <Input
-                                type={ipVal?.type}
+                switch (ipVal?.type) {
+                    case "normal_select":
+                        return <div className={ipVal?.divClassName} key={iPInd}>
+                            <SelectBox
+                                selectOptions={ipVal?.options}
+                                value={ipVal?.value}
                                 change={ipVal?.change}
                                 label={ipVal?.name}
                                 labelClassName="text-secondary mb-0 fs-14"
                                 mandatory={ipVal?.isMandatory}
-                                className="d-none"
-                                htmlFor="file_upload"
-                                accept={ipVal?.accept}
-                                multiple={true}
-                                inputError={ipVal?.Err}
-                                disabled={ipVal?.disabled}
+                                disableSelectBox={ipVal?.disabled}
                             />
-
-                            <div className='border py-2 rounded-2 col-12 text-center'>
-                                <span className='me-2'>{Icons.fileUploadIcon}</span>
-                                <span className='text-secondary fs-15'>{ipVal?.value?.length >= ipVal?.fileLength ? `Only ${ipVal?.fileLength} ${ipVal?.name} can be selectable` : `Click here to choose image`}</span>
+                            <div className='text-danger pt-2 ps-1 fs-15'>
+                                {ipVal?.Err}
                             </div>
                         </div>
 
-                        <div className="mt-4 w-100">
-                            {ipVal?.value?.map((data, index) => {
-                                const {
-                                    id,
-                                    filename,
-                                    fileimage,
-                                    datetime,
-                                    filesize,
-                                } = data;
-                                return (
-                                    // typeof data === "string" ?
-                                    //     <div className="file-atc-box w-100" key={id}>
-                                    //         <div className="file-image">
-                                    //             <img src={data} alt="" />
-                                    //         </div>
-                                    //         <div className="file-detail row">
-                                    //             <div className="col-9">
-                                    //                 <h6>{data?.split("/")[data?.split("/")?.length - 1]}</h6>
-                                    //             </div>
-                                    //             <div className="file-actions col-3">
-                                    //                 <ButtonComponent
-                                    //                     type="button"
-                                    //                     className="file-action-btn w-100 text-end"
-                                    //                     // clickFunction={() => dispatch(handleDeleteImage({ user_id: servicesState?.new_edit_buyAndsell_card?.user_id, buy_sell_id: servicesState?.new_edit_buyAndsell_card?.buy_sell_id, image: data }))}
-                                    //                     buttonName={
-                                    //                         // servicesState?.deletion_image_cdn_path === data ?
-                                    //                         //     <SpinnerComponent />
-                                    //                         //     :
-                                    //                         "Delete"
-                                    //                     }
-                                    //                 />
-                                    //             </div>
-                                    //         </div>
-                                    //     </div>
-                                    //     :
-                                        <div className="file-atc-box w-100" key={id}>
-                                            {filename.match(/.(jpg|jpeg|png|gif|svg)$/i) ?
-                                                <div className="file-image">
-                                                    {" "}
-                                                    <img src={fileimage} alt="" />
-                                                </div>
-                                                :
-                                                <div className="file-image">
-                                                    <i className="far fa-file-alt"></i>
-                                                </div>
-                                            }
-                                            <div className="file-detail row">
-                                                <h6>{filename}</h6>
-                                                <div className="col-9">
-                                                    <p>
-                                                        <span>Size : {filesize}</span>,
-                                                        <span className="ps-1 ml-2">
-                                                            Modified Time : {datetime}
-                                                        </span>
-                                                    </p>
-                                                </div>
-                                                <div className="file-actions col-3">
-                                                    <ButtonComponent
-                                                        type="button"
-                                                        className="file-action-btn w-100 text-end"
-                                                        clickFunction={() => ipVal?.deleteImg(id)}
-                                                        buttonName="Delete"
-                                                    />
+                    case "react_dropdown_select":
+                        return <div className={ipVal?.divClassName} >
+                            <ReactDropdownSelect
+                                multi={ipVal?.multi}
+                                name={ipVal?.name}
+                                isMandatory={ipVal?.isMandatory}
+                                options={ipVal?.options}
+                                labelField="label"
+                                valueField="label"
+                                create={ipVal?.create}
+                                value={ipVal?.value}
+                                change={ipVal?.change}
+                                className='rounded filter-select-dropdown'
+                                disabled={ipVal?.disabled}
+                            />
+                            <div className='text-danger pt-2 ps-1 fs-15'>
+                                {ipVal?.Err}
+                            </div>
+                        </div >
+
+                    default:
+                        return null;
+                }
+
+            case "input":
+                switch (ipVal?.type) {
+                    case "file":
+                        return (
+                            <Fragment>
+                                <div className={`cursor-pointer ${ipVal?.divClassName} ${ipVal?.value?.length >= ipVal?.fileLength ? 'pe-none' : ''}`} onClick={() => document.getElementById('file_upload').click()} key={iPInd}>
+                                    <Input
+                                        type={ipVal?.type}
+                                        change={ipVal?.change}
+                                        label={ipVal?.name}
+                                        labelClassName="text-secondary mb-0 fs-14"
+                                        mandatory={ipVal?.isMandatory}
+                                        className="d-none"
+                                        htmlFor="file_upload"
+                                        accept={ipVal?.accept}
+                                        multiple={true}
+                                        inputError={ipVal?.Err}
+                                        disabled={ipVal?.disabled}
+                                    />
+
+                                    <div className='border py-2 rounded-2 col-12 text-center'>
+                                        <span className='me-2'>{Icons.fileUploadIcon}</span>
+                                        <span className='text-secondary fs-15'>{ipVal?.value?.length >= ipVal?.fileLength ? `Only ${ipVal?.fileLength} ${ipVal?.name} can be selectable` : `Click here to choose image`}</span>
+                                    </div>
+                                </div>
+
+                                <div className="mt-4 w-100">
+                                    {ipVal?.value?.map((data, index) => {
+                                        const { id, filename, fileimage, datetime, filesize } = data;
+                                        return (
+                                            // typeof data === "string" ?
+                                            //     <div className="file-atc-box w-100" key={id}>
+                                            //         <div className="file-image">
+                                            //             <img src={data} alt="" />
+                                            //         </div>
+                                            //         <div className="file-detail row">
+                                            //             <div className="col-9">
+                                            //                 <h6>{data?.split("/")[data?.split("/")?.length - 1]}</h6>
+                                            //             </div>
+                                            //             <div className="file-actions col-3">
+                                            //                 <ButtonComponent
+                                            //                     type="button"
+                                            //                     className="file-action-btn w-100 text-end"
+                                            //                     // clickFunction={() => dispatch(handleDeleteImage({ user_id: servicesState?.new_edit_buyAndsell_card?.user_id, buy_sell_id: servicesState?.new_edit_buyAndsell_card?.buy_sell_id, image: data }))}
+                                            //                     buttonName={
+                                            //                         // servicesState?.deletion_image_cdn_path === data ?
+                                            //                         //     <SpinnerComponent />
+                                            //                         //     :
+                                            //                         "Delete"
+                                            //                     }
+                                            //                 />
+                                            //             </div>
+                                            //         </div>
+                                            //     </div>
+                                            //     :
+                                            <div className="file-atc-box w-100" key={id}>
+                                                {filename.match(/.(jpg|jpeg|png|gif|svg)$/i) ?
+                                                    <div className="file-image">
+                                                        {" "}
+                                                        <img src={fileimage} alt="" />
+                                                    </div>
+                                                    :
+                                                    <div className="file-image">
+                                                        <i className="far fa-file-alt"></i>
+                                                    </div>
+                                                }
+                                                <div className="file-detail row">
+                                                    <h6>{filename}</h6>
+                                                    <div className="col-9">
+                                                        <p>
+                                                            <span>Size : {filesize}</span>,
+                                                            <span className="ps-1 ml-2">
+                                                                Modified Time : {datetime}
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                    <div className="file-actions col-3">
+                                                        <ButtonComponent
+                                                            type="button"
+                                                            className="file-action-btn w-100 text-end"
+                                                            clickFunction={() => ipVal?.deleteImg(id)}
+                                                            buttonName="Delete"
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                );
-                            })}
+                                        );
+                                    })}
+                                </div>
+                            </Fragment>
+                        )
+
+                    default:
+                        return <div className={ipVal?.divClassName} key={iPInd}>
+                            <Input
+                                type={ipVal?.type}
+                                value={ipVal?.value}
+                                change={ipVal?.change}
+                                keyDown={ipVal?.keyDown}
+                                label={ipVal?.name}
+                                labelClassName="text-secondary mb-0 fs-14"
+                                mandatory={ipVal?.isMandatory}
+                                inputError={ipVal?.Err}
+                                disabled={ipVal?.disabled}
+                                eyeFunction={ipVal?.eyeFunction}
+                                eyeIcon={ipVal?.eyeIcon}
+                                className={ipVal?.className}
+                                placeholder={ipVal?.placeholder}
+                                max={ipVal?.name === "To Date" || ipVal?.name === "From Date" ? new Date().toISOString().split('T')[0] : null}
+                                min={ipVal?.name === "Next call date" ? new Date().toISOString().split('T')[0] : null}
+                            />
                         </div>
-                    </Fragment>
-                    :
-                    <div className={ipVal?.divClassName} key={iPInd}>
-                        <Input
-                            type={ipVal?.type}
-                            value={ipVal?.value}
-                            change={ipVal?.change}
-                            keyDown={ipVal?.keyDown}
-                            label={ipVal?.name}
-                            labelClassName="text-secondary mb-0 fs-14"
-                            mandatory={ipVal?.isMandatory}
-                            inputError={ipVal?.Err}
-                            disabled={ipVal?.disabled}
-                            eyeFunction={ipVal?.eyeFunction}
-                            eyeIcon={ipVal?.eyeIcon}
-                            className={ipVal?.className}
-                            placeholder={ipVal?.placeholder}
-                            max={ipVal?.name === "To Date" || ipVal?.name === "From Date" ? new Date().toISOString().split('T')[0] : null}
-                            min={ipVal?.name === "Next call date" ? new Date().toISOString().split('T')[0] : null}
-                        />
-                    </div>
+                }
 
             case "Checkbox":
                 return <div className={ipVal?.divClassName}>
@@ -211,7 +214,7 @@ export function Inputfunctions(funBy) {
                 </div >
 
             default:
-                break;
+                return null;
         }
     })
 }

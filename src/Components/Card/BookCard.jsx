@@ -1,7 +1,6 @@
 import React from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
-import { FaTrashAlt, FaCircle } from "react-icons/fa";
-import { RiDeleteBin5Line } from "react-icons/ri";
+import { FaCircle } from "react-icons/fa";
 import Icons from "Utils/Icons";
 import Image from "Components/Img/Img";
 import Images from "Utils/Image";
@@ -13,7 +12,6 @@ const BookCard = ({
   Perfomance = "",
   ViewFunction,
   GenerateFunction,
-  DeleteFunction,
   cardfor = "",
 }) => {
   return (

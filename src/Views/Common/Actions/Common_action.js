@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { LoginSuccessNavigateTo } from 'ResuableFunctions/LoginSuccessNavigateTo';
 import {
     // update_app_data, 
     // login_reducer
@@ -7,7 +6,7 @@ import {
 
 } from 'Views/Common/Slices/Common_slice';
 
-const BASE_URL = process.env.REACT_APP_API_URL || '';
+// const BASE_URL = process.env.REACT_APP_API_URL || '';
 
 // login api 
 export const handleLogin = (login_data, navigate) => async (dispatch) => {

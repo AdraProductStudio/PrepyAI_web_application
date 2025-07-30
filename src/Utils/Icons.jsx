@@ -370,6 +370,43 @@ const extend_icon = <svg xmlns="http://www.w3.org/2000/svg" width="22" height="2
   </defs>
 </svg>
 
+const download_question_icon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M9 11V17L11 15" stroke="url(#paint0_linear_1_10887)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M9 17L7 15" stroke="url(#paint1_linear_1_10887)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M22 10V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H14" stroke="url(#paint2_linear_1_10887)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M22 10H18C15 10 14 9 14 6V2L22 10Z" stroke="url(#paint3_linear_1_10887)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <defs>
+    <linearGradient id="paint0_linear_1_10887" x1="9" y1="14" x2="11" y2="14" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+    <linearGradient id="paint1_linear_1_10887" x1="7" y1="16" x2="9" y2="16" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+    <linearGradient id="paint2_linear_1_10887" x1="2" y1="12" x2="22" y2="12" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+    <linearGradient id="paint3_linear_1_10887" x1="14" y1="6" x2="22" y2="6" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+  </defs>
+</svg>
+
+const upcoming_test_edit_icon = <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+  <path d="M18.7923 10.357V6.45204C18.7923 2.75787 17.9306 1.83203 14.4656 1.83203H7.53565C4.07065 1.83203 3.20898 2.75787 3.20898 6.45204V16.7737C3.20898 19.212 4.54733 19.7895 6.16983 18.0479L6.17898 18.0387C6.93064 17.2412 8.07647 17.3054 8.72731 18.1762L9.65315 19.4137" stroke="#0A1629" stroke-width="1.3175" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M7.33398 6.41602H14.6673" stroke="#0A1629" stroke-width="1.3175" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M8.25 10.084H13.75" stroke="#0A1629" stroke-width="1.3175" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M16.6928 13.5409L13.4478 16.7859C13.3195 16.9142 13.2003 17.1526 13.1728 17.3267L12.9986 18.5642C12.9344 19.0134 13.2461 19.3251 13.6953 19.2609L14.9328 19.0867C15.107 19.0592 15.3544 18.9401 15.4736 18.8117L18.7186 15.5667C19.2778 15.0076 19.5436 14.3567 18.7186 13.5317C17.9028 12.7159 17.2519 12.9817 16.6928 13.5409Z" stroke="#0A1629" stroke-width="1.3175" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M16.2227 14.0078C16.4977 14.9978 17.2677 15.7678 18.2577 16.0428" stroke="#0A1629" stroke-width="1.3175" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+
+const upcoming_card_clock_icon = <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+  <path d="M11.251 3.65234C15.1317 3.65238 18.2773 6.79802 18.2773 10.6787C18.2773 14.5594 15.1316 17.705 11.251 17.7051C7.37028 17.7051 4.22464 14.5594 4.22461 10.6787C4.22461 6.798 7.37026 3.65234 11.251 3.65234ZM11.251 7.16504C10.7659 7.16504 10.373 7.55886 10.373 8.04395V11.3369L10.3789 11.4424C10.4164 11.7539 10.6185 12.0257 10.9131 12.1484L13.5479 13.2461L13.6445 13.2803C14.0671 13.4014 14.5229 13.189 14.6963 12.7734L14.7305 12.6768C14.8516 12.254 14.6394 11.7983 14.2236 11.625L12.1289 10.752V8.04395L12.123 7.94141C12.0723 7.5046 11.7014 7.16507 11.251 7.16504Z" fill="#7D8592" />
+</svg>
+
 const Icons = {
   menu_dot_icon, no_of_students, no_of_subjects, delete_icons,
   no_of_books, no_of_tests, pdfDeleteIcon, testScreenEditIcon,
@@ -383,7 +420,8 @@ const Icons = {
   admin_test_icon, searchIcon, edit_icon, add_icon,
   copy_icon, info_icon, no_of_books_colored,
   clock_colored, performance_colored, single_book_colored,
-  attachment_colored, extend_icon
+  attachment_colored, extend_icon, download_question_icon,
+  upcoming_test_edit_icon, upcoming_card_clock_icon
 }
 
 export default Icons;

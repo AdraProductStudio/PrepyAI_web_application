@@ -25,7 +25,7 @@ const AdminDashboard = () => {
     ]
 
     return (
-        <section className="row overflowY h-100">
+        <section className="row h-100 ">
             <div className="col-5 row">
                 {data.map((item, index) => (
                     <div className="col-6 p-1" key={index}>
@@ -45,8 +45,8 @@ const AdminDashboard = () => {
                 </Card>
             </div>
 
-            <div className="col-12 p-1 test_conducted_chart_height">
-                <Card className="h-100 border-0 rounded-4 shadow-sm">
+            <div className="col-12 p-1 test_conducted_table_height">
+                <Card className="h-100 border-0 rounded-4 shadow-sm h-100">
                     <Card.Header className="bg-transparent border-bottom pt-3">
                         <div className="row justify-content-between">
                             <div className="col-3">
@@ -73,7 +73,7 @@ const AdminDashboard = () => {
                             </div>
                         </div>
                     </Card.Header>
-                    <Card.Body>
+                    <Card.Body className="overflowY h-100">
                         <div className="table-responsive">
                             <table className="table table-bordered">
                                 <thead>
@@ -85,15 +85,15 @@ const AdminDashboard = () => {
                                 </thead>
                                 <tbody className="staff_table_data">
                                     {table_data?.map((row, index) => (
-                                        <tr>
-                                            <td key={index}>{index + 1}</td>
-                                            <td key={index}>{row?.staff_name}</td>
-                                            <td key={index}>{row?.institute_name}</td>
-                                            <td key={index}>{row?.subject}</td>
-                                            <td key={index}>{row?.contact_no}</td>
-                                            <td key={index}>{row?.email}</td>
-                                            <td key={index}>{row?.qualification}</td>
-                                            <td key={index}>
+                                        <tr key={index}>
+                                            <td>{index + 1}</td>
+                                            <td>{row?.staff_name}</td>
+                                            <td>{row?.institute_name}</td>
+                                            <td>{row?.subject}</td>
+                                            <td>{row?.contact_no}</td>
+                                            <td>{row?.email}</td>
+                                            <td>{row?.qualification}</td>
+                                            <td>
                                                 <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.edit_icon} />
                                                 <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.delete_icons} />
                                             </td>

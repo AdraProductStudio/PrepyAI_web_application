@@ -12,7 +12,7 @@ const NoteCard = ({ date, title, description, time }) => {
                 <Col>
                     <h5 className="fw-semibold mt-2">{title}</h5>
                 </Col>
-                <Col xs="auto" className="d-flex " >
+                <Col xs="auto" className="d-flex" >
                     <ButtonComponent
                         className="btn"
                         buttonName={Icons.NoteStarIcon}

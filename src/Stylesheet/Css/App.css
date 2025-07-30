@@ -377,6 +377,12 @@ header {
   border: solid 1px transparent !important;
 }
 
-.student_table_height{
+.student_table_height {
   height: calc(var(--root-height) - (var(--header-height) + 11rem));
+}
+
+.btn-brand-outline {
+  background: transparent !important;
+  border: 1px solid var(--brand-color) !important;
+  font-size: 14px !important;
 }

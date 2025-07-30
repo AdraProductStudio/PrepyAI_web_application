@@ -19,6 +19,13 @@ import Subject from "Views/Teachers/Docs/Subject";
 import SubjectDetails from "Views/Teachers/Docs/SubjectDetails";
 import Students from "Views/Teachers/Docs/Students";
 import ScheduleTestLayout from "Views/Teachers/Layout/ScheduleTestLayout";
+import CreateTest from "Views/Teachers/Docs/CreateTest";
+import PreviewTest from "Views/Teachers/Docs/PreviewTest";
+import TestPageLayout from "Views/Teachers/Layout/TestPageLayout";
+import UpcomingTest from "Views/Teachers/Docs/UpcomingTest";
+import OngoingTest from "Views/Teachers/Docs/OngoingTest";
+import CompletedTest from "Views/Teachers/Docs/CompletedTest";
+import Books from "Views/Common/Docs/Books";
 
 
 function App() {
@@ -49,9 +56,16 @@ function App() {
                 <Route index element={<SubjectDetails />} />
                 <Route path="students_details" element={<StudentOverview />} />
                 <Route element={<ScheduleTestLayout />} >
-                  <Route path="create_test" element={<p>create</p>} />
-                  <Route path="preview_test" element={<p>preview</p>} />
+                  <Route path="create_test" element={<CreateTest />} />
+                  <Route path="preview_test" element={<PreviewTest />} />
                 </Route>
+                <Route path="test" element={<TestPageLayout />}>
+                  <Route index element={<UpcomingTest />} />
+                  <Route path="ongoing_test" element={<OngoingTest />} />
+                  <Route path="completed_test" element={<CompletedTest />} />
+                </Route>
+                <Route path="student_performance" element={<p>student_performance</p>} />
+                <Route path="book" element={<Books />} />
               </Route>
             </Route>
             <Route path="students_details" >

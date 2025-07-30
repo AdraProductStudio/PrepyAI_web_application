@@ -1,7 +1,7 @@
 import React from 'react';
 import ButtonComponent from 'Components/Button/Button';
 import Icons from 'Utils/Icons';
-import { useCommonState, useDispatch } from 'Components/CustomHooks';
+import { useCommonState } from 'Components/CustomHooks';
 import HeaderCard from 'Components/Card/HeaderCard';
 
 const Header = ({
@@ -9,7 +9,7 @@ const Header = ({
 }) => {
 
   const { commonState } = useCommonState();
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch();
 
   const headerContentFunc = () => {
     return (

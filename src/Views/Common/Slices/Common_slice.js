@@ -1,6 +1,5 @@
-import Cookies from 'js-cookie'
 import { createSlice } from "@reduxjs/toolkit";
-import { decrypt_app_data_logs, decryption, encryption, view_logout } from "ResuableFunctions/logs_handler";
+import { decrypt_app_data_logs, view_logout } from "ResuableFunctions/logs_handler";
 
 let initialState = {
     login_data: {},
@@ -11,6 +10,14 @@ let initialState = {
         type: null,
         close_btn: false
     },
+    canvas: {
+        show: false,
+        from: null,
+        type: null,
+        extraClass: '',
+        placement: '',
+        close_btn: false
+    },
     app_data: {
         canvasShow: false,
         isOnline: true,
@@ -18,6 +25,7 @@ let initialState = {
         innerWidth: 0,
         innerHeight: 0,
         buttonSpinner: false,
+        validated: false,
         token: decrypt_app_data_logs()?.access_token || '',
         user_role: decrypt_app_data_logs()?.role || '',
         user_id: decrypt_app_data_logs()?.user_id || '',
@@ -60,7 +68,12 @@ const commonSlice = createSlice({
             const { type, data } = action.payload;
             switch (type) {
                 case "canvas":
-                    state.app_data.canvasShow = data || false;
+                    state.canvas.show = data.show || false;
+                    state.canvas.from = data.from || null;
+                    state.canvas.type = data.type || null;
+                    state.canvas.placement = data.placement || '';
+                    state.canvas.extraClass = data.extraClass || null;
+                    state.canvas.close_btn = data.close_btn || false;
                     break;
                 case "internet_status":
                     state.app_data.isOnline = data || false;
@@ -152,17 +165,17 @@ const commonSlice = createSlice({
     }
 })
 
-function setSuccessState(state, action) {
-    let error_message = typeof action.payload === 'object' ? action.payload?.message : action.payload;
-    state.error.Err = error_message;
-    state.error.Toast_Type = "success";
-}
+// function setSuccessState(state, action) {
+//     let error_message = typeof action.payload === 'object' ? action.payload?.message : action.payload;
+//     state.error.Err = error_message;
+//     state.error.Toast_Type = "success";
+// }
 
-function setErrorState(state, action) {
-    let error_message = typeof action.payload === 'object' ? action.payload?.message : action.payload;
-    state.error.Err = error_message;
-    state.error.Toast_Type = "error";
-}
+// function setErrorState(state, action) {
+//     let error_message = typeof action.payload === 'object' ? action.payload?.message : action.payload;
+//     state.error.Err = error_message;
+//     state.error.Toast_Type = "error";
+// }
 
 const { actions, reducer } = commonSlice;
 
