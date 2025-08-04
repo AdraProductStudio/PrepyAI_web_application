@@ -508,7 +508,55 @@ td {
   height: calc(var(--root-height) - (var(--header-height) + 4rem));
 }
 
-.attachment_canvas{
+.attachment_canvas {
   width: 40vw !important;
   border-radius: 12px 0 0 12px !important;
+}
+
+.attachment_books {
+  background-color: #F6F6F6 !important;
+}
+
+.book_image {
+  width: 100%;
+  height: 11rem;
+  object-fit: cover;
+}
+
+.attachment_books .delete_icon,
+.attachment_books .download_icon {
+  background-color: #ffffff;
+  width: 2.7rem;
+  height: 2.5rem;
+  border-radius: 10px;
+
+}
+
+.attachment_books .delete_icon {
+  position: absolute;
+  top: .5rem;
+  right: 4rem;
+}
+
+.attachment_books .download_icon {
+  position: absolute;
+  top: .5rem;
+  right: 0.8rem;
+}
+
+.attachment_title {
+  position: relative;
+  width: 100%;
+  height: .1rem;
+  background-color: rgba(0, 0, 0, 0.219);
+}
+
+.attachment_title p {
+  position: absolute;
+  top: -.5rem;
+  left: 40%;
+  height: 1.5rem;
+  width: 10rem;
+  background-color: #ffffff;
+  text-align: center;
 }

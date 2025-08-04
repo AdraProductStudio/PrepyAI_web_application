@@ -1,100 +1,36 @@
-import React from "react";
-import { Card, Button, Row, Col } from "react-bootstrap";
-import { FaCircle } from "react-icons/fa";
+import ButtonComponent from "Components/Button/Button";
+import Img from "Components/Img/Img";
+import { Card } from "react-bootstrap";
 import Icons from "Utils/Icons";
-import Image from "Components/Img/Img";
-import Images from "Utils/Image";
+import Image from "Utils/Image";
 
 const BookCard = ({
-  BookName = "",
-  Chapter = "",
-  QuestionSets = "",
-  Perfomance = "",
-  ViewFunction,
-  GenerateFunction,
-  cardfor = "",
+    data = {},
+    onClickDelete, className
 }) => {
-  return (
-    <Card
-      className="shadow-sm border-0 rounded-3 p-3"
-      style={{ maxWidth: "390px" }}
-    >
-      {/* Header */}
-      <div className="d-flex justify-content-between align-items-start mb-2">
-        <h5 className="fw-normal">{BookName}</h5>
-        <ButtonComponent
-          className="text-danger"
-          buttonName={Icons?.pdfDeleteIcon}
-          clickFunction={""}
-        />
-      </div>
 
-      {/* Line after Header */}
-      <div className="border-top mb-3"></div>
-
-      {/* Content Section */}
-      <Row className="d-flex justify-content-evenly align-items-center gap-3">
-        {/* PDF Icon Box */}
-        <Col xs="auto">
-          <Image src={Images?.pdfImage} alt={"pdfImage"} width={"60px"} />
-        </Col>
-
-        {/* Details Section */}
-        <Col>
-          <div className="text-secondary d-flex flex-column gap-1">
-            <div>
-              <span>Chapters:</span>{" "}
-              <span className="text-black fw-light fs-6">{Chapter}</span>
-            </div>
-            <div>
-              <span>Question sets:</span>{" "}
-              <span className="text-black fw-light fs-6">{QuestionSets}</span>
-            </div>
-            <div className="d-flex align-items-center">
-              <span className="me-2">Performance:</span>
-              <FaCircle
-                size={8}
-                className={`me-2 ${Perfomance.toLowerCase()}-text`}
-              />
-              <span className="text-black fw-light fs-6">{Perfomance}</span>
-            </div>
-          </div>
-        </Col>
-      </Row>
-
-      {/* Line after PDF section */}
-      <div className="border-top mt-3 mb-2"></div>
-
-      {/* Action Buttons */}
-      {cardfor === "student" && (
-        <div className="d-flex">
-          <Button
-            variant="outline"
-            className="me-2 flex-fill border-0 text-primary"
-            onClick={ViewFunction}
-          >
-            View
-          </Button>
-          <div
-            className="mx-2"
-            style={{
-              width: "1px",
-              height: "35px",
-              backgroundColor: "#6c757d", // Bootstrap text-muted color
-              opacity: 0.5,
-            }}
-          />{" "}
-          <Button
-            variant="outline"
-            className="flex-fill border-0 gradient-text"
-            onClick={GenerateFunction}
-          >
-            Generate Question
-          </Button>
-        </div>
-      )}
-    </Card>
-  );
-};
+    return (
+        <Card className="border-0 rounded-4 shadow-sm px-3">
+            <Card.Header className="bg-transparent border-0 border-bottom row align-items-center px-0">
+                <div className="col-10"><h6 className="mb-0">{data?.title || 'Book title'}</h6></div>
+                <div className="col-2 text-end">
+                    <ButtonComponent type="button" className={`bg-transparent ${className}`} onClick={onClickDelete} buttonName={Icons?.delete_icons} />
+                </div>
+            </Card.Header>
+            <Card.Body className="row align-items-center">
+                <div className="col-3">
+                    <Img src={Image?.pdfImage || ''} width="70%%" height="70%" alt="pdf-image"/>
+                </div>
+                <div className="col-9">
+                    <div className="w-100">
+                        <p className="mb-1 fs-15"><span className="text-secondary">Chapters :</span>{data?.chapters || 0}</p>
+                        <p className="mb-1 fs-15"><span className="text-secondary">Question sets :</span>{data?.question_sets || 0}</p>
+                        <p className="mb-1 fs-15"><span className="text-secondary">Performance :</span>{data?.performance || 0}</p>
+                    </div>
+                </div>
+            </Card.Body>
+        </Card>
+    )
+}
 
 export default BookCard;

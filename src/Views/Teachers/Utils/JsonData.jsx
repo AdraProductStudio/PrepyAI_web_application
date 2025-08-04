@@ -1,9 +1,9 @@
 import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks';
 import { update_app_data } from 'Views/Common/Slices/Common_slice';
 import Icons from 'Utils/Icons';
+import Image from 'Utils/Image';
 
 const JsonData = (params) => {
-    //main selectors
     const dispatch = useDispatch();
     const navigate = useCustomNavigate();
     const { commonState } = useCommonState();
@@ -50,26 +50,36 @@ const JsonData = (params) => {
             {
                 name: "Dashboard",
                 icon: Icons.sidebar_dashboard_icon,
+                active_icon: Icons.sidebar_dashboard_active_icon,
+                show_active_icon: window.location.pathname.includes('/teachers_dashboard/home'),
                 route: '/teachers_dashboard/home'
             },
             {
                 name: "Classrooms",
                 icon: Icons.sidebar_classroom_icon,
+                active_icon: Icons.sidebar_classroom_active_icon,
+                show_active_icon: window.location.pathname.includes('/teachers_dashboard/classrooms'),
                 route: '/teachers_dashboard/classrooms'
             },
             {
                 name: "Students",
                 icon: Icons.sidebar_student_icon,
+                active_icon: Icons.sidebar_student_active_icon,
+                show_active_icon: window.location.pathname.includes('/teachers_dashboard/students_details'),
                 route: '/teachers_dashboard/students_details'
             },
-            {
-                name: "Calendar",
-                icon: Icons.sidebar_calender_icon,
-                route: '/teachers_dashboard/calendar'
-            },
+            // {
+            //     name: "Calendar",
+            //     icon: Icons.sidebar_calender_icon,
+            //     active_icon: Icons.sidebar_calender_active_icon,
+            //     show_active_icon: window.location.pathname.includes('/teachers_dashboard/calendar'),
+            //     route: '/teachers_dashboard/calendar'
+            // },
             {
                 name: "Notes",
                 icon: Icons.sidebar_notes_icon,
+                active_icon: Icons.sidebar_notes_active_icon,
+                show_active_icon: window.location.pathname.includes('/teachers_dashboard/notes'),
                 route: '/teachers_dashboard/notes'
             }
         ],
@@ -99,7 +109,22 @@ const JsonData = (params) => {
                 title: "Attachments",
                 onClick: () => dispatch(update_app_data({ type: 'canvas', data: { show: true, type: "attachments", from: "teachers", close_btn: true, extraClass: 'attachment_canvas', placement: 'end' } })),
             }
-        ]
+        ],
+
+        attachments: {
+            '10-Mar-2025': [
+                { image: Image.book_image }
+            ],
+            '15-Mar-2025': [
+                { image: Image.book_image },
+                { image: Image.book_image },
+                { image: Image.book_image },
+                { image: Image.book_image },
+            ],
+            '20-Mar-2025': [
+                { image: Image.book_image }
+            ],
+        }
     }
 
     const jsxJson = {

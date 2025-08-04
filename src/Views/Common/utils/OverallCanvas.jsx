@@ -1,12 +1,13 @@
 import ButtonComponent from "Components/Button/Button";
+import AttachmentCard from "Components/Card/AttachmentCard";
 import { useCommonState } from "Components/CustomHooks";
 import OffCanvas from "Components/Offcanvas/OffCanvas";
+import JsonData from "Views/Teachers/Utils/JsonData";
 
 
 export function OverallCanvas() {
     const { commonState } = useCommonState();
-    // const dispatch = useDispatch();
-    // const navigate = useCustomNavigate();
+    const { jsonOnly } = JsonData()
 
     function canvasHeaderFun() {
         switch (commonState?.canvas?.from) {
@@ -30,12 +31,21 @@ export function OverallCanvas() {
             case "teachers":
                 switch (commonState?.canvas?.type) {
                     case "attachments":
-                        return(
-                            <>
-                                {Array.from({ length: 60 }, (_, index) => (
-                                    <p key={index}>asd</p>
+                        return (
+                            <div className="row">
+                                {Object.entries(jsonOnly?.attachments || []).map(([key, value]) => (
+                                    <div className="row mb-3" key={key}>
+                                        <div className="col-12 attachment_title">
+                                            <p>{key}</p>
+                                        </div>
+                                        {value.map((item, index) => (
+                                            <div className="col-3 mt-4" key={index}>
+                                                <AttachmentCard delete_function={() => console.log("Delete function called")} download_function={() => console.log("Download function called")} />
+                                            </div>
+                                        ))}
+                                    </div >
                                 ))}
-                            </>
+                            </div>
                         )
 
                     default:
@@ -55,10 +65,8 @@ export function OverallCanvas() {
                     case "attachments":
                         return (
                             <div className="shadow-sm w-100 py-3">
-                                <div className="w-100">
-                                    <div className="col-3 ms-auto">
-                                        <ButtonComponent type="button" className="btn-brand-color px-4 py-2" buttonName="Add Attachment" />
-                                    </div>
+                                <div className="col-3 ms-auto">
+                                    <ButtonComponent type="button" className="btn-brand-color px-4 py-2" buttonName="Add Attachment" />
                                 </div>
                             </div>
                         )

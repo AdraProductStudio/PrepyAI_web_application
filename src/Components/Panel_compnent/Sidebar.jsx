@@ -13,7 +13,7 @@ const Sidebar = ({
     const hanldeButton = (v) => {
         return <>
             <div className="col-3 pb-1 text-center">
-                {v.icon}
+                {v.show_active_icon ? v.active_icon : v.icon}
             </div>
             <div className="col text-start route_content">
                 <p className='mb-0'>{v.name}</p>

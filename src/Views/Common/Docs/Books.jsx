@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 
 import Icons from "Utils/Icons";
 import LinkComponent from "Components/Router_components/LinkComponent";
-import BookCardNew from "Components/Card/BookCardNew";
+import BookCard from "Components/Card/BookCard";
 
 const Books = () => {
     const { class_id, subject_id } = useParams();
@@ -33,7 +33,7 @@ const Books = () => {
                         <div className="row">
                             {Array.from({ length: 34 }).map((_, index) => (
                                 <div className="col-3 p-2" key={index}>
-                                    <BookCardNew />
+                                    <BookCard />
                                 </div>
                             ))}
                         </div>

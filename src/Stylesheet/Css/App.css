@@ -195,7 +195,6 @@ body {
 .navlink-sidebar.active .route_content,
 .navlink-sidebar:hover .route_content {
   color: #ffffff !important;
-  stroke: #ffffff !important;
 }
 
 .gradient-text {
