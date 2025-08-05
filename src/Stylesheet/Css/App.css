@@ -328,7 +328,7 @@ header {
   height: calc(var(--root-height) - (var(--header-height) + .5rem));
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
   .layout_main_content {
     height: var(--root-height);
     background-color: var(--main-background-color);
@@ -384,4 +384,8 @@ header {
   background: transparent !important;
   border: 1px solid var(--brand-color) !important;
   font-size: 14px !important;
+}
+
+.brand_text_color {
+  color: var(--brand-color) !important;
 }

@@ -37,7 +37,7 @@ export const handleLogin = (login_data, navigate) => async (dispatch) => {
 
 //refresh token
 export const handlerefreshToken = (refresh_token) => async (dispatch) => {
-    return
+    return null
     try {
         const { data } = await axios.get(`/refresh_token`, {
             headers: {

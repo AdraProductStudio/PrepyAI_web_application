@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { Fragment, useEffect } from "react"
 import { toast } from 'react-toastify';
 import { Outlet } from 'react-router-dom';
 import { update_error, update_tab_render_app_data } from '../Slices/Common_slice';
-import { CustomUseLocationHook, useCommonState, useDispatch, useSize } from 'Components/CustomHooks';
+import { CustomUseLocationHook, useCommonState, useDispatch } from 'Components/CustomHooks';
 import { update_app_data } from 'Views/Common/Slices/Common_slice';
 import Cookies from 'js-cookie';
 import { decrypt_app_data_logs } from 'ResuableFunctions/logs_handler';
@@ -10,15 +10,8 @@ import { OverallCanvas } from '../utils/OverallCanvas';
 
 export const InitializeProjectSetup = () => {
     const { commonState } = useCommonState();
-    const sizer = useSize();
     const dispatch = useDispatch();
     const location = CustomUseLocationHook();
-
-    // Effect 1: initial setup
-    useEffect(() => {
-        dispatch(update_app_data({ type: 'internet_status', data: navigator.onLine }));
-        dispatch(update_app_data({ type: "dimension", data: sizer }));
-    }, [dispatch, sizer]);
 
     // Internet event listeners (added outside useEffect, but depends on dispatch)
     useEffect(() => {
@@ -34,7 +27,7 @@ export const InitializeProjectSetup = () => {
         };
     }, [dispatch]);
 
-    // Effect 2: error handling toast
+    // Effect 1: error handling toast
     useEffect(() => {
         if (commonState?.error?.Err) {
             toast(commonState?.error?.Err, {
@@ -46,7 +39,7 @@ export const InitializeProjectSetup = () => {
         }
     }, [commonState?.error?.Err, commonState?.error?.Toast_Type, dispatch]);
 
-    // Effect 3: update menu name from location
+    // Effect 2: update menu name from location
     useEffect(() => {
         const currentLocation = location[location.length - 1];
         if (location?.length && currentLocation) {
@@ -56,7 +49,7 @@ export const InitializeProjectSetup = () => {
         }
     }, [location, commonState?.app_data?.currentMenuName, dispatch]);
 
-    // Effect 4: on tab visible, restore logs
+    // Effect 3: on tab visible, restore logs
     useEffect(() => {
         const handleVisibilityChange = () => {
             if (document.visibilityState === 'visible') {
@@ -74,10 +67,10 @@ export const InitializeProjectSetup = () => {
     }, [dispatch]);
 
     return commonState?.app_data?.isOnline ?
-        <React.Fragment>
+        <Fragment>
             <Outlet />
             <OverallCanvas />
-        </React.Fragment>
+        </Fragment>
         :
         <p>No internet connection</p>;
 };

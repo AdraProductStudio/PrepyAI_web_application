@@ -1,5 +1,5 @@
 import { useDispatch } from 'Components/CustomHooks';
-import React from 'react'
+import React from "react"
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { update_app_data } from 'Views/Common/Slices/Common_slice';
 

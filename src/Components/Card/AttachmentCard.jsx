@@ -5,11 +5,13 @@ import Icons from "Utils/Icons"
 import Image from "Utils/Image"
 
 const AttachmentCard = ({
-    delete_function, download_function
+    delete_function, download_function,
+    className,onClickViewBook
+    
 }) => {
 
     return (
-        <Card className="attachment_books border-0 rounded-4">
+        <Card className={`border-0 rounded-4 ${className}`} onClick={onClickViewBook}>
             <Card.Body className="position-relative">
                 <Img src={Image.book_image} alt="book image" className="book_image" />
 

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment } from "react"
 import OffCanvas from 'Components/Offcanvas/OffCanvas';
 import NavLinkComp from 'Components/Router_components/NavLink';
 import Img from 'Components/Img/Img';
@@ -22,11 +22,11 @@ const Sidebar = ({
     }
 
     const headerFun = () => {
-        return <React.Fragment>
+        return <Fragment>
             <div className='w-100'>
                 <Img src={Image?.logo} alt="website logo" className='website_logo' />
             </div>
-        </React.Fragment>
+        </Fragment>
     }
 
     const bodyContent = () => {

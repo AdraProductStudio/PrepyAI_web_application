@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Error from "Views/Common/Docs/error";
@@ -11,8 +11,8 @@ import ClassroomDetails from "Views/Admin/Layout/ClassroomDetailsLayout";
 import TeachersDetails from "Views/Admin/Docs/TeachersDetails";
 import StudentDetails from "Views/Admin/Docs/StudentDetails";
 
-import StudentLayout from "Views/Teachers/Layout/Layout";
-import StudentDashboard from "Views/Teachers/Docs/Index";
+import TeacherLayout from "Views/Teachers/Layout/Layout";
+import TeacherDashboard from "Views/Teachers/Docs/Index";
 import StudentOverview from "Views/Teachers/Docs/StudentOverview";
 import StudentClassroom from "Views/Teachers/Docs/Classroom";
 import Subject from "Views/Teachers/Docs/Subject";
@@ -28,9 +28,18 @@ import CompletedTest from "Views/Teachers/Docs/CompletedTest";
 import Books from "Views/Common/Docs/Books";
 
 
+import StudentsLayout from "Views/Students/Layout/Layout";
+import StudentDashboard from "Views/Students/Docs/index";
+import StudentSubject from "Views/Students/Docs/StudentSubject";
+import BooksAndAttachmentsLayout from "Views/Students/Layout/BooksAndAttachmentsLayout";
+import StudentsBooks from "Views/Students/Docs/Books";
+import StudentAttachments from "Views/Students/Docs/StudentAttachments";
+import BooksOverviewLayout from "Views/Students/Layout/BooksOverviewLayout";
+import McqTest from "Views/Students/Docs/McqTest";
+
 function App() {
   return (
-    <React.Fragment>
+    <Fragment>
       <ToastContainer theme="light" />
       <Routes>
         <Route element={<InitializeProjectSetup />}>
@@ -47,8 +56,8 @@ function App() {
           </Route>
 
           {/* Teachers */}
-          <Route path="teachers_dashboard" element={<StudentLayout />}>
-            <Route path="home" element={<StudentDashboard />} />
+          <Route path="teachers_dashboard" element={<TeacherLayout />}>
+            <Route path="home" element={<TeacherDashboard />} />
             <Route path="classrooms" >
               <Route index element={<StudentClassroom />} />
               <Route path=":class_id" element={<Subject />} />
@@ -76,10 +85,25 @@ function App() {
             <Route path="notes" element={<div>Notes Page</div>} />
           </Route>
 
+
+          {/* Students */}
+          <Route path="student_dashboard" element={<StudentsLayout />}>
+            <Route path="home" element={<StudentDashboard />} />
+            <Route path="subjects">
+              <Route index element={<StudentSubject />} />
+              <Route path=":subject_id" element={<BooksAndAttachmentsLayout />}>
+                <Route index element={<StudentsBooks />} />
+                <Route path="attachments" element={<StudentAttachments />} />
+              </Route>
+              <Route path=":subject_id/attachments/:attachment_id" element={<BooksOverviewLayout />} />
+            </Route>
+            <Route path="test" element={<McqTest />} />
+          </Route>
+
           <Route path="*" element={<Error />} />
         </Route>
       </Routes>
-    </React.Fragment>
+    </Fragment>
   );
 }
 

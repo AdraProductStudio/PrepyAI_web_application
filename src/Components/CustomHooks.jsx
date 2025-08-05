@@ -1,19 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch as useReduxDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from "react";
 import { createSelector } from '@reduxjs/toolkit';
 import { update_app_data } from 'Views/Common/Slices/Common_slice';
 
 
 export const useCommonState = () => {
   const selectCommonState = (state) => state.commonState;
+  const selectTeacherState = (state) => state.teacherState;
 
   const selectMemoizedCommonState = createSelector(
-    [selectCommonState],
-    (commonState) => (
-      { commonState }
+    [selectCommonState, selectTeacherState],
+    (commonState, teacherState) => (
+      { commonState, teacherState }
     )
   )
   return useSelector(selectMemoizedCommonState);
@@ -151,3 +151,30 @@ export const usePagination = ({
 
   return paginationRange;
 };
+
+
+//                                                                Indexed db                                                                 //
+export const initializeDB = (dbName, version, storeName) => {
+  return new Promise((resolve, reject) => {
+    const dbRequest = indexedDB.open(dbName, version);
+
+    // Handle the database upgrade (create object stores)
+    dbRequest.onupgradeneeded = (event) => {
+      const db = event.target.result;
+
+      // If the object store does not exist, create it
+      if (!db.objectStoreNames.contains(storeName)) {
+        db.createObjectStore(storeName, { keyPath: "id" });
+      }
+    };
+
+    dbRequest.onsuccess = (event) => {
+      const db = event.target.result;
+      resolve(db); // Return the database instance
+    };
+
+    dbRequest.onerror = (event) => {
+      reject(event.target.error); // Return the error
+    };
+  });
+}

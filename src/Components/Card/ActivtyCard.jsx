@@ -6,7 +6,7 @@ const ActivityCard = () => {
     function dynamicContent() {
         const path = window.location.pathname;
         switch (true) {
-            case /students_dashboard/.test(path):
+            case /student_dashboard/.test(path):
                 return (
                     <div className="col row">
                         <div className="col-8 px-2">

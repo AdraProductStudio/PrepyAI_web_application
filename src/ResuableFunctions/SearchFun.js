@@ -21,7 +21,7 @@ export function SearchComponent({ className, placeholder, onClick }) {
         <div className="position-relative w-100">
             <InputOnly
                 type="text"
-                className={className}
+                className={`search_input ${className}`}
                 placeholder={placeholder}
                 change={(e) => dispatch(update_search({ value: e.target.value || '', clicked: false }))}
                 keyDown={handleSearchEnter}

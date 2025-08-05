@@ -10,7 +10,7 @@ import GradeByClassroomChart from "Components/Charts/GradeByClassroomChart";
 
 
 
-const StudentDashboard = () => {
+const TeacherDashboard = () => {
     const data = [
         { icon: Icons.student_dashboard_to_no_stud_icon, count: 1000, description: "Total number of tests conducted" },
         { icon: Icons.student_dashboard_to_no_cls_icon, count: 4, description: "Total number of classes" }
@@ -155,9 +155,6 @@ const StudentDashboard = () => {
                         <div className="col-6 p-2">
                             <NotesDisplayCard className="border-0" style={{ background: '#FFAFAF' }} />
                         </div>
-                        <div className="col-6 p-2">
-                            <NotesDisplayCard className="border-0" style={{ background: '#FFAFAF' }} />
-                        </div>
                     </Card.Body>
                 </Card>
             </div>
@@ -165,4 +162,4 @@ const StudentDashboard = () => {
     );
 }
 
-export default StudentDashboard;
+export default TeacherDashboard;

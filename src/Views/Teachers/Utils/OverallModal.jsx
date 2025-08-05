@@ -12,7 +12,7 @@ export function OverallModel() {
             case "Home":
                 switch (commonState?.modal?.type) {
                     case "":
-                        return <h5></h5>
+                        return <h5>Home</h5>
 
                     default:
                         break;
@@ -34,6 +34,10 @@ export function OverallModel() {
                     default:
                         break;
                 }
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -47,6 +51,7 @@ export function OverallModel() {
                     default:
                         break;
                 }
+                break;
 
             default:
                 break;

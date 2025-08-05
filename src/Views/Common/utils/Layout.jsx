@@ -1,4 +1,3 @@
-import { useCommonState } from "Components/CustomHooks";
 import Sidebar from "Components/Panel_compnent/Sidebar";
 import { Outlet } from "react-router-dom";
 import JsonData from "./JsonData";
@@ -6,7 +5,7 @@ import Header from "Components/Panel_compnent/Header";
 
 
 export const Layout = () => {
-    const { commonState } = useCommonState();
+    // const { commonState } = useCommonState();
     const { jsonOnly } = JsonData();
 
     return (

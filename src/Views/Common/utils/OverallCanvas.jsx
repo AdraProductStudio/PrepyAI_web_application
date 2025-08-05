@@ -40,7 +40,7 @@ export function OverallCanvas() {
                                         </div>
                                         {value.map((item, index) => (
                                             <div className="col-3 mt-4" key={index}>
-                                                <AttachmentCard delete_function={() => console.log("Delete function called")} download_function={() => console.log("Download function called")} />
+                                                <AttachmentCard className="attachment_books" delete_function={() => console.log("Delete function called")} download_function={() => console.log("Download function called")} />
                                             </div>
                                         ))}
                                     </div >

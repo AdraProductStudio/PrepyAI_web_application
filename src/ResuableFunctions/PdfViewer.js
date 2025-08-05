@@ -1,23 +1,19 @@
-import React, { Suspense, useRef, useState, useEffect } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
-import 'react-pdf/dist/Page/TextLayer.css';
-import 'react-pdf/dist/Page/AnnotationLayer.css';
+import React, { useEffect, useRef, useState } from "react";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+const PdfViewer = ({
+    pdfUrl = "https://devcdn.2ndcareers.com/professional/resume/Anil_Menon.pdf",
+    className, title, height = '600px' }) => {
 
-const PdfViewer = ({ 
-    pdfUrl,className
- }) => {
 
     const containerRef = useRef(null);
     const [width, setWidth] = useState(null);
+    const [pdfBlobUrl, setPdfBlobUrl] = useState(null);
 
     useEffect(() => {
         if (containerRef.current) {
             setWidth(containerRef.current.offsetWidth);
         }
 
-        // Optional: Update width on resize
         const handleResize = () => {
             if (containerRef.current) {
                 setWidth(containerRef.current.offsetWidth);
@@ -28,20 +24,39 @@ const PdfViewer = ({
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
+    useEffect(() => {
+        const fetchPdfAsBlob = async () => {
+            try {
+                const response = await fetch(pdfUrl);
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+                console.log(blobUrl)
+                setPdfBlobUrl(blobUrl);
+            } catch (error) {
+                console.error("Failed to fetch PDF as blob:", error);
+            }
+        };
+
+        if (pdfUrl) {
+            fetchPdfAsBlob();
+        }
+    }, [pdfUrl]);
+
     return (
         <div ref={containerRef} className={className}>
-            <Suspense fallback={<div>Loading PDF...</div>}>
-                {width && (
-                    <Document file={pdfUrl} onLoadError={console.error}>
-                        <Page
-                            pageNumber={1}
-                            width={width}
-                            renderTextLayer={false}
-                            renderAnnotationLayer={false}
-                        />
-                    </Document>
-                )}
-            </Suspense>
+            <h3>{title || ''}</h3>
+            {pdfBlobUrl ? (
+                <iframe
+                    src={pdfBlobUrl}
+                    title={title || ''}
+                    width={width || '100%'}
+                    height={height}
+                    style={{ border: '1px solid #ccc' }}
+                    allowFullScreen
+                />
+            ) : (
+                <div>Loading PDF...</div>
+            )}
         </div>
     );
 };

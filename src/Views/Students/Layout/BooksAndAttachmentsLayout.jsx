@@ -1,0 +1,72 @@
+import ActivityCard from "Components/Card/ActivtyCard";
+import TestPerformanceChartStudent from "Components/Charts/TestPerformanceChart_student";
+import NavLinkComp from "Components/Router_components/NavLink";
+import { Card } from "react-bootstrap";
+import { Outlet, useParams } from "react-router-dom";
+import { SearchComponent } from "ResuableFunctions/SearchFun";
+import JsonData from "Views/Students/Utils/JsonData";
+
+const BooksAndAttachmentsLayout = () => {
+    const { subject_id } = useParams();
+    const { jsonOnly } = JsonData({ subject_id });
+
+    return (
+        <div className="container-fluid">
+            <div className="w-100 border-bottom pb-3">
+                <h5> Subjects </h5>
+            </div>
+
+            <div className="w-100 small_header_content_main d-flex overflowY">
+                <div className="col-8 p-1">
+                    <Card className="border-0 rounded-3 shadow-sm px-3 h-100">
+                        <Card.Header className="bg-transparent border-0 border-bottom d-flex flex-wrap align-items-center">
+                            <div className="col-9 d-flex flex-wrap">
+                                {jsonOnly.book_attachment_navlink?.map((link, link_index) => (
+                                    <div className="col-2" key={link_index}>
+                                        <NavLinkComp to={link.route} className="text-decoration-none book_attachment_navlink" end={true}>
+                                            <span className="text-secondary">{link.name}</span>
+                                        </NavLinkComp>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="col-3 text-end">
+                                <SearchComponent />
+                            </div>
+                        </Card.Header>
+                        <Card.Body style={{ height: "calc(100% - 3rem)" }} className="overflowY">
+                            <Outlet />
+                        </Card.Body>
+                    </Card>
+                </div>
+
+                <div className="col-4">
+                    <div className="col p-2">
+                        <Card className="rounded-4 shadow-sm border-0">
+                            <Card.Header className="bg-transparent border-0 py-2">
+                                <h5>Performance</h5>
+                            </Card.Header>
+                            <Card.Body>
+                                <TestPerformanceChartStudent />
+                            </Card.Body>
+                        </Card>
+                    </div>
+
+                    <div className="col p-2">
+                        <Card className="rounded-4 shadow-sm border-0">
+                            <Card.Header className="bg-transparent border-0 py-2">
+                                <h5>Upcoming Tests</h5>
+                            </Card.Header>
+                            <Card.Body className="upcoming_test_history_body">
+                                {Array.from({ length: 4 }).map((_, index) => (
+                                    <ActivityCard key={index} />
+                                ))}
+                            </Card.Body>
+                        </Card>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default BooksAndAttachmentsLayout;
