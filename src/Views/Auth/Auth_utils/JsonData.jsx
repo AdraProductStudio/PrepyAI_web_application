@@ -30,7 +30,7 @@ const JsonData = () => {
         divClassName: "mb-3",
         className: "login-input",
         isMandatory: false,
-        Err: commonState?.app_data?.validated && !authState?.login_data?.username ? "username required" : null,
+        Err: commonState?.app_data?.validated && !authState?.logindata?.username ? "username required" : null,
       },
       {
         name: "Password",

@@ -46,6 +46,7 @@ import StudentsBooks from "Views/Students/Docs/Books";
 import StudentAttachments from "Views/Students/Docs/StudentAttachments";
 import BooksOverviewLayout from "Views/Students/Layout/BooksOverviewLayout";
 import McqTest from "Views/Students/Docs/McqTest";
+import Notes from "Views/Common/Docs/Notes";
 
 function App() {
   return (
@@ -103,8 +104,8 @@ function App() {
               <Route index element={<Students />} />
               <Route path="overview" element={<StudentOverview />} />
             </Route>
-            <Route path="calendar" element={<div>Calendar Page</div>} />
-            <Route path="notes" element={<div>Notes Page</div>} />
+            {/* <Route path="calendar" element={<div>Calendar Page</div>} /> */}
+            <Route path="notes" element={<Notes />} />
           </Route>
 
           {/* Students */}
@@ -119,7 +120,7 @@ function App() {
               <Route path=":subject_id/attachments/:attachment_id" element={<BooksOverviewLayout />} />
             </Route>
             <Route path="test" element={<McqTest />} />
-            <Route path="notes" element={<McqTest />} />
+            <Route path="notes" element={<Notes />} />
           </Route>
 
           <Route path="*" element={<Error />} />

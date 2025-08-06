@@ -42,12 +42,10 @@ export const InitializeProjectSetup = () => {
     // Effect 2: update menu name from location
     useEffect(() => {
         const currentLocation = location[location.length - 1];
-        if (location?.length && currentLocation) {
-            if (commonState?.app_data?.currentMenuName !== currentLocation) {
-                dispatch(update_app_data({ type: "menu_name", data: currentLocation }));
-            }
+        if (commonState?.app_data?.currentMenuName !== currentLocation) {
+            dispatch(update_app_data({ type: "menu_name", data: currentLocation || '' }));
         }
-    }, [location, commonState?.app_data?.currentMenuName, dispatch]);
+    }, [location, dispatch]);
 
     // Effect 3: on tab visible, restore logs
     useEffect(() => {

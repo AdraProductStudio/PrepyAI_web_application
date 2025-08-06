@@ -646,6 +646,10 @@ td {
   height: calc(var(--root-height) - (var(--header-height) + 2rem));
 }
 
+.test_page_card_body_height{
+  height: calc(var(--root-height) - (var(--header-height) + 10rem));
+}
+
 .question_number_btn {
   width: 2.6rem;
   height: 2.6rem;
@@ -654,17 +658,37 @@ td {
 }
 
 .question_number_btn.active {
-  background-color: rgba(0, 0, 0, 0.705) !important;
+  border-color: #FF6C95 !important;
+  background: linear-gradient(90deg, #FC6767 0%, #FC6767 100%) !important;
   color: white !important;
 }
 
-.test_radio_btn .form-check-input:checked,
-.questions_answerd {
-  background-color: #6beb1c;
-  border-color: #69e01f;
+.test_radio_btn .form-check-input {
+  accent-color: #ff0c51;
+}
+
+.test_radio_btn .form-check-input:checked {
+  background-color: #FF6C95 !important;
+  border-color: #ff0c51 !important;
   color: white;
 }
 
+.selected_question_active {
+  border: 1px solid #FF6C95;
+  background: rgba(255, 108, 149, 0.21) !important;
+}
+
+.questions_answerd {
+  background: linear-gradient(90deg, #EC008C 0%, #FC6767 100%);
+  border-color: #FF6C95;
+  color: white;
+}
+
+
 .question-progress-bar .progress-bar {
   background-color: #6beb1c !important;
+}
+
+.NoteCard .heading{
+  border-bottom: 1px dashed #DADADA !important;
 }

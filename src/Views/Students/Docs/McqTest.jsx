@@ -22,7 +22,6 @@ const McqTest = () => {
     //     return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
     // }, []);
 
-
     useEffect(() => {
         initializeDB(process.env.REACT_APP_INDEXEDDB_DATABASE_NAME, process.env.REACT_APP_INDEXEDDB_DATABASE_VERSION, process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME)
             .then((db) => {
@@ -40,13 +39,15 @@ const McqTest = () => {
             .catch((error) => {
                 console.error("Database initialization failed:", error);
             });
+
+        // dispatch(getQuestionsEndpoint({ type: "response" }))
     }, [dispatch]);
 
     useEffect(() => {
         if (!teacherState?.mcq_test?.isDataPresentInIndexedDb) {
             // dispatch(handleGetQuestions)
         }
-    }, [teacherState?.mcq_test?.isDataPresentInIndexedDb,dispatch])
+    }, [teacherState?.mcq_test?.isDataPresentInIndexedDb, dispatch])
 
     useEffect(() => {
         if (teacherState?.mcq_test?.test_end_on) {
@@ -79,11 +80,11 @@ const McqTest = () => {
     }, [teacherState?.mcq_test?.test_end_on, dispatch])
 
     return (
-        <section className="main">
-            <div className="d-flex flex-wrap test_page_card_height">
-                <div className="col-3 d-flex flex-column">
-                    <Card className="h-100 border-0 shadow-sm rounded-3">
-                        <Card.Header className="bg-transparent">
+        <section className="d-flex align-items-center test_page_card_height px-5">
+            <div className="test_page_card_body_height d-flex flex-wrap">
+                <div className="col-3">
+                    <Card className="border-0 shadow-sm rounded-3" style={{ height: "100%" }}>
+                        <Card.Header className="bg-transparent border-bottom">
                             <h5 className="mb-0 py-2">Number of Questions</h5>
                         </Card.Header>
                         <Card.Body>
@@ -103,9 +104,9 @@ const McqTest = () => {
                 </div>
 
                 <div className="col-9 px-2">
-                    <Card className="h-100 border-0 shadow-sm rounded-3">
-                        <Card.Header className="bg-transparent">
-                            <h5 className="mb-0 py-2">Questions</h5>
+                    <Card className="border-0 shadow-sm rounded-3" style={{ height: "90%" }}>
+                        <Card.Header className="bg-transparent border-bottom">
+                            <h5 className="mb-0 py-2">Book Name : Chapter -2</h5>
                         </Card.Header>
                         <Card.Body>
                             <div className="mb-4">
@@ -139,7 +140,7 @@ const McqTest = () => {
                             <p>{teacherState?.mcq_test?.questions[teacherState?.mcq_test?.selectedQuestionIndex]?.question}</p>
                             <div className="w-100">
                                 {teacherState?.mcq_test?.questions[teacherState?.mcq_test?.selectedQuestionIndex]?.options?.map((val, ind) => (
-                                    <div className="border p-3 my-2 rounded-2 cursor-pointer" onClick={() => document.getElementById(val + ind)?.click()}>
+                                    <div className={`border p-3 my-2 rounded-2 cursor-pointer ${teacherState?.mcq_test?.questions[teacherState?.mcq_test?.selectedQuestionIndex]?.candidate_answer === val ? "selected_question_active" : ''}`} onClick={() => document.getElementById(val + ind)?.click()} key={ind}>
                                         <Checkbox
                                             formType="radio"
                                             formLabel={val}
@@ -154,32 +155,44 @@ const McqTest = () => {
                                 ))}
                             </div>
                         </Card.Body>
-                        <Card.Footer className="py-4 bg-transparent border-0 d-flex flex-wrap">
-                            <div className="col">
-                                <ButtonComponent
-                                    className="btn-secondary px-5"
-                                    buttonName="Previous"
-                                    clickFunction={() => dispatch(updateSelectedQuestionIndex({ selectedQuestionIndex: teacherState?.mcq_test?.selectedQuestionIndex - 1 }))}
-                                    btnDisable={teacherState?.mcq_test?.selectedQuestionIndex === 0}
-                                />
-                            </div>
-                            <div className="col text-end">
-                                <ButtonComponent
-                                    className="btn-secondary px-5"
-                                    buttonName={teacherState?.mcq_test?.questions?.length - 1 <= teacherState?.mcq_test?.selectedQuestionIndex ? "Submit" : "Next"}
-                                    clickFunction={teacherState?.mcq_test?.questions?.length - 1 <= teacherState?.mcq_test?.selectedQuestionIndex ?
-                                        // () => dispatch(handleCloseTestManual)
-                                        null
-                                        :
-                                        () => dispatch(updateSelectedQuestionIndex({ selectedQuestionIndex: teacherState?.mcq_test?.selectedQuestionIndex + 1 }))
-                                    }
-                                />
-                            </div>
-                        </Card.Footer>
                     </Card>
+                    <div className="py-4 bg-transparent border-0 d-flex flex-wrap">
+                        <div className="col">
+                            <ButtonComponent className="btn-transparent border px-3"
+                                clickFunction={() => dispatch(updateSelectedQuestionIndex({ selectedQuestionIndex: teacherState?.mcq_test?.selectedQuestionIndex - 1 }))}
+                                btnDisable={teacherState?.mcq_test?.selectedQuestionIndex === 0} >
+
+                                <span className="pe-2">{Icons?.arrowLeftIcon}</span>
+                                Previous
+                            </ButtonComponent>
+                        </div>
+                        <div className="col text-end">
+                            <ButtonComponent
+                                className={`btn-transparent border px-4 py-2 ${teacherState?.mcq_test?.questions?.length - 1 <= teacherState?.mcq_test?.selectedQuestionIndex ? "btn-brand-color" : ""}`}
+                                clickFunction={teacherState?.mcq_test?.questions?.length - 1 <= teacherState?.mcq_test?.selectedQuestionIndex ?
+                                    // () => dispatch(handleCloseTestManual)
+                                    null
+                                    :
+                                    () => dispatch(updateSelectedQuestionIndex({ selectedQuestionIndex: teacherState?.mcq_test?.selectedQuestionIndex + 1 }))
+                                }>
+
+                                {teacherState?.mcq_test?.questions?.length - 1 <= teacherState?.mcq_test?.selectedQuestionIndex ?
+                                    <Fragment>
+                                        Submit
+                                        <span className="ps-2">{Icons?.arrowRightWhiteIcon}</span>
+                                    </Fragment>
+                                    :
+                                    <Fragment>
+                                        Next
+                                        <span className="ps-2">{Icons?.arrowRightIcon}</span>
+                                    </Fragment>
+                                }
+                            </ButtonComponent>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
+        </section >
     )
 }
 

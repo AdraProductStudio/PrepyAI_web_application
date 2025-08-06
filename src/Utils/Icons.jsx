@@ -10,7 +10,7 @@ const no_of_students = <GoPeople size={23} />
 const no_of_subjects = <LiaBookSolid size={23} />
 const attachment_download_icon = <HiOutlineDownload size={23} color="#4CB242" />
 const prepyAi = prepyAiLogo;
-const googleIcon = <FcGoogle size={26}/>;
+const googleIcon = <FcGoogle size={26} />;
 
 const delete_icons = <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 16 16" fill="none">
   <path d="M14 3.98763C11.78 3.76763 9.54667 3.6543 7.32 3.6543C6 3.6543 4.68 3.72096 3.36 3.8543L2 3.98763" stroke="#E73C3C" stroke-linecap="round" stroke-linejoin="round" />
@@ -445,6 +445,18 @@ const timerIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
   <path d="M17.188 8.36389C17.2995 8.21956 17.3545 8.03957 17.3429 7.8576C17.3312 7.67562 17.2537 7.50413 17.1247 7.37519C16.9958 7.24625 16.8243 7.1687 16.6423 7.15705C16.4604 7.1454 16.2804 7.20044 16.136 7.31189L12.966 9.77689L10.894 11.2569C10.6953 11.3992 10.5299 11.5831 10.4094 11.7957C10.2889 12.0084 10.2161 12.2447 10.1961 12.4883C10.1761 12.732 10.2094 12.977 10.2936 13.2065C10.3778 13.4359 10.511 13.6443 10.6839 13.8171C10.8568 13.9899 11.0652 14.123 11.2947 14.2072C11.5242 14.2913 11.7693 14.3245 12.0129 14.3044C12.2565 14.2843 12.4928 14.2114 12.7054 14.0908C12.918 13.9701 13.1018 13.8047 13.244 13.6059L14.723 11.5339L17.188 8.36389Z" fill="black" />
 </svg>
 
+const arrowLeftIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" fill="none">
+  <path d="M16 24L17.43 22.607L11.85 17L24 17L24 15L11.85 15L17.43 9.427L16 8L8 16L16 24Z" fill="#0E0E0E" />
+</svg>
+
+const arrowRightWhiteIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" fill="none">
+  <path d="M16 8L14.57 9.393L20.15 15H8V17H20.15L14.57 22.573L16 24L24 16L16 8Z" fill="white" />
+</svg>
+
+const arrowRightIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" fill="none">
+  <path d="M16 8L14.57 9.393L20.15 15H8V17H20.15L14.57 22.573L16 24L24 16L16 8Z" fill="black" />
+</svg>
+
 const Icons = {
   menu_dot_icon, no_of_students, no_of_subjects, delete_icons,
   no_of_books, no_of_tests, pdfDeleteIcon, testScreenEditIcon,
@@ -463,7 +475,8 @@ const Icons = {
   clock_colored, performance_colored, single_book_colored,
   attachment_colored, extend_icon, download_question_icon,
   upcoming_test_edit_icon, upcoming_card_clock_icon,
-  attachment_download_icon, timerIcon, prepyAi, googleIcon
+  attachment_download_icon, timerIcon, prepyAi, googleIcon,
+  arrowLeftIcon, arrowRightIcon, arrowRightWhiteIcon
 }
 
 export default Icons;

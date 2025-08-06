@@ -2,11 +2,9 @@ import LinkComponent from "Components/Router_components/LinkComponent";
 import { useParams } from "react-router-dom";
 import PdfViewer from "ResuableFunctions/PdfViewer";
 import Icons from "Utils/Icons";
-import filee from "../../../Anil_Menon.pdf"
 import { Card } from "react-bootstrap";
 import IndividualBookTestPerformance from "Components/Card/IndividualBookTestPerformance";
 import AttachmentBookHistoryCard from "Components/Card/AttachmentBookHistoryCard";
-
 
 const BooksOverviewLayout = () => {
     const { subject_id } = useParams();
@@ -24,7 +22,7 @@ const BooksOverviewLayout = () => {
                 <div className="col-8 p-1">
                     <Card className="border-0 rounded-3 shadow-sm px-3 h-100 overflowY">
                         <Card.Body>
-                            <PdfViewer pdfUrl={filee} className="col-12" />
+                            <PdfViewer pdfUrl="https://devcdn.2ndcareers.com/professional/resume/Anil_Menon.pdf" className="col-12" />
                         </Card.Body>
                     </Card>
                 </div>

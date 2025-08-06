@@ -82,6 +82,7 @@ const commonSlice = createSlice({
                     break;
                 case "menu_name":
                     state.app_data.currentMenuName = data || '';
+                    state.app_data.validated = false;
                     break;
                 case "dimension":
                     state.app_data.innerWidth = data?.innerWidth || 0;
