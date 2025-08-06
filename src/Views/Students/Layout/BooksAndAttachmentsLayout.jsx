@@ -1,10 +1,12 @@
-import ActivityCard from "Components/Card/ActivtyCard";
-import TestPerformanceChartStudent from "Components/Charts/TestPerformanceChart_student";
-import NavLinkComp from "Components/Router_components/NavLink";
+import Icons from "Utils/Icons";
 import { Card } from "react-bootstrap";
-import { Outlet, useParams } from "react-router-dom";
-import { SearchComponent } from "ResuableFunctions/SearchFun";
 import JsonData from "Views/Students/Utils/JsonData";
+import { Outlet, useParams } from "react-router-dom";
+import ActivityCard from "Components/Card/ActivtyCard";
+import { SearchComponent } from "ResuableFunctions/SearchFun";
+import NavLinkComp from "Components/Router_components/NavLink";
+import LinkComponent from "Components/Router_components/LinkComponent";
+import TestPerformanceChartStudent from "Components/Charts/TestPerformanceChart_student";
 
 const BooksAndAttachmentsLayout = () => {
     const { subject_id } = useParams();
@@ -13,7 +15,10 @@ const BooksAndAttachmentsLayout = () => {
     return (
         <div className="container-fluid">
             <div className="w-100 border-bottom pb-3">
-                <h5> Subjects </h5>
+                <LinkComponent to='/student_dashboard/subjects' className="brand-link-color">
+                    <span>{Icons.back_button_icon_blue}</span>
+                    <span className="align-middle">Subjects</span>
+                </LinkComponent>
             </div>
 
             <div className="w-100 small_header_content_main d-flex overflowY">

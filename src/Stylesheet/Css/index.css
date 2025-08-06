@@ -640,3 +640,31 @@ td {
   height: calc(var(--root-height) - 52vh);
   overflow-y: auto;
 }
+
+/* mcq question css */
+.test_page_card_height {
+  height: calc(var(--root-height) - (var(--header-height) + 2rem));
+}
+
+.question_number_btn {
+  width: 2.6rem;
+  height: 2.6rem;
+  font-size: 14px !important;
+  border-radius: 50% !important;
+}
+
+.question_number_btn.active {
+  background-color: rgba(0, 0, 0, 0.705) !important;
+  color: white !important;
+}
+
+.test_radio_btn .form-check-input:checked,
+.questions_answerd {
+  background-color: #6beb1c;
+  border-color: #69e01f;
+  color: white;
+}
+
+.question-progress-bar .progress-bar {
+  background-color: #6beb1c !important;
+}

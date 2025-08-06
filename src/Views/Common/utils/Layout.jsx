@@ -12,7 +12,7 @@ export const Layout = () => {
         <div className="w-100 d-flex flex-wrap main_bg">
             <Sidebar responsiveOn="xl" menuOptions={jsonOnly?.sidebar_data} />
 
-            <main className="layout_main_content">
+            <main className="col layout_main_content">
                 <div className="container-fluid ">
                     <header className="py-2">
                         <Header />

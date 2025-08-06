@@ -1,4 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { initializeDB } from "Components/CustomHooks";
+import Cookies from "js-cookie";
+import { decryptData, encryptData } from "Security/Crypto/Crypto";
 
 const questions = [
     {
@@ -802,6 +805,42 @@ const TeacherSlice = createSlice({
             state.mcq_test.questions = action.payload;
             state.mcq_test.isDataPresentInIndexedDb = action.payload?.length ? true : false;
             state.mcq_test.answeredQuestionPercentage = answeredQues?.length / action.payload?.length * 100;
+        },
+        getQuestionsEndpoint(state, action) {
+            const { type, data } = action.payload;
+
+            switch (type) {
+                case "response":
+                    initializeDB(process.env.REACT_APP_INDEXEDDB_DATABASE_NAME, process.env.REACT_APP_INDEXEDDB_DATABASE_VERSION, process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME)
+                        .then((db) => {
+                            const transaction = db.transaction(process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME, "readwrite");
+                            const store = transaction.objectStore(process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME);
+                            const objects = data?.assigned_questions || questions;
+
+                            objects?.forEach((obj, ind) => store.put({ ...obj, id: ind })); // Add or update objects
+                            transaction.oncomplete = () => console.log("Objects added successfully!");
+                        })
+                        .catch((error) => {
+                            console.error("Database initialization failed:", error);
+                        })
+
+                    if (data?.test_EndedOn) {
+                        let decrypt_cookie = Cookies.get('log') ? decryptData(Cookies.get('log')) : {};
+                        decrypt_cookie.testEndOn = data?.test_EndedOn || '';
+                        Cookies.set('log', encryptData(decrypt_cookie));
+                    }
+
+                    return {
+                        ...state,
+                        generatedQuestions: data?.assigned_questions || [],
+                        test_end_timeStamp: data?.test_EndedOn || null,
+                        isDataPresentInIndexedDb: data?.assigned_questions ? true : false,
+                        initialGlow: false
+                    }
+
+                default:
+                    break;
+            }
         }
     }
 })
@@ -812,7 +851,7 @@ const { actions, reducer } = TeacherSlice;
 
 export const {
     caluculateRemainingTime, updateSelectedQuestionIndex, updateAnswers,
-    getQuestionFromDb
+    getQuestionFromDb, getQuestionsEndpoint
 
 } = actions;
 

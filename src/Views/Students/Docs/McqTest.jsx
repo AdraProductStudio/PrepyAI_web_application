@@ -13,14 +13,14 @@ const McqTest = () => {
     const { teacherState } = useCommonState();
     const dispatch = useDispatch();
 
-    const handleVisibilityChange = () => {
-        if (document.visibilityState === "hidden") alert("Tab switch is not allowed during the session!");
-    };
+    // const handleVisibilityChange = () => {
+    //     if (document.visibilityState === "hidden") alert("Tab switch is not allowed during the session!");
+    // };
 
-    useEffect(() => {
-        document.addEventListener("visibilitychange", handleVisibilityChange);
-        return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
-    }, []);
+    // useEffect(() => {
+    //     document.addEventListener("visibilitychange", handleVisibilityChange);
+    //     return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+    // }, []);
 
 
     useEffect(() => {
@@ -42,11 +42,11 @@ const McqTest = () => {
             });
     }, [dispatch]);
 
-    // useEffect(() => {
-    //     if (!teacherState?.mcq_test?.isDataPresentInIndexedDb) {
-    //         dispatch(handleGetQuestions)
-    //     }
-    // }, [teacherState?.mcq_test?.isDataPresentInIndexedDb,dispatch])
+    useEffect(() => {
+        if (!teacherState?.mcq_test?.isDataPresentInIndexedDb) {
+            // dispatch(handleGetQuestions)
+        }
+    }, [teacherState?.mcq_test?.isDataPresentInIndexedDb,dispatch])
 
     useEffect(() => {
         if (teacherState?.mcq_test?.test_end_on) {
@@ -79,12 +79,12 @@ const McqTest = () => {
     }, [teacherState?.mcq_test?.test_end_on, dispatch])
 
     return (
-        <section className='main'>
-            <div className="h-100 d-flex flex-wrap p-5">
+        <section className="main">
+            <div className="d-flex flex-wrap test_page_card_height">
                 <div className="col-3 d-flex flex-column">
-                    <Card className='h-100 border-0 shadow-sm rounded-3'>
-                        <Card.Header>
-                            <h5 className='mb-0 py-2'>Number of Questions</h5>
+                    <Card className="h-100 border-0 shadow-sm rounded-3">
+                        <Card.Header className="bg-transparent">
+                            <h5 className="mb-0 py-2">Number of Questions</h5>
                         </Card.Header>
                         <Card.Body>
                             <div className="col-12 d-flex flex-wrap">
@@ -103,12 +103,12 @@ const McqTest = () => {
                 </div>
 
                 <div className="col-9 px-2">
-                    <Card className='h-100 border-0 shadow-sm rounded-3'>
-                        <Card.Header>
-                            <h5 className='mb-0 py-2'>Questions</h5>
+                    <Card className="h-100 border-0 shadow-sm rounded-3">
+                        <Card.Header className="bg-transparent">
+                            <h5 className="mb-0 py-2">Questions</h5>
                         </Card.Header>
                         <Card.Body>
-                            <div className='mb-4'>
+                            <div className="mb-4">
                                 <ProgressBarComp progressNow={teacherState?.mcq_test?.answeredQuestionPercentage} animated={false} className="question-progress-bar" />
                             </div>
                             <div className="w-100 d-flex flex-wrap mb-3">
@@ -122,12 +122,12 @@ const McqTest = () => {
                                     {
                                         teacherState?.mcq_test?.remaining_time ?
                                             <Fragment>
-                                                <span className='pe-2'>
+                                                <span className="pe-2">
                                                     {Icons?.timerIcon}
                                                 </span>
 
-                                                <span className='text-secondary pt-2'>
-                                                    {teacherState?.mcq_test?.remaining_time?.minutes || '00'} : {teacherState?.mcq_test?.remaining_time?.seconds || '00'}
+                                                <span className="text-secondary pt-2">
+                                                    {teacherState?.mcq_test?.remaining_time?.minutes || "00"} : {teacherState?.mcq_test?.remaining_time?.seconds || "00"}
                                                 </span>
                                             </Fragment>
                                             :
@@ -137,9 +137,9 @@ const McqTest = () => {
                             </div>
 
                             <p>{teacherState?.mcq_test?.questions[teacherState?.mcq_test?.selectedQuestionIndex]?.question}</p>
-                            <div className='w-100'>
+                            <div className="w-100">
                                 {teacherState?.mcq_test?.questions[teacherState?.mcq_test?.selectedQuestionIndex]?.options?.map((val, ind) => (
-                                    <div className='border p-3 my-2 rounded-2 cursor-pointer' onClick={() => document.getElementById(val + ind)?.click()}>
+                                    <div className="border p-3 my-2 rounded-2 cursor-pointer" onClick={() => document.getElementById(val + ind)?.click()}>
                                         <Checkbox
                                             formType="radio"
                                             formLabel={val}
@@ -154,7 +154,7 @@ const McqTest = () => {
                                 ))}
                             </div>
                         </Card.Body>
-                        <Card.Footer className='py-4 bg-transparent border-0 d-flex flex-wrap'>
+                        <Card.Footer className="py-4 bg-transparent border-0 d-flex flex-wrap">
                             <div className="col">
                                 <ButtonComponent
                                     className="btn-secondary px-5"

@@ -332,7 +332,6 @@ header {
   .layout_main_content {
     height: var(--root-height);
     background-color: var(--main-background-color);
-    width: calc(100% - var(--sidebar-width));
   }
 }
 

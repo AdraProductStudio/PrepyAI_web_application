@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 const PdfViewer = ({
     pdfUrl = "https://devcdn.2ndcareers.com/professional/resume/Anil_Menon.pdf",
-    className, title, height = '600px' }) => {
+    className, title, height = '700px' }) => {
 
 
     const containerRef = useRef(null);

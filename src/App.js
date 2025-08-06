@@ -119,6 +119,7 @@ function App() {
               <Route path=":subject_id/attachments/:attachment_id" element={<BooksOverviewLayout />} />
             </Route>
             <Route path="test" element={<McqTest />} />
+            <Route path="notes" element={<McqTest />} />
           </Route>
 
           <Route path="*" element={<Error />} />
