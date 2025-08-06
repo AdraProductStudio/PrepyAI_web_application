@@ -6,11 +6,11 @@ export function decryption() {
 }
 
 export function encryption(data) {
-    return encryption(data)
+    return encryptData(data)
 }
 
 export function decrypt_app_data_logs() {
-    let logs = Cookies.get("project_log") ? decryptData(Cookies.get("project_log")) : null
+    let logs = Cookies.get("project_log") ? decryptData(Cookies.get("project_log")) : null;
     let path = window.location.pathname;
 
     if (logs) {
@@ -22,14 +22,14 @@ export function decrypt_app_data_logs() {
                 return logs['student'] || {}
 
             default:
-                return null
+                return {}
         }
     }
-    return null
+    return {};
 }
 
 export function view_logout() {
-    let logs = Cookies.get("project_log") ? decryptData(Cookies.get("project_log")) : null
+    let logs = Cookies.get("project_log") ? decryptData(Cookies.get("project_log")) : {}
     let path = window.location.pathname;
 
     if (Object.keys(logs)?.length > 1) {

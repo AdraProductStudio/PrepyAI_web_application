@@ -20,7 +20,7 @@ class Error extends Component {
 							<h2>Page Not Found!</h2>
 							<p>Oops! The page you are looking for does not exist</p>
 							<div className="btn-wrapper go-top">
-								<Link to="/dashboard/home" className="btn btn-transparent">
+								<Link to="/" className="btn btn-transparent">
 									<i className="fas fa-long-arrow-alt-left" />
 									BACK TO HOME
 								</Link>

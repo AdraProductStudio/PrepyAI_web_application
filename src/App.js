@@ -4,6 +4,17 @@ import { ToastContainer } from "react-toastify";
 import Error from "Views/Common/Docs/error";
 import { InitializeProjectSetup } from "Views/Common/Docs/InitializeProjectSetup";
 
+import LoginForm from "Views/Auth/Docs/LoginForm";
+import LearnersRegister from "Views/Auth/Docs/LearnersRegister";
+import OrganizationRegister from "Views/Auth/Docs/OrganizationRegister";
+import AdminRegister from "Views/Auth/Docs/AdminRegister";
+import TeacherRegister from "Views/Auth/Docs/TeacherRegister";
+import StudentRegister from "Views/Auth/Docs/StudentRegister";
+import ForgotPassword from "Views/Auth/Docs/ForgotPassword";
+import CreatePassword from "Views/Auth/Docs/CreatePassword";
+import Verification from "Views/Auth/Docs/Verification";
+import SucessfullMessage from "Views/Auth/Docs/SucessfullMessage";
+
 import AdminLayout from "Views/Admin/Layout/Layout";
 import AdminDashboard from "Views/Admin/Docs/Index";
 import Classroom from "Views/Admin/Docs/Classroom";
@@ -27,7 +38,6 @@ import OngoingTest from "Views/Teachers/Docs/OngoingTest";
 import CompletedTest from "Views/Teachers/Docs/CompletedTest";
 import Books from "Views/Common/Docs/Books";
 
-
 import StudentsLayout from "Views/Students/Layout/Layout";
 import StudentDashboard from "Views/Students/Docs/index";
 import StudentSubject from "Views/Students/Docs/StudentSubject";
@@ -43,6 +53,18 @@ function App() {
       <ToastContainer theme="light" />
       <Routes>
         <Route element={<InitializeProjectSetup />}>
+          {/* Auth */}
+          <Route index element={<LoginForm />} />
+          <Route path="learners_registration" element={<LearnersRegister />} />
+          <Route path="organization_registration" element={<OrganizationRegister />} />
+          <Route path="admin_registration" element={<AdminRegister />} />
+          <Route path="teacher_registration" element={<TeacherRegister />} />
+          <Route path="student_registration" element={<StudentRegister />} />
+          <Route path="forgot_password" element={<ForgotPassword />} />
+          <Route path="create_password" element={<CreatePassword />} />
+          <Route path="otp_verification" element={<Verification />} />
+          <Route path="success_message" element={<SucessfullMessage />} />
+
           {/* Admin */}
           <Route path="admin_dashboard" element={<AdminLayout />}>
             <Route path="home" element={<AdminDashboard />} />
@@ -84,7 +106,6 @@ function App() {
             <Route path="calendar" element={<div>Calendar Page</div>} />
             <Route path="notes" element={<div>Notes Page</div>} />
           </Route>
-
 
           {/* Students */}
           <Route path="student_dashboard" element={<StudentsLayout />}>

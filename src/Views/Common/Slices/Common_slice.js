@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { decrypt_app_data_logs, view_logout } from "ResuableFunctions/logs_handler";
+import Cookies from "js-cookie";
+import { decrypt_app_data_logs, decryption, encryption, view_logout } from "ResuableFunctions/logs_handler";
 
 let initialState = {
     login_data: {},
@@ -27,6 +28,7 @@ let initialState = {
         buttonSpinner: false,
         validated: false,
         token: decrypt_app_data_logs()?.access_token || '',
+        refresh_token: decrypt_app_data_logs()?.refresh_token || '',
         user_role: decrypt_app_data_logs()?.role || '',
         user_id: decrypt_app_data_logs()?.user_id || '',
     },
@@ -92,10 +94,6 @@ const commonSlice = createSlice({
                     return
             }
         },
-        // update_login_data(state, action) {
-        //     const [key, value] = Object.entries(action.payload)[0] || [];
-        //     state.login_data[key] = value || '';
-        // },
         update_error(state, action) {
             const { Err, Toast_Type } = action.payload || {};
             state.error.Err = Err || null;
@@ -106,54 +104,6 @@ const commonSlice = createSlice({
             state.search.value = value || '';
             state.search.clicked = clicked || false;
         },
-
-        // //Api 
-        // login_reducer(state, actions) {
-        //     const { type, data } = actions.payload || {};
-        //     switch (type) {
-        //         case "request":
-        //             state.app_data.buttonSpinner = true;
-        //             state.app_data.token = null;
-        //             state.app_data.user_role = null;
-        //             break;
-        //         case "response":
-        //             let decrypt_logs;
-        //             let update_cookie_log;
-        //             let roleKey = data?.role?.split(" ")?.join("");
-
-        //             if (Cookies.get('project_log')) decrypt_logs = decryption();
-        //             if (decrypt_logs) {
-        //                 if (roleKey && !decrypt_logs?.hasOwnProperty(roleKey)) {
-        //                     update_cookie_log = {
-        //                         ...decrypt_logs,
-        //                         [roleKey]: data || {}
-        //                     };
-        //                 } else {
-        //                     update_cookie_log = { ...decrypt_logs };
-        //                 }
-        //             }
-        //             else {
-        //                 update_cookie_log = {
-        //                     [roleKey]: data || {}
-        //                 }
-        //             }
-
-        //             const encrypted_logs = encryption(update_cookie_log);
-        //             Cookies.set('project_log', encrypted_logs);
-
-        //             state.app_data.buttonSpinner = false;
-        //             state.app_data.token = data?.token || '';
-        //             state.app_data.user_role = data?.role || '';
-        //             break;
-        //         case "failure":
-        //             state.app_data.buttonSpinner = false;
-        //             state.error.Err = data?.message || 'Login failed';
-        //             state.error.Toast_Type = data?.Toast_Type || "error";
-        //             break;
-        //         default:
-        //             return
-        //     }
-        // },
         logout(state, actions) {
             view_logout();
 
@@ -162,28 +112,94 @@ const commonSlice = createSlice({
             state.app_data.user_role = '';
             state.app_data.user_id = '';
         }
+    },
+    extraReducers: (builder) => {
+        builder
+            // login response 
+            .addCase("authState/login_endpoint", (state, action) => {
+                const { type, data, message } = action.payload || {};
+                switch (type) {
+                    case "response":
+                        let decrypt_logs;
+                        let update_cookie_log;
+                        let roleKey = data?.role_name;
+
+                        if (Cookies.get('project_log')) decrypt_logs = decryption();
+                        if (decrypt_logs) {
+                            if (roleKey && !decrypt_logs?.hasOwnProperty(roleKey)) update_cookie_log = { ...decrypt_logs, [roleKey]: data || {} };
+                            else update_cookie_log = { ...decrypt_logs };
+                        }
+                        else update_cookie_log = { [roleKey]: data || {} };
+
+                        const encrypted_logs = encryption(update_cookie_log);
+                        Cookies.set('project_log', encrypted_logs);
+
+                        state.app_data.token = data?.access_token || '';
+                        state.app_data.refresh_token = data?.refresh_token || '';
+                        state.app_data.user_role = data?.role_name || '';
+                        state.app_data.validated = false;
+                        break;
+
+                    case "failure":
+                        state.app_data.token = '';
+                        state.app_data.refresh_token = '';
+                        state.app_data.user_role = '';
+                        state.app_data.validated = false;
+                        state.error.Err = message || "Login failed";
+                        state.error.Toast_Type = "error";
+                        break;
+
+                    default:
+                        break;
+                }
+            })
+
+
+
+            //For handling response error [setting toast error message]
+            .addMatcher(
+                (action) => [
+
+                ].includes(action.type),
+
+                (state, action) => {
+                    const { type } = action.payload || {};
+                    if (type === "failure") setToastState(state, action);
+                }
+            )
+
+            //Remove the validation failure status
+            .addMatcher(
+                (action) => [
+                    "authState/update_login_data",
+                    "authState/update_learners_register",
+                    "authState/update_organization_register",
+                    "authState/update_admin_register",
+                    "authState/update_teacher_register",
+                    "authState/update_student_register",
+                    "authState/update_forgot_password",
+                    "authState/update_otp_verification",
+                    "authState/update_create_password"
+                ].includes(action.type),
+
+                (state) => {
+                    if (state.app_data.validated) state.app_data.validated = false;
+                }
+            )
     }
 })
 
-// function setSuccessState(state, action) {
-//     let error_message = typeof action.payload === 'object' ? action.payload?.message : action.payload;
-//     state.error.Err = error_message;
-//     state.error.Toast_Type = "success";
-// }
-
-// function setErrorState(state, action) {
-//     let error_message = typeof action.payload === 'object' ? action.payload?.message : action.payload;
-//     state.error.Err = error_message;
-//     state.error.Toast_Type = "error";
-// }
+function setToastState(state, action) {
+    let error_message = typeof action.payload === 'object' ? action.payload?.message : action.payload;
+    console.log(error_message)
+    state.error.Err = error_message;
+    state.error.Toast_Type = action.payload?.toast_type || "error";
+}
 
 const { actions, reducer } = commonSlice;
 
 export const {
-    update_app_data, update_error,
-    updateModalShow, update_search,
-    // update_login_data,
-    // login_reducer,
+    update_app_data, update_error, updateModalShow, update_search,
     logout, update_tab_render_app_data
 
 } = actions;

@@ -9,11 +9,12 @@ import { update_app_data } from 'Views/Common/Slices/Common_slice';
 export const useCommonState = () => {
   const selectCommonState = (state) => state.commonState;
   const selectTeacherState = (state) => state.teacherState;
+  const selectAuthState = (state) => state.authState;
 
   const selectMemoizedCommonState = createSelector(
-    [selectCommonState, selectTeacherState],
-    (commonState, teacherState) => (
-      { commonState, teacherState }
+    [selectCommonState, selectTeacherState, selectAuthState],
+    (commonState, teacherState, authState) => (
+      { commonState, teacherState, authState }
     )
   )
   return useSelector(selectMemoizedCommonState);

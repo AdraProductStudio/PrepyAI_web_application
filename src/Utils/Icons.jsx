@@ -2,11 +2,15 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { GoPeople } from "react-icons/go";
 import { LiaBookSolid } from "react-icons/lia";
 import { HiOutlineDownload } from "react-icons/hi";
+import prepyAiLogo from "Assets/Image/PrepyAI.svg";
+import { FcGoogle } from "react-icons/fc";
 
 const menu_dot_icon = <BsThreeDotsVertical size={18} />
 const no_of_students = <GoPeople size={23} />
 const no_of_subjects = <LiaBookSolid size={23} />
 const attachment_download_icon = <HiOutlineDownload size={23} color="#4CB242" />
+const prepyAi = prepyAiLogo;
+const googleIcon = <FcGoogle size={26}/>;
 
 const delete_icons = <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 16 16" fill="none">
   <path d="M14 3.98763C11.78 3.76763 9.54667 3.6543 7.32 3.6543C6 3.6543 4.68 3.72096 3.36 3.8543L2 3.98763" stroke="#E73C3C" stroke-linecap="round" stroke-linejoin="round" />
@@ -459,7 +463,7 @@ const Icons = {
   clock_colored, performance_colored, single_book_colored,
   attachment_colored, extend_icon, download_question_icon,
   upcoming_test_edit_icon, upcoming_card_clock_icon,
-  attachment_download_icon, timerIcon
+  attachment_download_icon, timerIcon, prepyAi, googleIcon
 }
 
 export default Icons;

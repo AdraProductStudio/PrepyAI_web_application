@@ -1,0 +1,216 @@
+.backgroundcolor {
+  background-color: #f9f9f9;
+}
+.login-input {
+  padding: 14px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  box-shadow: none;
+  font-size: 16px;
+}
+.gradient-checkbox.form-check-input {
+  accent-color: #ec008c !important;
+}
+
+.login-button {
+  background: linear-gradient(92deg, #ec008c 0%, #fc6767 100%);
+  border: none;
+  padding: 5px 12px;
+  border-radius: 8px;
+  color: white;
+  transition: background 0.3s;
+  width: 100%;
+
+}
+
+.login-button:hover {
+  color: white;
+}
+
+.forgot-button {
+  background: linear-gradient(92deg, #ec008c 0%, #fc6767 100%);
+  border: none;
+  padding: 16px 0 !important;
+  border-radius: 6px !important;
+  color: white;
+  transition: background 0.3s;
+  width: 100%;
+}
+
+.forgot-button:hover {
+  color: white;
+}
+
+.btn-brand-color py-3 {
+  background: linear-gradient(92deg, #ec008c 0%, #fc6767 100%);
+  border: none;
+  padding: 14px 12px !important;
+  border-radius: 6px !important;
+  color: white;
+  transition: background 0.3s;
+  width: 100%;
+}
+
+.loggin-button-single:hover {
+  /* background: linear-gradient(90deg, #d13267, #ff5722); */
+  color: white;
+}
+
+.prepy-logo {
+  width: 100px;
+}
+
+.fancy-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  border: 1px solid #ec008c;
+  border-radius: 4px;
+  accent-color: #ec008c;
+}
+
+.login-center-circle {
+  position: absolute;
+  bottom: 0;
+  left: 0%;
+  transform: translateX(675%);
+  max-width: 8%;
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+}
+.w-110 {
+  width: 100%;
+}
+
+.otp-input {
+  width: 70px;
+  height: 70px;
+  text-align: center;
+  font-size: 22px;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  margin-right: 12px;
+  background-color: white;
+}
+
+.otp-button {
+  background: linear-gradient(92deg, #ec008c 0%, #fc6767 100%);
+  border: none;
+  padding: 14px 0 !important;
+  border-radius: 8px;
+  color: white;
+  transition: background 0.3s;
+  width: 80% !important;
+}
+
+/* On focus - gradient border */
+.otp-input:focus {
+  border: 2px solid transparent;
+  background-image: linear-gradient(white, white),
+    linear-gradient(to right, #ec008c, #ff6f61);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+/* When input is filled - keep gradient */
+.otp-input:not(:placeholder-shown) {
+  border: 2px solid transparent;
+  background-image: linear-gradient(white, white),
+    linear-gradient(to right, #ec008c, #ff6f61);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+.w-120 {
+  width: 100%;
+}
+.accent-pink {
+  accent-color: #d13267;
+}
+
+.login-left-text {
+  display: none;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+.login-title-colour {
+  color: #525252
+}
+.google-button-background {
+  background-color: white;
+  padding: 14px 12px !important;
+  border-radius: 6px !important;
+}
+
+@media (min-width: 768px) {
+  .w-120 {
+    width: 100%;
+  }
+  .login-button {
+    width: 90% !important;
+  }
+  .login-center-circle {
+    width: 10%;
+  }
+  .otp-button {
+    width: 180% !important;
+  }
+  .otp-input{
+    width: 50px;
+    height: 50px;
+  }
+  .otp-button{
+    width: 160% !important;
+    padding: 11px 0 !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .prepy-logo {
+    width: 130px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .w-120 {
+    width: 100% !important;
+  }
+  .login-center-circle {
+    width: 10% !important;
+  }
+  .otp-input{
+    width: 70px;
+    height: 70px;
+  }
+  .otp-button{
+    width: 160% !important;
+    padding: 14px 0 !important;
+  }
+}
+
+@media (min-width: 1440px) {
+  .w-120 {
+    width: 132% !important;
+  }
+  .login-center-circle {
+    width: 10% !important;
+  }
+  .login-button { 
+    width: 87% !important;
+  }
+  .w-110{
+    width: 110%;
+  }
+  .otp-input{
+    width: 80px;
+    height: 80px;
+  }
+  .otp-button{
+    width: 93% !important;
+    padding: 17px 0 !important;
+  }
+}
