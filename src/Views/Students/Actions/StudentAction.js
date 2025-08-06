@@ -2,7 +2,7 @@ import { initializeDB } from "Components/CustomHooks";
 import {
     updateAnswers,
 
-} from "Views/Students/Slices/TeacherSlice";
+} from "Views/Students/Slices/StudentSlice";
 
 
 export const handleUpdateAnswer = (data) => (dispatch) => {

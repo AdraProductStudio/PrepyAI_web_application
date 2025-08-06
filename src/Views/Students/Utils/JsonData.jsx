@@ -14,28 +14,24 @@ const JsonData = (params) => {
                 name: "Dashboard",
                 icon: Icons.sidebar_dashboard_icon,
                 active_icon: Icons.sidebar_dashboard_active_icon,
-                show_active_icon: window.location.pathname.includes('/student_dashboard/home'),
                 route: '/student_dashboard/home'
             },
             {
                 name: "Subjects",
                 icon: Icons.sidebar_classroom_icon,
                 active_icon: Icons.sidebar_classroom_active_icon,
-                show_active_icon: window.location.pathname.includes('/student_dashboard/subjects'),
                 route: '/student_dashboard/subjects'
             },
             // {
             //     name: "Calendar",
             //     icon: Icons.sidebar_calender_icon,
             //     active_icon: Icons.sidebar_calender_active_icon,
-            //     show_active_icon: window.location.pathname.includes('/student_dashboard/calendar'),
             //     route: '/student_dashboard/calendar'
             // },
             {
                 name: "Notes",
                 icon: Icons.sidebar_notes_icon,
                 active_icon: Icons.sidebar_notes_active_icon,
-                show_active_icon: window.location.pathname.includes('/student_dashboard/notes'),
                 route: '/student_dashboard/notes'
             }
         ],

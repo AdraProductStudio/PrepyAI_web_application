@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Error from "Views/Common/Docs/error";
 import { InitializeProjectSetup } from "Views/Common/Docs/InitializeProjectSetup";
+import TimeTableCard from "Components/Card/TimeTableCard";
 import Books from "Views/Common/Docs/Books";
 import Notes from "Views/Common/Docs/Notes";
 
@@ -59,6 +60,22 @@ import SelfTestLayout from "Views/Learners/Layout/SelfTestLayout";
 import SelfTest from "Views/Learners/Docs/SelfTest";
 import MCQ from "Views/Learners/Docs/MCQ";
 import LongAnswers from "Views/Learners/Docs/LongAnswers";
+
+import OrganisationLayout from "Views/Organisation/Layout/Layout";
+import OrganisationDashboard from "Views/Organisation/Docs/OrganisationDashboard";
+import OrgAnnualPlan from "Views/Organisation/Docs/OrgAnnualPlan";
+import OrgMonthlyPlan from "Views/Organisation/Docs/OrgMonthlyPlan";
+import OrgPersonalInfo from "Views/Organisation/Docs/OrgPersonalInfo";
+import OrgPricingPlan from "Views/Organisation/Docs/OrgPricingPlan";
+import OrgProfile from "Views/Organisation/Docs/OrgProfile";
+import OrgSettings from "Views/Organisation/Docs/OrgSettings";
+
+import SuperadminLayout from "Views/Superadmin/Layout/Layout";
+import PersonalInfo from "Views/Superadmin/Docs/PersonalInfo";
+import Profile from "Views/Superadmin/Docs/Profile";
+import Settings from "Views/Superadmin/Docs/Settings";
+import SuperAdminDashboard from "Views/Superadmin/Docs/SuperAdminDashboard";
+
 
 function App() {
   return (
@@ -134,6 +151,7 @@ function App() {
               <Route path=":subject_id/attachments/:attachment_id" element={<BooksOverviewLayout />} />
             </Route>
             <Route path="test" element={<McqTest />} />
+            <Route path="test_status" element={<McqTest />} />
             <Route path="notes" element={<Notes />} />
           </Route>
 
@@ -148,6 +166,29 @@ function App() {
             <Route index path="calendar" element={<Calendar />} />
             <Route index path="notes" element={<Notes />} />
             <Route index path="pricing_plan" element={<PricingPlan />} />
+          </Route>
+
+          {/* Superadmin */}
+          <Route path="superadmin_dashboard" element={<SuperadminLayout />}>
+            <Route path="home" element={<SuperAdminDashboard />} />
+            <Route path="profile" element={<Profile />}>
+              <Route index element={<PersonalInfo />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
+          </Route>
+
+          {/* Organisation */}
+          <Route path="organisation_dashboard" element={<OrganisationLayout />}>
+            <Route path="home" element={<OrganisationDashboard />} />
+            <Route path="org_profile" element={<OrgProfile />}>
+              <Route index element={<OrgPersonalInfo />} />
+              <Route path="settings" element={<OrgSettings />} />
+              <Route path="timetable" element={<TimeTableCard />} />
+            </Route>
+            <Route path="pricing_plan" element={<OrgPricingPlan />} >
+              <Route index element={<OrgMonthlyPlan />} />
+              <Route path="annually" element={<OrgAnnualPlan />} />
+            </Route>
           </Route>
 
           <Route path="*" element={<Error />} />

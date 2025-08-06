@@ -13,11 +13,13 @@ const JsonData = () => {
             {
                 name: "Dashboard",
                 icon: Icons.sidebar_dashboard_icon,
+                active_icon: Icons.sidebar_dashboard_active_icon,
                 route: '/admin_dashboard/home'
             },
             {
                 name: "Classrooms",
                 icon: Icons.sidebar_classroom_icon,
+                active_icon: Icons.sidebar_classroom_active_icon,
                 route: '/admin_dashboard/classrooms'
             }
         ],

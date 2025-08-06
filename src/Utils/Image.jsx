@@ -1,3 +1,6 @@
+import stroke from "Assets/Image/Stroke.svg";
+import rocket from "Assets/Image/rocket.svg";
+
 const pdfImage = require("Assets/Image/pdfImage.png");
 const logo = require("Assets/Image/logo.png");
 const no_data_found = require("Assets/Image/no_data_found.png");
@@ -15,7 +18,7 @@ const stdProfile = require("Assets/Image/student-performance/stdProfile.png")
 const Image = {
   pdfImage, logo, no_data_found, book_image, no_subjects_added,
   loginImage, learnersImage, OrganizationImage, LoginCenterCircle,
-  ForgotPassword, SuccessImage, stdProfile
+  ForgotPassword, SuccessImage, stdProfile, stroke, rocket
 };
 
 export default Image;

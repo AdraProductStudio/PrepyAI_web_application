@@ -1,11 +1,20 @@
+import { useCustomNavigate } from "Components/CustomHooks";
 import Header from "Components/Panel_compnent/Header";
 import Sidebar from "Components/Panel_compnent/Sidebar"
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import JsonData from "Views/Teachers/Utils/JsonData";
 
 export default function Layout() {
     const { jsonOnly } = JsonData();
+    const navigate = useCustomNavigate();
 
+    useEffect(() => {
+        if (window.location.pathname === "/teachers_dashboard" || window.location.pathname === "/teachers_dashboard/") {
+            navigate("/teachers_dashboard/home");
+        }
+    }, [navigate])
+    
     return (
         <div className="layout_main">
             <div className="d-flex flex-wrap">

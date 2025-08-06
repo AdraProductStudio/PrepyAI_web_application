@@ -62,35 +62,30 @@ const JsonData = (params) => {
                 name: "Dashboard",
                 icon: Icons.sidebar_dashboard_icon,
                 active_icon: Icons.sidebar_dashboard_active_icon,
-                show_active_icon: window.location.pathname.includes('/teachers_dashboard/home'),
                 route: '/teachers_dashboard/home'
             },
             {
                 name: "Classrooms",
                 icon: Icons.sidebar_classroom_icon,
                 active_icon: Icons.sidebar_classroom_active_icon,
-                show_active_icon: window.location.pathname.includes('/teachers_dashboard/classrooms'),
                 route: '/teachers_dashboard/classrooms'
             },
             {
                 name: "Students",
                 icon: Icons.sidebar_student_icon,
                 active_icon: Icons.sidebar_student_active_icon,
-                show_active_icon: window.location.pathname.includes('/teachers_dashboard/students_details'),
                 route: '/teachers_dashboard/students_details'
             },
             // {
             //     name: "Calendar",
             //     icon: Icons.sidebar_calender_icon,
             //     active_icon: Icons.sidebar_calender_active_icon,
-            //     show_active_icon: window.location.pathname.includes('/teachers_dashboard/calendar'),
             //     route: '/teachers_dashboard/calendar'
             // },
             {
                 name: "Notes",
                 icon: Icons.sidebar_notes_icon,
                 active_icon: Icons.sidebar_notes_active_icon,
-                show_active_icon: window.location.pathname.includes('/teachers_dashboard/notes'),
                 route: '/teachers_dashboard/notes'
             }
         ],

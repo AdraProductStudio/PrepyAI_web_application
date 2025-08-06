@@ -1,12 +1,7 @@
-// import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks';
 import Icons from 'Utils/Icons';
 
 const JsonData = () => {
-    //main selectors
-    // const dispatch = useDispatch();
-    // const navigate = useCustomNavigate();
-    // const { commonState } = useCommonState();
-
+    
     const jsonOnly = {
         sidebar_data: [
             {
@@ -30,7 +25,6 @@ const JsonData = () => {
                 route: '/learners_dashboard/pricing_plan'
             },
         ],
-        // staff_table_headers: ['S.No', 'Staff Name', 'Institute Name', 'Subject', 'Contact No', 'Email', 'Qualification', 'Action']
     }
 
     const jsxJson = {

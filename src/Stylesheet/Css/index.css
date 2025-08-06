@@ -714,3 +714,92 @@ td {
   height: calc(var(--root-height) - var(--header-height) - 5rem);
   padding: 1rem 0;
 }
+
+
+/* BATHIRAN CSS Started*/
+.brand_color {
+  background: linear-gradient(90deg, #ec008c 0%, #fc6767 100%)
+}
+
+.brand_underscore {
+  border: 2px solid #ec008c;
+}
+
+.brand_color_pricing_plan {
+  background: linear-gradient(90deg, #ec008c 0%, #fc6767 100%);
+  color: white;
+}
+
+.custom-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Organisation Pricing Plan */
+.pricing_plan_capsule {
+  background: linear-gradient(to bottom, #1c3fc6 0%, #758bf0 100%);
+  color: white;
+}
+
+/* superAdminDashboard */
+.superAdminCard {
+  height: 12rem;
+  position: relative;
+}
+
+.strokeImage {
+  position: absolute;
+  bottom: 0rem;
+  right: 0rem;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.monthly_growth_chart {
+  width: 100%;
+  height: 125px;
+  border: 0;
+  outline: 0;
+}
+
+.plan_users_chart {
+  width: 100px;
+  height: 100px
+}
+
+.superAdmin_iconWrapper {
+  background-color: hsla(343, 100%, 96%, 1);
+}
+
+/* organisationDashboard */
+.basic_plan_rocket {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 80px;
+  height: auto;
+  opacity: 1;
+  pointer-events: none;
+}
+
+.organisation_iconWrapper {
+  background-color: hsla(343, 100%, 96%, 1);
+}
+
+/* profile */
+.profile_edit_button {
+  color: #ec008c;
+  border: 1px solid #ec008c;
+}
+
+.profile_edit_button:hover,
+.profile_edit_button:active {
+  color: white;
+  background: linear-gradient(90deg, #ec008c 0%, #fc6767 100%);
+  border: none;
+}
+/* BATHIRAN CSS ENDED*/

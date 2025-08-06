@@ -3,17 +3,19 @@ import OffCanvas from 'Components/Offcanvas/OffCanvas';
 import NavLinkComp from 'Components/Router_components/NavLink';
 import Img from 'Components/Img/Img';
 import Image from 'Utils/Image';
+import { useLocation } from "react-router-dom";
 
 const Sidebar = ({
     menuOptions, responsiveOn,
     offCanvasShow, handleCanvasOpenOrClose,
     companyLogo,
 }) => {
+    const location = useLocation();
 
     const hanldeButton = (v) => {
         return <>
             <div className="col-3 pb-1 text-center">
-                {v.show_active_icon ? v.active_icon : v.icon}
+                {location.pathname.includes(v.route) ? v.active_icon : v.icon}
             </div>
             <div className="col text-start route_content">
                 <p className='mb-0'>{v.name}</p>

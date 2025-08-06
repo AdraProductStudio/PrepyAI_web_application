@@ -9,8 +9,8 @@ import { decrypt_app_data_logs } from 'ResuableFunctions/logs_handler';
 import { OverallCanvas } from '../utils/OverallCanvas';
 
 export const InitializeProjectSetup = () => {
-    const { commonState } = useCommonState();
     const dispatch = useDispatch();
+    const { commonState } = useCommonState();
     const location = CustomUseLocationHook();
 
     // Internet event listeners (added outside useEffect, but depends on dispatch)

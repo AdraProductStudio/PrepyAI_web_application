@@ -3,15 +3,15 @@ import Header from "Components/Panel_compnent/Header";
 import Sidebar from "Components/Panel_compnent/Sidebar"
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import JsonData from "Views/Learners/Utils/JsonData";
+import JsonData from "Views/Superadmin/Utils/JsonData";
 
 export default function Layout() {
     const { jsonOnly } = JsonData();
     const navigate = useCustomNavigate();
 
     useEffect(() => {
-        if (window.location.pathname === "/learners_dashboard" || window.location.pathname === "/learners_dashboard/") {
-            navigate("/learners_dashboard/home");
+        if (window.location.pathname === "/superadmin_dashboard" || window.location.pathname === "/superadmin_dashboard/") {
+            navigate("/superadmin_dashboard/home");
         }
     }, [navigate])
 

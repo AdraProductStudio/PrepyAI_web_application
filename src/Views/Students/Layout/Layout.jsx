@@ -3,11 +3,19 @@ import Sidebar from "Components/Panel_compnent/Sidebar";
 import { Outlet } from "react-router-dom";
 import JsonData from "Views/Students/Utils/JsonData.jsx";
 import Header from "Components/Panel_compnent/Header";
+import { useCustomNavigate } from "Components/CustomHooks";
+import { useEffect } from "react";
 
 
 const Layout = () => {
-    // const { } = useCommonState();
     const { jsonOnly } = JsonData();
+    const navigate = useCustomNavigate();
+
+    useEffect(() => {
+        if (window.location.pathname === "/student_dashboard" || window.location.pathname === "/student_dashboard/") {
+            navigate("/student_dashboard/home");
+        }
+    }, [navigate])
 
     return (
         <div className="w-100 d-flex flex-wrap main_bg">

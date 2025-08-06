@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import JsonData from "../Utils/JsonData";
 
 const initialState = {
     studentsPerformance: {

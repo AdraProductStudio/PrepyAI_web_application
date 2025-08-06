@@ -775,9 +775,10 @@ const questions = [
 ]
 
 const TeacherSlice = createSlice({
-    name: "teacher_slice",
+    name: "student_slice",
     initialState: {
         mcq_test: {
+            is_question_loaded: false,
             questions: questions,
             test_end_on: "2025-08-05T15:56:09.707Z",
             remaining_time: {},
@@ -789,6 +790,7 @@ const TeacherSlice = createSlice({
     reducers: {
         caluculateRemainingTime: (state, action) => {
             const { remaining_time } = action.payload;
+            if (!remaining_time) state.mcq_test.test_end_on = "";
             state.mcq_test.remaining_time = remaining_time;
         },
         updateSelectedQuestionIndex(state, action) {
@@ -805,6 +807,7 @@ const TeacherSlice = createSlice({
             state.mcq_test.questions = action.payload;
             state.mcq_test.isDataPresentInIndexedDb = action.payload?.length ? true : false;
             state.mcq_test.answeredQuestionPercentage = answeredQues?.length / action.payload?.length * 100;
+            state.mcq_test.is_question_loaded = true;
         },
         getQuestionsEndpoint(state, action) {
             const { type, data } = action.payload;
@@ -830,13 +833,12 @@ const TeacherSlice = createSlice({
                         Cookies.set('log', encryptData(decrypt_cookie));
                     }
 
-                    return {
-                        ...state,
-                        generatedQuestions: data?.assigned_questions || [],
-                        test_end_timeStamp: data?.test_EndedOn || null,
-                        isDataPresentInIndexedDb: data?.assigned_questions ? true : false,
-                        initialGlow: false
-                    }
+                    state.mcq_test.questions = data?.assigned_questions || questions;
+                    state.mcq_test.test_end_on = data?.test_EndedOn || "";
+                    state.mcq_test.is_question_loaded = true;
+                    state.mcq_test.isDataPresentInIndexedDb = data?.assigned_questions ? true : false;
+                    state.mcq_test.initialGlow = false;
+                    break;
 
                 default:
                     break;
