@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Error from "Views/Common/Docs/error";
 import { InitializeProjectSetup } from "Views/Common/Docs/InitializeProjectSetup";
+import Books from "Views/Common/Docs/Books";
+import Notes from "Views/Common/Docs/Notes";
 
 import LoginForm from "Views/Auth/Docs/LoginForm";
 import LearnersRegister from "Views/Auth/Docs/LearnersRegister";
@@ -36,7 +38,9 @@ import TestPageLayout from "Views/Teachers/Layout/TestPageLayout";
 import UpcomingTest from "Views/Teachers/Docs/UpcomingTest";
 import OngoingTest from "Views/Teachers/Docs/OngoingTest";
 import CompletedTest from "Views/Teachers/Docs/CompletedTest";
-import Books from "Views/Common/Docs/Books";
+import TeachersAssigned from "Views/Teachers/Docs/TeachersAssigned";
+import SelfTakingTest from "Views/Teachers/Docs/SelfTakingTest";
+import StudentsPerformanceLayout from "Views/Teachers/Layout/StudentsPerformanceLayout";
 
 import StudentsLayout from "Views/Students/Layout/Layout";
 import StudentDashboard from "Views/Students/Docs/index";
@@ -46,7 +50,15 @@ import StudentsBooks from "Views/Students/Docs/Books";
 import StudentAttachments from "Views/Students/Docs/StudentAttachments";
 import BooksOverviewLayout from "Views/Students/Layout/BooksOverviewLayout";
 import McqTest from "Views/Students/Docs/McqTest";
-import Notes from "Views/Common/Docs/Notes";
+
+import LearnersLayout from 'Views/Learners/Layout/Layout'
+import Dashboard from "Views/Learners/Docs/Dashboard";
+import Calendar from "Views/Learners/Docs/Calendar";
+import PricingPlan from "Views/Learners/Docs/PricingPlan";
+import SelfTestLayout from "Views/Learners/Layout/SelfTestLayout";
+import SelfTest from "Views/Learners/Docs/SelfTest";
+import MCQ from "Views/Learners/Docs/MCQ";
+import LongAnswers from "Views/Learners/Docs/LongAnswers";
 
 function App() {
   return (
@@ -96,7 +108,10 @@ function App() {
                   <Route path="ongoing_test" element={<OngoingTest />} />
                   <Route path="completed_test" element={<CompletedTest />} />
                 </Route>
-                <Route path="student_performance" element={<p>student_performance</p>} />
+                <Route element={<StudentsPerformanceLayout />} >
+                  <Route path="teachers_assigned" element={<TeachersAssigned />} />
+                  <Route path="self_taking_test" element={<SelfTakingTest />} />
+                </Route>
                 <Route path="book" element={<Books />} />
               </Route>
             </Route>
@@ -104,7 +119,6 @@ function App() {
               <Route index element={<Students />} />
               <Route path="overview" element={<StudentOverview />} />
             </Route>
-            {/* <Route path="calendar" element={<div>Calendar Page</div>} /> */}
             <Route path="notes" element={<Notes />} />
           </Route>
 
@@ -121,6 +135,19 @@ function App() {
             </Route>
             <Route path="test" element={<McqTest />} />
             <Route path="notes" element={<Notes />} />
+          </Route>
+
+          {/* Learners */}
+          <Route path="learners_dashboard" element={<LearnersLayout />}>
+            <Route index path="home" element={<Dashboard />} />
+            <Route element={<SelfTestLayout />}>
+              <Route path="self_test" element={<SelfTest />} />
+              <Route path="mcq" element={<MCQ />} />
+              <Route path="long_answers" element={<LongAnswers />} />
+            </Route>
+            <Route index path="calendar" element={<Calendar />} />
+            <Route index path="notes" element={<Notes />} />
+            <Route index path="pricing_plan" element={<PricingPlan />} />
           </Route>
 
           <Route path="*" element={<Error />} />

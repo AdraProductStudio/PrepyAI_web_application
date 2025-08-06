@@ -2,11 +2,13 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit"
 import commonReducer from 'Views/Common/Slices/Common_slice';
 import TeacherReducer from 'Views/Students/Slices/TeacherSlice';
 import authReducer from "Views/Auth/Slices/authSlice";
+import teachersReducer from 'Views/Teachers/Slice/teachersSlice'
 
 const reducers = combineReducers({
     commonState: commonReducer,
     teacherState: TeacherReducer,
-    authState: authReducer
+    authState: authReducer,
+    teachersState: teachersReducer,
 })
 
 const store = configureStore({

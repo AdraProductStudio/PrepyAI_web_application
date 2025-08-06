@@ -46,6 +46,17 @@ const JsonData = (params) => {
             }
         ],
 
+        students_performance_options: [
+            {
+                title: "Teachers Assigned",
+                route: `/teachers_dashboard/classrooms/${params?.class_id}/${params?.subject_id}/teachers_assigned`
+            },
+            {
+                title: "Self Taking Test",
+                route: `/teachers_dashboard/classrooms/${params?.class_id}/${params?.subject_id}/self_taking_test`
+            }
+        ],
+
         sidebar_data: [
             {
                 name: "Dashboard",
@@ -97,7 +108,7 @@ const JsonData = (params) => {
             {
                 icon: Icons.performance_colored,
                 title: "Student Performance",
-                route: () => navigate('student_performance')
+                route: () => navigate('teachers_assigned')
             },
             {
                 icon: Icons.single_book_colored,

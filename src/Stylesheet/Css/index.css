@@ -646,7 +646,7 @@ td {
   height: calc(var(--root-height) - (var(--header-height) + 2rem));
 }
 
-.test_page_card_body_height{
+.test_page_card_body_height {
   height: calc(var(--root-height) - (var(--header-height) + 10rem));
 }
 
@@ -689,6 +689,28 @@ td {
   background-color: #6beb1c !important;
 }
 
-.NoteCard .heading{
+.NoteCard .heading {
   border-bottom: 1px dashed #DADADA !important;
+}
+
+
+/* Teachers view - Students performance */
+.students-performance-option {
+  text-decoration: none;
+  color: black;
+  padding-bottom: 4px;
+  margin-right: 40px;
+  border-bottom: 4px solid transparent;
+}
+
+.students-performance-option.active {
+  border-bottom: 4px solid #0A1629;
+  cursor: pointer;
+  padding-bottom: 4px;
+}
+
+/* Learners */
+.learners-main-content {
+  height: calc(var(--root-height) - var(--header-height) - 5rem);
+  padding: 1rem 0;
 }

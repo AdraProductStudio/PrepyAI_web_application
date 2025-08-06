@@ -10,11 +10,12 @@ export const useCommonState = () => {
   const selectCommonState = (state) => state.commonState;
   const selectTeacherState = (state) => state.teacherState;
   const selectAuthState = (state) => state.authState;
+  const selectTeachersState = (state) => state.teachersState;
 
   const selectMemoizedCommonState = createSelector(
-    [selectCommonState, selectTeacherState, selectAuthState],
-    (commonState, teacherState, authState) => (
-      { commonState, teacherState, authState }
+    [selectCommonState, selectTeacherState, selectAuthState, selectTeachersState],
+    (commonState, teacherState, authState, teachersState) => (
+      { commonState, teacherState, authState, teachersState }
     )
   )
   return useSelector(selectMemoizedCommonState);
