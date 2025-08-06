@@ -45,7 +45,7 @@ export const InitializeProjectSetup = () => {
         if (commonState?.app_data?.currentMenuName !== currentLocation) {
             dispatch(update_app_data({ type: "menu_name", data: currentLocation || '' }));
         }
-    }, [location, dispatch]);
+    }, [location, commonState?.app_data?.currentMenuName, dispatch]);
 
     // Effect 3: on tab visible, restore logs
     useEffect(() => {
