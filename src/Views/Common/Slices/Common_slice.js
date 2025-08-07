@@ -53,13 +53,6 @@ const commonSlice = createSlice({
     name: 'common_slice',
     initialState,
     reducers: {
-        update_tab_render_app_data(state, action) {
-            const { access_token, role, user_id } = action.payload;
-
-            state.app_data.token = access_token || '';
-            state.app_data.user_role = role || '';
-            state.app_data.user_id = user_id || '';
-        },
         updateModalShow(state, actions) {
             const { show, size, modal_from, modal_type, close_btn } = actions.payload;
             state.modal.show = show
@@ -83,8 +76,11 @@ const commonSlice = createSlice({
                     state.app_data.isOnline = data || false;
                     break;
                 case "menu_name":
+                    state.app_data.token = data?.access_token || '';
+                    state.app_data.user_role = data?.role_name || '';
+                    state.app_data.user_id = data?.user_id || ''; 
                     state.app_data.current_location = window.location.pathname || '';
-                    state.app_data.currentMenuName = data || '';
+                    state.app_data.currentMenuName = data?.currentLocation || '';
                     state.app_data.validated = false;
                     break;
                 case "dimension":
@@ -205,7 +201,7 @@ const { actions, reducer } = commonSlice;
 
 export const {
     update_app_data, update_error, updateModalShow, update_search,
-    logout, update_tab_render_app_data
+    logout
 
 } = actions;
 

@@ -18,7 +18,14 @@ const store = configureStore({
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false
     }),
-    devTools: true
+    devTools: {
+        name: 'PrepyAI Dashboard',
+        trace: false,
+        maxAge: 30,
+        shouldRecordChanges: false,
+        shouldCatchErrors: true,
+        actionsDenylist: ['very/frequent/action'],
+    },
 })
 
 export default store;
