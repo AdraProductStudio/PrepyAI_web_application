@@ -1,7 +1,3 @@
-.offcanvas-sidebar {
-  width: 18rem !important;
-}
-
 .spinner-border {
   width: 1.5rem !important;
   height: 1.5rem !important;
@@ -802,4 +798,25 @@ td {
   background: linear-gradient(90deg, #ec008c 0%, #fc6767 100%);
   border: none;
 }
+
 /* BATHIRAN CSS ENDED*/
+
+.header_profile_image {
+  width: 2rem;
+  height: 2rem;
+}
+
+.profile_card_body_height {
+  height: calc(var(--root-height) - (var(--header-height) + 14rem));
+  width: 80%;
+  overflow-y: auto;
+}
+
+.profile_left_card_height{
+  height: calc(var(--root-height) - (var(--header-height) + 18rem));
+  overflow-y: auto;
+}
+
+.offcanvas-sidebar {
+  width: 18rem !important;
+}

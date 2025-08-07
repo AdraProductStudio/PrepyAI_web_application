@@ -47,7 +47,7 @@ axiosInstance.interceptors.response.use(
 
 axiosInstance.interceptors.request.use((config) => {
   const state = store.getState();
-  const token = state?.commonState?.token;
+  const token = state?.commonState?.app_data?.token || '';
 
   //Bearer token
   if (token) {

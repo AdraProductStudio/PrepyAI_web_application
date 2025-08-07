@@ -4,7 +4,9 @@ import { LiaBookSolid } from "react-icons/lia";
 import { HiOutlineDownload } from "react-icons/hi";
 import prepyAiLogo from "Assets/Image/PrepyAI.svg";
 import { FcGoogle } from "react-icons/fc";
+import { RiMenuUnfold2Fill } from "react-icons/ri";
 
+const menuIcon = <RiMenuUnfold2Fill size={23} color="gray" />
 const menu_dot_icon = <BsThreeDotsVertical size={18} />
 const no_of_students = <GoPeople size={23} />
 const no_of_subjects = <LiaBookSolid size={23} />
@@ -565,6 +567,11 @@ const sidebar_pricing_icon = <svg xmlns="http://www.w3.org/2000/svg" width="25" 
   <path d="M16.7227 8.30078V12.7008" stroke="#A3A3A3" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 
+const logoutIcon = <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+  <path d="M15.5996 16.4417C15.2896 20.0417 13.4396 21.5117 9.38961 21.5117L9.25961 21.5117C4.78961 21.5117 2.99961 19.7217 2.99961 15.2517L2.99961 8.73172C2.99961 4.26172 4.78961 2.47172 9.25961 2.47172L9.38961 2.47172C13.4096 2.47172 15.2596 3.92172 15.5896 7.46172" stroke="#A3A3A3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M9.50086 12L20.8809 12" stroke="#A3A3A3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M18.65 15.3516L22 12.0016L18.65 8.65156" stroke="#A3A3A3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+</svg>
 
 const Icons = {
   menu_dot_icon, no_of_students, no_of_subjects, delete_icons,
@@ -588,7 +595,8 @@ const Icons = {
   arrowLeftIcon, arrowRightIcon, arrowRightWhiteIcon,
   DotSVG, subscriptionSVG, organisation, revenue,
   profile, settings, admins, teachers, billing, activeUsers,
-  sidebar_pricing_active_icon, sidebar_pricing_icon
+  sidebar_pricing_active_icon, sidebar_pricing_icon, logoutIcon,
+  menuIcon
 }
 
 export default Icons;

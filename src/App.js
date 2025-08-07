@@ -6,6 +6,7 @@ import { InitializeProjectSetup } from "Views/Common/Docs/InitializeProjectSetup
 import TimeTableCard from "Components/Card/TimeTableCard";
 import Books from "Views/Common/Docs/Books";
 import Notes from "Views/Common/Docs/Notes";
+import ReusableProfile from "Views/Common/Docs/ReusableProfile";
 
 import LoginForm from "Views/Auth/Docs/LoginForm";
 import LearnersRegister from "Views/Auth/Docs/LearnersRegister";
@@ -75,6 +76,7 @@ import PersonalInfo from "Views/Superadmin/Docs/PersonalInfo";
 import Profile from "Views/Superadmin/Docs/Profile";
 import Settings from "Views/Superadmin/Docs/Settings";
 import SuperAdminDashboard from "Views/Superadmin/Docs/SuperAdminDashboard";
+import LearnersAuth from "Views/Learners/Layout/LearnersAuth";
 
 
 function App() {
@@ -153,19 +155,22 @@ function App() {
             <Route path="test" element={<McqTest />} />
             <Route path="test_status" element={<McqTest />} />
             <Route path="notes" element={<Notes />} />
+            <Route path="profile" element={<ReusableProfile />} />
           </Route>
 
           {/* Learners */}
-          <Route path="learners_dashboard" element={<LearnersLayout />}>
-            <Route index path="home" element={<Dashboard />} />
-            <Route element={<SelfTestLayout />}>
-              <Route path="self_test" element={<SelfTest />} />
-              <Route path="mcq" element={<MCQ />} />
-              <Route path="long_answers" element={<LongAnswers />} />
+          <Route path="learners_dashboard" element={<LearnersAuth />}>
+            <Route element={<LearnersLayout />}>
+              <Route index path="home" element={<Dashboard />} />
+              <Route element={<SelfTestLayout />}>
+                <Route path="self_test" element={<SelfTest />} />
+                <Route path="mcq" element={<MCQ />} />
+                <Route path="long_answers" element={<LongAnswers />} />
+              </Route>
+              <Route index path="calendar" element={<Calendar />} />
+              <Route index path="notes" element={<Notes />} />
+              <Route index path="pricing_plan" element={<PricingPlan />} />
             </Route>
-            <Route index path="calendar" element={<Calendar />} />
-            <Route index path="notes" element={<Notes />} />
-            <Route index path="pricing_plan" element={<PricingPlan />} />
           </Route>
 
           {/* Superadmin */}

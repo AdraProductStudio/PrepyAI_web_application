@@ -12,13 +12,14 @@ const OrganizationImage = require("Assets/Image/organizationScreen.png");
 const LoginCenterCircle = require("Assets/Image/Vector.svg");
 const ForgotPassword = require("Assets/Image/forgotpasswordScreen.png");
 const SuccessImage = require("Assets/Image/Sticker.png");
-const stdProfile = require("Assets/Image/student-performance/stdProfile.png")
+const stdProfile = require("Assets/Image/student-performance/stdProfile.png");
+const default_prfile_pic = require("Assets/Image/default_prfile_pic.png");
 
 
 const Image = {
   pdfImage, logo, no_data_found, book_image, no_subjects_added,
   loginImage, learnersImage, OrganizationImage, LoginCenterCircle,
-  ForgotPassword, SuccessImage, stdProfile, stroke, rocket
+  ForgotPassword, SuccessImage, stdProfile, default_prfile_pic, stroke, rocket
 };
 
 export default Image;

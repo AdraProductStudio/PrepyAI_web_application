@@ -14,16 +14,16 @@ export default function Layout() {
             navigate("/teachers_dashboard/home");
         }
     }, [navigate])
-    
+
     return (
         <div className="layout_main">
             <div className="d-flex flex-wrap">
-                <Sidebar menuOptions={jsonOnly.sidebar_data} responsiveOn="lg" />
+                <Sidebar menuOptions={jsonOnly.sidebar_data} responsiveOn="lg" logoutOnClick={() => console.log("Logout clicked")} />
 
                 <main className="col layout_main_content overflow-hidden">
                     <div className="container-fluid h-100">
                         <header className="py-2">
-                            <Header />
+                            <Header offcanvasOn="lg" />
                         </header>
                         <div className="pt-3 main_content_height">
                             <Outlet />

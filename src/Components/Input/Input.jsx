@@ -19,7 +19,8 @@ const Input = ({
     min,
     eyeFunction,
     eyeIcon,
-    accept
+    accept,
+    ref
 }) => {
 
     return (
@@ -33,6 +34,7 @@ const Input = ({
                 null}
 
             <Form.Control
+                ref={ref}
                 type={type} id={htmlFor}
                 accept={accept}
                 placeholder={placeholder}

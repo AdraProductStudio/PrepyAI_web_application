@@ -4,11 +4,13 @@ import NavLinkComp from 'Components/Router_components/NavLink';
 import Img from 'Components/Img/Img';
 import Image from 'Utils/Image';
 import { useLocation } from "react-router-dom";
+import ButtonComponent from "Components/Button/Button";
+import Icons from "Utils/Icons";
 
 const Sidebar = ({
     menuOptions, responsiveOn,
     offCanvasShow, handleCanvasOpenOrClose,
-    companyLogo,
+    companyLogo, logoutOnClick
 }) => {
     const location = useLocation();
 
@@ -24,11 +26,9 @@ const Sidebar = ({
     }
 
     const headerFun = () => {
-        return <Fragment>
-            <div className='w-100'>
-                <Img src={Image?.logo} alt="website logo" className='website_logo' />
-            </div>
-        </Fragment>
+        return <div className='w-100'>
+            <Img src={Image?.logo} alt="website logo" className='website_logo' />
+        </div>
     }
 
     const bodyContent = () => {
@@ -73,6 +73,15 @@ const Sidebar = ({
         </nav >
     }
 
+    function footerContent() {
+        return <div className="sidebar-footer">
+            <ButtonComponent className="btn-transparent w-100" clickFunction={logoutOnClick}>
+                <span className="pe-3">{Icons.logoutIcon}</span>
+                <span className="text-secondary">Logout</span>
+            </ButtonComponent>
+        </div>
+    }
+
     return (
         <Fragment>
             <div className={`sidebar d-none ${responsiveOn ? `d-${responsiveOn}-block` : 'd-block'}`}>
@@ -85,8 +94,12 @@ const Sidebar = ({
                         </div>
                     </div>
 
-                    <div className="sidebar-body">
+                    <div className="sidebar-body-with-footer">
                         {bodyContent()}
+                    </div>
+
+                    <div className="sidebar-footer">
+                        {footerContent()}
                     </div>
                 </div>
             </div>
@@ -100,8 +113,9 @@ const Sidebar = ({
                 canvasHeader={headerFun('198px', '33px', companyLogo)}
                 offcanvasHeaderClassname="sidebar-header"
                 offcanvasHeaderTitleClassname="col-11 text-center"
-                offcanvasBodyClassname="sidebar-body-without-footer"
+                offcanvasBodyClassname="sidebar-body-with-footer"
                 canvasBody={bodyContent()}
+                canvasFooter={footerContent()}
             />
         </Fragment>
     )

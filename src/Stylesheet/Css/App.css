@@ -16,6 +16,7 @@
   --sidebar-body-margin: 0 0 0;
   --sidebar-background-color: #ffffff;
   --sidebar-border: 1px solid rgba(236, 236, 236, 0.88);
+  --sidebar-body-footer-height: 4.5rem;
 
   --btn-brand-bg-color: linear-gradient(90deg, #EC008C 0%, #FC6767 100%);
   --btn-brand-border-color: none;
@@ -120,7 +121,7 @@ body {
 }
 
 .sidebar-body-with-footer {
-  height: calc(var(--root-height) - (var(--sidebar-y-padding) + 2rem) - var(--sidebar-header-height) - var(--sidebar-body-footer-height));
+  height: calc(var(--root-height) - (var(--sidebar-header-height) + var(--sidebar-body-footer-height)));
   padding: var(--sidebar-body-padding);
   margin: var(--sidebar-body-margin);
 }

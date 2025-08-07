@@ -23,14 +23,16 @@ let initialState = {
         canvasShow: false,
         isOnline: true,
         currentMenuName: '',
+        current_location: window.location.pathname || '',
         innerWidth: window.innerWidth || 0,
         innerHeight: window.innerHeight || 0,
         buttonSpinner: false,
         validated: false,
         token: decrypt_app_data_logs()?.access_token || '',
         refresh_token: decrypt_app_data_logs()?.refresh_token || '',
-        user_role: decrypt_app_data_logs()?.role || '',
+        user_role: decrypt_app_data_logs()?.role_name || '',
         user_id: decrypt_app_data_logs()?.user_id || '',
+        user_image: decrypt_app_data_logs()?.profile_image || '',
     },
     pagination: {
         currentPage: 1,
@@ -81,6 +83,7 @@ const commonSlice = createSlice({
                     state.app_data.isOnline = data || false;
                     break;
                 case "menu_name":
+                    state.app_data.current_location = window.location.pathname || '';
                     state.app_data.currentMenuName = data || '';
                     state.app_data.validated = false;
                     break;
@@ -137,6 +140,7 @@ const commonSlice = createSlice({
 
                         state.app_data.token = data?.access_token || '';
                         state.app_data.refresh_token = data?.refresh_token || '';
+                        state.app_data.user_image = data?.profile_image || '';
                         state.app_data.user_role = data?.role_name || '';
                         state.app_data.validated = false;
                         break;

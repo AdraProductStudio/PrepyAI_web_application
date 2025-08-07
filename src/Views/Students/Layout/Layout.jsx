@@ -19,12 +19,12 @@ const Layout = () => {
 
     return (
         <div className="w-100 d-flex flex-wrap main_bg">
-            <Sidebar responsiveOn="xl" menuOptions={jsonOnly?.sidebar_data} />
+            <Sidebar responsiveOn="xl" menuOptions={jsonOnly?.sidebar_data} logoutOnClick={() => console.log("Logout clicked")} />
 
             <main className="col layout_main_content">
                 <div className="container-fluid ">
                     <header className="py-2">
-                        <Header />
+                        <Header offcanvasOn="lg" />
                     </header>
                     <div className="pt-3 main_content_height overflowY">
                         <Outlet />
