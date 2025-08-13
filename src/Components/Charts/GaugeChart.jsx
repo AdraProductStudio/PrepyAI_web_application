@@ -59,7 +59,7 @@ const GaugeChart = ({
                     cy={cy}
                     innerRadius={iR}
                     outerRadius={oR}
-                    cornerRadius={10} // ✅ Rounded edge
+                    cornerRadius={10} 
                     stroke="none"
                 >
                     {data.map((entry) => (

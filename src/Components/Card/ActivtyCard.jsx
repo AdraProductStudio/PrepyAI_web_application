@@ -1,8 +1,9 @@
 import ButtonComponent from "Components/Button/Button";
 import { Card } from "react-bootstrap"
+import { data } from "react-router-dom";
 import Icons from "Utils/Icons";
 
-const ActivityCard = () => {
+const ActivityCard = ({data}) => {
     function dynamicContent() {
         const path = window.location.pathname;
         switch (true) {
@@ -27,8 +28,8 @@ const ActivityCard = () => {
             case /teachers_dashboard/.test(path):
                 return (
                     <div className="col">
-                        <h6 className="mb-1 fs-14">Class 12 th Maths Test</h6>
-                        <p className="text-secondary fs-13 mb-0">Online - (Multiple Questions) May 12, 2025, 11:30am</p>
+                        <h6 className="mb-1 fs-14">{data?.classroom_name || "" + " "+ data?.subject_name || ""}</h6>
+                        <p className="text-secondary fs-13 mb-0">{data?.mode_of_test || ""} - ({data?.type_of_question || ""}) {data?.test_date || ""}, {data?.test_time || ""}</p>
                     </div>
                 )
 

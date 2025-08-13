@@ -15,7 +15,7 @@ export default function SubjectsCard({
             <Card.Title className={cardTitleClassName}>
                 <div className="w-100 d-flex align-items-center">
                     <div className="col-10">
-                        <h6>{data?.subject || ''}</h6>
+                        <h6>{data?.subject_name || ''}</h6>
                         <p className="text-secondary fs-13 mb-0">{data?.teacher_name || ''}</p>
                     </div>
                     <div className="col-2 text-end">

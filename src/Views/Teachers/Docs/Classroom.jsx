@@ -1,15 +1,29 @@
 import ButtonComponent from "Components/Button/Button";
 import ClassroomCard from "Components/Card/ClassroomCard";
-import { useCustomNavigate } from "Components/CustomHooks";
+import { useCommonState, useCustomNavigate } from "Components/CustomHooks";
 import Img from "Components/Img/Img";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import Icons from "Utils/Icons";
 import Image from "Utils/Image";
+import { getClassrooms, getTeachers } from "../Actions/teacherAction";
+import { updateModalShow } from "Views/Common/Slices/Common_slice";
+import { OverallModel } from "../Utils/OverallModal";
 
 const Classroom = () => {
     const navigate = useCustomNavigate();
-    const data = { no_of_stu: 30, no_of_books: 5, title: "Classroom A", date: "2023-10-01" };
+    const {teachersState} = useCommonState();
+    const {data,glow} = teachersState?.teacher_GetClassrooms;
+    console.log(data,"dasdas")
 
-    return (
+    const dispatch = useDispatch();
+
+    useEffect(()=>{
+        dispatch(getClassrooms())
+        dispatch(getTeachers());
+    },[])
+
+    return (                        
         <div className="h-100">
             <div className="container-fluid">
                 <div className="w-100 row justify-content-between align-items-center border-bottom pb-3">
@@ -17,7 +31,7 @@ const Classroom = () => {
                         <h5 className="mb-0">Classrooms</h5>
                     </div>
                     <div className="col text-end">
-                        <ButtonComponent type="button" className="btn-brand-color border py-2">
+                        <ButtonComponent type="button" className="btn-brand-color border py-2" clickFunction={() => dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "TeacherClassroom", modal_type: "createClassroom" }))}>
                             {Icons.add_icon}
                             <span className="lign-middle">Create Classroom</span>
                         </ButtonComponent>
@@ -25,7 +39,7 @@ const Classroom = () => {
                 </div>
 
                 <div className="w-100 row align-content-start small_header_content_main overflowY">
-                    {false ?
+                    {!data?.classrooms?.length ? 
                         <div className="w-100 h-100 row align-items-center justify-content-center">
                             <div className="col-6 text-center">
                                 <Img src={Image?.no_data_found} alt="No classes Found" className="no_data_found_image" />
@@ -38,14 +52,15 @@ const Classroom = () => {
                             </div>
                         </div>
                         :
-                        Array.from({ length: 5 }, (_, index) => (
+                        data?.classrooms?.map((val, index) => (
                             <div className="col-3 p-2" key={index}>
-                                <ClassroomCard cardClassName="w-100 h-100" data={data} buttonName="View" onclick={() => navigate(`/teachers_dashboard/classrooms/${index}`)} />
+                                <ClassroomCard cardClassName="w-100 h-100" data={val} buttonName="View" onclick={() => navigate(`/teachers_dashboard/classrooms/${val?.classroom_id}`)} />
                             </div>
                         ))
                     }
                 </div>
             </div>
+            <OverallModel />
         </div>
     )
 }

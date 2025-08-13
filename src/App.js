@@ -77,6 +77,7 @@ import Profile from "Views/Superadmin/Docs/Profile";
 import Settings from "Views/Superadmin/Docs/Settings";
 import SuperAdminDashboard from "Views/Superadmin/Docs/SuperAdminDashboard";
 import LearnersAuth from "Views/Learners/Layout/LearnersAuth";
+import TeachersAuth from "Views/Teachers/Layout/TeachersAuth";
 
 
 function App() {
@@ -110,14 +111,15 @@ function App() {
           </Route>
 
           {/* Teachers */}
-          <Route path="teachers_dashboard" element={<TeacherLayout />}>
+          <Route path="teachers_dashboard" element={<TeachersAuth />}>
+          <Route element={<TeacherLayout/>}>
             <Route path="home" element={<TeacherDashboard />} />
             <Route path="classrooms" >
               <Route index element={<StudentClassroom />} />
               <Route path=":class_id" element={<Subject />} />
               <Route path=":class_id/:subject_id">
                 <Route index element={<SubjectDetails />} />
-                <Route path="students_details" element={<StudentOverview />} />
+                <Route path=":student_id/students_details" element={<StudentOverview />} />
                 <Route element={<ScheduleTestLayout />} >
                   <Route path="create_test" element={<CreateTest />} />
                   <Route path="preview_test" element={<PreviewTest />} />
@@ -139,6 +141,7 @@ function App() {
               <Route path="overview" element={<StudentOverview />} />
             </Route>
             <Route path="notes" element={<Notes />} />
+            </Route>
           </Route>
 
           {/* Students */}

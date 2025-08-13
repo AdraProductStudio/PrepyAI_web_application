@@ -37,7 +37,7 @@ let initialState = {
     pagination: {
         currentPage: 1,
         totalCount: 0,
-        siblingCount: 1,
+        siblingCount: 10,
     },
     search: {
         value: '',
@@ -82,6 +82,10 @@ const commonSlice = createSlice({
                     state.app_data.current_location = window.location.pathname || '';
                     state.app_data.currentMenuName = data?.currentLocation || '';
                     state.app_data.validated = false;
+                    state.pagination.currentPage = 1;
+                    state.pagination.totalCount = 0;    
+                    state.pagination.siblingCount = 10;
+                    // state.
                     break;
                 case "dimension":
                     state.app_data.innerWidth = data?.innerWidth || 0;
@@ -90,6 +94,12 @@ const commonSlice = createSlice({
                 case "validation":
                     state.app_data.validated = data || false;
                     break;
+                case "pagination":
+                    state.pagination.currentPage = data?.currentPage || 1;
+                    state.pagination.totalCount = data?.totalCount || 0;
+                    state.pagination.siblingCount = data?.siblingCount || 10;
+                    break;
+
                 default:
                     return
             }

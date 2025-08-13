@@ -8,7 +8,7 @@ export default function ClassroomCard({
     cardTitleClassName = "p-4 pb-3 border-bottom",
     buttonName, onclick, data
 }) {
-    const items = [{ icons: Icons?.no_of_students, content: 'No of Students', count: data?.no_of_stu || 0 }, { icons: Icons?.no_of_subjects, content: 'No of Subjects', count: data?.no_of_books || 0 }]
+    const items = [{ icons: Icons?.no_of_students, content: 'No of Students', count: data?.no_of_students || 0 }, { icons: Icons?.no_of_subjects, content: 'No of Subjects', count: data?.no_of_subjects || 0 }]
 
     return (
         <Card className={`shadow-sm border-0 ${cardClassName}`}>

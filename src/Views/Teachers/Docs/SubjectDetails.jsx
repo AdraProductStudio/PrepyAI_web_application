@@ -6,10 +6,33 @@ import SubjectOptionsCard from "Components/Card/SubjectOptionsCard";
 import LinkComponent from "Components/Router_components/LinkComponent";
 import StudentsTableCard from "./StudentsTableCard";
 import ReactPaginateComp from "Components/Pagination/ReactPaginateComp";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { GetStudentsList } from "../Actions/teacherAction";
+import { useCommonState } from "Components/CustomHooks";
+import { update_app_data } from "Views/Common/Slices/Common_slice";
+import { type } from "@testing-library/user-event/dist/type";
 
 const SubjectDetails = () => {
     const { jsonOnly } = JsonData();
     const { class_id } = useParams();
+    const {subject_id} = useParams();
+    const dispatch = useDispatch();
+    const {teachersState,commonState} = useCommonState();
+    const {data} = teachersState?.teacher_GetStudentList;
+    const {pagination} = commonState;
+
+    useEffect(()=>{
+        dispatch(GetStudentsList({
+            subject_id,
+            search_query:"",
+            show_entries:pagination?.siblingCount,
+            page:pagination?.currentPage,
+            sort_by:"joined_at",
+            sort_order:"asc"
+        }))
+    },[pagination])
+
 
     return (
         <div>
@@ -17,7 +40,7 @@ const SubjectDetails = () => {
                 <div className="col">
                     <LinkComponent to={`/teachers_dashboard/classrooms/${class_id}`} className="brand-link-color">
                         <span>{Icons.back_button_icon_blue}</span>
-                        <span className="align-middle">Subjects</span>
+                        <span className="align-middle"> Back to Subjects</span>
                     </LinkComponent>
                 </div>
             </div>
@@ -29,10 +52,10 @@ const SubjectDetails = () => {
                 ))}
             </div>
             <div className="w-100 py-4 subject_details_content_height overflowY pe-3">
-                <StudentsTableCard className="h-100" navigate_to="students_details" />
+               <StudentsTableCard className="h-100" navigate_to="students_details" data={data} /> 
             </div>
             <div className="mt-3">
-                <ReactPaginateComp />
+                <ReactPaginateComp  totalPages={data?.total_pages}/>
             </div>
         </div>
     )

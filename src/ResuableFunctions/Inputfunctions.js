@@ -11,6 +11,7 @@ export function Inputfunctions(funBy) {
     if (!funBy || funBy.length === 0) return null;
     
     return funBy?.map((ipVal, iPInd) => {
+        console.log(ipVal,"dasdsa")
         switch (ipVal?.category) {
             case "heading":
                 return <div className={ipVal?.divClassName} >
@@ -79,10 +80,10 @@ export function Inputfunctions(funBy) {
                                         mandatory={ipVal?.isMandatory}
                                         className="d-none"
                                         htmlFor="file_upload"
-                                        accept={ipVal?.accept}
                                         multiple={true}
                                         inputError={ipVal?.Err}
                                         disabled={ipVal?.disabled}
+                                        accept={ipVal?.accept}
                                     />
 
                                     <div className='border py-2 rounded-2 col-12 text-center'>
@@ -93,7 +94,7 @@ export function Inputfunctions(funBy) {
 
                                 <div className="mt-4 w-100">
                                     {ipVal?.value?.map((data, index) => {
-                                        const { id, filename, fileimage, datetime, filesize } = data;
+                                        const { id, name:filename, fileimage, datetime, size:filesize } = data;
                                         return (
                                             // typeof data === "string" ?
                                             //     <div className="file-atc-box w-100" key={id}>
@@ -121,7 +122,7 @@ export function Inputfunctions(funBy) {
                                             //     </div>
                                             //     :
                                             <div className="file-atc-box w-100" key={id}>
-                                                {filename.match(/.(jpg|jpeg|png|gif|svg)$/i) ?
+                                                {filename.match(/.(jpg|jpeg|png|gif|svg|ods)$/i) ?
                                                     <div className="file-image">
                                                         {" "}
                                                         <img src={fileimage} alt="" />
@@ -136,18 +137,18 @@ export function Inputfunctions(funBy) {
                                                     <div className="col-9">
                                                         <p>
                                                             <span>Size : {filesize}</span>,
-                                                            <span className="ps-1 ml-2">
+                                                            {/* <span className="ps-1 ml-2">
                                                                 Modified Time : {datetime}
-                                                            </span>
+                                                            </span> */}
                                                         </p>
                                                     </div>
                                                     <div className="file-actions col-3">
-                                                        <ButtonComponent
+                                                        {/* <ButtonComponent
                                                             type="button"
                                                             className="file-action-btn w-100 text-end"
                                                             clickFunction={() => ipVal?.deleteImg(id)}
                                                             buttonName="Delete"
-                                                        />
+                                                        /> */}
                                                     </div>
                                                 </div>
                                             </div>
