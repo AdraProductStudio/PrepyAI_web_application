@@ -1,18 +1,26 @@
-import { useCommonState } from "Components/CustomHooks";
+import ButtonComponent from "Components/Button/Button";
+import { useCommonState, useDispatch } from "Components/CustomHooks";
+import Input from "Components/Input/Input";
 import ModalComponent from "Components/Modal/Modal";
+import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
+import { updateModalShow } from "Views/Common/Slices/Common_slice";
+import JsonData from "./JsonData";
+import { postTeacherNote } from "Views/Common/Actions/Common_action";
 
 
 export function OverallModel() {
     const { commonState } = useCommonState();
-    // const dispatch = useDispatch();
-    // const navigate = useCustomNavigate();
+    const dispatch = useDispatch();
+    const { jsxJson } = JsonData();
+
+   
 
     function modalHeaderFun() {
         switch (commonState?.modal?.from) {
-            case "Home":
+            case "notes":
                 switch (commonState?.modal?.type) {
-                    case "":
-                        return <h5>Home</h5>
+                    case "add_note":
+                        return <h5 className="m-0 ps-4">Add  Notes</h5>
 
                     default:
                         break;
@@ -26,10 +34,37 @@ export function OverallModel() {
 
     function modalBodyFun() {
         switch (commonState?.modal?.from) {
-            case "Home":
+            case "notes":
                 switch (commonState?.modal?.type) {
-                    case " ":
-                        return
+                    case "add_note":
+                        return <div className='p-2 w-100'>
+                            {Inputfunctions(jsxJson.notes_input)}
+
+                            <div className="d-flex justify-content-between align-items-center gap-5">
+                                <div className="">
+                                    <ButtonComponent
+                                        type="button"
+                                        className="btn btn-outline-dark px-4"
+                                        buttonName="Cancel"
+                                        clickFunction={() => dispatch(updateModalShow({ show: null, close_btn: false, modal_from: "notes", modal_type: "add_note" }))}
+                                    />
+                                </div>
+                                <div>
+                                    <ButtonComponent
+                                        type="button"
+                                        className="btn btn-brand-color px-5 py-2"
+                                        buttonName="Add"
+                                        clickFunction={() => {
+                                            const noteData = {
+                                                title: commonState?.notesdata?.title || "",
+                                                content: commonState?.notesdata?.content || ""
+                                            };
+                                            dispatch(postTeacherNote(noteData));
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                        </div>
 
                     default:
                         break;

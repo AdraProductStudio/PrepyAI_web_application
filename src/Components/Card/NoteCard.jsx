@@ -1,4 +1,5 @@
 import ButtonComponent from "Components/Button/Button";
+import { useState } from "react";
 import { Card, Row, Col } from "react-bootstrap";
 import { FaRegClock } from "react-icons/fa";
 import Icons from "Utils/Icons";
@@ -7,10 +8,17 @@ const NoteCard = ({
     data, addFavoriteOnClick,
     notesEditOnClick, notesDeleteOnClick
 }) => {
+    const [isExpanded, setIsExpanded] = useState(false)
+
+    const shortText =
+        data?.notes?.length > 250
+            ? data.notes.slice(0, 250) + "..."
+            : data?.notes || "";
+
 
     return (
-        <Card className="NoteCard rounded-4 p-3 shadow-sm border-0 mb-3 h-100" style={{ backgroundColor: '#F4FAB3' || '#fafaf8ff' }}>
-            <Row className="align-items-start justify-content-between py-1 mb-3 heading">
+        <Card className="NoteCard rounded-4 p-3 shadow-sm border-0 mb-3 h-100 " style={{ backgroundColor: '#F4FAB3' || '#fafaf8ff' }}>
+            <Row className="align-items-start  justify-content-between py-1 mb-3 heading">
                 <Col>
                     <p className="text-secondary fs-13">{data?.date || ''}</p>
                     <h5 className="fw-semibold mt-2">{data?.title || ''}</h5>
@@ -21,9 +29,27 @@ const NoteCard = ({
                     <ButtonComponent className="btn" buttonName={Icons?.NoteDeleteIcon} clickFunction={notesDeleteOnClick} />
                 </Col>
             </Row>
-            <div className="text-dark" style={{ fontSize: "15px" }}>
-                {data?.description || ''}
+
+            <div className="text-dark d-flex flex-column text-start" style={{ fontSize: "15px" }}>
+                {isExpanded ? data?.notes : shortText}
+
+                {data?.notes?.length > 250 && (
+                    <span
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        style={{
+                            color: "blue",
+                            cursor: "pointer",
+                            marginLeft: "5px",
+                            fontWeight: "500",
+                        }}
+                    >
+                        {isExpanded ? "View Less" : "View More"}
+                    </span>
+                )}
             </div>
+            {/* <div className="text-dark" style={{ fontSize: "15px" }}>
+                {data?.notes || ''}
+            </div> */}
             <div className="d-flex align-items-center text-muted mt-3" style={{ fontSize: "14px" }}>
                 <FaRegClock className="me-2" />
                 {data?.time || ''}

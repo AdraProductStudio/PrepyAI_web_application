@@ -203,7 +203,7 @@ export function Inputfunctions(funBy) {
                         rows={5}
                         className=""
                         label={ipVal?.name}
-                        labelClassName="text-secondary mb-0 fs-14"
+                        labelClassName="text-secondary fw-bold mb-0 fs-14"
                         mandatory={ipVal?.isMandatory}
                         inputError={ipVal?.Err}
                         disabled={ipVal?.disabled}
