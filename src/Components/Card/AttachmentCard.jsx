@@ -15,9 +15,9 @@ const AttachmentCard = ({
             <Card.Body className="position-relative">
                 <Img src={Image.book_image} alt="book image" className="book_image" />
 
-                <div className="delete_icon">
+                {/* <div className="delete_icon">
                     <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.delete_icons} clickFunction={delete_function} />
-                </div>
+                </div> */}
 
                 <div className="download_icon">
                     <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.attachment_download_icon} clickFunction={download_function} />

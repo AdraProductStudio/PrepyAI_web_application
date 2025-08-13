@@ -1,12 +1,13 @@
-// import { useCommonState } from 'Components/CustomHooks';
+import { useCommonState, useCustomNavigate, useDispatch } from "Components/CustomHooks";
 import Icons from "Utils/Icons"
 import Image from "Utils/Image"
+import { setClassroomCode } from "../Slices/StudentSlice";
 
 const JsonData = (params) => {
     //main selectors
-    // const dispatch = useDispatch();
-    // const navigate = useCustomNavigate();
-    // const { commonState } = useCommonState();
+    const dispatch = useDispatch();
+    const navigate = useCustomNavigate();
+    const { commonState, studentState } = useCommonState();
 
     const jsonOnly = {
         sidebar_data: [
@@ -193,6 +194,34 @@ const JsonData = (params) => {
 
     const jsxJson = {
 
+        classroom: [
+            {
+                name: "",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: studentState?.classroom_data?.classroom_code || '',
+                change: (e) => dispatch(setClassroomCode({type: 'set', classroom_code: e.target.value })),
+                divClassName: "mb-3",
+                isMandatory: true,
+                Err: studentState?.classroom_data?.validated && !studentState?.classroom_data?.classroom_code ? "class code required" : null
+            },
+        ],
+
+        uploadTest: [
+           {
+                name: "Books",
+                category: "select",
+                type: "normal_select",
+                options: [],
+                placeholder: "",
+                isMandatory: true,
+                value: "",
+                change: (e) => console.log(e.target.value),
+                divClassName: "col-12 com-sm-6 col-xl-4 p-2",
+                Err: commonState?.app_data?.validated ? "Select test" : "",
+            },
+        ]
     }
 
     return {

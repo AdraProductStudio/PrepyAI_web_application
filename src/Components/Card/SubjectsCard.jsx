@@ -19,12 +19,12 @@ export default function SubjectsCard({
                         <p className="text-secondary fs-13 mb-0">{data?.teacher_name || ''}</p>
                     </div>
                     <div className="col-2 text-end">
-                        <ButtonComponent
+                        {/* <ButtonComponent
                             type="button"
                             className="btn"
                             buttonName={Icons?.delete_icons}
                             clickFunction={onclickDelete}
-                        />
+                        /> */}
                     </div>
                 </div>
             </Card.Title>

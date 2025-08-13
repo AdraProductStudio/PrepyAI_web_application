@@ -3,6 +3,7 @@ import PerformanceHistoryBookCard from "./PerformanceHistoryBookCard";
 const { Card } = require("react-bootstrap");
 
 const AttachmentBookHistoryCard = ({
+    bookTestHistory,
     className,
 }) => {
 
@@ -13,9 +14,17 @@ const AttachmentBookHistoryCard = ({
             </Card.Header>
 
             <Card.Body className="">
-                {Array.from({ length: 4 }).map((_, index) => (
-                     <PerformanceHistoryBookCard className="p-3 pb-1 mb-2" key={index} />
-                ))}
+            {
+                bookTestHistory.length > 0 ? (
+                    bookTestHistory.map((test, idx)=>(
+                        <div key={idx}>
+                           <PerformanceHistoryBookCard className="p-3 pb-1 mb-2" data={test} />
+                        </div>
+                    ))
+                ):(
+                    <p className="text-center">No History</p>
+                )
+            }
             </Card.Body>
         </Card>
     )

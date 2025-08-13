@@ -573,6 +573,46 @@ const logoutIcon = <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24
   <path d="M18.65 15.3516L22 12.0016L18.65 8.65156" stroke="#A3A3A3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 
+const studentUpload = <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
+<path d="M13.0645 17.8737V12.457" stroke="url(#paint0_linear_2787_9452)" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15.7077 15.168H10.291" stroke="url(#paint1_linear_2787_9452)" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M23.8327 11.918V18.418C23.8327 22.7513 22.7493 23.8346 18.416 23.8346H7.58268C3.24935 23.8346 2.16602 22.7513 2.16602 18.418V7.58464C2.16602 3.2513 3.24935 2.16797 7.58268 2.16797H9.20768C10.8327 2.16797 11.1902 2.64464 11.8077 3.46797L13.4327 5.63464C13.8443 6.1763 14.0827 6.5013 15.166 6.5013H18.416C22.7493 6.5013 23.8327 7.58464 23.8327 11.918Z" stroke="url(#paint2_linear_2787_9452)" stroke-width="1.5" stroke-miterlimit="10"/>
+<defs>
+<linearGradient id="paint0_linear_2787_9452" x1="13.0645" y1="15.1654" x2="14.0645" y2="15.1654" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EC008C"/>
+<stop offset="1" stop-color="#FC6767"/>
+</linearGradient>
+<linearGradient id="paint1_linear_2787_9452" x1="10.291" y1="15.668" x2="15.7077" y2="15.668" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EC008C"/>
+<stop offset="1" stop-color="#FC6767"/>
+</linearGradient>
+<linearGradient id="paint2_linear_2787_9452" x1="2.16602" y1="13.0013" x2="23.8327" y2="13.0013" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EC008C"/>
+<stop offset="1" stop-color="#FC6767"/>
+</linearGradient>
+</defs>
+</svg>
+
+const studentUploadLarge = <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 45 45" fill="none">
+<path d="M22.6133 30.9375V21.5625" stroke="url(#paint0_linear_2787_12303)" stroke-width="2.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M27.1875 26.25H17.8125" stroke="url(#paint1_linear_2787_12303)" stroke-width="2.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M41.25 20.625V31.875C41.25 39.375 39.375 41.25 31.875 41.25H13.125C5.625 41.25 3.75 39.375 3.75 31.875V13.125C3.75 5.625 5.625 3.75 13.125 3.75H15.9375C18.75 3.75 19.3687 4.575 20.4375 6L23.25 9.75C23.9625 10.6875 24.375 11.25 26.25 11.25H31.875C39.375 11.25 41.25 13.125 41.25 20.625Z" stroke="url(#paint2_linear_2787_12303)" stroke-width="2.5" stroke-miterlimit="10"/>
+<defs>
+<linearGradient id="paint0_linear_2787_12303" x1="22.6133" y1="26.25" x2="23.6133" y2="26.25" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EC008C"/>
+<stop offset="1" stop-color="#FC6767"/>
+</linearGradient>
+<linearGradient id="paint1_linear_2787_12303" x1="17.8125" y1="26.75" x2="27.1875" y2="26.75" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EC008C"/>
+<stop offset="1" stop-color="#FC6767"/>
+</linearGradient>
+<linearGradient id="paint2_linear_2787_12303" x1="3.75" y1="22.5" x2="41.25" y2="22.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EC008C"/>
+<stop offset="1" stop-color="#FC6767"/>
+</linearGradient>
+</defs>
+</svg>
+
 const Icons = {
   menu_dot_icon, no_of_students, no_of_subjects, delete_icons,
   no_of_books, no_of_tests, pdfDeleteIcon, testScreenEditIcon,
@@ -596,7 +636,7 @@ const Icons = {
   DotSVG, subscriptionSVG, organisation, revenue,
   profile, settings, admins, teachers, billing, activeUsers,
   sidebar_pricing_active_icon, sidebar_pricing_icon, logoutIcon,
-  menuIcon
+  menuIcon, studentUpload, studentUploadLarge
 }
 
 export default Icons;

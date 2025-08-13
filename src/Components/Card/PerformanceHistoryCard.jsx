@@ -4,7 +4,7 @@ import JsonData from 'Views/Students/Utils/JsonData';
 import PerformanceAndHistoryChart from 'Components/Charts/PerformanceAndHistoryChart';
 import PerformanceHistoryBookCard from './PerformanceHistoryBookCard';
 
-const PerformanceHistoryCard = () => {
+const PerformanceHistoryCard = ({history_data}) => {
   const { jsonOnly } = JsonData();
 
   return (
@@ -33,7 +33,17 @@ const PerformanceHistoryCard = () => {
         </Row>
 
         <Col xs={12} className='mt-4'>
-          <PerformanceHistoryBookCard className="p-3 pb-1" />
+          {
+            history_data?.length > 0 ? (
+              history_data?.map((test, idx) => (
+                <div key={idx} className="my-3">
+                  <PerformanceHistoryBookCard className="p-3 pb-1" data={test} />
+                </div>
+              ))
+            ) : (
+              <p>No test history</p>
+            )
+          }
         </Col>
       </Card.Body>
     </Card>

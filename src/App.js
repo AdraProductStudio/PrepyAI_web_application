@@ -150,7 +150,8 @@ function App() {
                 <Route index element={<StudentsBooks />} />
                 <Route path="attachments" element={<StudentAttachments />} />
               </Route>
-              <Route path=":subject_id/attachments/:attachment_id" element={<BooksOverviewLayout />} />
+              {/* <Route path=":subject_id/attachments/:attachment_id" element={<BooksOverviewLayout />} /> */}
+               <Route path=":subject_id/books/:book_idx" element={<BooksOverviewLayout />} />
             </Route>
             <Route path="test" element={<McqTest />} />
             <Route path="test_status" element={<McqTest />} />
