@@ -1,7 +1,5 @@
 import axios from 'axios';
 import axiosInstance from 'Services/axiosInstance';
-
-import axiosInstance from 'Services/axiosInstance';
 import {
     handleDeleteNote,
     handlePostNote,

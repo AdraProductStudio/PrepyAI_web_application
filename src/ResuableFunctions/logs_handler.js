@@ -11,11 +11,7 @@ export function encryption(data) {
 
 export function decrypt_app_data_logs() {
     let logs = Cookies.get("project_log") ? decryptData(Cookies.get("project_log")) : null;
-<<<<<<< HEAD
-    let path = window.location.pathname?.split("/")[1]
-=======
     let path = window.location.pathname?.split("/")[1] || ''
->>>>>>> pradheep_teachers_flow
 
     if (logs) {
         switch (path) {
@@ -32,10 +28,6 @@ export function decrypt_app_data_logs() {
                 return logs['LEARNER'] || {}
 
             case 'superadmin_dashboard':
-<<<<<<< HEAD
-=======
-                console.log(logs['SUPER_ADMIN'])
->>>>>>> pradheep_teachers_flow
                 return logs['SUPER_ADMIN'] || {}
 
             case 'organisation_dashboard':
@@ -50,19 +42,11 @@ export function decrypt_app_data_logs() {
 
 export function view_logout() {
     let logs = Cookies.get("project_log") ? decryptData(Cookies.get("project_log")) : {}
-<<<<<<< HEAD
-    let path = window.location.pathname?.split("/")[1]
-
-    if (Object.keys(logs)?.length > 1) {
-        switch (path) {
-            case path?.includes('admin_dashboard'):
-=======
     let path = window.location.pathname?.split("/")[1] || ''
-
+    
     if (Object.keys(logs)?.length > 1) {
         switch (path) {
             case 'admin_dashboard':
->>>>>>> pradheep_teachers_flow
                 delete logs['ADMIN'];
                 Cookies.set('project_log', encryptData(logs));
                 break;

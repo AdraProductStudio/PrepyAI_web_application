@@ -2,22 +2,13 @@ import { useCommonState, useCustomNavigate, useDispatch } from 'Components/Custo
 import { handlePostNote, update_app_data, update_note_data } from 'Views/Common/Slices/Common_slice';
 import Icons from 'Utils/Icons';
 import Image from 'Utils/Image';
-<<<<<<< HEAD
-import { postTeacherNote } from 'Views/Common/Actions/Common_action';
-=======
-import { create_test_onchange, get_student_details_slice, update_selected_books } from '../Slice/teachersSlice';
+import { update_selected_books } from '../Slice/teachersSlice';
 import { get_bookmarks } from '../Actions/TeacherActions';
->>>>>>> pradheep_teachers_flow
 
 const JsonData = (params) => {
     const dispatch = useDispatch();
     const navigate = useCustomNavigate();
-<<<<<<< HEAD
-    const { commonState } = useCommonState();
-    
-=======
     const { commonState, teachersState } = useCommonState();
->>>>>>> pradheep_teachers_flow
 
 
     const jsonOnly = {
@@ -212,7 +203,7 @@ const JsonData = (params) => {
                 divClassName: "col-12 com-sm-6 col-xl-4 p-2",
                 Err: commonState?.app_data?.validated ? "Please enter number of questions" : "",
             },
-              {
+            {
                 name: "Students",
                 category: "select",
                 type: "normal_select",
@@ -298,8 +289,8 @@ const JsonData = (params) => {
                     dispatch(update_note_data({ type: "title", data: e.target.value }));
                 },
                 keyDown: (e) => {
-                          if (e.key === "Enter") dispatch(handlePostNote(commonState?.notesdata));
-                        },
+                    if (e.key === "Enter") dispatch(handlePostNote(commonState?.notesdata));
+                },
             },
             {
                 name: "ADD CONTENT HERE",
@@ -311,16 +302,10 @@ const JsonData = (params) => {
                     dispatch(update_note_data({ type: "content", data: e.target.value }));
                 },
                 keyDown: (e) => {
-                          if (e.key === "Enter") dispatch(handlePostNote(commonState?.notesdata));
-                        },
+                    if (e.key === "Enter") dispatch(handlePostNote(commonState?.notesdata));
+                },
             }
         ]
-<<<<<<< HEAD
-        
-=======
-
-
->>>>>>> pradheep_teachers_flow
     }
 
     return {
