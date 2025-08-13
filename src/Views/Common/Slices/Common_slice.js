@@ -52,7 +52,7 @@ let initialState = {
         glow: true,
         data: []
     },
-    notesdata:{
+    notesdata: {
         title: "",
         content: "",
     },
@@ -61,13 +61,14 @@ let initialState = {
         data: []
     },
     deleteNoteStatus: {
-        glow:true,
-        data:[]
+        glow: true,
+        data: []
     },
-    
-    
-
-
+    books: {
+        loading: false,
+        data: [],
+        error: null
+    }
 }
 
 const commonSlice = createSlice({
@@ -87,21 +88,21 @@ const commonSlice = createSlice({
         //   },
         handleDeleteNote(state, action) {
             const { type, message } = action.payload;
-      
+
             if (type === "request") {
-              state.deleteNoteStatus.loading = true;
-              state.deleteNoteStatus.error = null;  
+                state.deleteNoteStatus.loading = true;
+                state.deleteNoteStatus.error = null;
             } else if (type === "success") {
-              state.deleteNoteStatus.loading = false;
-              state.deleteNoteStatus.error = null;
+                state.deleteNoteStatus.loading = false;
+                state.deleteNoteStatus.error = null;
             } else if (type === "failure") {
-              state.deleteNoteStatus.loading = false;
-              state.deleteNoteStatus.error = message;
+                state.deleteNoteStatus.loading = false;
+                state.deleteNoteStatus.error = message;
             }
-          },
-          setNotes(state, action) {
+        },
+        setNotes(state, action) {
             state.notes = action.payload;
-          },
+        },
 
         handlePostNote: (state, action) => {
             const { type, data } = action.payload;
@@ -211,10 +212,26 @@ const commonSlice = createSlice({
             state.app_data.user_role = '';
             state.app_data.user_id = '';
         },
-        // update_note_data(state, action) {
-        //     const [key, value] = Object.entries(action.payload)[0] || [];
-        //     state.notesdata[key] = value || "";
-        //   },
+        handleGetBooks: (state, action) => {
+            const { type, data, message } = action.payload || {};
+            switch (type) {
+                case "request":
+                    state.loading = true;
+                    state.error = null;
+                    break;
+                case "response":
+                    state.loading = false;
+                    state.books.data = data || [];
+                    state.books.error = null;
+                    break;
+                case "failure":
+                    state.loading = false;
+                    state.error = message || "Something went wrong";
+                    break;
+                default:
+                    return;
+            }
+        },
         update_note_data(state, action) {
             const { type, data } = action.payload;
             state.notesdata[type] = data || "";
@@ -268,7 +285,7 @@ const commonSlice = createSlice({
             //For handling response error [setting toast error message]
             .addMatcher(
                 (action) => [
-
+                    "teachersSlice/handleGetTestRecords"
                 ].includes(action.type),
 
                 (state, action) => {
@@ -298,18 +315,25 @@ const commonSlice = createSlice({
     }
 })
 
+// function setToastState(state, action) {
+//     let error_message = typeof action.payload === 'object' ? action.payload?.message : action.payload;
+//     state.error.Err = error_message;
+//     state.error.Toast_Type = action.payload?.toast_type || "error";
+// }
 function setToastState(state, action) {
     let error_message = typeof action.payload === 'object' ? action.payload?.message : action.payload;
-    console.log(error_message)
     state.error.Err = error_message;
     state.error.Toast_Type = action.payload?.toast_type || "error";
 }
+
+
 
 const { actions, reducer } = commonSlice;
 
 export const {
     update_app_data, update_error, updateModalShow, update_search,
-    logout, handleTeacherNotesData,handlePostNote,handleDeleteNote,update_note_data
+    logout, handleTeacherNotesData, handlePostNote, handleDeleteNote,
+    update_note_data, handleGetBooks
 
 } = actions;
 

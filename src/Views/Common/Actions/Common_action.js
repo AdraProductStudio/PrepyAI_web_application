@@ -1,13 +1,14 @@
 import axios from 'axios';
 import axiosInstance from 'Services/axiosInstance';
 
+import axiosInstance from 'Services/axiosInstance';
 import {
     handleDeleteNote,
     handlePostNote,
     handleTeacherNotesData,
     // update_app_data, 
     // login_reducer
-    updateToast, updateToken,
+    updateToast, updateToken,handleGetBooks
 
 } from 'Views/Common/Slices/Common_slice';
 
@@ -17,7 +18,6 @@ import {
 
 
 export const deleteTeacherNote = (noteId) => async (dispatch) => {
-    console.log(noteId,"ASDdsdfsa")
     try {
       dispatch(handleDeleteNote({ type: "request" }));
   
@@ -155,3 +155,31 @@ export const handlerefreshToken = (refresh_token) => async (dispatch) => {
         dispatch(updateToast({ message: err?.message, type: "error" }))
     }
 }
+
+// books api
+export const getBooks = (params) => async (dispatch) => {
+    try {
+        
+        dispatch(handleGetBooks({ type: "request" }));
+        const { data } = await axiosInstance.post("/teachers/get_books", params || {});
+
+        if (data?.error_code === 0) {
+            dispatch(handleGetBooks({
+                type: "response",
+                data: data?.data?.books || []
+            }));
+        } else {
+            
+            dispatch(handleGetBooks({
+                type: "failure",
+                message: data?.message || "Failed to load books"
+            }));
+        }
+    } catch (err) {
+      
+        dispatch(handleGetBooks({
+            type: "failure",
+            message: err?.message || "Network Error"
+        }));
+    }
+};

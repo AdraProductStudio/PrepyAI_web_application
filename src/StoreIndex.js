@@ -5,12 +5,13 @@ import authReducer from "Views/Auth/Slices/authSlice";
 import teachersReducer from 'Views/Teachers/Slice/teachersSlice';
 import organisationReducer from 'Views/Organisation/Slices/Organisation_slice';
 
+
 const reducers = combineReducers({
     commonState: commonReducer,
     studentState: StudentReducer,
     authState: authReducer,
     teachersState: teachersReducer,
-    organisationState: organisationReducer
+    organisationState: organisationReducer,
 })
 
 const store = configureStore({
@@ -22,7 +23,7 @@ const store = configureStore({
         name: 'PrepyAI Dashboard',
         trace: false,
         maxAge: 30,
-        shouldRecordChanges: false,
+        shouldRecordChanges: true,
         shouldCatchErrors: true,
         actionsDenylist: ['very/frequent/action'],
     },
