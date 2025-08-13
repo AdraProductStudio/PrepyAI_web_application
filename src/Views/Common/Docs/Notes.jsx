@@ -58,9 +58,9 @@ const Notes = () => {
             </div>
           </div>
         ) : data?.length ? (
-          <div className="w-100 small_header_content_main row overflowY d-flex align-items-start justify-content-start">
+          <div className="w-100 small_header_content_main row overflowY">
          { data?.map((note_data) => (
-               <div className="col-md-6 col-lg-4 col-xxl-3 p-2  d-flex align-items-center justify-content-center" key={note_data.id}>
+               <div className="col-md-6 col-lg-4 col-xxl-3 p-2 " key={note_data.id}>
                  <NoteCard 
                  data={note_data} 
                  onShowMore={(message) => {console.log("notes", message)}} 
