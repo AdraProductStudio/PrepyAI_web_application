@@ -2,11 +2,13 @@ import { useCommonState, useCustomNavigate, useDispatch } from 'Components/Custo
 import { update_app_data } from 'Views/Common/Slices/Common_slice';
 import Icons from 'Utils/Icons';
 import Image from 'Utils/Image';
+import { create_test_onchange, get_student_details_slice, update_selected_books } from '../Slice/teachersSlice';
+import { get_bookmarks } from '../Actions/TeacherActions';
 
 const JsonData = (params) => {
     const dispatch = useDispatch();
     const navigate = useCustomNavigate();
-    const { commonState } = useCommonState();
+    const { commonState, teachersState } = useCommonState();
 
 
     const jsonOnly = {
@@ -89,6 +91,7 @@ const JsonData = (params) => {
                 route: '/teachers_dashboard/notes'
             }
         ],
+
         subject_options: [
             {
                 icon: Icons.no_of_books_colored,
@@ -139,35 +142,52 @@ const JsonData = (params) => {
                 name: "Books",
                 category: "select",
                 type: "normal_select",
-                options: [],
+                options: commonState?.books?.data?.map((book) => book.book_name),
                 placeholder: "Select Book",
                 isMandatory: true,
-                value: "",
-                change: (e) => console.log(e.target.value),
+                value: teachersState?.create_test?.selected_books?.book_name || '',
+                change: (e) => {
+                    const book = commonState?.books?.data?.find(book => book.book_name === e.target.value)
+                    dispatch(update_selected_books({ key: "selected_books", value: book }))
+                    dispatch(get_bookmarks({ book_id: book?.book_id }))
+                },
                 divClassName: "col-12 com-sm-6 col-xl-4 p-2",
                 Err: commonState?.app_data?.validated ? "Please select a book" : "",
+
             },
             {
                 name: "Chapter",
                 category: "select",
                 type: "normal_select",
-                options: [],
+                options: teachersState?.test_records?.data?.map((chapter) => chapter.title),
                 placeholder: "Select Chapter",
                 isMandatory: true,
-                value: "",
-                change: (e) => console.log(e.target.value),
+                value: teachersState?.create_test?.selected_chapter || '',
+                change: (e) => dispatch(update_selected_books({ key: "selected_chapter", value: e.target.value })),
                 divClassName: "col-12 com-sm-6 col-xl-4 p-2",
                 Err: commonState?.app_data?.validated ? "Please select a chapter" : "",
             },
+            // {
+            //     name: "Class",
+            //     category: "select",
+            //     type: "normal_select",
+            //     options: [],
+            //     placeholder: "Select Class",
+            //     isMandatory: true,
+            //     value: "",
+            //     change: (e) => console.log(e.target.value),
+            //     divClassName: "col-12 com-sm-6 col-xl-4 p-2",
+            //     Err: commonState?.app_data?.validated ? "Please select a class" : "",
+            // },
             {
                 name: "Type of Questions",
                 category: "select",
                 type: "normal_select",
-                options: [],
+                options: ["MCQ Questions", "Long Questions"],
                 placeholder: "Select Type of Questions",
                 isMandatory: true,
-                value: "",
-                change: (e) => console.log(e.target.value),
+                value: teachersState?.create_test?.question_type || '',
+                change: (e) => dispatch(update_selected_books({ key: "question_type", value: e.target.value })),
                 divClassName: "col-12 com-sm-6 col-xl-4 p-2",
                 Err: commonState?.app_data?.validated ? "Please select type of questions" : "",
             },
@@ -175,39 +195,25 @@ const JsonData = (params) => {
                 name: "Number of Questions",
                 category: "select",
                 type: "normal_select",
-                options: [],
+                options: [5, 10, 15],
                 placeholder: "Select Number of Questions",
                 isMandatory: true,
-                value: "",
-                change: (e) => console.log(e.target.value),
+                value: teachersState?.create_test?.question_quantity || '',
+                change: (e) => dispatch(update_selected_books({ key: "question_quantity", value: e.target.value })),
                 divClassName: "col-12 com-sm-6 col-xl-4 p-2",
                 Err: commonState?.app_data?.validated ? "Please enter number of questions" : "",
             },
-            {
-                name: "Class",
-                category: "select",
-                type: "normal_select",
-                options: [],
-                placeholder: "Select Class",
-                isMandatory: true,
-                value: "",
-                change: (e) => console.log(e.target.value),
-                divClassName: "col-12 com-sm-6 col-xl-4 p-2",
-                Err: commonState?.app_data?.validated ? "Please select a class" : "",
-            },
-            {
+              {
                 name: "Students",
                 category: "select",
-                type: "react_dropdown_select",
-                multi: true,
-                create: false,
-                options: [],
+                type: "normal_select",
+                options: ["All"],
                 placeholder: "Select Students",
                 isMandatory: true,
-                value: "",
-                change: (e) => console.log(e.target.value),
+                value: teachersState?.create_test?.student_all || '',
+                change: (e) => dispatch(update_selected_books({ key: "student_all", value: e.target.value })),
                 divClassName: "col-12 com-sm-6 col-xl-4 p-2",
-                Err: commonState?.app_data?.validated ? "Please select student" : "",
+                Err: commonState?.app_data?.validated ? "Please enter number of students" : "",
             },
             {
                 name: "Date",
@@ -216,8 +222,8 @@ const JsonData = (params) => {
                 options: [],
                 placeholder: "Select Date",
                 isMandatory: true,
-                value: "",
-                change: (e) => console.log(e.target.value),
+                value: teachersState?.create_test?.selected_date || '',
+                change: (e) => dispatch(update_selected_books({ key: "selected_date", value: e.target.value })),
                 divClassName: "col-12 com-sm-6 col-xl-4 p-2",
                 Err: commonState?.app_data?.validated ? "Please select a date" : "",
             },
@@ -228,8 +234,8 @@ const JsonData = (params) => {
                 options: [],
                 placeholder: "Select Date",
                 isMandatory: true,
-                value: "",
-                change: (e) => console.log(e.target.value),
+                value: teachersState?.create_test?.selected_time || '',
+                change: (e) => dispatch(update_selected_books({ key: "selected_time", value: e.target.value })),
                 divClassName: "col-12 com-sm-6 col-xl-4 p-2",
                 Err: commonState?.app_data?.validated ? "Please select a date" : "",
             },
@@ -237,11 +243,11 @@ const JsonData = (params) => {
                 name: "Test Duration",
                 category: "select",
                 type: "normal_select",
-                options: [],
+                options: [30, 45, 60, 75, 90],
                 placeholder: "Select Test Duration",
                 isMandatory: true,
-                value: "",
-                change: (e) => console.log(e.target.value),
+                value: teachersState?.create_test?.time_duration || '',
+                change: (e) => dispatch(update_selected_books({ key: "time_duration", value: e.target.value })),
                 divClassName: "col-12 com-sm-6 col-xl-4 p-2",
                 Err: commonState?.app_data?.validated ? "Please select test duration" : "",
             },
@@ -249,11 +255,11 @@ const JsonData = (params) => {
                 name: "Set Questions",
                 category: "select",
                 type: "normal_select",
-                options: [],
+                options: [1, 2, 3, 4],
                 placeholder: "Select Set Questions",
                 isMandatory: true,
-                value: "",
-                change: (e) => console.log(e.target.value),
+                value: teachersState?.create_test?.question_set || '',
+                change: (e) => dispatch(update_selected_books({ key: "question_set", value: e.target.value })),
                 divClassName: "col-12 com-sm-6 col-xl-4 p-2",
                 Err: commonState?.app_data?.validated ? "Please select Set Questions" : "",
             },
@@ -261,15 +267,17 @@ const JsonData = (params) => {
                 name: "Mode of Test",
                 category: "select",
                 type: "normal_select",
-                options: [],
+                options: ["Online", "Offline"],
                 placeholder: "Select Mode of Test",
                 isMandatory: true,
-                value: "",
-                change: (e) => console.log(e.target.value),
+                value: teachersState?.create_test?.test_mode || '',
+                change: (e) => dispatch(update_selected_books({ key: "test_mode", value: e.target.value })),
                 divClassName: "col-12 com-sm-6 col-xl-4 p-2",
                 Err: commonState?.app_data?.validated ? "Please select Mode of Test" : "",
             }
         ]
+
+
     }
 
     return {

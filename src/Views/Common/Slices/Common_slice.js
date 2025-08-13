@@ -47,6 +47,11 @@ let initialState = {
         Err: null,
         Toast_Type: null
     },
+    books: {
+        loading: false,
+        data: [],
+        error: null
+    }
 }
 
 const commonSlice = createSlice({
@@ -78,7 +83,7 @@ const commonSlice = createSlice({
                 case "menu_name":
                     state.app_data.token = data?.access_token || '';
                     state.app_data.user_role = data?.role_name || '';
-                    state.app_data.user_id = data?.user_id || ''; 
+                    state.app_data.user_id = data?.user_id || '';
                     state.app_data.current_location = window.location.pathname || '';
                     state.app_data.currentMenuName = data?.currentLocation || '';
                     state.app_data.validated = false;
@@ -111,6 +116,26 @@ const commonSlice = createSlice({
             state.app_data.refresh_token = '';
             state.app_data.user_role = '';
             state.app_data.user_id = '';
+        },
+        handleGetBooks: (state, action) => {
+            const { type, data, message } = action.payload || {};
+            switch (type) {
+                case "request":
+                    state.loading = true;
+                    state.error = null;
+                    break;
+                case "response":
+                    state.loading = false;
+                    state.books.data = data || [];
+                    state.books.error = null;
+                    break;
+                case "failure":
+                    state.loading = false;
+                    state.error = message || "Something went wrong";
+                    break;
+                default:
+                    return;
+            }
         }
     },
     extraReducers: (builder) => {
@@ -160,7 +185,7 @@ const commonSlice = createSlice({
             //For handling response error [setting toast error message]
             .addMatcher(
                 (action) => [
-
+                    "teachersSlice/handleGetTestRecords"
                 ].includes(action.type),
 
                 (state, action) => {
@@ -190,18 +215,31 @@ const commonSlice = createSlice({
     }
 })
 
+// function setToastState(state, action) {
+//     let error_message = typeof action.payload === 'object' ? action.payload?.message : action.payload;
+//     state.error.Err = error_message;
+//     state.error.Toast_Type = action.payload?.toast_type || "error";
+// }
 function setToastState(state, action) {
-    let error_message = typeof action.payload === 'object' ? action.payload?.message : action.payload;
-    console.log(error_message)
+    let error_message = typeof action.payload === 'object' 
+        ? action.payload?.message 
+        : action.payload;
+
+    if (!state.error) {
+        state.error = { Err: null, Toast_Type: null };
+    }
+
     state.error.Err = error_message;
     state.error.Toast_Type = action.payload?.toast_type || "error";
 }
+
+
 
 const { actions, reducer } = commonSlice;
 
 export const {
     update_app_data, update_error, updateModalShow, update_search,
-    logout
+    logout,handleGetBooks
 
 } = actions;
 
