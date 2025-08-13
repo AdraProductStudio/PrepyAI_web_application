@@ -1,12 +1,14 @@
 import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks';
-import { update_app_data } from 'Views/Common/Slices/Common_slice';
+import { handlePostNote, update_app_data, update_note_data } from 'Views/Common/Slices/Common_slice';
 import Icons from 'Utils/Icons';
 import Image from 'Utils/Image';
+import { postTeacherNote } from 'Views/Common/Actions/Common_action';
 
 const JsonData = (params) => {
     const dispatch = useDispatch();
     const navigate = useCustomNavigate();
     const { commonState } = useCommonState();
+    
 
 
     const jsonOnly = {
@@ -269,7 +271,38 @@ const JsonData = (params) => {
                 divClassName: "col-12 com-sm-6 col-xl-4 p-2",
                 Err: commonState?.app_data?.validated ? "Please select Mode of Test" : "",
             }
+        ],
+        notes_input: [
+            {
+                name: "ADD TITLE HERE",
+                category: "input",
+                type: "text",
+                divClassName: "mb-3 fw-bold",
+                placeholder: "Enter Title",
+                isMandatory: true,
+                value: commonState?.notesdata?.title || "",
+                change: (e) => {
+                    dispatch(update_note_data({ type: "title", data: e.target.value }));
+                },
+                keyDown: (e) => {
+                          if (e.key === "Enter") dispatch(handlePostNote(commonState?.notesdata));
+                        },
+            },
+            {
+                name: "ADD CONTENT HERE",
+                category: "textbox",
+                className: "",
+                isMandatory: true,
+                value: commonState?.notesdata?.content || "",
+                change: (e) => {
+                    dispatch(update_note_data({ type: "content", data: e.target.value }));
+                },
+                keyDown: (e) => {
+                          if (e.key === "Enter") dispatch(handlePostNote(commonState?.notesdata));
+                        },
+            }
         ]
+        
     }
 
     return {

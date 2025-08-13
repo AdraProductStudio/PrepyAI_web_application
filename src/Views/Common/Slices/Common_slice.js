@@ -1,5 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
+import { data } from "react-router-dom";
 import { decrypt_app_data_logs, decryption, encryption, view_logout } from "ResuableFunctions/logs_handler";
 
 let initialState = {
@@ -47,12 +48,110 @@ let initialState = {
         Err: null,
         Toast_Type: null
     },
+    teachernotesdata: {
+        glow: true,
+        data: []
+    },
+    notesdata:{
+        title: "",
+        content: "",
+    },
+    postNoteStatus: {
+        glow: true,
+        data: []
+    },
+    deleteNoteStatus: {
+        glow:true,
+        data:[]
+    },
+    
+    
+
+
 }
 
 const commonSlice = createSlice({
     name: 'common_slice',
     initialState,
     reducers: {
+
+        // handleDeleteNote(state, action) {
+        //     const { type, message } = action.payload;
+        //     if (type === "request") {
+        //       state.deleteNoteStatus = { loading: true, error: null, success: false };
+        //     } else if (type === "success") {
+        //       state.deleteNoteStatus = { loading: false, error: null, success: true };
+        //     } else if (type === "failure") {
+        //       state.deleteNoteStatus = { loading: false, error: message, success: false };
+        //     }
+        //   },
+        handleDeleteNote(state, action) {
+            const { type, message } = action.payload;
+      
+            if (type === "request") {
+              state.deleteNoteStatus.loading = true;
+              state.deleteNoteStatus.error = null;  
+            } else if (type === "success") {
+              state.deleteNoteStatus.loading = false;
+              state.deleteNoteStatus.error = null;
+            } else if (type === "failure") {
+              state.deleteNoteStatus.loading = false;
+              state.deleteNoteStatus.error = message;
+            }
+          },
+          setNotes(state, action) {
+            state.notes = action.payload;
+          },
+
+        handlePostNote: (state, action) => {
+            const { type, data } = action.payload;
+            switch (type) {
+                case "request":
+                    state.postNoteStatus["glow"] = true;
+                    state.postNoteStatus["data"] = [];
+                    break;
+
+                case "response":
+                    state.postNoteStatus["glow"] = false;
+                    state.postNoteStatus["data"] = data;
+                    break;
+
+                case "failure":
+                    state.postNoteStatus["glow"] = false;
+                    state.postNoteStatus
+                    ["data"] = [];
+                    break;
+
+                default:
+                    break;
+            }
+        },
+
+
+        handleTeacherNotesData(state, action) {
+            const { type, data } = action.payload;
+
+            switch (type) {
+                case "request":
+                    state.teachernotesdata["glow"] = true;
+                    state.teachernotesdata["data"] = [];
+                    break;
+
+                case "response":
+                    state.teachernotesdata["glow"] = false;
+                    state.teachernotesdata["data"] = data;
+                    break;
+
+                case "failure":
+                    state.teachernotesdata["glow"] = false;
+                    state.teachernotesdata
+                    ["data"] = [];
+                    break;
+
+                default:
+                    break;
+            }
+        },
         updateModalShow(state, actions) {
             const { show, size, modal_from, modal_type, close_btn } = actions.payload;
             state.modal.show = show
@@ -78,7 +177,7 @@ const commonSlice = createSlice({
                 case "menu_name":
                     state.app_data.token = data?.access_token || '';
                     state.app_data.user_role = data?.role_name || '';
-                    state.app_data.user_id = data?.user_id || ''; 
+                    state.app_data.user_id = data?.user_id || '';
                     state.app_data.current_location = window.location.pathname || '';
                     state.app_data.currentMenuName = data?.currentLocation || '';
                     state.app_data.validated = false;
@@ -111,7 +210,16 @@ const commonSlice = createSlice({
             state.app_data.refresh_token = '';
             state.app_data.user_role = '';
             state.app_data.user_id = '';
-        }
+        },
+        // update_note_data(state, action) {
+        //     const [key, value] = Object.entries(action.payload)[0] || [];
+        //     state.notesdata[key] = value || "";
+        //   },
+        update_note_data(state, action) {
+            const { type, data } = action.payload;
+            state.notesdata[type] = data || "";
+        },
+
     },
     extraReducers: (builder) => {
         builder
@@ -201,7 +309,7 @@ const { actions, reducer } = commonSlice;
 
 export const {
     update_app_data, update_error, updateModalShow, update_search,
-    logout
+    logout, handleTeacherNotesData,handlePostNote,handleDeleteNote,update_note_data
 
 } = actions;
 
