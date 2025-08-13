@@ -21,7 +21,7 @@ const Notes = () => {
 
     useEffect(() => {
         dispatch(getTeacherNotesData({ classroom_id: class_id }));
-        
+
     }, []);
 
 
@@ -43,7 +43,11 @@ const Notes = () => {
                 {commonState?.teachernotesdata?.data?.length > 0 ? (
                     commonState?.teachernotesdata?.data?.map((note, index) => (
                         <div key={note.id || index} className=" col-md-6 col-lg-4 col-xxl-3 p-1">
-                            <NoteCard notesDeleteOnClick={() => dispatch(deleteTeacherNote(note?.id))} data={note} />
+                            <NoteCard notesEditOnClick={() => dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "notes", modal_type: "add_note" }))}
+                                notesDeleteOnClick={() => dispatch(deleteTeacherNote(note?.id))} data={note} noteFavoriteIcon={note.priority === "high" ? Icons.NoteStarIcon : Icons.favorite_outline_icon}
+
+                                />
+                                
                         </div>
                     ))
                 ) : (

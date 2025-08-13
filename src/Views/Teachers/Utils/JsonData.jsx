@@ -282,7 +282,7 @@ const JsonData = (params) => {
                 isMandatory: true,
                 value: commonState?.notesdata?.title || "",
                 change: (e) => {
-                    dispatch(update_note_data({ type: "title", data: e.target.value }));
+                    dispatch(update_note_data({ type: "title", data: e.target.value}));
                 },
                 keyDown: (e) => {
                           if (e.key === "Enter") dispatch(handlePostNote(commonState?.notesdata));

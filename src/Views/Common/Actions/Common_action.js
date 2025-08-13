@@ -17,41 +17,61 @@ import {
 
 
 export const deleteTeacherNote = (noteId) => async (dispatch) => {
-    console.log(noteId,"ASDdsdfsa")
+    console.log(noteId, "ASDdsdfsa")
     try {
-      dispatch(handleDeleteNote({ type: "request" }));
-  
-      const { data } = await axiosInstance.delete("/teachers/delete_user_notes",{data:{id:noteId}});
-  
-      if (data?.error_code === 0) {
-        dispatch(handleDeleteNote({ type: "success" }));
-        dispatch(getTeacherNotesData()); // refresh after delete
-      } else {
-        dispatch(handleDeleteNote({ type: "failure", message: data?.message || "Error deleting note" }));
-      }
-    } catch (err) {
-      dispatch(handleDeleteNote({ type: "failure", message: err.message || "Error" }));
-    }
-  };
+        dispatch(handleDeleteNote({ type: "request" }));
 
-
-export const postTeacherNote = (noteData) => async (dispatch) => {
-    try {
-        dispatch(handlePostNote({ type: "request" }));
-        
-        const { data } = await axiosInstance.post("/teachers/create_user_notes", noteData);
+        const { data } = await axiosInstance.delete("/teachers/delete_user_notes", { data: { id: noteId } });
 
         if (data?.error_code === 0) {
-            dispatch(handlePostNote({ type: "success" }));
-            dispatch(getTeacherNotesData());
+            dispatch(handleDeleteNote({ type: "success" }));
+            dispatch(getTeacherNotesData()); // refresh after delete
         } else {
-            dispatch(handlePostNote({ type: "failure", message: data?.message || "Error" }));
+            dispatch(handleDeleteNote({ type: "failure", message: data?.message || "Error deleting note" }));
         }
     } catch (err) {
-        dispatch(handlePostNote({ type: "failure", message: err.message || "Error" }));
+        dispatch(handleDeleteNote({ type: "failure", message: err.message || "Error" }));
     }
 };
 
+
+    export const handlecreateNote = (formdata) => async (dispatch) => {
+        const {content,title } = formdata
+        const fd = new FormData();
+        fd.append("title", title);
+        fd.append("content", content);
+        fd.append("priority","low")
+        
+        // If you actually have a file:
+        if (formdata.file) {
+        fd.append("file", formdata.file); // this should be a File or Blob object
+        }
+
+        if (!title || !content) {
+            return dispatch(handlePostNote({ type: "validation", data: true }));
+        }
+
+        try {
+            dispatch(handlePostNote({ type: "request" }));
+
+            const { data } = await axiosInstance.post("/teachers/create_user_notes", fd);
+
+            if (data?.error_code === 0) {
+                dispatch(handlePostNote({ type: "success", data: data }));
+                dispatch(getTeacherNotesData()); 
+            } else {
+                dispatch(handlePostNote({
+                    type: "failure",
+                    data: data?.message || "Error creating note",
+                }));
+            }
+        } catch (error) {
+            dispatch(handlePostNote({
+                type: "failure",
+                data: error?.message || "Error creating note",
+            }));
+        }
+    };
 
 export const getTeacherNotesData = (params) => async (dispatch) => {
     try {
@@ -59,7 +79,7 @@ export const getTeacherNotesData = (params) => async (dispatch) => {
         const { data } = await axiosInstance.get("/teachers/get_user_notes");
         if (data?.error_code === 0) {
             dispatch(
-                handleTeacherNotesData({ type: "response", data: data?.data || [] })
+                handleTeacherNotesData({ type: "response", data: data?.data || "" })
             );
         } else {
             dispatch(

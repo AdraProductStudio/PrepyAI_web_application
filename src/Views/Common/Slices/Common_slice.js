@@ -52,7 +52,7 @@ let initialState = {
         glow: true,
         data: []
     },
-    notesdata:{
+    notesdata: {
         title: "",
         content: "",
     },
@@ -61,11 +61,11 @@ let initialState = {
         data: []
     },
     deleteNoteStatus: {
-        glow:true,
-        data:[]
+        glow: true,
+        data: []
     },
-    
-    
+
+
 
 
 }
@@ -87,21 +87,22 @@ const commonSlice = createSlice({
         //   },
         handleDeleteNote(state, action) {
             const { type, message } = action.payload;
-      
+
             if (type === "request") {
-              state.deleteNoteStatus.loading = true;
-              state.deleteNoteStatus.error = null;  
+                state.deleteNoteStatus.loading = true;
+                state.deleteNoteStatus.error = null;
             } else if (type === "success") {
-              state.deleteNoteStatus.loading = false;
-              state.deleteNoteStatus.error = null;
+                state.deleteNoteStatus.loading = false;
+                state.deleteNoteStatus.error = null;
             } else if (type === "failure") {
-              state.deleteNoteStatus.loading = false;
-              state.deleteNoteStatus.error = message;
+                state.deleteNoteStatus.loading = false;
+                state.deleteNoteStatus.error = message;
             }
-          },
-          setNotes(state, action) {
+        },
+        setNotes(state, action) {
             state.notes = action.payload;
-          },
+        },
+
 
         handlePostNote: (state, action) => {
             const { type, data } = action.payload;
@@ -130,6 +131,7 @@ const commonSlice = createSlice({
 
         handleTeacherNotesData(state, action) {
             const { type, data } = action.payload;
+
 
             switch (type) {
                 case "request":
@@ -309,7 +311,7 @@ const { actions, reducer } = commonSlice;
 
 export const {
     update_app_data, update_error, updateModalShow, update_search,
-    logout, handleTeacherNotesData,handlePostNote,handleDeleteNote,update_note_data
+    logout, handleTeacherNotesData, handlePostNote, handleDeleteNote, update_note_data
 
 } = actions;
 

@@ -5,7 +5,7 @@ import ModalComponent from "Components/Modal/Modal";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import JsonData from "./JsonData";
-import { postTeacherNote } from "Views/Common/Actions/Common_action";
+import { handlecreateNote, postTeacherNote } from "Views/Common/Actions/Common_action";
 
 
 export function OverallModel() {
@@ -59,7 +59,8 @@ export function OverallModel() {
                                                 title: commonState?.notesdata?.title || "",
                                                 content: commonState?.notesdata?.content || ""
                                             };
-                                            dispatch(postTeacherNote(noteData));
+                                            dispatch(handlecreateNote(noteData));
+                                            dispatch(updateModalShow({ show: null, close_btn: false, modal_from: "notes", modal_type: "add_note" }));
                                         }}
                                     />
                                 </div>
