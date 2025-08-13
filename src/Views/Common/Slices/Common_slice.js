@@ -55,6 +55,7 @@ const commonSlice = createSlice({
     reducers: {
         updateModalShow(state, actions) {
             const { show, size, modal_from, modal_type, close_btn } = actions.payload;
+            console.log(show, size, modal_from, modal_type, close_btn )
             state.modal.show = show
             state.modal.size = size || "md"
             state.modal.from = modal_from || null
