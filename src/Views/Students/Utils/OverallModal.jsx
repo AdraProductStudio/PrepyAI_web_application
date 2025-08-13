@@ -1,19 +1,25 @@
-import { useCommonState } from "Components/CustomHooks";
+import ButtonComponent from "Components/Button/Button";
+import { useCommonState, useDispatch} from "Components/CustomHooks";
 import ModalComponent from "Components/Modal/Modal";
+import { createStudentNote, updateStudentNote } from "Views/Common/Actions/Common_action";
+import { updateNoteField } from "Views/Common/Slices/Common_slice";
 
 
 export function OverallModel() {
     const { commonState } = useCommonState();
-    // const dispatch = useDispatch();
-    // const navigate = useCustomNavigate();
+    const dispatch = useDispatch();
+    const { title, content } = commonState?.students_notes
+   
 
     function modalHeaderFun() {
         switch (commonState?.modal?.from) {
-            case "Home":
+            case "Notes":
                 switch (commonState?.modal?.type) {
-                    case "":
-                        return <h5>Home</h5>
-
+                    case "add_notes":
+                        return<h4 className="m-0">Add Note</h4>
+                    
+                    case "edit_notes":
+                        return<h4 className="m-0">Edit Note</h4>
                     default:
                         break;
                 }
@@ -26,10 +32,61 @@ export function OverallModel() {
 
     function modalBodyFun() {
         switch (commonState?.modal?.from) {
-            case "Home":
+            case "Notes":
                 switch (commonState?.modal?.type) {
-                    case " ":
-                        return
+                    case "add_notes":
+                        return(
+                            <div className="d-flex flex-column col">
+                                <div className="col-12 ">
+                                    <label htmlFor="notes_title" className="col-12 fs-6 text-muted">Add Title Here
+                                    <input
+                                     type="text"
+                                     id="notes_title" 
+                                     className="col-12 p-2 border rounded-3 mt-1"
+                                     value={title}
+                                     onChange={(e) => dispatch(updateNoteField({ field: "title", value: e.target.value }))}/>
+                                </label>
+                                </div>
+                                <div className="col-12 mt-3">
+                                    <label htmlFor="notes_content" className="col-12 fs-6 text-muted">Add Content Here
+                                    <textarea 
+                                    name="notes"
+                                    style={{height:"20vh"}} 
+                                    id="notes_content" 
+                                    className="col-12 border rounded-3 mt-1"
+                                    value={content}
+                                    onChange={(e) => dispatch(updateNoteField({ field: "content", value: e.target.value }))} />
+                                </label>
+                                </div>   
+                            </div>
+                        )
+                        case "edit_notes":
+                            return(
+                               <div className="d-flex flex-column col">
+                                <div className="col-12 ">
+                                    <label htmlFor="notes_title" className="col-12 fs-6 text-muted">Add Title Here
+                                    <input
+                                     type="text"
+                                     id="notes_title" 
+                                     className="col-12 p-2 border rounded-3 mt-1"
+                                     value={title}
+                                     onChange={(e) => dispatch(updateNoteField({ field: "title", value: e.target.value }))}/>
+                                </label>
+                                </div>
+                                <div className="col-12 mt-3">
+                                    <label htmlFor="notes_content" className="col-12 fs-6 text-muted">Add Content Here
+                                    <textarea 
+                                    name="notes"
+                                    style={{height:"20vh"}} 
+                                    id="notes_content" 
+                                    className="col-12 border rounded-3 mt-1"
+                                    value={content}
+                                    onChange={(e) => dispatch(updateNoteField({ field: "content", value: e.target.value }))} />
+                                </label>
+                                </div>   
+                            </div>
+                            )
+                        
 
                     default:
                         break;
@@ -43,9 +100,31 @@ export function OverallModel() {
 
     function modalFooterFun() {
         switch (commonState?.modal?.from) {
-            case "":
+            case "Notes":
                 switch (commonState?.modal?.type) {
-                    case "":
+                    case "add_notes":
+                        return (
+                          <div className="d-flex justify-content-end ">
+                            <ButtonComponent
+                              className="gradient text-white "
+                              buttonName="Add"
+                              clickFunction={() =>
+                              dispatch(createStudentNote())
+                              }
+                            />
+                          </div>
+                        );
+                        case 'edit_notes':
+                          return(<div className="d-flex justify-content-end ">
+                            <ButtonComponent
+                              className="gradient text-white "
+                              buttonName="Upadte"
+                              clickFunction={() =>
+                              dispatch(updateStudentNote(commonState.students_notes.editNote.id))
+                              }
+                            />
+                          </div>
+                          );
                         break
 
                     default:

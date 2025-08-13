@@ -1,0 +1,3 @@
+.gradient {
+        background: var(--Brand-color-btn, linear-gradient(90deg, #EC008C 0%, #FC6767 100%));
+}

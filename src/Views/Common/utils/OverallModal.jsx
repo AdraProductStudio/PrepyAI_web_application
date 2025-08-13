@@ -28,9 +28,9 @@ export function OverallModel() {
         switch (commonState?.modal?.from) {
             case "Home":
                 switch (commonState?.modal?.type) {
-                    case " ":
+                    case "":
                         return
-
+                            
                     default:
                         break;
                 }
