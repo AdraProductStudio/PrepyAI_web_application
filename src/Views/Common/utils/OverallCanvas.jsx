@@ -1,13 +1,16 @@
 import ButtonComponent from "Components/Button/Button";
 import AttachmentCard from "Components/Card/AttachmentCard";
-import { useCommonState } from "Components/CustomHooks";
+import { useCommonState} from "Components/CustomHooks";
 import OffCanvas from "Components/Offcanvas/OffCanvas";
 import JsonData from "Views/Teachers/Utils/JsonData";
 
 
-export function OverallCanvas() {
+
+export function OverallCanvas({ subject_id }) {
     const { commonState } = useCommonState();
     const { jsonOnly } = JsonData()
+
+
 
     function canvasHeaderFun() {
         switch (commonState?.canvas?.from) {
@@ -46,8 +49,9 @@ export function OverallCanvas() {
                                     </div >
                                 ))}
                             </div>
-                        )
-
+                           
+                        );
+                
                     default:
                         break;
                 }

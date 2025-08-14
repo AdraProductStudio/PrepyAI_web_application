@@ -3,7 +3,8 @@ import axiosInstance from 'Services/axiosInstance';
 import {
     // update_app_data, 
     // login_reducer
-    updateToast, updateToken,handleGetBooks
+    updateToast, updateToken, handleGetBooks,
+ 
 
 } from 'Views/Common/Slices/Common_slice';
 
@@ -57,7 +58,7 @@ export const handlerefreshToken = (refresh_token) => async (dispatch) => {
 // books api
 export const getBooks = (params) => async (dispatch) => {
     try {
-        
+
         dispatch(handleGetBooks({ type: "request" }));
         const { data } = await axiosInstance.post("/teachers/get_books", params || {});
 
@@ -67,17 +68,21 @@ export const getBooks = (params) => async (dispatch) => {
                 data: data?.data?.books || []
             }));
         } else {
-            
+
             dispatch(handleGetBooks({
                 type: "failure",
                 message: data?.message || "Failed to load books"
             }));
         }
     } catch (err) {
-      
+
         dispatch(handleGetBooks({
             type: "failure",
             message: err?.message || "Network Error"
         }));
     }
 };
+// attachment
+
+
+

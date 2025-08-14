@@ -3,12 +3,14 @@ import { update_app_data } from 'Views/Common/Slices/Common_slice';
 import Icons from 'Utils/Icons';
 import Image from 'Utils/Image';
 import { create_test_onchange, get_student_details_slice, update_selected_books } from '../Slice/teachersSlice';
-import { get_bookmarks } from '../Actions/TeacherActions';
+import { get_bookmarks, handleGetSubjectAttachments } from '../Actions/TeacherActions';
+import { useSelector } from 'react-redux';
 
 const JsonData = (params) => {
     const dispatch = useDispatch();
     const navigate = useCustomNavigate();
     const { commonState, teachersState } = useCommonState();
+    const subject_id = useSelector((state) => state.subject?.id);
 
 
     const jsonOnly = {
@@ -116,7 +118,21 @@ const JsonData = (params) => {
             {
                 icon: Icons.attachment_colored,
                 title: "Attachments",
-                onClick: () => dispatch(update_app_data({ type: 'canvas', data: { show: true, type: "attachments", from: "teachers", close_btn: true, extraClass: 'attachment_canvas', placement: 'end' } })),
+                onClick: () => {
+                    dispatch(handleGetSubjectAttachments({subject_id})); 
+
+                    dispatch(update_app_data({
+                        type: 'canvas',
+                        data: {
+                            show: true,
+                            type: "attachments",
+                            from: "teachers",
+                            close_btn: true,
+                            extraClass: 'attachment_canvas',
+                            placement: 'end'
+                        }
+                    }));
+                },
             }
         ],
 
@@ -195,7 +211,7 @@ const JsonData = (params) => {
                 name: "Number of Questions",
                 category: "select",
                 type: "normal_select",
-                options: [5, 10, 15],
+                options: [1,5, 10, 15],
                 placeholder: "Select Number of Questions",
                 isMandatory: true,
                 value: teachersState?.create_test?.question_quantity || '',
@@ -203,7 +219,7 @@ const JsonData = (params) => {
                 divClassName: "col-12 com-sm-6 col-xl-4 p-2",
                 Err: commonState?.app_data?.validated ? "Please enter number of questions" : "",
             },
-              {
+            {
                 name: "Students",
                 category: "select",
                 type: "normal_select",

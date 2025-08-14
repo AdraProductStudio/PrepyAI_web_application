@@ -51,7 +51,8 @@ let initialState = {
         loading: false,
         data: [],
         error: null
-    }
+    },
+    
 }
 
 const commonSlice = createSlice({
@@ -136,7 +137,8 @@ const commonSlice = createSlice({
                 default:
                     return;
             }
-        }
+        },
+      
     },
     extraReducers: (builder) => {
         builder
@@ -221,8 +223,8 @@ const commonSlice = createSlice({
 //     state.error.Toast_Type = action.payload?.toast_type || "error";
 // }
 function setToastState(state, action) {
-    let error_message = typeof action.payload === 'object' 
-        ? action.payload?.message 
+    let error_message = typeof action.payload === 'object'
+        ? action.payload?.message
         : action.payload;
 
     if (!state.error) {
@@ -239,7 +241,7 @@ const { actions, reducer } = commonSlice;
 
 export const {
     update_app_data, update_error, updateModalShow, update_search,
-    logout,handleGetBooks
+    logout, handleGetBooks,
 
 } = actions;
 

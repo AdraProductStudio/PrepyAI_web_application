@@ -27,6 +27,7 @@ const initialState = {
     student_details: {},
     save_schedule_status: {},
     save_schedule_error: {},
+    subject_attachments: {},
 
 }
 
@@ -120,7 +121,23 @@ const teachersSlice = createSlice({
         save_schedule_failure(state, action) {
             state.save_schedule_status = "failed";
             state.save_schedule_error = action.payload;
-        }
+        },
+        getSubjectAttachments(state, action) {
+            const { type, data } = action.payload
+
+            switch (type) {
+                case "response":
+                    state.subject_attachments = data || {}
+                    break;
+
+                case "failure":
+                    state.subject_attachments = {}
+                    break;
+
+                default:
+                    break;
+            }
+        },
     }
 })
 
@@ -136,7 +153,8 @@ export const {
     get_student_details_slice,
     save_schedule_request,
     save_schedule_success,
-    save_schedule_failure
+    save_schedule_failure,
+    getSubjectAttachments
 
 } = actions
 

@@ -3,6 +3,7 @@ import axiosInstance from "Services/axiosInstance"
 import {
     create_test_onchange,
     get_student_details_slice,
+    getSubjectAttachments,
     handelGetCreate,
     handleGetTestRecords,
     save_schedule_failure,
@@ -60,14 +61,30 @@ export const get_student_details = (classroom_id) => async (dispatch) => {
 
 }
 
-export const saveSchedule = (payload) => async (dispatch) => {
+// export const saveSchedule = (payload) => async (dispatch) => {
+//     try {
+//         dispatch(save_schedule_request());
+//         const response = await axiosInstance.post("/teachers/save_schedule", payload);
+//         if (response.data?.error_code === 0) {
+//             dispatch(save_schedule_success(response.data?.data));
+//         } else {
+//             dispatch(save_schedule_failure(response.data?.message || "Unknown error"));
+//         }
+//     } catch (error) {
+//         dispatch(save_schedule_failure(error.message));
+//     }
+// };
+
+export const saveSchedule = (payload, navigate) => async (dispatch) => {
     try {
         dispatch(save_schedule_request());
         const response = await axiosInstance.post("/teachers/save_schedule", payload);
-        
 
         if (response.data?.error_code === 0) {
             dispatch(save_schedule_success(response.data?.data));
+            // navigate("/teachers_dashboard/classrooms/0/0/preview_test");
+            navigate("/teachers_dashboard/classrooms/0/0/preview_test", { state: { payload } });
+
         } else {
             dispatch(save_schedule_failure(response.data?.message || "Unknown error"));
         }
@@ -76,5 +93,21 @@ export const saveSchedule = (payload) => async (dispatch) => {
     }
 };
 
+export const handleGetSubjectAttachments = (subject_id) => async (dispatch) => {
+    try {
+        const { data } = await axiosInstance.get(
+            "/teachers/get_classroom_attachments",
+            { params: { subject_id } }
+        );
+
+        if (data?.error_code === 0) {
+            dispatch(getSubjectAttachments({ type: "response", data: data?.data }));
+        } else {
+            dispatch(getSubjectAttachments({ type: "failure", message: data?.message }));
+        }
+    } catch (error) {
+        dispatch(getSubjectAttachments({ type: "failure", message: error?.message }));
+    }
+};
 
 
