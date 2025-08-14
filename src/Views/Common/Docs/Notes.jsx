@@ -2,10 +2,10 @@ import NoteCard from "Components/Card/NoteCard";
 import { useCommonState, useDispatch } from "Components/CustomHooks";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { deleteTeacherNote, getTeacherNotesData, postTeacherNote } from "../Actions/Common_action";
+import { deleteTeacherNote, getTeacherNotesData, postTeacherNote, updateTeacherNotePriority } from "../Actions/Common_action";
 import Image from "Utils/Image";
 import SpinnerComponent from "Components/Spinner/Spinner";
-import { handleDeleteNote, updateModalShow } from "../Slices/Common_slice";
+import { handleDeleteNote, setEditNoteData, updateModalShow, updateModalShowes } from "../Slices/Common_slice";
 import ButtonComponent from "Components/Button/Button";
 import Icons from "Utils/Icons";
 import { OverallModel } from "Views/Teachers/Utils/OverallModal";
@@ -43,11 +43,25 @@ const Notes = () => {
                 {commonState?.teachernotesdata?.data?.length > 0 ? (
                     commonState?.teachernotesdata?.data?.map((note, index) => (
                         <div key={note.id || index} className=" col-md-6 col-lg-4 col-xxl-3 p-1">
-                            <NoteCard notesEditOnClick={() => dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "notes", modal_type: "add_note" }))}
+                            <NoteCard notesEditOnClick={() => {
+                                dispatch(setEditNoteData({
+                                    id: note.id,
+                                    title: note.title,
+                                    content: note.notes,
+                                    priority: note.priority
+                                }));
+                                dispatch(updateModalShowes({
+                                    show: true,
+                                    close_btn: true,
+                                    modal_from: "notes",
+                                    modal_type: "edit_note"
+                                }));
+                            }}
                                 notesDeleteOnClick={() => dispatch(deleteTeacherNote(note?.id))} data={note} noteFavoriteIcon={note.priority === "high" ? Icons.NoteStarIcon : Icons.favorite_outline_icon}
+                                addFavoriteOnClick={() => dispatch(updateTeacherNotePriority(note.id, note.priority))}
 
-                                />
-                                
+                            />
+
                         </div>
                     ))
                 ) : (

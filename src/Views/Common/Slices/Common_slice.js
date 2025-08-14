@@ -64,8 +64,22 @@ let initialState = {
         glow: true,
         data: []
     },
-
-
+    modal: {
+        show: false,
+        close_btn: false,
+        from: null,
+        type: null,
+        size: null
+    },
+    notesdata: {
+        id: "",
+        title: "",
+        content: "",
+        priority: ""
+    },
+    priority: {
+        id: ""
+    }
 
 
 }
@@ -75,16 +89,49 @@ const commonSlice = createSlice({
     initialState,
     reducers: {
 
-        // handleDeleteNote(state, action) {
-        //     const { type, message } = action.payload;
-        //     if (type === "request") {
-        //       state.deleteNoteStatus = { loading: true, error: null, success: false };
-        //     } else if (type === "success") {
-        //       state.deleteNoteStatus = { loading: false, error: null, success: true };
-        //     } else if (type === "failure") {
-        //       state.deleteNoteStatus = { loading: false, error: message, success: false };
-        //     }
-        //   },
+        toggleNotePriority(state, action) {
+            const { type, message, noteId, priority } = action.payload;
+        
+            if (type === "request") {
+                state.updatePriorityStatus = { loading: true, error: null };
+            } 
+            else if (type === "success") {
+                state.updatePriorityStatus = { loading: false, error: null };
+        
+                // Update note in state
+                state.notes = state.notes.map(note =>
+                    note.id === noteId ? { ...note, priority } : note
+                );
+            } 
+            else if (type === "failure") {
+                state.updatePriorityStatus = { loading: false, error: message };
+            }
+        },  
+        
+
+
+        updateModalShowes: (state, action) => {
+            const { show, close_btn, modal_from, modal_type, size } = action.payload;
+            state.modal.show = show;
+            state.modal.close_btn = close_btn;
+            state.modal.from = modal_from;
+            state.modal.type = modal_type;
+            state.modal.size = size || null;
+        },
+        setEditNoteData: (state, action) => {
+            console.log(action.payload)
+            state.notesdata = {
+                id: action.payload.id,
+                title: action.payload.title,
+                content: action.payload.content,
+                priority: action.payload.priority
+            };
+        },
+        updateNoteField: (state, action) => {
+            const { field, value } = action.payload;
+            state.notesdata[field] = value;
+        },
+
         handleDeleteNote(state, action) {
             const { type, message } = action.payload;
 
@@ -213,10 +260,7 @@ const commonSlice = createSlice({
             state.app_data.user_role = '';
             state.app_data.user_id = '';
         },
-        // update_note_data(state, action) {
-        //     const [key, value] = Object.entries(action.payload)[0] || [];
-        //     state.notesdata[key] = value || "";
-        //   },
+
         update_note_data(state, action) {
             const { type, data } = action.payload;
             state.notesdata[type] = data || "";
@@ -267,7 +311,6 @@ const commonSlice = createSlice({
 
 
 
-            //For handling response error [setting toast error message]
             .addMatcher(
                 (action) => [
 
@@ -311,7 +354,7 @@ const { actions, reducer } = commonSlice;
 
 export const {
     update_app_data, update_error, updateModalShow, update_search,
-    logout, handleTeacherNotesData, handlePostNote, handleDeleteNote, update_note_data
+    logout, handleTeacherNotesData, handlePostNote, handleDeleteNote, update_note_data, setEditNoteData, updateNoteField, updateModalShowes,toggleNotePriority
 
 } = actions;
 

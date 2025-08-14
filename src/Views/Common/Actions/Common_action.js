@@ -5,6 +5,9 @@ import {
     handleDeleteNote,
     handlePostNote,
     handleTeacherNotesData,
+    toggleNotePriority,
+    updateModalShow,
+    updateModalShowes,
     // update_app_data, 
     // login_reducer
     updateToast, updateToken,
@@ -16,23 +19,125 @@ import {
 //teachersnotes api
 
 
-export const deleteTeacherNote = (noteId) => async (dispatch) => {
-    console.log(noteId, "ASDdsdfsa")
-    try {
-        dispatch(handleDeleteNote({ type: "request" }));
+export const updateTeacherNotePriority = (noteId, currentPriority) => async (dispatch) => {
+  try {
+      // Decide new priority
+      const newPriority = currentPriority === "high" ? "low" : "high";
 
-        const { data } = await axiosInstance.delete("/teachers/delete_user_notes", { data: { id: noteId } });
+      // Dispatch request
+      dispatch(toggleNotePriority({ type: "request" }));
 
-        if (data?.error_code === 0) {
-            dispatch(handleDeleteNote({ type: "success" }));
-            dispatch(getTeacherNotesData()); // refresh after delete
-        } else {
-            dispatch(handleDeleteNote({ type: "failure", message: data?.message || "Error deleting note" }));
-        }
-    } catch (err) {
-        dispatch(handleDeleteNote({ type: "failure", message: err.message || "Error" }));
-    }
+      const fd = new FormData();
+      fd.append("id", noteId);
+      fd.append("priority", newPriority);
+
+      const { data } = await axiosInstance.put(
+          "/teachers/priority_user_notes",
+          fd,
+          { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      if (data?.error_code === 0) {
+          dispatch(toggleNotePriority({
+              type: "success",
+              noteId,
+              priority: newPriority
+          }));
+      } else {
+          dispatch(toggleNotePriority({
+              type: "failure",
+              message: data?.message || "Error updating priority"
+          }));
+      }
+  } catch (err) {
+      dispatch(toggleNotePriority({
+          type: "failure",
+          message: err.message || "Error"
+      }));
+  }
 };
+
+
+
+export const handleUpdateNote = (noteData) => async (dispatch) => {
+  const { id, title, content, priority,file } = noteData;
+
+  if (!title || !content) {
+    return alert("Please fill in both fields before saving.");
+  }
+
+  try {
+    dispatch(handlePostNote({ type: "request" }));
+
+    const fd = new FormData();
+    fd.append("id", id);
+    fd.append("title", title);
+    fd.append("content", content);
+    fd.append("priority", priority)
+
+    if (file) {
+      fd.append("file", file);
+    }
+
+    const { data } = await axiosInstance.put(
+      "/teachers/edit_user_notes",
+      fd,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+
+    if (data?.error_code === 0) {
+      dispatch(handlePostNote({ type: "success" }));
+      dispatch(getTeacherNotesData()); // refresh list
+      dispatch(updateModalShowes({ show: false })); // close modal
+    } else {
+      dispatch(handlePostNote({
+        type: "failure",
+        message: data?.message || "Error updating note"
+      }));
+    }
+  } catch (err) {
+    dispatch(handlePostNote({
+      type: "failure",
+      message: err.message || "Error"
+    }));
+  }
+};
+
+  
+
+export const deleteTeacherNote = (noteId) => async (dispatch) => {
+    const userConfirmed = window.confirm("Are you sure you want to delete this note?");
+    
+    if (!userConfirmed) {
+      return;
+    }
+  
+    try {
+        
+      dispatch(handleDeleteNote({ type: "request" }));
+  
+      const { data } = await axiosInstance.delete(
+        "/teachers/delete_user_notes",
+        { data: { id: noteId } }
+      );
+  
+      if (data?.error_code === 0) {
+        dispatch(handleDeleteNote({ type: "success" }));
+        dispatch(getTeacherNotesData()); // Refresh list
+      } else {
+        dispatch(handleDeleteNote({
+          type: "failure",
+          message: data?.message || "Error deleting note"
+        }));
+      }
+    } catch (err) {
+      dispatch(handleDeleteNote({
+        type: "failure",
+        message: err.message || "Error"
+      }));
+    }
+  };
+  
 
 
     export const handlecreateNote = (formdata) => async (dispatch) => {
