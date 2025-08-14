@@ -23,6 +23,21 @@ let initialState = {
     loading: false,
     success: false,
     error: null,
+    errors: {},
+
+    classroomForm: {
+      class_name: "",
+      teachers: [],
+      student_file:null
+    },
+
+    dashboard_overview: {
+        total_teachers: null,
+        total_students: null,
+        total_classrooms: null,
+        total_tests: null
+    },
+
 }
 
 const adminSlice = createSlice({    
@@ -103,7 +118,6 @@ const adminSlice = createSlice({
 
         updateStudentsTableData(state, action){
             const { type , data } = action.payload
-            console.log("data :", data)
             switch(type){
                 case "request":
                     state.placeholder = true;
@@ -132,6 +146,72 @@ const adminSlice = createSlice({
         updateStaffForm: (state, action) => {
             state.staffForm = { ...state.staffForm, ...action.payload };
         },
+
+        setErrors(state, action) {
+            state.errors = action.payload;
+        },
+        clearForm(state) {
+            state.staffForm = {
+                name: "",
+                email_id: "",
+                subject_name: "",
+                institute_name: "",
+            };
+            state.file = null;
+            state.errors = {};
+        },
+        setLoading(state, action) {
+            state.loading = action.payload;
+        },
+
+        updateClassroomForm: (state, action) => {
+            state.classroomForm = { ...state.classroomForm, ...action.payload };
+        },
+
+        updateDashboardOverviewData(state, action){
+            const { type , data } = action.payload
+            const { total_teachers, total_students, total_classrooms, total_tests } = data || {}
+            
+            switch(type){
+                case "request":
+                    state.placeholder = true;
+                    break;
+
+                case "response":
+                    state.dashboard_overview.total_teachers = total_teachers
+                    state.dashboard_overview.total_students = total_students
+                    state.dashboard_overview.total_classrooms = total_classrooms
+                    state.dashboard_overview.total_tests = total_tests
+                    state.placeholder = false;
+                    break;
+
+                case "failure":
+                    state.placeholder = false;
+                    break;
+                default:
+                    break;
+            }  
+        },
+
+        setClassroomErrors: (state, action) => {
+            state.errors = action.payload;
+        },
+        clearClassroomForm: (state) => {
+            state.classroomForm = {
+            class_name: "",
+            teachers: [],
+            student_file: null
+        };
+            state.errors = {};
+        },
+
+        clearFieldError: (state, action) => {
+            const fieldName = action.payload;
+            if (state.errors[fieldName]) {
+                const { [fieldName]: removed, ...rest } = state.errors;
+                state.errors = rest;
+            }
+        },
     }
 })
 
@@ -145,7 +225,13 @@ export const {
     updateStudentsTableData,
     handleUpdateClassroomName,
     
-    setFile, updateStaffForm
+    setFile, updateStaffForm,
+    setErrors, clearForm, setLoading,
+    updateClassroomForm,
+    updateDashboardOverviewData,
+    setClassroomErrors,
+    clearClassroomForm,
+    clearFieldError
 } = actions
 
 export default reducer

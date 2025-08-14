@@ -1,6 +1,7 @@
 import axiosInstance from "Services/axiosInstance"
-import { updateClassroomsOverviewData, updateGetAllClassroomsData, updateStudentsTableData, updateTeachersTableData } from "../Slices/adminSlice"
+import { clearForm, setLoading, updateClassroomsOverviewData, updateDashboardOverviewData, updateGetAllClassroomsData, updateStudentsTableData, updateTeachersTableData } from "../Slices/adminSlice"
 import { type } from "@testing-library/user-event/dist/type"
+import { update_error } from "Views/Common/Slices/Common_slice"
 
 export const handleGetAllClassrooms = (params) => async (dispatch) => {
     try {
@@ -29,6 +30,23 @@ export const handleClassroomOverview = (params) => async (dispatch) => {
         }
     } catch (Err) {
         dispatch(updateClassroomsOverviewData({type: "failure", message: Err.message}))
+    }
+}
+
+export const handleDashboardOverview = (params) => async (dispatch) => {
+    try {
+        dispatch(updateDashboardOverviewData({type: "request"}))
+        // const { data } = await axiosInstance.post("/admin/get_classroom_count", { "classroom_id": params.id })
+        const data = {data:[{total_teachers: 10, total_students: 20, total_classrooms: 30, total_tests: 40}]}
+        // if(data?.error_code === 0) {
+        if(data) {
+            console.log(data)
+            dispatch(updateDashboardOverviewData({type: "response", data: data?.data[0]}))
+        } else{
+            dispatch(updateDashboardOverviewData({type: "failure", message: data?.message}))
+        }
+    } catch (Err) {
+        dispatch(updateDashboardOverviewData({type: "failure", message: Err.message}))
     }
 }
 
@@ -65,50 +83,75 @@ export const handleGetStudentsTableData = (params) => async (dispatch) => {
 // File upload action
 export const submitStaffFile = (formData) => async (dispatch) => {
   try {
-    const { data } = await axiosInstance.post(
-      "/admin/invite_teachers",
-      formData,
-      { headers: { "Content-Type": "multipart/form-data" } }
-    );
-    console.log("data :", data)
-
+    dispatch(setLoading(true));
+    dispatch(updateStudentsTableData({type: "request"}))
+    const { data } = await axiosInstance.post("/admin/invite_teachers", formData);
+    dispatch(clearForm());
+    
     if (data?.error_code === 0) {
-        console.log("data :", data)
+        dispatch(setLoading(false))
+        dispatch(update_error({ Err: data?.message, Toast_Type: "success" }));
     } else {
-        console.log("error in file submit")
+        dispatch(setLoading(false))
+        dispatch(update_error({ Err: data?.message, Toast_Type: "error" }));
     }
   } catch (err) {
-    console.log("err :", err)
-}
+        dispatch(setLoading(false))
+        dispatch(update_error({ Err: "Network Error", Toast_Type: "error" }));
+    }
 };
 
 // Manual entry action
 export const submitStaffManual = (staffForm) => async (dispatch) => {
     try {
+        dispatch(setLoading(true));
         const { data } = await axiosInstance.post("/admin/invite_teacher", staffForm);
-            console.log("data :", data)
+        dispatch(clearForm());
         if (data?.error_code === 0) {
-            console.log("data :", data)
+            dispatch(setLoading(false));
+            dispatch(update_error({ Err: data?.message, Toast_Type: "success" }));
         } else {
-            console.log("error in form submit")
+            dispatch(setLoading(false));
+            dispatch(update_error({ Err: data?.message, Toast_Type: "error" }));
         }
     } catch (err) {
-        console.log("err :", err)   
+        dispatch(setLoading(false));
+        dispatch(update_error({ Err: "Network Error", Toast_Type: "error" }));
+
     }
 };
 
 export const handleFetchTeachers = (staffForm) => async (dispatch) => {
-    try {
-        const { data } = await axiosInstance.post("", staffForm);
-            console.log("data :", data)
+    // try {
+    //     const { data } = await axiosInstance.post("", staffForm);
+    //         console.log("data :", data)
+    //     if (data?.error_code === 0) {
+    //         console.log("data :", data)
+    //     } else {
+    //         console.log("error in form submit")
+    //     }
+    // } catch (err) {
+    //     console.log("err :", err)
+    // }
+};
+
+export const createClassroom = (formData) => async (dispatch) => {
+  try {
+        dispatch(setLoading(true));
+        const { data } = await axiosInstance.post("/admin/create_classroom", formData);
+        dispatch(clearForm());
+
         if (data?.error_code === 0) {
-            console.log("data :", data)
+            dispatch(setLoading(false));
+            dispatch(update_error({ Err: data?.message, Toast_Type: "success" }));
         } else {
-            console.log("error in form submit")
+            dispatch(setLoading(false));
+            dispatch(update_error({ Err: data?.message, Toast_Type: "error" }));
         }
-    } catch (err) {
-        console.log("err :", err)
+    } catch (error) {
+        dispatch(setLoading(false));
+        dispatch(update_error({ Err: "Network Error", Toast_Type: "error" }));
     }
 };
 
-
+    

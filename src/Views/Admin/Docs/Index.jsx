@@ -8,31 +8,22 @@ import Icons from "Utils/Icons";
 import JsonData from "Views/Admin/Utils/JsonData";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import { OverallModel } from "../Utils/OverallModal";
+import { handleDashboardOverview } from "../Actions/Admin_action";
+import { useEffect } from "react";
 
 const AdminDashboard = () => {
     const dispatch = useDispatch();
     const { jsonOnly } = JsonData();
-    const data = [
-        { icon: Icons.student_dashboard_to_no_stud_icon, count: 1000, description: "Total No.of Teacher" },
-        { icon: Icons.multiple_people_icon, count: 4, description: "Total No.of Students" },
-        { icon: Icons.admin_computer_icon_pink, count: 1000, description: "Total No.of Classrooms" },
-        { icon: Icons.admin_test_icon, count: 4, description: "Total No.of Tests" }
-    ]
-
-    const table_data = [
-        { s_no: 1, staff_name: "John Doe", institute_name: "ABC Institute", subject: "Mathematics", contact_no: "1234567890", email: "test@example.com", qualification: "M.Sc Mathematics" },
-        { s_no: 1, staff_name: "John Doe", institute_name: "ABC Institute", subject: "Mathematics", contact_no: "1234567890", email: "test@example.com", qualification: "M.Sc Mathematics" },
-        { s_no: 1, staff_name: "John Doe", institute_name: "ABC Institute", subject: "Mathematics", contact_no: "1234567890", email: "test@example.com", qualification: "M.Sc Mathematics" },
-        { s_no: 1, staff_name: "John Doe", institute_name: "ABC Institute", subject: "Mathematics", contact_no: "1234567890", email: "test@example.com", qualification: "M.Sc Mathematics" },
-        { s_no: 1, staff_name: "John Doe", institute_name: "ABC Institute", subject: "Mathematics", contact_no: "1234567890", email: "test@example.com", qualification: "M.Sc Mathematics" },
-        { s_no: 1, staff_name: "John Doe", institute_name: "ABC Institute", subject: "Mathematics", contact_no: "1234567890", email: "test@example.com", qualification: "M.Sc Mathematics" },
-    ]
+    
+    useEffect(() => {
+        dispatch(handleDashboardOverview())
+    }, [])
 
     return (
         <>
             <section className="row h-100 ">
                 <div className="col-5 row">
-                    {data.map((item, index) => (
+                    {jsonOnly?.card_data.map((item, index) => (
                         <div className="col-6 p-1" key={index}>
                             <CountShowingCard data={item} />
                         </div>
@@ -93,21 +84,23 @@ const AdminDashboard = () => {
                                         </tr>
                                     </thead>
                                     <tbody className="staff_table_data">
-                                        {table_data?.map((row, index) => (
-                                            <tr key={index}>
-                                                <td>{index + 1}</td>
-                                                <td>{row?.staff_name}</td>
-                                                <td>{row?.institute_name}</td>
-                                                <td>{row?.subject}</td>
-                                                <td>{row?.contact_no}</td>
-                                                <td>{row?.email}</td>
-                                                <td>{row?.qualification}</td>
-                                                <td>
-                                                    <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.edit_icon} />
-                                                    <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.delete_icons} />
-                                                </td>
-                                            </tr>
-                                        ))}
+                                        {   jsonOnly?.table_data.length > 0 &&
+                                            jsonOnly?.table_data?.map((row, index) => (
+                                                <tr key={index}>
+                                                    <td>{index + 1}</td>
+                                                    <td>{row?.staff_name}</td>
+                                                    <td>{row?.institute_name}</td>
+                                                    <td>{row?.subject}</td>
+                                                    <td>{row?.contact_no}</td>
+                                                    <td>{row?.email}</td>
+                                                    <td>{row?.qualification}</td>
+                                                    <td>
+                                                        <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.edit_icon} />
+                                                        <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.delete_icons} />
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        }
                                     </tbody>
                                 </table>
                             </div>

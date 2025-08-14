@@ -14,7 +14,7 @@ export default function Layout() {
             navigate("/admin_dashboard/home");
         }
     }, [navigate])
-
+    
     return (
         <div className="layout_main">
             <div className="d-flex flex-wrap">

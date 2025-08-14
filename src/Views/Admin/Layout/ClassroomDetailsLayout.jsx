@@ -17,7 +17,6 @@ const ClassroomDetailsLayout = () => {
 
     useEffect(() => {
         dispatch(handleUpdateClassroomId({id}))
-        
         dispatch(handleClassroomOverview({id}))
         dispatch(handleGetTeachersTableData({id}))
     }, [id])
@@ -55,8 +54,10 @@ const ClassroomDetailsLayout = () => {
                     <div className="col-12 p-1" style={{height: "30rem"}}>
                         <Card className="h-100 border-0 rounded-4 shadow-sm">
                             <Card.Header className="bg-transparent border-0 pt-3">
-                                <NavLink to={`/admin_dashboard/classrooms/${id}/teachers`} className="admin_classroom_overview_navlink">Teachers</NavLink>
-                                <NavLink to={`/admin_dashboard/classrooms/${id}/students`} className="admin_classroom_overview_navlink">Students</NavLink>
+                                <NavLink to={`/admin_dashboard/classrooms/${id}/teachers`} className="admin_classroom_overview_navlink" 
+                                onClick={() => dispatch(handleGetTeachersTableData({id}))}>Teachers</NavLink>
+                                <NavLink to={`/admin_dashboard/classrooms/${id}/students`} className="admin_classroom_overview_navlink" 
+                                onClick={() => dispatch(handleGetTeachersTableData({id}))}>Students</NavLink>
                             </Card.Header>
                             <Card.Body className="admin_classroom_overview_table_height mt-3">
                                 <Outlet />

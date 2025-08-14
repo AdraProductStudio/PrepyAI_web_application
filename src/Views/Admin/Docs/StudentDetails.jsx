@@ -5,18 +5,10 @@ import { handleGetStudentsTableData } from "../Actions/Admin_action";
 import { useCommonState } from "Components/CustomHooks";
 import { useEffect } from "react";
 import SpinnerComponent from "Components/Spinner/Spinner";
-import { useParams } from "react-router-dom";
 
 const StudentDetails = () => {
     const { adminState } = useCommonState();
     const dispatch = useDispatch();
-    const { id } = useParams();
-
-    useEffect(() => {
-        if (id) {
-            dispatch(handleGetStudentsTableData({ id }));
-        }
-    }, [id, dispatch]);
 
     useEffect(() => {
         dispatch(handleGetStudentsTableData({id: adminState?.classroom_id}))
