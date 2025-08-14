@@ -63,6 +63,8 @@ let initialState = {
     showModal: false,
     isEditing: false,
     editNote: { id: null, title: "", content: "" },
+    showMoreNote: { id: null, title: "", content: "" },
+    isShowMoreOpen: false,
   },
 };
 
@@ -77,6 +79,14 @@ const commonSlice = createSlice({
       state.modal.from = modal_from || null;
       state.modal.type = modal_type || null;
       state.modal.close_btn = close_btn || false;
+
+//-------------------------student notes-----------------------//
+    if (modal_type === "add_notes" && show) {
+    state.students_notes.title = "";
+    state.students_notes.content = "";
+    state.students_notes.isEditing = false;
+    state.students_notes.editNote = { id: null, title: "", content: "" };
+  }
     },
     update_app_data(state, action) {
       const { type, data } = action.payload;
@@ -130,7 +140,7 @@ const commonSlice = createSlice({
       state.app_data.user_id = "";
     },
 
-    //----------------Student Notes------------------
+    //----------------------------Student Notes------------------------------------------//
 
     handleGetStudentsNotes(state, action) {
       const { type, data } = action.payload;
@@ -191,7 +201,9 @@ const commonSlice = createSlice({
       );
       if (noteIndex !== -1) {
         state.students_notes.data[noteIndex].priority =
-          state.students_notes.data[noteIndex].priority === "low" ? "high": "low";
+          state.students_notes.data[noteIndex].priority === "low"
+            ? "high"
+            : "low";
       }
     },
 
@@ -237,11 +249,18 @@ const commonSlice = createSlice({
     setEditNoteData(state, action) {
       const { id, title, content } = action.payload;
       state.students_notes.editNote = { id, title, content };
-      state.students_notes.editNote.id = id;  
+      state.students_notes.editNote.id = id;
       state.students_notes.title = title;
       state.students_notes.content = content;
       state.students_notes.isEditing = true;
     },
+
+    showMoreModal(state, action) {
+      const { id, title, content } = action.payload;
+      state.students_notes.showMoreNote = { id, title, content };
+      state.students_notes.isShowMoreOpen = true;
+    },
+
   },
   extraReducers: (builder) => {
     builder
@@ -338,7 +357,10 @@ export const {
   handleGetStudentsNotes,
   handleDeleteStudentNotes,
   handleNotePriority,
-  updateNoteField,handleEditStudentNotes,setEditNoteData
+  updateNoteField,
+  handleEditStudentNotes,
+  setEditNoteData,
+  showMoreModal,
 } = actions;
 
 export default reducer;

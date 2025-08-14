@@ -6,7 +6,7 @@ import Icons from "Utils/Icons";
 const NoteCard = ({data, addFavoriteOnClick,notesEditOnClick, notesDeleteOnClick,onShowMore,noteFavoriteIcon}) => {
      
       const normaltext = (data?.notes);
-      const char = 500;
+      const char = 370;
       const longertext = normaltext.length > char;
       const shortertext = longertext ? normaltext.slice(0, char) + "..." : normaltext;
 
@@ -33,10 +33,13 @@ const NoteCard = ({data, addFavoriteOnClick,notesEditOnClick, notesDeleteOnClick
                     buttonName='show more' />     
                 )}
             </div>
-            <div className="d-flex align-items-center text-muted mt-3" style={{ fontSize: "14px" }}>
+            <footer className="h-100 d-flex align-items-end">
+                <div className="d-flex align-items-center text-muted " style={{ fontSize: "14px" }}>
                 <FaRegClock className="me-2" />
                 {data?.time || ''}
             </div>
+            </footer>
+            
         </Card>
     );
 };

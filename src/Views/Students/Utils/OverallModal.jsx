@@ -9,6 +9,7 @@ export function OverallModel() {
     const { commonState } = useCommonState();
     const dispatch = useDispatch();
     const { title, content } = commonState?.students_notes
+    const { title:showMore_title, content:showMore_content } = commonState?.students_notes.showMoreNote || {}
    
 
     function modalHeaderFun() {
@@ -20,6 +21,10 @@ export function OverallModel() {
                     
                     case "edit_notes":
                         return<h4 className="m-0">Edit Note</h4>
+
+                    case "show_more_note":
+                        return<h4 className="m-0">Note</h4>
+                    
                     default:
                         break;
                 }
@@ -64,7 +69,7 @@ export function OverallModel() {
                             return(
                                <div className="d-flex flex-column col">
                                 <div className="col-12 ">
-                                    <label htmlFor="notes_title" className="col-12 fs-6 text-muted">Add Title Here
+                                    <label htmlFor="notes_title" className="col-12 fs-6 text-muted"> Title
                                     <input
                                      type="text"
                                      id="notes_title" 
@@ -74,7 +79,7 @@ export function OverallModel() {
                                 </label>
                                 </div>
                                 <div className="col-12 mt-3">
-                                    <label htmlFor="notes_content" className="col-12 fs-6 text-muted">Add Content Here
+                                    <label htmlFor="notes_content" className="col-12 fs-6 text-muted">Content
                                     <textarea 
                                     name="notes"
                                     style={{height:"20vh"}} 
@@ -86,8 +91,15 @@ export function OverallModel() {
                                 </div>   
                             </div>
                             )
-                        
 
+                        case "show_more_note":
+                            return(
+                            <div className="overflowY">
+                                <h5 className="mt-3">{showMore_title}</h5>
+                                <p className="mt-5 text-muted">{showMore_content}</p>
+                            </div>
+                            
+                            )
                     default:
                         break;
                 }
@@ -106,7 +118,7 @@ export function OverallModel() {
                         return (
                           <div className="d-flex justify-content-end ">
                             <ButtonComponent
-                              className="gradient text-white "
+                              className="gradient text-white px-5"
                               buttonName="Add"
                               clickFunction={() =>
                               dispatch(createStudentNote())
@@ -117,8 +129,8 @@ export function OverallModel() {
                         case 'edit_notes':
                           return(<div className="d-flex justify-content-end ">
                             <ButtonComponent
-                              className="gradient text-white "
-                              buttonName="Upadte"
+                              className="gradient text-white px-5"
+                              buttonName="Update"
                               clickFunction={() =>
                               dispatch(updateStudentNote(commonState.students_notes.editNote.id))
                               }
