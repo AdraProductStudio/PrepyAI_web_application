@@ -655,7 +655,7 @@ td {
 
 .question_number_btn.active {
   border-color: #FF6C95 !important;
-  background: linear-gradient(90deg, #FC6767 0%, #FC6767 100%) !important;
+  background: black !important;
   color: white !important;
 }
 
@@ -668,18 +668,24 @@ td {
   border-color: #ff0c51 !important;
   color: white;
 }
+.questions_answered {
+  background-color: #f15682;
+  color: black;
+}
+
+.questions_unanswered {
+  color: black;
+}
 
 .selected_question_active {
   border: 1px solid #FF6C95;
   background: rgba(255, 108, 149, 0.21) !important;
 }
 
-.questions_answerd {
-  background: linear-gradient(90deg, #EC008C 0%, #FC6767 100%);
-  border-color: #FF6C95;
+.nxt_btn{
+  background-color: black;
   color: white;
 }
-
 
 .question-progress-bar .progress-bar {
   background-color: #6beb1c !important;

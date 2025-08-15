@@ -8,6 +8,7 @@ import { handleGetAllSubjects } from "../Actions/StudentAction"
 import { useEffect } from "react"
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import { OverallModel } from "../Utils/OverallModal";
+import SpinnerComponent from "Components/Spinner/Spinner";
 
 const StudentSubject = () => {
     const navigate = useCustomNavigate();
@@ -27,7 +28,12 @@ const StudentSubject = () => {
                 </div>
 
                 <div className="w-100 row align-content-start small_header_content_main overflowY">
-                    {!studentState?.all_subjects || studentState.all_subjects.length === 0 ? (
+                    { studentState?.subjects_loading ? 
+                    <div className="d-flex justify-content-center align-items-center" style={{minHeight: "600px"}}>
+                        <SpinnerComponent /> <p className="m-0">loading...</p>
+                    </div>
+                    :
+                        !studentState?.all_subjects || studentState.all_subjects.length === 0 ? (
                         <div className="w-100 h-100 row align-items-center justify-content-center">
                             <div className="col-6 text-center">
                                 <Img src={Image?.no_subjects_added} alt="No subjects Found" className="no_subjects_added_image" />

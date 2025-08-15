@@ -5,13 +5,16 @@ import PerformanceHistoryCard from 'Components/Card/PerformanceHistoryCard';
 import TimeTableCard from 'Components/Card/TimeTableCard';
 import ActivityCard from 'Components/Card/ActivtyCard';
 import { useCommonState, useDispatch } from "Components/CustomHooks"
-import { handleGetAllTestHistory, handleGetAllTests, handleGetOverallPerformance } from "../Actions/StudentAction"
+import { handleGetAllTestHistory, handleGetAllTests, handleGetOfflineTests, handleGetOverallPerformance } from "../Actions/StudentAction"
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import { OverallModel } from "../Utils/OverallModal";
 import { updateTestId } from "../Slices/StudentSlice";
 import '../../../Stylesheet/Css/Student.css'
 import ButtonComponent from "Components/Button/Button";
 import Icons from "Utils/Icons";
+import Img from "Components/Img/Img";
+import Image from "Utils/Image";
+import SpinnerComponent from "Components/Spinner/Spinner";
 
 const StudentDashboard = () => {
     const dispatch = useDispatch();
@@ -21,8 +24,8 @@ const StudentDashboard = () => {
         dispatch(handleGetAllTests())
         dispatch(handleGetOverallPerformance())
         dispatch(handleGetAllTestHistory())
+        dispatch(handleGetOfflineTests())
     }, [])
-
     return (
         <Row className="g-3">
             <Col xs={12} md={5} className="p-2">
@@ -40,7 +43,12 @@ const StudentDashboard = () => {
                                 <Card.Title className='fs-16 mb-0'> Activities </Card.Title>
                             </Card.Header>
                             <Card.Body className="activity_card_body">
-                                {studentState?.all_tests.length > 0 ?
+                                { studentState?.all_tests_loading ? 
+                                    <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "200px" }}>
+                                        <SpinnerComponent /> <p className="m-0">loading...</p>
+                                    </div> 
+                                    :
+                                    studentState?.all_tests.length > 0 ?
                                     (
                                         studentState?.all_tests?.map((test, idx) => (
                                             <ActivityCard key={idx} data={test}
@@ -52,7 +60,10 @@ const StudentDashboard = () => {
                                             />
                                         ))
                                     ) : (
-                                        <p className="text-center">No activites found</p>
+                                        <div className="d-flex flex-column justify-content-center align-items-center w-100" style={{ minHeight: '200px' }}>
+                                            <span><Img src={Image.no_data_found} width={100} /></span>
+                                            <p>No activities</p>
+                                        </div>
                                     )
                                 }
                             </Card.Body>

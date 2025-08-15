@@ -4,14 +4,15 @@ import Img from "Components/Img/Img";
 import Input from "Components/Input/Input";
 import InputGroup from "Components/Input/InputGroup";
 import ModalComponent from "Components/Modal/Modal";
-import { useRef} from "react";
+import { useRef } from "react";
 import Icons from "Utils/Icons";
 import Image from "Utils/Image";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
-import { handleJoinClassRoom, handleStartTest, handleUploadLearnerBook } from "../Actions/StudentAction";
-import { setClassroomCode, setUploadLearnerBook } from "../Slices/StudentSlice";
+import { handleJoinClassRoom, handleStartTest, handleSubmitTest, handleUploadLearnerBook, handleUploadTestPaper } from "../Actions/StudentAction";
+import { setClassroomCode, setUploadLearnerBook, setUploadTestPaper } from "../Slices/StudentSlice";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import JsonData from "./JsonData";
+import SpinnerComponent from "Components/Spinner/Spinner";
 
 
 export function OverallModel() {
@@ -19,14 +20,24 @@ export function OverallModel() {
     const fileInputRef = useRef(null)
     const dispatch = useDispatch()
     const navigate = useCustomNavigate()
-
     const { jsxJson } = JsonData()
 
-    const handleUpload = () => {
+    const handleUpload = (type) => {
         const formData = new FormData()
-        formData.append("book_name", studentState?.upload_book_payload?.bookName)
-        formData.append("book", studentState?.upload_book_payload?.bookFile)
-        dispatch(handleUploadLearnerBook(formData))
+
+        if (type === 'learner_book') {
+            formData.append("book_name", studentState?.upload_learner_book?.book_name)
+            formData.append("book", studentState?.upload_learner_book?.book_file)
+            dispatch(handleUploadLearnerBook(formData))
+        }
+        if (type === 'test_paper') {
+            formData.append("test_name", studentState?.upload_test_paper?.test_name)
+            formData.append("test_id", studentState?.upload_test_paper?.test_id)
+            formData.append("register_number", studentState?.upload_test_paper?.register_number)
+            formData.append("test_paper", studentState?.upload_test_paper?.test_file)
+
+            dispatch(handleUploadTestPaper(formData))
+        }
     }
 
     function modalHeaderFun() {
@@ -41,7 +52,7 @@ export function OverallModel() {
                         break;
                 }
                 break;
-            
+
             case "subjects":
                 switch (commonState?.modal?.type) {
                     case "add_class":
@@ -59,11 +70,7 @@ export function OverallModel() {
                 switch (commonState?.modal?.type) {
                     case "upload_book":
                         return <div className='p-2'>
-                            <InputGroup
-                                inputType='text'
-                                inputHeading="Book Name"
-                                change={(e)=> dispatch(setUploadLearnerBook({type: "set", book_name: e.target.value})) }
-                            />
+                            {Inputfunctions(jsxJson.uploadBook)}
                             <div className="d-flex justify-content-center align-items-center p-3 my-3 upload_book_div">
                                 <div className="mx-3 pointer">
                                     <span style={{ display: "none" }}>
@@ -74,16 +81,46 @@ export function OverallModel() {
                                             ref={fileInputRef}
                                             change={(e) => {
                                                 const file = e.target.files[0]
-                                                if (file) dispatch(setUploadLearnerBook({type: "set", book_file: file}))
+                                                if (file) dispatch(setUploadLearnerBook({ type: "set", book_file: file }))
                                             }}
                                         />
                                     </span>
                                     <span className="d-flex" onClick={() => fileInputRef.current && fileInputRef.current.click()}>{Icons.studentUploadLarge}</span>
                                 </div>
                                 <div className="pt-3">
-                                    <strong>Browse your book file</strong>
+                                    <strong>Browse your book</strong>
                                     <p>Formats pdf, docs, doc & Max file size 1 GB</p>
                                 </div>
+                            </div>
+                            <div className="d-flex justify-content-between align-items-center">
+                                <div className="">
+                                    <ButtonComponent
+                                        type="button"
+                                        className="btn border border-dark px-5"
+                                        buttonName="Cancel"
+                                        clickFunction={() => {
+                                            dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
+                                            dispatch(setUploadLearnerBook({ type: 'set', book_name: '', book_file: null }))
+                                        }
+                                        }
+                                    />
+                                </div>
+                                <div>
+                                    <ButtonComponent
+                                        type="button"
+                                        className="btn btn-brand-color px-5 py-2"
+                                        buttonName={`${studentState?.upload_learner_book.loading ? 'uploading...' : 'upload'}`}
+                                        clickFunction={() => handleUpload('learner_book')}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                    case "start_test":
+                        return <div className="">
+                            <div className="text-center">
+                                <span><Img src={Image.start_test_pic} width={200} /></span>
+                                <p className="gradient-text my-3">Are you sure do you want to Start Test</p>
                             </div>
                             <div className="d-flex justify-content-between align-items-center">
                                 <div className="">
@@ -98,18 +135,36 @@ export function OverallModel() {
                                     <ButtonComponent
                                         type="button"
                                         className="btn btn-brand-color px-5 py-2"
-                                        buttonName={`${studentState?.upload_book_payload.loading ? 'uploading...' : 'upload'}`}
-                                        clickFunction={() => handleUpload() }
+                                        buttonName={studentState?.mcq_loading ? (<>starting <SpinnerComponent /></>) : ('Start')}
+                                        clickFunction={() => dispatch(handleStartTest(studentState?.test_id, navigate))}
+                                    // clickFunction={() => setTimeout(()=>dispatch(handleStartTest(studentState?.test_id, navigate)), 1000) }
                                     />
                                 </div>
                             </div>
                         </div>
-
-                    case "start_test":
-                        return <div className="">
-                            <div className="text-center">
-                            <span><Img src={Image.start_test_pic} width={200}/></span>
-                            <p className="gradient-text my-3">Are you sure do you want to Start Test</p>
+                    case "upload_test_paper":
+                        return <div>
+                            {Inputfunctions(jsxJson.uploadTest)}
+                            <div className="d-flex justify-content-center align-items-center p-3 m-2 my-4 upload_book_div">
+                                <div className="mx-3 pointer">
+                                    <span style={{ display: "none" }}>
+                                        <Input
+                                            type='file'
+                                            inputAccept=".pdf,.doc,.docx"
+                                            name="bookFile"
+                                            ref={fileInputRef}
+                                            change={(e) => {
+                                                const file = e.target.files[0]
+                                                if (file) dispatch(setUploadTestPaper({ type: "set", test_file: file }))
+                                            }}
+                                        />
+                                    </span>
+                                    <span className="d-flex" onClick={() => fileInputRef.current && fileInputRef.current.click()}>{Icons.studentUploadLarge}</span>
+                                </div>
+                                <div className="pt-3">
+                                    <strong>Browse your test file</strong>
+                                    <p>Formats pdf, docs, doc & Max file size 1 GB</p>
+                                </div>
                             </div>
                             <div className="d-flex justify-content-between align-items-center">
                                 <div className="">
@@ -117,34 +172,33 @@ export function OverallModel() {
                                         type="button"
                                         className="btn border border-dark px-5"
                                         buttonName="Cancel"
-                                        clickFunction={()=>dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))}
+                                        clickFunction={() => {
+                                            dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
+                                            dispatch(setUploadTestPaper({ type: 'set', test_name: '', register_number: '', test_file: null }))
+                                        }
+                                        }
                                     />
                                 </div>
                                 <div>
                                     <ButtonComponent
                                         type="button"
                                         className="btn btn-brand-color px-5 py-2"
-                                        buttonName="Start"
-                                        clickFunction={() => dispatch(handleStartTest(studentState.test_id, navigate))}
+                                        buttonName={`${studentState?.upload_test_paper.loading ? 'uploading...' : 'upload'}`}
+                                        clickFunction={() => handleUpload('test_paper')}
                                     />
                                 </div>
                             </div>
                         </div>
-                    case "upload_test_paper":
-                        return <div>
-                             
-                        </div> 
-                    
+
                     default:
                         break;
                 }
                 break;
 
             case "subjects":
-                switch(commonState?.modal?.type) {
+                switch (commonState?.modal?.type) {
                     case "add_class":
                         return <div>
-                            <label className="my-2">Classroom Code</label>
                             {Inputfunctions(jsxJson.classroom)}
                             <div className="d-flex justify-content-between align-items-center">
                                 <div className="">
@@ -154,8 +208,8 @@ export function OverallModel() {
                                         buttonName="Cancel"
                                         clickFunction={() => {
                                             dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
-                                            dispatch(setClassroomCode({type: 'set', validated: false}))
-                                            }
+                                            dispatch(setClassroomCode({ type: 'set', classroom_code: '' }))
+                                        }
                                         }
                                     />
                                 </div>
@@ -164,13 +218,47 @@ export function OverallModel() {
                                         type="button"
                                         className="btn btn-brand-color px-5 py-2"
                                         buttonName="Join"
-                                        clickFunction={() => dispatch(handleJoinClassRoom(studentState?.classroom_data?.classroom_code)) }
+                                        clickFunction={() => dispatch(handleJoinClassRoom(studentState?.classroom_data?.classroom_code))}
                                     />
                                 </div>
                             </div>
                         </div>
+                    default:
+                        break;
                 }
+                break;
+            case "test":
+                switch (commonState?.modal?.type) {
+                    case "submit_test":
+                        return <div className="">
+                            <div className="text-center">
+                                <span><Img src={Image.start_test_pic} width={200} /></span>
+                                <p className="gradient-text my-3">Are you sure do you want to submit this</p>
+                            </div>
+                            <div className="d-flex justify-content-between align-items-center">
+                                <div className="">
+                                    <ButtonComponent
+                                        type="button"
+                                        className="btn border border-dark px-5"
+                                        buttonName="Cancel"
+                                        clickFunction={() => dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))}
+                                    />
+                                </div>
+                                <div>
+                                    <ButtonComponent
+                                        type="button"
+                                        className="btn btn-brand-color px-5 py-2"
+                                        buttonName={studentState?.mcq_test?.submit_spinner ? (<>submiting... <SpinnerComponent /></>) : ('Submit')}
+                                        clickFunction={() => dispatch(handleSubmitTest(studentState?.test_id, navigate)) }
+                                    />
+                                </div>
+                            </div>
+                        </div>
 
+                    default:
+                        break;
+                }
+                break;
             default:
                 break;
         }

@@ -1,7 +1,7 @@
 import { useCommonState, useCustomNavigate, useDispatch } from "Components/CustomHooks";
 import Icons from "Utils/Icons"
 import Image from "Utils/Image"
-import { setClassroomCode } from "../Slices/StudentSlice";
+import { setClassroomCode, setUploadLearnerBook, setUploadTestPaper } from "../Slices/StudentSlice";
 
 const JsonData = (params) => {
     //main selectors
@@ -196,7 +196,7 @@ const JsonData = (params) => {
 
         classroom: [
             {
-                name: "",
+                name: "Classroom Code",
                 type: "text",
                 category: "input",
                 placeholder: "",
@@ -208,18 +208,52 @@ const JsonData = (params) => {
             },
         ],
 
+        uploadBook: [
+            {
+                name: "Book Name",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: studentState?.upload_learner_book?.book_name || '',
+                change: (e) => dispatch(setUploadLearnerBook({type: 'set', book_name: e.target.value })),
+                divClassName: "mb-3",
+                isMandatory: true,
+            },
+        ],
         uploadTest: [
-           {
-                name: "Books",
+            {
+                name: "Test Name",
                 category: "select",
                 type: "normal_select",
-                options: [],
-                placeholder: "",
+                options: studentState?.offline_tests?.map(t => t.test_name) || [],
                 isMandatory: true,
-                value: "",
-                change: (e) => console.log(e.target.value),
-                divClassName: "col-12 com-sm-6 col-xl-4 p-2",
-                Err: commonState?.app_data?.validated ? "Select test" : "",
+                value: (() => {
+                    const selected = studentState?.offline_tests?.find(
+                        t => t.test_id === studentState?.upload_test_paper?.test_id
+                    )
+                    return selected?.test_name || ""
+                })(),
+                change: (e) => {
+                    const selectedTest = studentState?.test_names?.find(
+                        t => t.test_name === e.target.value
+                    );
+                    dispatch(setUploadTestPaper({
+                        type: "set",
+                        test_id: selectedTest?.test_id ?? "",
+                        test_name: selectedTest?.test_name ?? ""
+                    }))
+                },
+                divClassName: "m-2",
+            },
+            {
+                name: "Register Number",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: studentState?.upload_test_paper?.register_number || "",
+                change: (e) => dispatch(setUploadTestPaper({ type: 'set', register_number: e.target.value })),
+                divClassName: "m-2",
+                isMandatory: true,
             },
         ]
     }

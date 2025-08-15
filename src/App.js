@@ -77,6 +77,7 @@ import Profile from "Views/Superadmin/Docs/Profile";
 import Settings from "Views/Superadmin/Docs/Settings";
 import SuperAdminDashboard from "Views/Superadmin/Docs/SuperAdminDashboard";
 import LearnersAuth from "Views/Learners/Layout/LearnersAuth";
+import McqTestStatus from "Views/Students/Docs/McqTestStatus";
 
 
 function App() {
@@ -154,7 +155,7 @@ function App() {
                <Route path=":subject_id/books/:book_idx" element={<BooksOverviewLayout />} />
             </Route>
             <Route path="test" element={<McqTest />} />
-            <Route path="test_status" element={<McqTest />} />
+            <Route path="test_status" element={<McqTestStatus />} />
             <Route path="notes" element={<Notes />} />
             <Route path="profile" element={<ReusableProfile />} />
           </Route>
