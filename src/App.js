@@ -165,13 +165,7 @@ function App() {
               <Route path="notes" element={<Notes />} />
               <Route path="profile" element={<ReusableProfile />} />
             </Route>
-            <Route path="student_dashboard/generate_question" element={<GenerateQuestionLayout />}>
-              <Route index element={<GenerateQuestion />} />
-              <Route path="mcq_questions" element={<McqQuestions />} />
-              <Route path="long_questions" element={<LongQuestions />} />
-            </Route>
-
-            <Route path="student_dashboard/generate_question" element={<GenerateQuestionLayout />}>
+            <Route path="generate_question" element={<GenerateQuestionLayout />}>
               <Route index element={<GenerateQuestion />} />
               <Route path="mcq_questions" element={<McqQuestions />} />
               <Route path="long_questions" element={<LongQuestions />} />
