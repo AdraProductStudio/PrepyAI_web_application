@@ -1,25 +1,18 @@
-// import { useCommonState } from "Components/CustomHooks";
 import Sidebar from "Components/Panel_compnent/Sidebar";
 import { Outlet } from "react-router-dom";
 import JsonData from "Views/Students/Utils/JsonData.jsx";
 import Header from "Components/Panel_compnent/Header";
-import { useCustomNavigate } from "Components/CustomHooks";
-import { useEffect } from "react";
+import { useDispatch } from "Components/CustomHooks";
+import { logout } from "Views/Common/Slices/Common_slice";
 
 
 const Layout = () => {
     const { jsonOnly } = JsonData();
-    const navigate = useCustomNavigate();
-
-    useEffect(() => {
-        if (window.location.pathname === "/student_dashboard" || window.location.pathname === "/student_dashboard/") {
-            navigate("/student_dashboard/home");
-        }
-    }, [navigate])
+    const dispatch = useDispatch();
 
     return (
         <div className="w-100 d-flex flex-wrap main_bg">
-            <Sidebar responsiveOn="xl" menuOptions={jsonOnly?.sidebar_data} logoutOnClick={() => console.log("Logout clicked")} />
+            <Sidebar responsiveOn="xl" menuOptions={jsonOnly?.sidebar_data} logoutOnClick={() => dispatch(logout())} />
 
             <main className="col layout_main_content">
                 <div className="container-fluid ">
