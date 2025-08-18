@@ -61,6 +61,7 @@ import SelfTestLayout from "Views/Learners/Layout/SelfTestLayout";
 import SelfTest from "Views/Learners/Docs/SelfTest";
 import MCQ from "Views/Learners/Docs/MCQ";
 import LongAnswers from "Views/Learners/Docs/LongAnswers";
+import LearnersAuth from "Views/Learners/Layout/LearnersAuth";
 
 import OrganisationLayout from "Views/Organisation/Layout/Layout";
 import OrganisationDashboard from "Views/Organisation/Docs/OrganisationDashboard";
@@ -76,8 +77,8 @@ import PersonalInfo from "Views/Superadmin/Docs/PersonalInfo";
 import Profile from "Views/Superadmin/Docs/Profile";
 import Settings from "Views/Superadmin/Docs/Settings";
 import SuperAdminDashboard from "Views/Superadmin/Docs/SuperAdminDashboard";
-import LearnersAuth from "Views/Learners/Layout/LearnersAuth";
 import McqTestStatus from "Views/Students/Docs/McqTestStatus";
+import StudentAuth from "Views/Students/Layout/StudentAuth";
 
 
 function App() {
@@ -141,23 +142,25 @@ function App() {
             </Route>
             <Route path="notes" element={<Notes />} />
           </Route>
-
+          
           {/* Students */}
-          <Route path="student_dashboard" element={<StudentsLayout />}>
-            <Route path="home" element={<StudentDashboard />} />
-            <Route path="subjects">
-              <Route index element={<StudentSubject />} />
-              <Route path=":subject_id" element={<BooksAndAttachmentsLayout />}>
-                <Route index element={<StudentsBooks />} />
-                <Route path="attachments" element={<StudentAttachments />} />
+          <Route path="student_dashboard" element={<StudentAuth />}>
+            <Route element={<StudentsLayout />}>
+              <Route path="home" element={<StudentDashboard />} />
+              <Route path="subjects">
+                <Route index element={<StudentSubject />} />
+                <Route path=":subject_id" element={<BooksAndAttachmentsLayout />}>
+                  <Route index element={<StudentsBooks />} />
+                  <Route path="attachments" element={<StudentAttachments />} />
+                </Route>
+                {/* <Route path=":subject_id/attachments/:attachment_id" element={<BooksOverviewLayout />} /> */}
+                <Route path=":subject_id/books/:book_idx" element={<BooksOverviewLayout />} />
               </Route>
-              {/* <Route path=":subject_id/attachments/:attachment_id" element={<BooksOverviewLayout />} /> */}
-               <Route path=":subject_id/books/:book_idx" element={<BooksOverviewLayout />} />
+              <Route path="test" element={<McqTest />} />
+              <Route path="test_status" element={<McqTestStatus />} />
+              <Route path="notes" element={<Notes />} />
+              <Route path="profile" element={<ReusableProfile />} />
             </Route>
-            <Route path="test" element={<McqTest />} />
-            <Route path="test_status" element={<McqTestStatus />} />
-            <Route path="notes" element={<Notes />} />
-            <Route path="profile" element={<ReusableProfile />} />
           </Route>
 
           {/* Learners */}
