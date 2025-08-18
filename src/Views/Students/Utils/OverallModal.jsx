@@ -94,7 +94,7 @@ export function OverallModel() {
 
                         case "show_more_note":
                             return(
-                            <div className="overflowY">
+                            <div>
                                 <h5 className="mt-3">{showMore_title}</h5>
                                 <p className="mt-5 text-muted">{showMore_content}</p>
                             </div>

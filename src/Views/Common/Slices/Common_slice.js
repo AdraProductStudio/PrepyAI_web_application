@@ -201,9 +201,7 @@ const commonSlice = createSlice({
       );
       if (noteIndex !== -1) {
         state.students_notes.data[noteIndex].priority =
-          state.students_notes.data[noteIndex].priority === "low"
-            ? "high"
-            : "low";
+        state.students_notes.data[noteIndex].priority === "low" ? "high" : "low";
       }
     },
 

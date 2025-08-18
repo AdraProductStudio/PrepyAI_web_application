@@ -40,7 +40,7 @@ const Notes = () => {
 
   const handleShowMore = (note_data) => {
   dispatch(showMoreModal({id: note_data.id, title: note_data.title,content: note_data.notes}));
-  dispatch(updateModalShow({show: true, close_btn: true,modal_from: "Notes",modal_type: "show_more_note"}));
+  dispatch(updateModalShow({size:'lg', show: true, close_btn: true,modal_from: "Notes",modal_type: "show_more_note"}));
 }
 
 
