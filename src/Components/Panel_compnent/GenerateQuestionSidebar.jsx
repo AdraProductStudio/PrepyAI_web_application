@@ -47,6 +47,7 @@ const GenerateQuestionSidebar = ({
                     <AccordionSidebar
                         key={index}
                         accordionData={item}
+                         accordionIndex={index}
                     />
                 ))}
             </nav>
@@ -55,7 +56,7 @@ const GenerateQuestionSidebar = ({
 
 
     function footerContent() {
-        return <div className="sidebar-footer">
+        return <div className="sidebar-footer border-top border-secondary-subtle py-2">
             <ButtonComponent className="btn-transparent w-100" clickFunction={()=>navigate('/student_dashboard/home')}>
                 <span className="pe-3">{Icons.sidebar_dashboard_icon}</span>
                 <span className="text-secondary fs-6">Dashboard</span>

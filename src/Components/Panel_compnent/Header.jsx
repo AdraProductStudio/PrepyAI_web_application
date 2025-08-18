@@ -15,7 +15,12 @@ const Header = ({
   const headerContentFunc = () => {
     return (
       <div className="col-12 d-flex flex-wrap align-items-center justify-content-between ">
-        <div className="col"> {commonState?.currentMenuName} </div>
+        {commonState?.app_data?.current_location === "/student_dashboard/generate_question" ? <div className="col px-2">
+            <span className="text-dark mb-0 fs-6">Welcome</span>
+            <p className="text-dark mb-0 fs-4 fw-bold">Prakash</p>
+          </div>: <div className="col"> {commonState?.app_data?.currentMenuName}</div>
+       
+        }
 
         <div className="col d-inline-flex flex-wrap justify-content-end">
           <div className='d-inline-block' onClick={profileOnClick}>

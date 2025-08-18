@@ -3,11 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import JsonData from '../Utils/JsonData';
 import ButtonComponent from 'Components/Button/Button';
+import { updateModalShow } from 'Views/Common/Slices/Common_slice';
+import { useDispatch } from 'Components/CustomHooks';
 
 const McqQuestions = () => {
   const { jsonOnly } = JsonData()
   const [questions, setQuestions] = useState([])
   const [submited, setSubmitted] = useState(false)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (jsonOnly?.questions) {
@@ -35,11 +38,13 @@ const McqQuestions = () => {
     <Container fluid>
       <Row className='mb-4'>
         <Col className='d-flex align-items-center'>
-          <p className="mb-0" style={{ color: "#182988" }}>Chapter 1. An Introduction to the Human Body</p>
+          <p className="mb-0 chapter-title">Chapter 1. An Introduction to the Human Body</p>
         </Col>
         <Col className='d-flex justify-content-end me-5'>
-          <ButtonComponent type="button" buttonName={submited? "Re-Generate" :"Submit"} className="brand_color text-white px-5" clickFunction={handleTestSubmit} />
-        </Col>
+          {submited ? <ButtonComponent type="button" buttonName="Re-Generate" className="brand_color text-white px-5" clickFunction={() => dispatch(updateModalShow({ show: true, close_btn: true, size: "md", modal_from: "Generate_Question", modal_type: "select_question_type" }))} /> :
+            <ButtonComponent type="button" buttonName="Submit" className="brand_color text-white px-5" clickFunction={handleTestSubmit} />
+          }
+          </Col>
       </Row>
       <hr className='text-secondary' />
       {
@@ -55,9 +60,9 @@ const McqQuestions = () => {
       <Row className="w-100">
         <Card className='border-0'>
           <Card.Body>
-            {questions.map((question, qIndex) => (
+            {questions.map((question, qidx) => (
               <div key={question.id} className="mb-5">
-                <div className="fw-bold mb-1">Question {qIndex + 1}</div>
+                <div className="fw-bold mb-1">Question {qidx + 1}</div>
                 <div className="mb-3">{question.question}</div>
                 <div className='d-flex flex-column justify-content-center align-items-center'>
                   {question.options.map((opt, idx) => (
@@ -71,7 +76,7 @@ const McqQuestions = () => {
                       <Checkbox
                         formType="radio"
                         formLabel={opt.option}
-                        name={`option-${qIndex}`}
+                        name={`option-${qidx}`}
                         formClassName="ps-4 test_radio_btn"
                         formId={`${opt.id}-${idx}`}
                         formName="options"

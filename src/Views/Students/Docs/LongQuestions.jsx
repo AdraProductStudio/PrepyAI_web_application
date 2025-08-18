@@ -28,17 +28,14 @@ const LongQuestions = () => {
 
       <Row className="mb-4">
         <Col className="d-flex align-items-center">
-          <p className="mb-0" style={{ color: '#182988' }}>
+          <p className="mb-0 chapter-title">
             Chapter 1. An Introduction to the Human Body
           </p>
         </Col>
         <Col className="d-flex justify-content-end me-5">
-          <ButtonComponent
-            type="button"
-            buttonName={submited? "Re-Generate" :"Submit"}
-            className="brand_color text-white px-5"
-            clickFunction={handleTestSubmit}
-          />
+         {submited ? <ButtonComponent type="button" buttonName="Re-Generate" className="brand_color text-white px-5" clickFunction={() => dispatch(updateModalShow({ show: true, close_btn: true, size: "md", modal_from: "Generate_Question", modal_type: "select_question_type" }))} /> :
+            <ButtonComponent type="button" buttonName="Submit" className="brand_color text-white px-5" clickFunction={handleTestSubmit} />
+          }
         </Col>
       </Row>
 
@@ -46,7 +43,7 @@ const LongQuestions = () => {
       {submited && <Row className='me-5'>
         <Col className='d-flex justify-content-end gap-5'>
           <p>Score: 80%</p>
-          <p className='long-question-test' onClick={()=>dispatch(updateModalShow({show:true,close_btn:true,size:"lg",modal_from:"Generate_Question",modal_type:'test_result'}))}>Status <span className='fw-bold'>Emergent</span></p>
+          <p className='long-question-test exemplar-text ' onClick={()=>dispatch(updateModalShow({show:true,close_btn:true,size:"lg",modal_from:"Generate_Question",modal_type:'test_result'}))}>Status: <span className='fw-bold exemplar-text' style={{textDecorationLine:"underline"}}>Emergent</span></p>
         </Col>
       </Row>
       }
