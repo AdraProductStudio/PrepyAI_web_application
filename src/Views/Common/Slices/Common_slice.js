@@ -145,8 +145,7 @@ const commonSlice = createSlice({
 
                 case "failure":
                     state.teachernotesdata["glow"] = false;
-                    state.teachernotesdata
-                    ["data"] = [];
+                    state.teachernotesdata["data"] = [];
                     break;
 
                 default:

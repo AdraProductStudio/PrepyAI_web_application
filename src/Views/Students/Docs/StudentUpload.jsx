@@ -10,6 +10,9 @@ import JsonData from 'Views/Students/Utils/JsonData';
 import { SearchComponent } from 'ResuableFunctions/SearchFun';
 import { handleGetLearnerBooks } from "../Actions/StudentAction"
 import { useCommonState } from "Components/CustomHooks"
+import Image from "Utils/Image";
+import Img from "Components/Img/Img";
+import SpinnerComponent from "Components/Spinner/Spinner";
 
 
 const StudentUpload = () => {
@@ -17,7 +20,7 @@ const StudentUpload = () => {
   const dispatch = useDispatch();
   const { studentState, commonState } = useCommonState()
   const searchRegex = commonState?.search?.value
-  
+
   useEffect(() => {
     dispatch(handleGetLearnerBooks())
   }, [])
@@ -40,42 +43,63 @@ const StudentUpload = () => {
 
       <Card.Body className='p-2 student_upload_body'>
         <Row className="row-cols-1 row-cols-md-2">
-          {searchRegex.length > 0 ? (
-            studentState?.all_learner_books?.books
-              ?.filter((book) => book.book_name?.toLowerCase().includes(searchRegex.toLowerCase()))
-              .map((book, idx) => (
-                <Col key={idx} className="d-flex">
-                  <div className="w-100 p-1">
-                    <BookCard
-                      className="col border"
-                      data={book}
-                      viewFunction={() => console.log(`View ${book.url}`)}
-                      generateFunction={() => console.log(`Generate ${book.book_name}`)}
-                      deleteFunction={() => console.log(`Delete ${book.book_name}`)}
-                    />
+          {studentState?.learner_books_loading ?
+            <div className="d-flex justify-content-center align-items-center w-100" style={{ minHeight: '600px' }}>
+              <div className="col-5 text-center">
+                <SpinnerComponent />
+                <p className="m-0">loading...</p>
+              </div>
+            </div>
+            :
+            searchRegex.length > 0 ? (
+              (() => {
+                const filteredBooks = studentState?.all_learner_books?.books?.filter((book) =>
+                  book.book_name?.toLowerCase().includes(searchRegex.toLowerCase())
+                ) || []
+
+                return filteredBooks.length > 0 ? (
+                  filteredBooks.map((book, idx) => (
+                    <Col key={idx} className="d-flex">
+                      <div className="w-100 p-1">
+                        <BookCard
+                          className="col border"
+                          data={book}
+                          viewFunction={() => window.open(book.url, "_blank")}
+                          generateFunction={() => console.log(`Generate ${book.book_name}`)}
+                          deleteFunction={() => console.log(`Delete ${book.book_name}`)}
+                        />
+                      </div>
+                    </Col>
+                  ))
+                ) : (
+                  <div className="d-flex flex-column justify-content-center align-items-center w-100" style={{ minHeight: '700px' }}>
+                    <span><Img src={Image.no_data_found} width={100} /></span>
+                    <p>No uploaded books</p>
                   </div>
-                </Col>
-              ))
-          ) : (
-            studentState?.all_learner_books?.books?.length > 0 ? (
-            studentState?.all_learner_books?.books?.map((book, idx) => (
-              <Col key={idx} className="d-flex">
-                <div className="w-100 p-1">
-                  <BookCard
-                    className="col border"
-                    data={book}
-                    viewFunction={() => window.open(book.url, "_blank")}
-                    generateFunction={() => console.log(`Generate ${book.book_name}`)}
-                    deleteFunction={() => console.log(`Delete ${book.book_name}`)}
-                  />
+                );
+              })()
+            ) : (
+              studentState?.all_learner_books?.books?.length > 0 ? (
+                studentState?.all_learner_books?.books?.map((book, idx) => (
+                  <Col key={idx} className="d-flex">
+                    <div className="w-100 p-1">
+                      <BookCard
+                        className="col border"
+                        data={book}
+                        viewFunction={() => window.open(book.url, "_blank")}
+                        generateFunction={() => console.log(`Generate ${book.book_name}`)}
+                        deleteFunction={() => console.log(`Delete ${book.book_name}`)}
+                      />
+                    </div>
+                  </Col>
+                ))
+              ) : (
+                <div className="d-flex flex-column justify-content-center align-items-center w-100" style={{ minHeight: '600px' }}>
+                  <span><Img src={Image.no_data_found} width={100} /></span>
+                  <p>No uploaded books</p>
                 </div>
-              </Col>
-            ))
-            ):(
-              <p>No uploaded books</p>
-            )
-          )
-          }
+              )
+            )}
         </Row>
       </Card.Body>
     </Card>
