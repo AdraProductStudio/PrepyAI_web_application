@@ -784,8 +784,10 @@ const TeacherSlice = createSlice({
             remaining_time: {},
             selectedQuestionIndex: 0,
             answeredQuestionPercentage: 0,
-            isDataPresentInIndexedDb: false
+            isDataPresentInIndexedDb: false,
         },
+         question_type:"",
+         recording:""
     },
     reducers: {
         caluculateRemainingTime: (state, action) => {
@@ -843,6 +845,12 @@ const TeacherSlice = createSlice({
                 default:
                     break;
             }
+        },
+        updateQuestionType(state,action){
+            state.question_type=action.payload
+        },
+        updateAudioRecording(state,action){
+            state.recording = action.payload
         }
     }
 })
@@ -853,7 +861,7 @@ const { actions, reducer } = TeacherSlice;
 
 export const {
     caluculateRemainingTime, updateSelectedQuestionIndex, updateAnswers,
-    getQuestionFromDb, getQuestionsEndpoint
+    getQuestionFromDb, getQuestionsEndpoint,updateQuestionType,updateAudioRecording
 
 } = actions;
 

@@ -1,11 +1,33 @@
-import { useCommonState } from "Components/CustomHooks";
+import ButtonComponent from "Components/Button/Button";
+import { useCommonState, useCustomNavigate, useDispatch } from "Components/CustomHooks";
 import ModalComponent from "Components/Modal/Modal";
+import { Card } from "react-bootstrap";
+import Icons from "Utils/Icons";
+import { updateAudioRecording, updateQuestionType } from "../Slices/StudentSlice";
+import { updateModalShow } from "Views/Common/Slices/Common_slice";
+import Image from "Utils/Image";
+import Img from "Components/Img/Img";
+import StatusCard from "Components/Card/StatusCard";
+import JsonData from "./JsonData";
 
 
 export function OverallModel() {
-    const { commonState } = useCommonState();
-    // const dispatch = useDispatch();
-    // const navigate = useCustomNavigate();
+    const { commonState, studentState } = useCommonState();
+    const dispatch = useDispatch()
+    const navigate = useCustomNavigate()
+    const {jsonOnly} = JsonData()
+
+
+    const submitQuestionType = () => {
+        if (studentState?.question_type == "mcq_questions") {
+            navigate('mcq_questions')
+            dispatch(updateModalShow({ show: false }))
+        } else if (studentState?.question_type == "long_questions") {
+            navigate('long_questions')
+            dispatch(updateModalShow({ show: false }))
+
+        }
+    }
 
     function modalHeaderFun() {
         switch (commonState?.modal?.from) {
@@ -17,19 +39,14 @@ export function OverallModel() {
                     default:
                         break;
                 }
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    function modalBodyFun() {
-        switch (commonState?.modal?.from) {
-            case "Home":
+            case "Generate_Question":
                 switch (commonState?.modal?.type) {
-                    case " ":
-                        return
+                    case "select_question_type":
+                        return <h5>Select Question Type</h5>
+                    case "record_audio":
+                        return <h5 className="text-secondary">Record your Answer</h5>
+                     case "test_result":
+                        return <h5 className="text-secondary">Status - Emergent</h5>
 
                     default:
                         break;
@@ -41,12 +58,130 @@ export function OverallModel() {
         }
     }
 
+ function modalBodyFun() {
+    switch (commonState?.modal?.from) {
+        case "Home":
+            switch (commonState?.modal?.type) {
+                case " ":
+                    return;
+                default:
+                    break;
+            }
+            break;
+
+        case "Generate_Question":
+            switch (commonState?.modal?.type) {
+                case "select_question_type":
+                    return (
+                        <div>
+                            <div className="d-flex justify-content-center align-items-center gap-3">
+                                <Card
+                                    className={
+                                        studentState?.question_type === "mcq_questions"
+                                            ? "bg-secondary-subtle border-1 shadow-sm py-3"
+                                            : "border-1 shadow-sm py-3"
+                                    }
+                                    onClick={() => dispatch(updateQuestionType("mcq_questions"))}
+                                >
+                                    <Card.Body className="p-2 d-flex flex-column align-items-center gap-2">
+                                        <span>{Icons.mcqIcon}</span>
+                                        <p className="mb-0 text-secondary text-center">
+                                            Multiple Choice Questions
+                                        </p>
+                                    </Card.Body>
+                                </Card>
+                                <Card
+                                    className={
+                                        studentState?.question_type === "long_questions"
+                                            ? "bg-secondary-subtle border-1 shadow-sm py-3"
+                                            : "border-1 shadow-sm py-3"
+                                    }
+                                    onClick={() => dispatch(updateQuestionType("long_questions"))}
+                                >
+                                    <Card.Body className="p-2 d-flex flex-column align-items-center gap-2">
+                                        <span>{Icons.longQueIcon}</span>
+                                        <p className="mb-0 text-secondary text-center">
+                                            Long Answer Questions
+                                        </p>
+                                    </Card.Body>
+                                </Card>
+                            </div>
+
+                            <div className="d-flex justify-content-end mt-5">
+                                <ButtonComponent
+                                    type="button"
+                                    buttonName="Continue"
+                                    className="brand_color text-white"
+                                    clickFunction={submitQuestionType}
+                                />
+                            </div>
+                        </div>
+                    );
+
+                case "record_audio":
+                    return studentState?.recording === "completed" ? (
+                        <div className="d-flex flex-column justify-content-center align-items-center w-100">
+                            <Img
+                                src={Image?.record_isolation}
+                                alt="Record"
+                                fluid
+                                width="100px"
+                                height="100%"
+                                style={{ cursor: "pointer" }}
+                            />
+                        </div>
+                    ) : (
+                        <div
+                            className="d-flex flex-column justify-content-center align-items-center w-100"
+                            onClick={() => {
+                                dispatch(updateAudioRecording("recording"))
+                                setTimeout(() => {
+                                    dispatch(updateAudioRecording("completed"))
+                                }, 5000)
+                            }}
+                        >
+                            <Img
+                                src={Image?.record}
+                                alt="Record"
+                                fluid
+                                width="100px"
+                                height="100%"
+                                style={{ cursor: "pointer" }}
+                            />
+                            <p className="text-secondary fw-bold fs-5 mt-2">
+                                {studentState?.recording === "recording"
+                                    ? "Recording..."
+                                    : "Tap and Start speaking..."}
+                            </p>
+                        </div>
+                    );
+                case 'test_result' :
+                return (jsonOnly?.cardDetails?.map((card)=>{
+                        return <StatusCard cardTitle={card.cardTitle} titleValue={card.titleValue} explanation={card.explanation} />
+                    })
+                )
+                
+
+                default:
+                    return null;
+            }
+            break;
+
+        default:
+            break;
+    }
+}
+
+
     function modalFooterFun() {
         switch (commonState?.modal?.from) {
-            case "":
+            case "Generate_Question":
                 switch (commonState?.modal?.type) {
-                    case "":
-                        break
+                    case "test_result":
+                        return <div className="d-flex gap-3">
+                            <ButtonComponent type="button" buttonName="Cancell"  className="custom-btn" />
+                            <ButtonComponent type="button" buttonName="Take a Retest"  className="brand_color text-white" />
+                        </div>
 
                     default:
                         break;

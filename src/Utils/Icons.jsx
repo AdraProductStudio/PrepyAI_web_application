@@ -573,6 +573,21 @@ const logoutIcon = <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24
   <path d="M18.65 15.3516L22 12.0016L18.65 8.65156" stroke="#A3A3A3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 
+const mcqIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+<path d="M12.3711 8.87891H17.6211" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.37891 8.87891L7.12891 9.62891L9.37891 7.37891" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.3711 15.8789H17.6211" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.37891 15.8789L7.12891 16.6289L9.37891 14.3789" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+const longQueIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+<path d="M8 12.1992H15" stroke="#909090" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8 16.1992H12.38" stroke="#909090" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10 6H14C16 6 16 5 16 4C16 2 15 2 14 2H10C9 2 8 2 8 4C8 6 9 6 10 6Z" stroke="#909090" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16 4.01953C19.33 4.19953 21 5.42953 21 9.99953V15.9995C21 19.9995 20 21.9995 15 21.9995H9C4 21.9995 3 19.9995 3 15.9995V9.99953C3 5.43953 4.67 4.19953 8 4.01953" stroke="#909090" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
 const Icons = {
   menu_dot_icon, no_of_students, no_of_subjects, delete_icons,
   no_of_books, no_of_tests, pdfDeleteIcon, testScreenEditIcon,
@@ -596,7 +611,8 @@ const Icons = {
   DotSVG, subscriptionSVG, organisation, revenue,
   profile, settings, admins, teachers, billing, activeUsers,
   sidebar_pricing_active_icon, sidebar_pricing_icon, logoutIcon,
-  menuIcon
+  menuIcon,
+  mcqIcon,longQueIcon
 }
 
 export default Icons;

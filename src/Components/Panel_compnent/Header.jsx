@@ -18,8 +18,8 @@ const Header = ({
         <div className="col"> {commonState?.currentMenuName} </div>
 
         <div className="col d-inline-flex flex-wrap justify-content-end">
-          <div className='d-inline-block'>
-            <Img src={commonState?.app_data?.user_image || Image.default_prfile_pic} alt="Profile" className="rounded-circle me-2 pointer header_profile_image" clickFunction={profileOnClick} />
+          <div className='d-inline-block' onClick={profileOnClick}>
+            <Img src={commonState?.app_data?.user_image || Image.default_prfile_pic} alt="Profile" className="rounded-circle me-2 pointer header_profile_image" />
           </div>
 
           {offcanvasOn ?

@@ -9,7 +9,8 @@ let initialState = {
         size: "md",
         from: null,
         type: null,
-        close_btn: false
+        close_btn: false,
+        enable_lg_autoScroll:false
     },
     canvas: {
         show: false,

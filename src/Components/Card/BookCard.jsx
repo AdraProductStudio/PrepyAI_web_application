@@ -1,4 +1,5 @@
 import ButtonComponent from "Components/Button/Button";
+import { useCustomNavigate } from "Components/CustomHooks";
 import Img from "Components/Img/Img";
 import { Card } from "react-bootstrap";
 import Icons from "Utils/Icons";
@@ -8,7 +9,7 @@ const BookCard = ({
     data = {},
     onClickDelete, className
 }) => {
-
+ const navigate = useCustomNavigate()
     function dynamicContent() {
         const path = window.location.pathname;
         switch (true) {
@@ -19,7 +20,7 @@ const BookCard = ({
                             <ButtonComponent type="button" className="btn-transparent fs-14 text-primary" buttonName="View" />
                         </div>
                         <div className="col text-end border-start">
-                            <ButtonComponent type="button" className="btn-transparent fs-14 brand_text_color" buttonName="Generate Question" />
+                            <ButtonComponent type="button" className="btn-transparent fs-14 brand_text_color" buttonName="Generate Question" clickFunction={()=>navigate('/student_dashboard/generate_question')} />
                         </div>
                     </Card.Footer>
                 )

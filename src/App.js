@@ -77,6 +77,10 @@ import Profile from "Views/Superadmin/Docs/Profile";
 import Settings from "Views/Superadmin/Docs/Settings";
 import SuperAdminDashboard from "Views/Superadmin/Docs/SuperAdminDashboard";
 import LearnersAuth from "Views/Learners/Layout/LearnersAuth";
+import GenerateQuestionLayout from "Views/Students/Layout/GenerateQuestionLayout";
+import GenerateQuestion from "Views/Students/Docs/GenerateQuestion";
+import McqQuestions from "Views/Students/Docs/McqQuestions";
+import LongQuestions from "Views/Students/Docs/LongQuestions";
 
 
 function App() {
@@ -156,6 +160,11 @@ function App() {
             <Route path="test_status" element={<McqTest />} />
             <Route path="notes" element={<Notes />} />
             <Route path="profile" element={<ReusableProfile />} />
+          </Route>
+          <Route path="student_dashboard/generate_question" element={<GenerateQuestionLayout />}>
+            <Route index element={<GenerateQuestion />} />
+            <Route path="mcq_questions" element={<McqQuestions />} />
+            <Route path="long_questions" element={<LongQuestions />} />
           </Route>
 
           {/* Learners */}

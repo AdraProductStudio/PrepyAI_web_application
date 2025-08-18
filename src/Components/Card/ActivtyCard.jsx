@@ -1,8 +1,11 @@
 import ButtonComponent from "Components/Button/Button";
 import { Card } from "react-bootstrap"
+import { useDispatch } from "react-redux";
 import Icons from "Utils/Icons";
+import { updateModalShow } from "Views/Common/Slices/Common_slice";
 
 const ActivityCard = () => {
+    const dispatch = useDispatch()
     function dynamicContent() {
         const path = window.location.pathname;
         switch (true) {
