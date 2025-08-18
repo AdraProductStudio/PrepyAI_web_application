@@ -80,13 +80,14 @@ const commonSlice = createSlice({
       state.modal.type = modal_type || null;
       state.modal.close_btn = close_btn || false;
 
-//-------------------------student notes-----------------------//
-    if (modal_type === "add_notes" && show) {
-    state.students_notes.title = "";
-    state.students_notes.content = "";
-    state.students_notes.isEditing = false;
-    state.students_notes.editNote = { id: null, title: "", content: "" };
-  }
+      //-------------------------student notes-----------------------//
+      if (modal_type === "add_notes" && show) {
+        state.students_notes.title = "";
+        state.students_notes.content = "";
+        state.students_notes.isEditing = false;
+        state.students_notes.editNote = { id: null, title: "", content: "" };
+      }
+      //---------------------------------------------------------------
     },
     update_app_data(state, action) {
       const { type, data } = action.payload;
@@ -200,8 +201,16 @@ const commonSlice = createSlice({
         (note) => note.id === id
       );
       if (noteIndex !== -1) {
-        state.students_notes.data[noteIndex].priority =
-        state.students_notes.data[noteIndex].priority === "low" ? "high" : "low";
+        const note = state.students_notes.data[noteIndex];
+        note.priority = note.priority === "low" ? "high" : "low";
+
+        state.students_notes.data.splice(noteIndex, 1);
+
+        if (note.priority === "high") {
+          state.students_notes.data.unshift(note);
+        } else {
+          state.students_notes.data.push(note);
+        }
       }
     },
 
@@ -258,7 +267,6 @@ const commonSlice = createSlice({
       state.students_notes.showMoreNote = { id, title, content };
       state.students_notes.isShowMoreOpen = true;
     },
-
   },
   extraReducers: (builder) => {
     builder
