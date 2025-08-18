@@ -5,6 +5,7 @@ import authReducer from "Views/Auth/Slices/authSlice";
 import teachersReducer from 'Views/Teachers/Slice/teachersSlice';
 import organisationReducer from 'Views/Organisation/Slices/Organisation_slice';
 
+import superadminReducer from 'Views/Superadmin/Slices/SuperAdmin_slice'
 
 const reducers = combineReducers({
     commonState: commonReducer,
@@ -12,6 +13,7 @@ const reducers = combineReducers({
     authState: authReducer,
     teachersState: teachersReducer,
     organisationState: organisationReducer,
+    superadminState:superadminReducer
 })
 
 const store = configureStore({

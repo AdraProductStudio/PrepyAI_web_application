@@ -15,15 +15,18 @@ import {
 //teachersnotes api
 
 
-export const deleteTeacherNote = (noteId) => async (dispatch) => {
+export const deleteTeacherNote = (endpoint, noteId) => async (dispatch) => {
+    let callback_from;
+    if (/student_dashboard/.test(endpoint)) callback_from = "/students/get_user_notes"
+    else callback_from = "/teachers/get_user_notes"
+
     try {
         dispatch(handleDeleteNote({ type: "request" }));
-
-        const { data } = await axiosInstance.delete("/teachers/delete_user_notes", { data: { id: noteId } });
+        const { data } = await axiosInstance.delete(endpoint, { data: { id: noteId } });
 
         if (data?.error_code === 0) {
             dispatch(handleDeleteNote({ type: "success" }));
-            dispatch(getTeacherNotesData("/teachers/get_user_notes")); // refresh after delete
+            dispatch(getTeacherNotesData(callback_from));
         } else {
             dispatch(handleDeleteNote({ type: "failure", message: data?.message || "Error deleting note" }));
         }
@@ -33,15 +36,19 @@ export const deleteTeacherNote = (noteId) => async (dispatch) => {
 };
 
 
-export const postTeacherNote = (noteData) => async (dispatch) => {
+export const postTeacherNote = (endpoint, noteData) => async (dispatch) => {
+    console.log(endpoint)
+    let callback_from;
+    if (/student_dashboard/.test(endpoint)) callback_from = "/students/get_user_notes"
+    else callback_from = "/teachers/get_user_notes"
+
     try {
         dispatch(handlePostNote({ type: "request" }));
-
-        const { data } = await axiosInstance.post("/teachers/create_user_notes", noteData);
+        const { data } = await axiosInstance.post(endpoint, noteData);
 
         if (data?.error_code === 0) {
             dispatch(handlePostNote({ type: "success" }));
-            dispatch(getTeacherNotesData());
+            dispatch(getTeacherNotesData(`/${callback_from}/get_user_notes`));
         } else {
             dispatch(handlePostNote({ type: "failure", message: data?.message || "Error" }));
         }
@@ -56,21 +63,12 @@ export const getTeacherNotesData = (endpoint) => async (dispatch) => {
         dispatch(handleTeacherNotesData({ type: "request" }));
         const { data } = await axiosInstance.get(endpoint);
         if (data?.error_code === 0) {
-            dispatch(
-                handleTeacherNotesData({ type: "response", data: data?.data || [] })
-            );
+            dispatch(handleTeacherNotesData({ type: "response", data: data?.data || [] }));
         } else {
-            dispatch(
-                handleTeacherNotesData({
-                    type: "failure",
-                    message: data?.message || "",
-                })
-            );
+            dispatch(handleTeacherNotesData({ type: "failure", message: data?.message || "" }));
         }
     } catch (err) {
-        dispatch(
-            handleTeacherNotesData({ type: "failure", message: err?.message || "" })
-        );
+        dispatch(handleTeacherNotesData({ type: "failure", message: err?.message || "" }));
     }
 }
 // export const getTeacherNotesData = (params = {}) => async (dispatch) => {

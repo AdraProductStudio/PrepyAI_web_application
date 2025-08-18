@@ -4,6 +4,7 @@ import JsonData from "Views/Students/Utils/JsonData.jsx";
 import Header from "Components/Panel_compnent/Header";
 import { useDispatch } from "Components/CustomHooks";
 import { logout } from "Views/Common/Slices/Common_slice";
+import { OverallModel } from "../Utils/OverallModal";
 
 
 const Layout = () => {
@@ -21,6 +22,7 @@ const Layout = () => {
                     </header>
                     <div className="pt-3 main_content_height overflowY">
                         <Outlet />
+                        <OverallModel />
                     </div>
                 </div>
             </main>

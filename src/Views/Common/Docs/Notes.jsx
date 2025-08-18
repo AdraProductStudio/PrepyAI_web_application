@@ -1,17 +1,14 @@
 import NoteCard from "Components/Card/NoteCard";
 import { useCommonState, useDispatch } from "Components/CustomHooks";
-import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { deleteTeacherNote, getTeacherNotesData, postTeacherNote } from "../Actions/Common_action";
+import { deleteTeacherNote, getTeacherNotesData } from "../Actions/Common_action";
 import Image from "Utils/Image";
 import SpinnerComponent from "Components/Spinner/Spinner";
-import { handleDeleteNote, updateModalShow } from "../Slices/Common_slice";
+import { updateModalShow } from "../Slices/Common_slice";
 import ButtonComponent from "Components/Button/Button";
 import Icons from "Utils/Icons";
-import { OverallModel } from "Views/Teachers/Utils/OverallModal";
 
 const Notes = () => {
-    const { class_id } = useParams();
     const dispatch = useDispatch();
     const { commonState } = useCommonState();
 
@@ -24,6 +21,14 @@ const Notes = () => {
         dispatch(getTeacherNotesData(endpoint));
     }, []);
 
+    function deleteNotes(noteId) {
+        let path = window.location.pathname;
+        let endpoint;
+        if (/student_dashboard/.test(path)) endpoint = "/students/delete_user_notes"
+        else endpoint = "/teachers/delete_user_notes"
+
+        dispatch(deleteTeacherNote(endpoint, noteId));
+    }
 
     return (
         <div className="container-fluid">
@@ -50,7 +55,7 @@ const Notes = () => {
                     commonState?.teachernotesdata?.data?.length > 0 ? (
                         commonState?.teachernotesdata?.data?.map((note, index) => (
                             <div key={note.id || index} className=" col-md-6 col-lg-4 col-xxl-3 p-1">
-                                <NoteCard notesDeleteOnClick={() => dispatch(deleteTeacherNote(note?.id))} data={note} />
+                                <NoteCard notesDeleteOnClick={() => deleteNotes(note?.id)} data={note} />
                             </div>
                         ))
                     ) : (
@@ -60,7 +65,6 @@ const Notes = () => {
                         </div>
                     )}
             </div>
-            <OverallModel />
         </div>
     );
 }
