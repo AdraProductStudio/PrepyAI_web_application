@@ -16,8 +16,12 @@ const Notes = () => {
     const { commonState } = useCommonState();
 
     useEffect(() => {
-        dispatch(getTeacherNotesData({ classroom_id: class_id }));
+        let path = window.location.pathname;
+        let endpoint;
+        if (/student_dashboard/.test(path)) endpoint = "/students/get_user_notes"
+        else endpoint = "/teachers/get_user_notes"
 
+        dispatch(getTeacherNotesData(endpoint));
     }, []);
 
 
