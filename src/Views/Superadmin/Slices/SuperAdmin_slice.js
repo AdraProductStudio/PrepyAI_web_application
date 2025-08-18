@@ -26,8 +26,8 @@ let initialState = {
     monthlyReports: []
 }
 
-const superAdminSlice = createSlice({
-    name: 'superAdmin_slice',
+const adminSlice = createSlice({
+    name: 'admin_slice',
     initialState,
     reducers: {
         updatePersonalInfoInputs: (state, action) => {
@@ -83,7 +83,7 @@ const superAdminSlice = createSlice({
     }
 })
 
-const { actions, reducer } = superAdminSlice;
+const { actions, reducer } = adminSlice;
 
 export const {
     updatePersonalInfoInputs,

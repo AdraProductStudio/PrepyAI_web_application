@@ -14,13 +14,13 @@ export default function Layout() {
             navigate("/admin_dashboard/home");
         }
     }, [navigate])
-
+    
     return (
         <div className="layout_main">
             <div className="d-flex flex-wrap">
                 <Sidebar menuOptions={jsonOnly.sidebar_data} responsiveOn="lg" logoutOnClick={() => console.log("Logout clicked")} />
 
-                <main className="col layout_main_content overflow-hidden">
+                <main className="col layout_main_content overflow-auto">
                     <div className="container-fluid h-100">
                         <header className="py-2">
                             <Header offcanvasOn="lg"/>

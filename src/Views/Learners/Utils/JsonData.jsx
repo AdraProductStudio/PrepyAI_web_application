@@ -25,6 +25,27 @@ const JsonData = () => {
                 route: '/learners_dashboard/pricing_plan'
             },
         ],
+
+        questions: [
+        {
+          question: "What is Apple ?",
+          options: ["Fruit", "Animal", "Bird", "Plant"],
+          explanation:"Because this An Fruit that can be used for Eating",
+        },
+        {
+          question: "Where is your office ?",
+          options: ["Chennai", "Bangalore", "Erode", "Coimbatore"],
+          explanation:"Because this An Fruit that can be used for Eating",
+
+        },
+        {
+          question: "Where is your office ?",
+          options: ["Chennai", "Bangalore", "Erode", "Coimbatore"],
+          explanation:"Because this An Fruit that can be used for Eating",
+
+        },
+        
+    ]
     }
 
     const jsxJson = {
