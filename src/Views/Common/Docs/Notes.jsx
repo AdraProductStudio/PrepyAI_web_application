@@ -14,14 +14,10 @@ const Notes = () => {
     const { class_id } = useParams();
     const dispatch = useDispatch();
     const { commonState } = useCommonState();
-    console.log(commonState, "Get")
-
-
-
 
     useEffect(() => {
         dispatch(getTeacherNotesData({ classroom_id: class_id }));
-        
+
     }, []);
 
 
@@ -40,20 +36,25 @@ const Notes = () => {
 
             <div className="w-100 small_header_content_main row overflowY">
 
-                {commonState?.teachernotesdata?.data?.length > 0 ? (
-                    commonState?.teachernotesdata?.data?.map((note, index) => (
-                        <div key={note.id || index} className=" col-md-6 col-lg-4 col-xxl-3 p-1">
-                            <NoteCard notesDeleteOnClick={() => dispatch(deleteTeacherNote(note?.id))} data={note} />
-                        </div>
-                    ))
-                ) : (
+                {commonState.teachernotesdata?.glow ?
                     <div className="col-12 d-flex flex-column justify-content-center align-items-center text-center p-4">
                         <img src={Image.Task_empty} style={{ height: "180px", width: "180px" }} alt="Picture" />
-                        <p className="mt-3">No Notes Available</p>
+                        <p className="mt-3">Getting Notes...</p>
                         <SpinnerComponent />
-
                     </div>
-                )}
+                    :
+                    commonState?.teachernotesdata?.data?.length > 0 ? (
+                        commonState?.teachernotesdata?.data?.map((note, index) => (
+                            <div key={note.id || index} className=" col-md-6 col-lg-4 col-xxl-3 p-1">
+                                <NoteCard notesDeleteOnClick={() => dispatch(deleteTeacherNote(note?.id))} data={note} />
+                            </div>
+                        ))
+                    ) : (
+                        <div className="col-12 d-flex flex-column justify-content-center align-items-center text-center p-4">
+                            <img src={Image.Task_empty} style={{ height: "180px", width: "180px" }} alt="Picture" />
+                            <p className="mt-3">No Notes Available</p>
+                        </div>
+                    )}
             </div>
             <OverallModel />
         </div>
