@@ -1,6 +1,8 @@
 import LinkComponent from "Components/Router_components/LinkComponent"
 import NavLinkComp from "Components/Router_components/NavLink"
+import { useEffect } from "react"
 import { Card } from "react-bootstrap"
+import { useDispatch } from "react-redux"
 import { Outlet, useParams } from "react-router-dom"
 import Icons from "Utils/Icons"
 import JsonData from "Views/Teachers/Utils/JsonData"
@@ -8,6 +10,11 @@ import JsonData from "Views/Teachers/Utils/JsonData"
 const TestPageLayout = () => {
     const { class_id, subject_id } = useParams();
     const { jsonOnly } = JsonData({ class_id, subject_id });
+    const dispatch = useDispatch()
+    
+    useEffect(() => {
+        dispatch()
+    }, [])
 
     return (
         <div className="h-100">
