@@ -4,16 +4,9 @@ import {
     handleDeleteNote,
     handlePostNote,
     handleTeacherNotesData,
-    // update_app_data, 
-    // login_reducer
     updateToast, updateToken, handleGetBooks
 
 } from 'Views/Common/Slices/Common_slice';
-
-// const BASE_URL = process.env.REACT_APP_API_URL || '';
-
-//teachersnotes api
-
 
 export const deleteTeacherNote = (endpoint, noteId) => async (dispatch) => {
     let callback_from;
@@ -37,14 +30,18 @@ export const deleteTeacherNote = (endpoint, noteId) => async (dispatch) => {
 
 
 export const postTeacherNote = (endpoint, noteData) => async (dispatch) => {
-    console.log(endpoint)
     let callback_from;
     if (/student_dashboard/.test(endpoint)) callback_from = "/students/get_user_notes"
     else callback_from = "/teachers/get_user_notes"
 
+    const fd = new FormData();
+    Object.entries(noteData).map(([key, value]) => {
+        fd.append(key, value);
+    });
+    
     try {
         dispatch(handlePostNote({ type: "request" }));
-        const { data } = await axiosInstance.post(endpoint, noteData);
+        const { data } = await axiosInstance.post(endpoint, fd);
 
         if (data?.error_code === 0) {
             dispatch(handlePostNote({ type: "success" }));

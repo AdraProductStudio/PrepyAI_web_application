@@ -84,7 +84,7 @@ const teachersSlice = createSlice({
 
         case "response":
           state.teacher_DashboardData["glow"] = false;
-          state.teacher_DashboardData["data"] = data;
+          state.teacher_DashboardData["data"] = Array.isArray(data) ? data : [];
           break;
 
         case "failure":
@@ -107,7 +107,7 @@ const teachersSlice = createSlice({
 
         case "response":
           state.teacher_GetClassrooms["glow"] = false;
-          state.teacher_GetClassrooms["data"] = data;
+          state.teacher_GetClassrooms["data"] = Array.isArray(data) ? data : [];
           break;
 
         case "failure":
@@ -130,7 +130,7 @@ const teachersSlice = createSlice({
 
         case "response":
           state.teacher_GetSubjects["glow"] = false;
-          state.teacher_GetSubjects["data"] = data;
+          state.teacher_GetSubjects["data"] = Array.isArray(data) ? data : [];
           break;
 
         case "failure":
@@ -153,7 +153,7 @@ const teachersSlice = createSlice({
 
         case "response":
           state.teacher_GetStudentList["glow"] = false;
-          state.teacher_GetStudentList["data"] = data;
+          state.teacher_GetStudentList["data"] = Array.isArray(data) ? data : [];
           break;
 
         case "failure":
@@ -171,8 +171,6 @@ const teachersSlice = createSlice({
     ,
     handleGetTestRecords(state, action) {
       const { type, data } = action.payload;
-      console.log(data, '41-data')
-
       switch (type) {
         case "request":
           state.test_records['glow'] = true;
@@ -181,7 +179,7 @@ const teachersSlice = createSlice({
 
         case "response":
           state.test_records['glow'] = false;
-          state.test_records.data = data;
+          state.test_records.data = Array.isArray(data) ? data : [];
           break;
 
         case "failure":
@@ -205,7 +203,7 @@ const teachersSlice = createSlice({
 
         case "response":
           state.test_create['glow'] = false;
-          state.test_create['data'] = data;
+          state.test_create['data'] = Array.isArray(data) ? data : [];
           break;
 
         case "failure":
@@ -257,7 +255,7 @@ const teachersSlice = createSlice({
         break;
 
       case "response":
-        state.studentsPerformance.assignedTest.jsonStudentsData = data || []
+        state.studentsPerformance.assignedTest.jsonStudentsData = Array.isArray(data) ? data : [];
         state.studentsPerformance.placeholder = false;
         break;
 
@@ -295,7 +293,7 @@ const teachersSlice = createSlice({
         break;
 
       case "response":
-        state.studentsPerformance.selfTest.jsonStudentsData = data || []
+        state.studentsPerformance.selfTest.jsonStudentsData = Array.isArray(data) ? data : [];
         state.studentsPerformance.placeholder = false;
         break;
 
