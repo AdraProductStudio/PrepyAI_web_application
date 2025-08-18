@@ -4,28 +4,58 @@ import { MdDelete } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import Image from "Utils/Image";
 import Icons from "Utils/Icons";
-import {  PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, Tooltip} from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, Tooltip } from "recharts";
 import { Card, Col, Row } from "react-bootstrap";
 import ReactPaginate from "react-paginate";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactDropdownSelect from "Components/Input/ReactDropdownSelect";
 import Input from "Components/Input/Input";
 import Img from "Components/Img/Img";
 import ButtonComponent from "Components/Button/Button";
 import JsonData from "../Utils/JsonData";
+import {useCommonState, useDispatch } from "Components/CustomHooks";
+import { deleteOrganisation, getMonthlyReportDetails, getOrganizationList, getSubcriptionDetails, } from "../Actions/superAdminAction";
+import { updateModalShow } from "Views/Common/Slices/Common_slice";
+import { type } from "@testing-library/user-event/dist/type";
+
 
 function SuperAdminDashboard() {
-
-  const { jsonOnly } = JsonData();
+  const {organizationDetails,subcriptionDetails,monthlyReports} = useCommonState()?.superadminState
+  const { jsonOnly } = JsonData({subcriptionDetails})
+  const dispatch = useDispatch()
   
-  const itemsPerPage = 10;
-  const [currentPage, setCurrentPage] = useState(0);
-  const pageCount = Math.ceil(jsonOnly?.orgDetails.length / itemsPerPage);
-  const offset = currentPage * itemsPerPage;
-  const currentItems = jsonOnly?.orgDetails.slice(offset, offset + itemsPerPage);
+  const itemsPerPage = 3;
+  const [currentPage, setCurrentPage] = useState(0)
+  const [searchValue, setSearchValue] = useState("")
+  const [filterValue, setFilterValue] = useState("all")
+  const [year,setYear] = useState(new Date().getFullYear())
+
+  const pageCount = Math.ceil(subcriptionDetails?.total_orgs / itemsPerPage)
+  const offset = currentPage * itemsPerPage
+
+
   const handlePageClick = ({ selected }) => {
-    setCurrentPage(selected);
-  };
+    setCurrentPage(selected)
+    dispatch(getOrganizationList({ page: selected + 1, show_entries: itemsPerPage }))
+  }
+
+
+  useEffect(() => {
+    dispatch(getOrganizationList({ page: currentPage + 1, show_entries: itemsPerPage }))
+  }, [])
+
+  useEffect(() => {
+    dispatch(getSubcriptionDetails())
+    dispatch(getMonthlyReportDetails(year))
+  }, [])
+
+
+  const handleFilterOrganizations = (value) => {
+    setSearchValue(value)
+     dispatch(getOrganizationList({ page: currentPage + 1, search_query: value,show_entries: itemsPerPage  }))
+  }
+
+  const monthlyGrowthDropDownOptions = monthlyReports?.year?.map(year => ({ id: year, name: year.toString() }))
 
   return (
     <div className="vh-100 p-2">
@@ -82,9 +112,12 @@ function SuperAdminDashboard() {
                   style={{ flexBasis: "20%", minWidth: "85px" }}
                 >
                   <ReactDropdownSelect
-                    options={jsonOnly?.monthltyGrowOptions}
-                    value={[{ id: 0, name: "Year" }]}
-                    // change={handleChange}
+                    options={monthlyGrowthDropDownOptions}
+                    value={[monthlyGrowthDropDownOptions?.[0] || { id: 0, name: "Year" }]}
+                    change={(values) => {
+                      const selectedId = values?.[0]?.id
+                     dispatch(getMonthlyReportDetails(selectedId))
+                    }}
                     labelField="name"
                     valueField="id"
                     className="custom-dropdown rounded"
@@ -98,7 +131,10 @@ function SuperAdminDashboard() {
               >
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
-                    data={jsonOnly?.monthlyGrowthData}
+                    data={Array.isArray(monthlyReports?.monthly_report) && monthlyReports?.monthly_report?.length > 0
+                      ? monthlyReports?.monthly_report
+                      : [{ month: "", year: "",}]}
+
                     margin={{ top: 0, right: 10, left: 10, bottom: 0 }}
                     barCategoryGap={0}
                     barGap={-8}
@@ -132,7 +168,7 @@ function SuperAdminDashboard() {
                     />
 
                     <Bar
-                      dataKey="value"
+                      dataKey="total"
                       fill="url(#barGradientColor)"
                       radius={[6, 6, 6, 6]}
                       barSize={8}
@@ -157,7 +193,7 @@ function SuperAdminDashboard() {
                     key={item.name}
                   >
                     <Icons.DotSVG fill={item.color} className="me-2" />
-                    {item.name} - {item.value}
+                    {item.name} - {Math.floor(parseFloat(item.value) || 0)}
                   </Card.Text>
                 ))}
               </div>
@@ -196,7 +232,7 @@ function SuperAdminDashboard() {
               <div className="w-100 w-md-auto">
                 <h5 className="mb-0 fs-5">Organization</h5>
                 <span className="text-secondary" style={{ fontSize: "0.8rem" }}>
-                  {jsonOnly?.orgDetails.length} Organizations
+                  {organizationDetails?.length} Organizations
                 </span>
               </div>
 
@@ -208,12 +244,12 @@ function SuperAdminDashboard() {
                   className="position-relative w-100 w-md-auto"
                   style={{ minWidth: "120px" }}
                 >
-                  <Input type={"text"} placeholder={"Search..."} />
+                  <Input type={"text"} placeholder={"Search..."} value={searchValue}  change={(e) => handleFilterOrganizations(e.target.value, filterValue)} />
                   <CiSearch
                     style={{
                       position: "absolute",
                       right: "10px",
-                      top: "50%",
+                      top: "50%", 
                       transform: "translateY(-50%)",
                       pointerEvents: "none",
                       color: "#6c757d",
@@ -227,8 +263,13 @@ function SuperAdminDashboard() {
                     options={jsonOnly?.planFilterOptions}
                     valueField="id"
                     labelField="name"
-                    value={[{ id: 0, name: "Filter" }]}
+                    value={[jsonOnly?.planFilterOptions?.[0]]}
                     className={"custom-dropdown rounded"}
+                    change={(values) => {
+                      const subscription_plan = values?.[0]?.value
+                      dispatch(getOrganizationList({ filter_by: subscription_plan,show_entries: itemsPerPage }))
+                    }}
+                  
                   />
                 </div>
 
@@ -238,7 +279,7 @@ function SuperAdminDashboard() {
                     "brand_color d-flex align-items-center justify-content-center gap-2 gap-md-1"
                   }
                   buttonName={
-                    <span 
+                    <span
                       style={{ minWidth: "200px" }}
                       className="d-flex align-items-center justify-content-center gap-2"
                     >
@@ -248,6 +289,7 @@ function SuperAdminDashboard() {
                       </span>
                     </span>
                   }
+                  clickFunction={()=>dispatch(updateModalShow({show:true,close_btn:true,size:"md",modal_from:"Home",modal_type:"create_organisation"}))}
                 />
               </div>
             </section>
@@ -257,7 +299,7 @@ function SuperAdminDashboard() {
               style={{ flex: 1, overflow: "auto", width: "100%" }}
             >
               <table className="table table-bordered mb-0 mt-0">
-                <thead style={{ position: "sticky", top: "-2px", bottom: "-1px" }}
+                <thead style={{ position: "sticky", top: "1px", bottom: "-1px" }}
                 >
                   <tr>
                     {jsonOnly?.tableHeadings.map((title, idx) => (
@@ -270,29 +312,40 @@ function SuperAdminDashboard() {
                   </tr>
                 </thead>
                 <tbody style={{ zIndex: "3" }}>
-                  {currentItems.map((org, idx) => (
+                  {organizationDetails?.length >=1 ? organizationDetails?.map((org, idx) => (
                     <tr key={idx}>
                       <td className="text-center border-bottom-non">
                         {idx + 1}
                       </td>
-                      <td className="text-center">{org.orgName}</td>
+                      <td className="text-center">{org.organization_name}</td>
                       <td className="text-center">{org.name}</td>
-                      <td className="text-center">{org.contanctNo}</td>
+                      <td className="text-center">{org.contact_no}</td>
                       <td className="text-center">{org.email}</td>
                       <td className="text-center">{org.location}</td>
-                      <td className="text-center">{org.subPlan}</td>
-                      <td className="text-center">{org.createdDate}</td>
-                      <td className="text-center">{org.subDuration}</td>
+                      <td className="text-center">{org.subscription_plan}</td>
+                      <td className="text-center">{org.created_date}</td>
+                      <td className="text-center">{org.subscription_duration}</td>
                       <td className="text-center">
-                        <button type="button" className="btn">
+                        {/* <button type="button" className="btn" onClick={()=>console.log('edit',org.id)}>
                           <CiEdit className=" me-1 fs-5 text-primary" />
-                        </button>
-                        <button type="button" className="btn">
+                        </button> */}
+                        <button type="button" className="btn" onClick={()=>dispatch(deleteOrganisation({org_id:org.id}))}>
                           <MdDelete className="fs-5 text-danger" />
                         </button>
                       </td>
                     </tr>
-                  ))}
+                  )) : (
+                    <tr>
+                      <td colSpan={jsonOnly?.tableHeadings.length || 10}>
+                        <div
+                          className="d-flex justify-content-center align-items-center"
+                          style={{ height: "400px", width: "100%" }}
+                        >
+                          <span className="text-muted fs-5">No details found</span>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </section>

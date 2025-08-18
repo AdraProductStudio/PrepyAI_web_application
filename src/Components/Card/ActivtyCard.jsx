@@ -1,5 +1,6 @@
 import ButtonComponent from "Components/Button/Button";
 import { Card } from "react-bootstrap"
+import { useDispatch } from "react-redux";
 import Icons from "Utils/Icons";
 
 const ActivityCard = ({data, startFunction}) => {

@@ -1,8 +1,12 @@
+import { useCommonState, useDispatch } from "Components/CustomHooks"
 import Icons from "Utils/Icons"
+import { edit_profile_Inputs, updateCreateOrgInputs, updatePersonalInfoInputs, updateSettingsInputs } from "../Slices/SuperAdmin_slice"
 
 
-const JsonData = (params) => {
-
+const JsonData = (params={}) => {
+const {commonState,superadminState} = useCommonState()
+const dispatch = useDispatch()
+const { subcriptionDetails } = params
     const jsonOnly = {
         sidebar_data: [
             {
@@ -19,11 +23,11 @@ const JsonData = (params) => {
         ],
 
         planFilterOptions: [
-            { id: 1, name: "All Plans" },
-            { id: 2, name: "Basic Plan" },
-            { id: 3, name: "Premimum Plan" },
-            { id: 4, name: "Platinum Plan" },
-            { id: 5, name: "Enterprise Plan" }
+            { id: 1, name: "All Plans",value:"all" },
+            { id: 2, name: "Basic Plan",value:"basic" },
+            { id: 3, name: "Premimum Plan",value:"premium" },
+            { id: 4, name: "Platinum Plan",value:"platinum" },
+            { id: 5, name: "Enterprise Plan",value:"enterprise" }
         ],
 
         monthlyGrowthData: [
@@ -45,20 +49,20 @@ const JsonData = (params) => {
             {
                 icon: Icons.organisation,
                 title: "Total No.of Organization",
-                value: "30",
+                value: subcriptionDetails?.total_orgs,
             },
             {
                 icon: Icons.revenue,
                 title: "Total Revenue",
-                value: "1,00,000",
+                value: subcriptionDetails?.total_revenue,
             }
         ],
 
         planData: [
-            { name: "Basic Plan", value: 30, color: "hsla(266, 100%, 83%, 1)" },
-            { name: "Premium Plan", value: 30, color: "hsla(339, 100%, 71%, 1)" },
-            { name: "Platinum Plan", value: 10, color: "hsla(31, 70%, 78%, 1)" },
-            { name: "Enterprise", value: 20, color: "hsla(354, 100%, 82%, 1)" }
+            { name: "Basic Plan", value: Number(subcriptionDetails?.basic), color: "hsla(266, 100%, 83%, 1)" },
+            { name: "Premium Plan", value: Number(subcriptionDetails?.premium), color: "hsla(339, 100%, 71%, 1)" },
+            { name: "Platinum Plan", value: Number(subcriptionDetails?.platinum), color: "hsla(31, 70%, 78%, 1)" },
+            { name: "Enterprise", value: Number(subcriptionDetails?.enterprise), color: "hsla(354, 100%, 82%, 1)" }
         ],
 
         tableHeadings: [
@@ -74,309 +78,6 @@ const JsonData = (params) => {
             "Action"
         ],
 
-        orgDetails: [
-            {
-                orgName: "Prakash school",
-                name: "prakash",
-                contanctNo: 1234567890,
-                email: "prakash@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Basic",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Lee school",
-                name: "lee",
-                contanctNo: 1234567890,
-                email: "lee@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Platinum",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "John school",
-                name: "john",
-                contanctNo: 1234567890,
-                email: "john@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Premium",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Prakash school",
-                name: "prakash",
-                contanctNo: 1234567890,
-                email: "prakash@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Basic",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Lee school",
-                name: "lee",
-                contanctNo: 1234567890,
-                email: "lee@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Platinum",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "John school",
-                name: "john",
-                contanctNo: 1234567890,
-                email: "john@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Premium",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Prakash school",
-                name: "prakash",
-                contanctNo: 1234567890,
-                email: "prakash@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Basic",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Lee school",
-                name: "lee",
-                contanctNo: 1234567890,
-                email: "lee@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Platinum",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "John school",
-                name: "john",
-                contanctNo: 1234567890,
-                email: "john@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Premium",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Prakash school",
-                name: "prakash",
-                contanctNo: 1234567890,
-                email: "prakash@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Basic",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Lee school",
-                name: "lee",
-                contanctNo: 1234567890,
-                email: "lee@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Platinum",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "John school",
-                name: "john",
-                contanctNo: 1234567890,
-                email: "john@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Premium",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Prakash school",
-                name: "prakash",
-                contanctNo: 1234567890,
-                email: "prakash@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Basic",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Lee school",
-                name: "lee",
-                contanctNo: 1234567890,
-                email: "lee@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Platinum",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "John school",
-                name: "john",
-                contanctNo: 1234567890,
-                email: "john@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Premium",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Prakash school",
-                name: "prakash",
-                contanctNo: 1234567890,
-                email: "prakash@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Basic",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Lee school",
-                name: "lee",
-                contanctNo: 1234567890,
-                email: "lee@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Platinum",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "John school",
-                name: "john",
-                contanctNo: 1234567890,
-                email: "john@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Premium",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Prakash school",
-                name: "prakash",
-                contanctNo: 1234567890,
-                email: "prakash@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Basic",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Lee school",
-                name: "lee",
-                contanctNo: 1234567890,
-                email: "lee@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Platinum",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "John school",
-                name: "john",
-                contanctNo: 1234567890,
-                email: "john@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Premium",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Prakash school",
-                name: "prakash",
-                contanctNo: 1234567890,
-                email: "prakash@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Basic",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Lee school",
-                name: "lee",
-                contanctNo: 1234567890,
-                email: "lee@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Platinum",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "John school",
-                name: "john",
-                contanctNo: 1234567890,
-                email: "john@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Premium",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Prakash school",
-                name: "prakash",
-                contanctNo: 1234567890,
-                email: "prakash@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Basic",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Lee school",
-                name: "lee",
-                contanctNo: 1234567890,
-                email: "lee@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Platinum",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "John school",
-                name: "john",
-                contanctNo: 1234567890,
-                email: "john@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Premium",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Prakash school",
-                name: "prakash",
-                contanctNo: 1234567890,
-                email: "prakash@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Basic",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "Lee school",
-                name: "lee",
-                contanctNo: 1234567890,
-                email: "lee@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Platinum",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-            {
-                orgName: "John school",
-                name: "john",
-                contanctNo: 1234567890,
-                email: "john@gmail.com",
-                location: "Sulur, Coimbatore",
-                subPlan: "Premium",
-                createdDate: "2025-07-23 12:45:10",
-                subDuration: "2025-12-10",
-            },
-        ],
-
 
         // Profile //
 
@@ -384,12 +85,12 @@ const JsonData = (params) => {
             {
                 name: "Personal Information",
                 icon: Icons.profile,
-                to: "/profile"
+                to: "/superadmin_dashboard/profile"
             },
             {
                 name: "Settings",
                 icon: Icons.settings,
-                to: "/profile/settings"
+                to: "/superadmin_dashboard/profile/settings"
             },
             // {
             //   name: "Time Table",
@@ -444,6 +145,190 @@ const JsonData = (params) => {
     }
 
     const jsxJson = {
+        create_organization: [
+                    {
+                        name: "Organization Name",
+                        type: "text",
+                        title:" ",
+                        category: "input",
+                        placeholder: "",
+                        value: superadminState?.createOrganization?.organization_name || '',
+                        change: (e) => dispatch(updateCreateOrgInputs({ field: 'organization_name', value: e.target.value })),
+                        // keyDown: (e) => {
+                        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                        // },
+                        divClassName: "mb-3",
+                        isMandatory: false,
+                        Err: commonState?.app_data?.validated && !superadminState?.createOrganization?.organization_name  ? "Organization name required" : null
+                    },
+                    {
+                        name: "Email Id ",
+                        type: "text",
+                        title:"",
+                        category: "input",
+                        placeholder: "",
+                        value: superadminState?.createOrganization?.email_id || '',
+                        change: (e) => dispatch(updateCreateOrgInputs({ field: 'email_id', value: e.target.value })),
+                        // keyDown: (e) => {
+                        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                        // },
+                        divClassName: "mb-3",
+                        isMandatory: false,
+                        Err: commonState?.app_data?.validated && !superadminState?.createOrganization?.email_id ? "Email required" : null
+                    },
+                    
+                ],
+        profile_details:[
+            {
+                name: "First Name",
+                value: superadminState?.profileInputs?.first_name || '',
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "",
+                divClassName: "mb-3 col-12 col-lg-8",
+            },
+            {
+                name: "Last Name",
+                value: superadminState?.profileInputs?.last_name || '',
+                 type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "",
+                divClassName: "mb-3 col-12 col-lg-8",
+            },
+            {
+                name: "Email",
+                value: superadminState?.profileInputs?.email_id || '',
+                 type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "",
+                divClassName: "mb-3  col-12 col-lg-8",
+            },
+            {
+                name: "Phone Number",
+                value: superadminState?.profileInputs?.phone_number || '',
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "",
+                divClassName: "mb-3  col-12 col-lg-8",
+            }
+
+        ],
+        
+        super_admin_profile: [
+            {
+                name: "First Name",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "",
+                value:superadminState?.editProfileInputs?.first_name || '',
+                change: (e) => dispatch(edit_profile_Inputs({ field: 'first_name', value: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                divClassName: "mb-3",
+                isMandatory: false,
+                Err: commonState?.app_data?.validated && !superadminState?.editProfileInputs?.first_name ? "First name required" : null
+            },
+            {
+                name: "Last Name",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "",
+                value:superadminState?.editProfileInputs?.last_name || '',
+                change:(e) => dispatch(edit_profile_Inputs({ field: 'last_name', value: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                divClassName: "mb-3",
+                isMandatory: false,
+                Err: commonState?.app_data?.validated && !superadminState?.editProfileInputs?.last_name ? "Last name required" : null
+            },
+            {
+                name: "Email",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "",
+                value:superadminState?.editProfileInputs?.email_id || '',
+                change:(e) => dispatch(edit_profile_Inputs({ field: 'email_id', value: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                divClassName: "mb-3",
+                isMandatory: false,
+                Err: commonState?.app_data?.validated && !superadminState?.editProfileInputs?.email_id ? "Email required" : null
+            },
+            {
+                name: "Phone Number",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "",
+                value: superadminState?.editProfileInputs?.phone_number ||'',
+                change:(e) => dispatch(edit_profile_Inputs({ field: 'phone_number', value: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                divClassName: "mb-3",
+                isMandatory: false,
+                Err: commonState?.app_data?.validated && !superadminState?.editProfileInputs?.phone_number ? "Phone Number required" : null
+            },
+
+        ],
+        settings_details:[
+             {
+                name: "Current Password",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "Current Password",
+                value:superadminState?.settingsInputs?.old_password || '',
+                change: (e) => dispatch(updateSettingsInputs({ field: 'old_password', value: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                divClassName: "mb-3",
+                isMandatory: false,
+                Err: commonState?.app_data?.validated && !superadminState?.settingsInputs?.old_password ? "First name required" : null
+            },
+            {
+                name: "New Password",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "Current Password",
+                value:superadminState?.settingsInputs?.confirm_password || '',
+                change: (e) => dispatch(updateSettingsInputs({ field: 'confirm_password', value: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                divClassName: "mb-3",
+                isMandatory: false,
+                Err: commonState?.app_data?.validated && !superadminState?.settingsInputs?.confirm_password ? "Confirm Password required" : null
+            },
+            {
+                name: "Confirm Password",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "Confirm Password",
+                value:superadminState?.settingsInputs?.new_password || '',
+                change: (e) => dispatch(updateSettingsInputs({ field: 'new_password', value: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                divClassName: "mb-3",
+                isMandatory: false,
+                Err: commonState?.app_data?.validated && !superadminState?.settingsInputs?.new_password ? "New password required" : null
+            },
+
+        ]
 
     }
 

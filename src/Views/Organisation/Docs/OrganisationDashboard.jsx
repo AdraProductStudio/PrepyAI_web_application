@@ -5,32 +5,55 @@ import { MdDelete } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import Image from "Utils/Image";
 import { Card, Col, Row } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import Img from "Components/Img/Img";
 import ButtonComponent from "Components/Button/Button";
 // import ProgressBarComp from "Components/Progress/ProgressBar";
 import JsonData from "../Utils/JsonData";
 import Icons from "Utils/Icons";
+import { useCommonState, useDispatch } from "Components/CustomHooks";
+import { deleteAdmin, getAdminList, getOrganizationInfo } from "../Actions/organisationAction";
+import { updateModalShow } from "Views/Common/Slices/Common_slice";
 
 function OrganisationDashboard() {
+  const { organizationInfo, adminList } = useCommonState()?.organisationState
+  const { jsonOnly } = JsonData({ organizationInfo });
 
-  const { jsonOnly } = JsonData();
-
-  const itemsPerPage = 10;
+  const itemsPerPage = 3;
   const [currentPage, setCurrentPage] = useState(0);
-  const pageCount = Math.ceil(jsonOnly?.orgDetails.length / itemsPerPage);
+  const [searchValue, setSearchValue] = useState('')
+  const pageCount = Math.ceil(adminList?.total_count / itemsPerPage);
   const offset = currentPage * itemsPerPage;
   const currentItems = jsonOnly?.orgDetails.slice(offset, offset + itemsPerPage);
 
+
+
+
+  const dispatch = useDispatch()
+
   const handlePageClick = ({ selected }) => {
-    setCurrentPage(selected);
-  };
+    setCurrentPage(selected)
+    dispatch(getAdminList({ page: selected + 1, show_entries: itemsPerPage }))
+  }
+  useEffect(() => {
+    dispatch(getAdminList({ page: currentPage + 1, show_entries: itemsPerPage }))
+  }, [currentPage])
+
+  useEffect(() => {
+    dispatch(getOrganizationInfo())
+  }, [])
+
+  const handleSearchAdmin = (value) => {
+    setSearchValue(value)
+    dispatch(getAdminList({ page: currentPage + 1, search_query: value,show_entries: itemsPerPage  }))
+
+  }
 
   return (
     <div className="vh-100 p-3">
       <article className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 align-items-xl-center justify-content-xl-evenly">
-        {jsonOnly?.dashboardCardInputs.map((input, idx) => (
+        {jsonOnly?.dashboardCardInputs?.map((input, idx) => (
           <section key={idx} className="p-2">
             <Card style={{ height: "12rem" }}>
               <Card.Body className="d-flex flex-column align-items-start justify-content-between">
@@ -83,6 +106,7 @@ function OrganisationDashboard() {
                     style={{ width: "60%", borderRadius: "4px" }}
                   ></div>
                 </div>
+                <p className="mb-0 text-secondary fw-bold">{organizationInfo?.active_admins}</p>
               </div>
 
               <div className="w-100 d-flex align-items-center gap-2 mt-1">
@@ -100,11 +124,10 @@ function OrganisationDashboard() {
                     className="progress-bar brand_color"
                     role="progressbar"
                     style={{
-                      width: "85%",
-                      borderRadius: "4px",
+                      width: "85%", borderRadius: "4px",
                     }}
                   ></div>
-                </div>
+                </div><p className="mb-0 text-secondary fw-bold">{organizationInfo?.active_teachers}</p>
               </div>
 
               {/* <div className="w-100 d-flex align-items-center py-2">
@@ -155,10 +178,10 @@ function OrganisationDashboard() {
             </div>
             <Card.Body className="d-flex flex-column align-items-start justify-content-center gap-2">
               <Card.Title className="fw-bold text-white fs-4 mb-0">
-                Basic Plan
+                {organizationInfo?.plan}
               </Card.Title>
               <Card.Text className="text-secondary mb-4 text-white">
-                Expiring {"10 Oct 2025"}
+                Expiring {organizationInfo?.expiry_date}
               </Card.Text>
               <button className="btn btn-light w-100 py-1">
                 <span style={{ color: "hsla(324, 100%, 46%, 1)" }}>
@@ -191,6 +214,7 @@ function OrganisationDashboard() {
                       className="form-control"
                       placeholder="Search..."
                       style={{ minWidth: "200px" }}
+                      onChange={(e) => handleSearchAdmin(e.target.value)}
                     />
                     <CiSearch
                       style={{
@@ -220,6 +244,7 @@ function OrganisationDashboard() {
                       <span className=""> &nbsp;Create Admin</span>
                     </span>
                   }
+                  clickFunction={()=>dispatch(updateModalShow({show:true,close_btn:true,size:"md",modal_from:"Home",modal_type:"create_admin"}))}
                 />
               </div>
             </section>
@@ -244,22 +269,22 @@ function OrganisationDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {currentItems.map((org, idx) => (
+                  {adminList?.organization_list?.map((org, idx) => (
                     <tr key={idx}>
                       <td className="text-center border-bottom-non">
                         {idx + 1}
                       </td>
                       <td className="text-center">{org.name}</td>
-                      <td className="text-center">{org.instituteName}</td>
+                      <td className="text-center">{org.institute_name}</td>
                       <td className="text-center">{org.role}</td>
-                      <td className="text-center">{org.contanctNo}</td>
+                      <td className="text-center">{org.contact_no}</td>
                       <td className="text-center">{org.email}</td>
                       <td className="text-center">{org.location}</td>
                       <td className="text-center">
-                        <button type="button" className="btn">
+                        {/* <button type="button" className="btn">
                           <CiEdit className=" me-1 fs-5 text-primary" />
-                        </button>
-                        <button type="button" className="btn">
+                        </button> */}
+                        <button type="button" className="btn" onClick={() => dispatch(deleteAdmin({ admin_id: org.id }))}>
                           <MdDelete className="fs-5 text-danger" />
                         </button>
                       </td>

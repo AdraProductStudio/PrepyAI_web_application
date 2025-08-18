@@ -4,6 +4,7 @@ import Sidebar from "Components/Panel_compnent/Sidebar"
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import JsonData from "Views/Organisation/Utils/JsonData";
+import { OverallModel } from "../Utils/OverallModal";
 
 export default function Layout() {
     const { jsonOnly } = JsonData();
@@ -25,8 +26,9 @@ export default function Layout() {
                         <header className="py-2">
                             <Header offcanvasOn="lg" />
                         </header>
-                        <div className="pt-3 main_content_height">
+                        <div className="pt-3 main_content_height overflow-auto">
                             <Outlet />
+                            <OverallModel />
                         </div>
                     </div>
                 </main>

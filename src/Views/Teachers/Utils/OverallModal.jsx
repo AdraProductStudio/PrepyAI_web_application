@@ -13,7 +13,7 @@ export function OverallModel() {
     const dispatch = useDispatch();
     const { jsxJson } = JsonData();
 
-   
+
 
     function modalHeaderFun() {
         switch (commonState?.modal?.from) {
@@ -59,7 +59,7 @@ export function OverallModel() {
                                                 title: commonState?.notesdata?.title || "",
                                                 content: commonState?.notesdata?.content || ""
                                             };
-                                            dispatch(postTeacherNote(noteData));
+                                            dispatch(postTeacherNote("/teachers/create_user_notes", noteData));
                                         }}
                                     />
                                 </div>
