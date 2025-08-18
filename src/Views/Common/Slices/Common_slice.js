@@ -1,6 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
-import { data } from "react-router-dom";
 import { decrypt_app_data_logs, decryption, encryption, view_logout } from "ResuableFunctions/logs_handler";
 
 let initialState = {
@@ -11,7 +10,7 @@ let initialState = {
         from: null,
         type: null,
         close_btn: false,
-        enable_lg_autoScroll:false
+        enable_lg_autoScroll: false
     },
     canvas: {
         show: false,
@@ -76,17 +75,6 @@ const commonSlice = createSlice({
     name: 'common_slice',
     initialState,
     reducers: {
-
-        // handleDeleteNote(state, action) {
-        //     const { type, message } = action.payload;
-        //     if (type === "request") {
-        //       state.deleteNoteStatus = { loading: true, error: null, success: false };
-        //     } else if (type === "success") {
-        //       state.deleteNoteStatus = { loading: false, error: null, success: true };
-        //     } else if (type === "failure") {
-        //       state.deleteNoteStatus = { loading: false, error: message, success: false };
-        //     }
-        //   },
         handleDeleteNote(state, action) {
             const { type, message } = action.payload;
 
@@ -155,7 +143,6 @@ const commonSlice = createSlice({
         },
         updateModalShow(state, actions) {
             const { show, size, modal_from, modal_type, close_btn } = actions.payload;
-            console.log(show, size, modal_from, modal_type, close_btn )
             state.modal.show = show
             state.modal.size = size || "md"
             state.modal.from = modal_from || null
@@ -316,18 +303,11 @@ const commonSlice = createSlice({
     }
 })
 
-// function setToastState(state, action) {
-//     let error_message = typeof action.payload === 'object' ? action.payload?.message : action.payload;
-//     state.error.Err = error_message;
-//     state.error.Toast_Type = action.payload?.toast_type || "error";
-// }
 function setToastState(state, action) {
     let error_message = typeof action.payload === 'object' ? action.payload?.message : action.payload;
     state.error.Err = error_message;
     state.error.Toast_Type = action.payload?.toast_type || "error";
 }
-
-
 
 const { actions, reducer } = commonSlice;
 

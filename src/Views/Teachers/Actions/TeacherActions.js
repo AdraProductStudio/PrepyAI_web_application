@@ -1,9 +1,7 @@
-import { createAsyncThunk } from "@reduxjs/toolkit"
 import axiosInstance from "Services/axiosInstance"
 import {
     create_test_onchange,
     get_student_details_slice,
-    handelGetCreate,
     handleGetTestRecords,
     save_schedule_failure,
     save_schedule_request,
