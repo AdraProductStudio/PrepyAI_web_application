@@ -17,17 +17,15 @@ const StudentOverview = () => {
     const { jsonOnly } = JsonData();
     const {teachersState} = useCommonState();
     const book_data= teachersState?.teacher_GetStudentOverviewPerfomance?.data
-    const overallPerfomanceData = teachersState?.teacher_GetStudentOverviewOverallPerfomance?.data
-    const {monthly_performance,avg_score,avg_status} = overallPerfomanceData;
+    const overallPerfomanceData = teachersState?.teacher_GetStudentOverviewOverallPerfomance?.data[0]
     const testCardDetails = teachersState?.teacher_GetStudentOverviewTestCount?.data;
     const spendingHours = teachersState?.teacher_GetStudentOverviewSpendingHours?.data;
-
-    console.log(teachersState,"fdfdds")
+    const filteredMonthly_Perfomance = (overallPerfomanceData?.monthly_performance * 100).toFixed(0);
 
     const data = [
-        { backgroundColor: "#FDADC7", title: "Overall Question Answers", no_of_books: 24, no_of_tests: 4 },
-        { backgroundColor: "#FFB6B9", title: "Multiple Question Answers", no_of_books: 24, no_of_tests: 4 },
-        { backgroundColor: "#F1D4D4", title: "Short Question Answers", no_of_books: 24, no_of_tests: 4 }
+        { backgroundColor: "#FDADC7", question_types: "Overall Question Answers", no_of_books: testCardDetails[0]?.no_of_books, no_of_tests: testCardDetails[0]?.no_of_tests },
+        { backgroundColor: "#FFB6B9", question_types: "Multiple Question Answers", no_of_books: testCardDetails[1]?.no_of_books, no_of_tests: testCardDetails[1]?.no_of_tests  },
+        { backgroundColor: "#F1D4D4", question_types: "Short Question Answers", no_of_books: testCardDetails[2]?.no_of_books, no_of_tests: testCardDetails[2]?.no_of_tests  }
     ]
 
 
@@ -62,7 +60,7 @@ const StudentOverview = () => {
                 <Card className="h-100 border-0 rounded-4 shadow-sm py-3 px-2 overflowY">
                     <Card.Body className="p-2">
                         <div className="row">
-                            {testCardDetails?.map((item, index) => (
+                            {data?.length > 0 && data?.map((item, index) => (
                                 <div className ="col-12 col-sm-6 col-xxl-3 p-2" key={index}>
                                     <StudentOverviewCard data={item} style={{ backgroundColor: item?.backgroundColor || '' }} />
                                 </div>
@@ -71,7 +69,7 @@ const StudentOverview = () => {
                             <div className="col-12 col-sm-6 col-xxl-3 p-2">
                                 <Card className="h-100 border-0 rounded-4 shadow">
                                     <Card.Body className="p-2 row justify-content-center">
-                                        <GaugeChart width={300} height={150} value={monthly_performance} data={[{ name: 'Emergent', value: 100, color: '#4CD961' }]} label="Emergent" needleColor="#FF914D" />
+                                        <GaugeChart width={300} height={150} value={filteredMonthly_Perfomance} data={[{ name: 'Emergent', value: 100, color: '#4CD961' }]} label="Emergent" needleColor="#FF914D" />
                                     </Card.Body>
                                 </Card>
                             </div>
@@ -96,11 +94,11 @@ const StudentOverview = () => {
                                                         ))}
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                                    {book_data?.map((item, index) => (
+                                                <tbody className="p-2">
+                                                    {book_data?.length > 0 && book_data?.map((item, index) => (
                                                         <tr key={index}>
                                                             <td className="text-center fs-14">{item.book_name}</td>
-                                                            <td className="text-center fs-14">{item.chapters}</td>
+                                                            {/* <td className="text-center fs-14">{item.chapters}</td> */}
                                                             <td className="text-center fs-14">{item.date}</td>
                                                             <td className="text-center fs-14">{item.duration}</td>
                                                             <td className="text-center fs-14">{item.performance_status}</td>

@@ -9,6 +9,7 @@ import Image from "Utils/Image";
 import { getClassrooms, getTeachers } from "../Actions/teacherAction";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import { OverallModel } from "../Utils/OverallModal";
+import SpinnerComponent from "Components/Spinner/Spinner";
 
 const Classroom = () => {
     const navigate = useCustomNavigate();
@@ -39,7 +40,15 @@ const Classroom = () => {
                 </div>
 
                 <div className="w-100 row align-content-start small_header_content_main overflowY">
-                    {!data?.classrooms?.length ? 
+                    {glow ?
+<div className="w-100 h-100 row align-items-center justify-content-center">
+<div className="col-6 text-center">
+<SpinnerComponent />
+<p className="py-3">Geeting Classrooms Records</p>
+</div>
+</div>
+:
+data?.classrooms?.length < 0 ? 
                         <div className="w-100 h-100 row align-items-center justify-content-center">
                             <div className="col-6 text-center">
                                 <Img src={Image?.no_data_found} alt="No classes Found" className="no_data_found_image" />

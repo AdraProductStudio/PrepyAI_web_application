@@ -8,22 +8,19 @@ import StudentsTableCard from "./StudentsTableCard";
 import ReactPaginateComp from "Components/Pagination/ReactPaginateComp";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { GetStudentsList } from "../Actions/teacherAction";
+import { GetStudentsListBySubject } from "../Actions/teacherAction";
 import { useCommonState } from "Components/CustomHooks";
-import { update_app_data } from "Views/Common/Slices/Common_slice";
-import { type } from "@testing-library/user-event/dist/type";
 
 const SubjectDetails = () => {
     const { jsonOnly } = JsonData();
-    const { class_id } = useParams();
-    const {subject_id} = useParams();
+    const {subject_id,class_id} = useParams();
     const dispatch = useDispatch();
     const {teachersState,commonState} = useCommonState();
-    const {data,glow} = teachersState?.teacher_GetStudentList;
+    const {data,glow} = teachersState?.teacher_GetStudentListBySubject;
     const {pagination} = commonState;
 
     useEffect(()=>{
-        dispatch(GetStudentsList({
+        dispatch(GetStudentsListBySubject({
             subject_id,
             search_query:"",
             show_entries:pagination?.siblingCount,

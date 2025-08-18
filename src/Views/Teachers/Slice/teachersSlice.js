@@ -26,7 +26,11 @@ const initialState = {
     glow: true,
     data: []
     },
-    teacher_GetStudentList:{
+    teacher_GetStudentListByTeacher:{
+      glow:true,
+      data:[],
+    },
+    teacher_GetStudentListBySubject:{
       glow:true,
       data:[],
     },
@@ -134,29 +138,52 @@ const teachersSlice = createSlice({
             break;
         }
     },
-    handleGetStudentsList(state, action) {
+    handleGetStudentsListBySubject(state, action) {
         const { type, data } = action.payload;
   
         switch (type) {
           case "request":
-            state.teacher_GetStudentList["glow"] = true;
-            state.teacher_GetStudentList["data"] = [];
+            state.teacher_GetStudentListBySubject["glow"] = true;
+            state.teacher_GetStudentListBySubject["data"] = [];
             break;
   
           case "response":
-            state.teacher_GetStudentList["glow"] = false;
-            state.teacher_GetStudentList["data"] = data;
+            state.teacher_GetStudentListBySubject["glow"] = false;
+            state.teacher_GetStudentListBySubject["data"] = data;
             break;
   
           case "failure":
-            state.teacher_GetStudentList["glow"] = false;
-            state.teacher_GetStudentList["data"] = [];
+            state.teacher_GetStudentListBySubject["glow"] = false;
+            state.teacher_GetStudentListBySubject["data"] = [];
             break;
   
           default:
             break;
         }
     },
+    handleGetStudentsListByTeacher(state, action) {
+      const { type, data } = action.payload;
+
+      switch (type) {
+        case "request":
+          state.teacher_GetStudentListByTeacher["glow"] = true;
+          state.teacher_GetStudentListByTeacher["data"] = [];
+          break;
+
+        case "response":
+          state.teacher_GetStudentListByTeacher["glow"] = false;
+          state.teacher_GetStudentListByTeacher["data"] = data;
+          break;
+
+        case "failure":
+          state.teacher_GetStudentListByTeacher["glow"] = false;
+          state.teacher_GetStudentListByTeacher["data"] = [];
+          break;
+
+        default:
+          break;
+      }
+  },
     handleGetStudentOverviewPerfomance(state, action) {
         const { type, data } = action.payload;
   
@@ -324,7 +351,7 @@ export const {
     handleTeacherDashboard,
     handleGetClassrooms,
     handleGetSubjects,
-    handleGetStudentsList,
+    handleGetStudentsListBySubject,
     update_edit_student,
     handleGetStudentOverviewPerfomance,
     handleGetStudentOverviewOverallPerfomance,
@@ -333,6 +360,7 @@ export const {
     updatePostClassroomsData,
     handleGetTeachers,
     updatePostSubjectsData,
+    handleGetStudentsListByTeacher,
     handleGetClassroomTeachers,
     updatePostStudentData
 } = actions

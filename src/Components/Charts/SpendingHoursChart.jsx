@@ -36,6 +36,18 @@ const CustomTooltip = ({ active, payload, originalData }) => {
                     fontSize: 12,
                 }}
             >
+                <div
+                    style={{
+                        fontWeight: "bold",
+                        marginBottom: 6,
+                        fontSize: 13,
+                        borderBottom: "1px solid #444",
+                        paddingBottom: 4,
+                    }}
+                >
+                    {chapter.replace(/[_]/g, " ")}
+                </div>
+
                 {Object.keys(colors).map((key, idx) => (
                     <div key={idx} style={{ marginBottom: 4 }}>
                         <span
@@ -57,6 +69,7 @@ const CustomTooltip = ({ active, payload, originalData }) => {
     return null;
 };
 
+
 export default function SpendingHoursChart({ data }) {
     // Convert times for chart plotting
     const processedData = data.map(item => ({
@@ -73,7 +86,18 @@ export default function SpendingHoursChart({ data }) {
                 margin={{ top: 20, right: 30, left: 0, bottom: 20 }}
             >
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="chapter_name" tick={{ fontSize: 14 }} />
+                <XAxis
+  dataKey="chapter_name"
+  tick={{ fontSize: 12 }}
+  textAnchor="end"
+  tickFormatter={(name) =>
+    name
+      .replace(/[_]/g, " ")        
+      .split(" ")                 
+      .map(word => word.charAt(0).toUpperCase())
+      .join(" ")                  
+  }
+/>
                 <YAxis tickFormatter={(v) => `${v} Hr`} tick={{ fontSize: 14 }} />
                 <Tooltip
                     content={<CustomTooltip originalData={data} />}

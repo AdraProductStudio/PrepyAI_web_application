@@ -28,6 +28,7 @@ const Subject = () => {
     const {teachersState} = useCommonState();
     const {data,glow} = teachersState?.teacher_GetSubjects; 
 
+
     return (
         <div className="h-100">
             <div className="container-fluid">
@@ -48,9 +49,9 @@ const Subject = () => {
 
                         <div className="col-6 d-flex justify-content-end align-items-center">
                             <span className="brand-link-color me-3">Class Room ID :</span>
-                            <ButtonComponent type="button" className="col-6 bg-transparent border me-2" clickFunction={() => CopyToClipboard("54321", dispatch)}>
+                            <ButtonComponent type="button" className="col-6 bg-transparent border me-2" clickFunction={() => CopyToClipboard(data?.classroom_code, dispatch)}>
                                 {Icons.copy_icon}
-                                <span className="align-middle ps-14 ps-2">54321</span>
+                                <span className="align-middle ps-14 ps-2">{data?.classroom_code}</span>
                             </ButtonComponent>
                             <Tooltip tooltip_content="test" />
                         </div>
@@ -58,7 +59,15 @@ const Subject = () => {
                 </div>
 
                 <div className="w-100 row align-content-start small_header_content_main overflowY">
-                    {data?.length < 0 ?
+                    {glow ?
+<div className="w-100 h-100 row align-items-center justify-content-center">
+<div className="col-6 text-center">
+<SpinnerComponent />
+<p className="py-3">Geeting Classrooms Records</p>
+</div>
+</div>
+: 
+                    data?.subjects?.length < 0 ?
                         <div className="w-100 h-100 row align-items-center justify-content-center">
                             <div className="col-6 text-center">
                                 <Img src={Image?.no_data_found} alt="No subjects Found" className="no_data_found_image" />
@@ -71,7 +80,7 @@ const Subject = () => {
                             </div>
                         </div>
                         :
-                         data?.map((val, index) => (
+                         data?.subjects?.map((val, index) => (
                             <div className="col-3 p-2" key={index}>
                                 <SubjectsCard cardClassName="w-100 pointer" data={val} buttonName="View" onclickCard={() => navigate(`/teachers_dashboard/classrooms/${class_id}/${index}`)} />
                             </div>

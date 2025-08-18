@@ -10,9 +10,9 @@ import { update_edit_student } from "../Slice/teachersSlice";
 import SpinnerComponent from "Components/Spinner/Spinner";
 import Img from "Components/Img/Img";
 import Image from "Utils/Image";
+import { deleteStudents } from "../Actions/teacherAction";
 
 const StudentsTableCard = ({className, navigate_to,data,glow}) => {
-    console.log(data,"asdas")
     const { jsonOnly } = JsonData();
     const navigate = useCustomNavigate();
     const dispatch = useDispatch();
@@ -69,6 +69,7 @@ const StudentsTableCard = ({className, navigate_to,data,glow}) => {
                 <ButtonComponent
                   type="button"
                   className="btn-transparent"
+                  clickFunction={()=>dispatch(deleteStudents(student?.student_id))}
                   buttonName={Icons?.delete_icons}
                 />
                 <ButtonComponent

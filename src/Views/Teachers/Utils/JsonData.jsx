@@ -10,7 +10,6 @@ const JsonData = (params) => {
     const navigate = useCustomNavigate();
     const { commonState,teachersState } = useCommonState();
 
-    console.log(teachersState?.teacher_GetStudentList?.data?.students,"Sdashjkjbgv")
     const jsonOnly = {
         dashboard_count_details:[
             {
@@ -30,7 +29,7 @@ const JsonData = (params) => {
 
         days: ["Friday", "Thursday", "Wednesday", "Tuesday", "Monday"],
 
-        history_table_header: ['Book Name', 'Chapter', 'Date', 'Duration', 'Status'],
+        history_table_header: ['Book Name', 'Date', 'Duration', 'Status'],
 
         student_table_headers: ['S.no', 'Student Name', 'Contact No', 'Email', 'Status', 'Number of  Attempt', 'Reg.No', 'Action'],
 

@@ -6,7 +6,6 @@ import { update_app_data } from "Views/Common/Slices/Common_slice";
 
 const ReactPaginateComp = ({totalPages}) => {
   const { commonState } = useCommonState();
-  const { totalCount, currentPage, siblingCount } = commonState?.pagination;
   const dispatch = useDispatch();
 
   const handlePageClick = (e)=>{
@@ -14,7 +13,7 @@ const ReactPaginateComp = ({totalPages}) => {
           const data = {
                 currentPage: selectedPage,
                 totalCount: 10,
-                siblingCount: 5,
+                siblingCount: 10,
             }
             dispatch(update_app_data({type:"pagination" ,data}))
   }

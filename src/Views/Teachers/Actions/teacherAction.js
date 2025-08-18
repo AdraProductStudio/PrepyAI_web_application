@@ -7,6 +7,8 @@ import {
   handleGetStudentOverviewSpendingHours,
   handleGetStudentOverviewTestCount,
   handleGetStudentsList,
+  handleGetStudentsListBySubject,
+  handleGetStudentsListByTeacher,
   handleGetSubjects,
   handleGetTeachers,
   handleTeacherDashboard,
@@ -109,22 +111,42 @@ export const getSubjects = (params) => async (dispatch) => {
   }
 };
 
-export const GetStudentsList = (params) => async (dispatch) => {
+export const GetStudentsListBySubject = (params) => async (dispatch) => {
   try {
-    dispatch(handleGetStudentsList({ type: "request" }));
+    dispatch(handleGetStudentsListBySubject({ type: "request" }));
     const { data } = await axiosInstance.post("/teachers/get_students_by_subject",params);
     if (data?.error_code === 0) {
       dispatch(
-        handleGetStudentsList({ type: "response", data: data?.data || [] })
+        handleGetStudentsListBySubject({ type: "response", data: data?.data || [] })
       );
     } else {
       dispatch(
-        handleGetStudentsList({ type: "failure", message: data?.message || "" })
+        handleGetStudentsListBySubject({ type: "failure", message: data?.message || "" })
       );
     }
   } catch (err) {
     dispatch(
-      handleGetStudentsList({ type: "failure", message: err?.message || "" })
+      handleGetStudentsListBySubject({ type: "failure", message: err?.message || "" })
+    );
+  }
+};
+
+export const GetStudentsListByTeacher = (params) => async (dispatch) => {
+  try {
+    dispatch(handleGetStudentsListByTeacher({ type: "request" }));
+    const { data } = await axiosInstance.post("/teachers/get_students_by_teacher",params);
+    if (data?.error_code === 0) {
+      dispatch(
+        handleGetStudentsListByTeacher({ type: "response", data: data?.data || [] })
+      );
+    } else {
+      dispatch(
+        handleGetStudentsListByTeacher({ type: "failure", message: data?.message || "" })
+      );
+    }
+  } catch (err) {
+    dispatch(
+      handleGetStudentsListByTeacher({ type: "failure", message: err?.message || "" })
     );
   }
 };
@@ -296,5 +318,30 @@ export const postStudents= (form_data) => async (dispatch) => {
     console.log(error, "error from post subject");
   }
 };
+
+
+// Delete
+
+export const deleteStudents = (student_id) => async(dispatch)=>{
+  if (!student_id) {
+    return dispatch(update_app_data({ type: "validation", data: true }));
+  }
+
+  try {
+    const response = await axiosInstance.post("/teachers/delete_student", {student_id});
+
+    const { message, success } = response?.data;
+
+    if (!success) {
+      dispatch(update_error({ Err: message, Toast_Type: "error" }));
+    }
+    if (success) {
+      dispatch(update_error({ Err: message, Toast_Type: "success" }));
+    }
+
+  } catch (error) {
+    console.log(error, "error from post subject");
+  }
+}
 
 
