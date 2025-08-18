@@ -19,7 +19,7 @@ const SubjectDetails = () => {
     const {subject_id} = useParams();
     const dispatch = useDispatch();
     const {teachersState,commonState} = useCommonState();
-    const {data} = teachersState?.teacher_GetStudentList;
+    const {data,glow} = teachersState?.teacher_GetStudentList;
     const {pagination} = commonState;
 
     useEffect(()=>{
@@ -52,7 +52,7 @@ const SubjectDetails = () => {
                 ))}
             </div>
             <div className="w-100 py-4 subject_details_content_height overflowY pe-3">
-               <StudentsTableCard className="h-100" navigate_to="students_details" data={data} /> 
+               <StudentsTableCard className="h-100" navigate_to="students_details" data={data} glow={glow}/> 
             </div>
             <div className="mt-3">
                 <ReactPaginateComp  totalPages={data?.total_pages}/>

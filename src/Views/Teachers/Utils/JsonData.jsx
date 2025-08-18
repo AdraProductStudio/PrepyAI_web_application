@@ -344,7 +344,6 @@ const JsonData = (params) => {
                 }
                 
         ],
-
         addSubjects:[
             {
                 name: "Subject Name",
@@ -394,15 +393,14 @@ const JsonData = (params) => {
               
               
         ],    
- 
         editStudent:[
             {
                 name: "Enter Student Name",
                 type: "text",
                 category: "input",
                 placeholder: "Student name",
-                value: teachersState?.teacher_PostStudents?.data?.contact_no || "",
-                change: (e) => dispatch(updatePostStudentData({ contact_no: e.target.value })),
+                value: teachersState?.teacher_PostStudents?.data?.student_name || "",
+                change: (e) => dispatch(updatePostStudentData({ student_name: e.target.value })),
                 divClassName: "col-12 mb-4",
                  className: "p-2 ", 
                 isMandatory: true,
@@ -416,7 +414,7 @@ const JsonData = (params) => {
                 value: teachersState?.teacher_PostStudents?.data?.contact_no || "",
                 change: (e) => dispatch(updatePostStudentData({ contact_no: e.target.value })),
                 divClassName: "col-12 mb-4",
-                 className: "p-2 ", 
+                className: "p-2 ", 
                 isMandatory: true,
                 // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
               },
@@ -425,8 +423,8 @@ const JsonData = (params) => {
                 type: "text",
                 category: "input",
                 placeholder: "Email id",
-                value: teachersState?.teacher_PostStudents?.data?.email_id || "",
-                change: (e) => dispatch(updatePostStudentData({ email_id: e.target.value })),
+                value: teachersState?.teacher_PostStudents?.data?.student_email || "",
+                change: (e) => dispatch(updatePostStudentData({ student_email: e.target.value })),
                 divClassName: "col-12 mb-4",
                  className: "p-2 ", 
                 isMandatory: true,
@@ -437,16 +435,14 @@ const JsonData = (params) => {
                 type: "text",
                 category: "input",
                 placeholder: "Enter Your Register Number",
-                value: teachersState?.teacher_PostStudents?.data?.register_no || "",
-                change: (e) => dispatch(updatePostStudentData({ register_no: e.target.value })),
+                value: teachersState?.teacher_PostStudents?.data?.student_reg_no || "",
+                change: (e) => dispatch(updatePostStudentData({ student_reg_no: e.target.value })),
                 divClassName: "col-12 mb-4",
                  className: "p-2 ", 
                 isMandatory: true,
                 // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
               },
         ]
-
-
     }
 
     return {

@@ -61,8 +61,6 @@ const teachersSlice = createSlice({
   name: "teachersSlice",
   initialState: initialState,
   reducers: {
-    handleStudentsPerformance(state, action) {},
-    handleJsonStudentsData(state, action) {},
     handleTeacherDashboard(state, action) {
       const { type, data } = action.payload;
 
@@ -311,6 +309,10 @@ const teachersSlice = createSlice({
       const [key, value] = Object.entries(action.payload)[0] || [];
       state.teacher_PostStudents.data[key] = value || "";
     },
+    update_edit_student(state,action){
+      const { data } = action.payload;
+      state.teacher_PostStudents.data = data
+    },
   },
 });
 
@@ -323,6 +325,7 @@ export const {
     handleGetClassrooms,
     handleGetSubjects,
     handleGetStudentsList,
+    update_edit_student,
     handleGetStudentOverviewPerfomance,
     handleGetStudentOverviewOverallPerfomance,
     handleGetStudentOverviewTestCount,

@@ -11,9 +11,10 @@ import {
   handleGetTeachers,
   handleTeacherDashboard,
 } from "../Slice/teachersSlice";
-import { update_spinner_loadning } from "Views/Auth/Slices/authSlice";
 import { update_app_data, update_error, updateModalShow } from "Views/Common/Slices/Common_slice";
-import axios from "axios";
+
+
+// GET
 
 export const getTeacherDashboardDatas = (params) => async (dispatch) => {
   try {
@@ -212,9 +213,7 @@ export const GetStudentOverviewSpendingHours = (params) => async (dispatch) => {
 // POST
 
 export const postClassrooms = (form_data) => async (dispatch) => {
-  console.log(form_data, "DSDsd");
   const { classroom_name, teachers, student_file } = form_data;
-
   if (!classroom_name || !teachers?.length || !student_file) {
     return dispatch(update_app_data({ type: "validation", data: true }));
   }
@@ -250,9 +249,7 @@ export const postClassrooms = (form_data) => async (dispatch) => {
 };
 
 export const postSubjects = (form_data) => async (dispatch) => {
-  console.log(form_data,"asdasd")
   const { subject_name, classroom_id,teachers_id, } = form_data;
-
   if (!subject_name || !teachers_id ||!classroom_id ) {
     return dispatch(update_app_data({ type: "validation", data: true }));
   }
@@ -275,12 +272,10 @@ export const postSubjects = (form_data) => async (dispatch) => {
   }
 };
 
-
 export const postStudents= (form_data) => async (dispatch) => {
-  console.log(form_data,"asddas")
-  const { student_id, contact_no,email_id,register_no, } = form_data;
 
-  if (!student_id || !contact_no ||!email_id ||!register_no ) {
+  const { student_name, contact_no,student_email,student_reg_no, } = form_data;
+  if (!student_name || !contact_no ||!student_email ||!student_reg_no ) {
     return dispatch(update_app_data({ type: "validation", data: true }));
   }
 
