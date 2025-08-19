@@ -285,9 +285,7 @@ const JsonData = (params) => {
                 placeholder: "Enter Title",
                 isMandatory: true,
                 value: commonState?.notesdata?.title || "",
-                change: (e) => {
-                    dispatch(update_note_data({ type: "title", data: e.target.value }));
-                },
+                change: (e) => dispatch(update_note_data({ type: "title", data: e.target.value })),
                 keyDown: (e) => {
                     if (e.key === "Enter") dispatch(handlePostNote(commonState?.notesdata));
                 },
@@ -298,9 +296,7 @@ const JsonData = (params) => {
                 className: "",
                 isMandatory: true,
                 value: commonState?.notesdata?.content || "",
-                change: (e) => {
-                    dispatch(update_note_data({ type: "content", data: e.target.value }));
-                },
+                change: (e) => dispatch(update_note_data({ type: "content", data: e.target.value })),
                 keyDown: (e) => {
                     if (e.key === "Enter") dispatch(handlePostNote(commonState?.notesdata));
                 },

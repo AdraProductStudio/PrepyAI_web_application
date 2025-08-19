@@ -1,6 +1,5 @@
 import ButtonComponent from "Components/Button/Button";
-import { useState } from "react";
-import { Card, Row, Col } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { FaRegClock } from "react-icons/fa";
 import Icons from "Utils/Icons";
 
@@ -8,52 +7,29 @@ const NoteCard = ({
     data, addFavoriteOnClick,
     notesEditOnClick, notesDeleteOnClick
 }) => {
-    const [isExpanded, setIsExpanded] = useState(false)
-
-    const shortText =
-        data?.notes?.length > 250
-            ? data.notes.slice(0, 250) + "..."
-            : data?.notes || "";
-
 
     return (
-        <Card className="NoteCard rounded-4 p-3 shadow-sm border-0 mb-3 h-100 " style={{ backgroundColor: '#F4FAB3' || '#fafaf8ff' }}>
-            <Row className="align-items-start  justify-content-between py-1 mb-3 heading">
-                <Col>
-                    <p className="text-secondary fs-13">{data?.date || ''}</p>
-                    <h5 className="fw-semibold mt-2">{data?.title || ''}</h5>
-                </Col>
-                <Col xs="auto" className="d-flex" >
-                    <ButtonComponent className="btn" buttonName={Icons.NoteStarIcon} clickFunction={addFavoriteOnClick} />
-                    <ButtonComponent className="btn" buttonName={Icons?.NotesEditIcon} clickFunction={notesEditOnClick} />
-                    <ButtonComponent className="btn" buttonName={Icons?.NoteDeleteIcon} clickFunction={notesDeleteOnClick} />
-                </Col>
-            </Row>
+        <Card className="rounded-3 shadow-sm border-0 mb-3" style={{ backgroundColor: '#F4FAB3' || '#fafaf8ff' }}>
+            <Card.Header className="d-flex flex-wrap bg-transparent pt-3" style={{ borderBottom: '1px dashed #dee2e6' }}>
+                <div className="col-5">
+                    <p className="text-secondary fs-13 mb-0">{data?.date || ''}</p>
+                    <h5 className="fw-semibold mt-2 text-truncate">{data?.title || ''}</h5>
+                </div>
+                <div className="col d-flex justify-content-end" >
+                    <ButtonComponent className="btn border-0" buttonName={Icons.NoteStarIcon} clickFunction={addFavoriteOnClick} />
+                    <ButtonComponent className="btn border-0" buttonName={Icons?.NotesEditIcon} clickFunction={notesEditOnClick} />
+                    <ButtonComponent className="btn border-0" buttonName={Icons?.NoteDeleteIcon} clickFunction={notesDeleteOnClick} />
+                </div>
+            </Card.Header>
 
-            <div className="text-dark d-flex flex-column text-start" style={{ fontSize: "15px" }}>
-                {isExpanded ? data?.notes : shortText}
+            <Card.Body className="text-dark fs-15 p-3 py-2" style={{ minHeight: '15rem' }}>
+                {data?.notes?.slice(0, 400) + "..."}
+            </Card.Body>
 
-                {data?.notes?.length > 250 && (
-                    <span
-                        onClick={() => setIsExpanded(!isExpanded)}
-                        style={{
-                            color: "blue",
-                            cursor: "pointer",
-                            marginLeft: "5px",
-                            fontWeight: "500",
-                        }}
-                    >
-                        {isExpanded ? "View Less" : "View More"}
-                    </span>
-                )}
-            </div>
-            {/* <div className="text-dark" style={{ fontSize: "15px" }}>
-                {data?.notes || ''}
-            </div> */}
-            <div className="d-flex align-items-center text-muted mt-3" style={{ fontSize: "14px" }}>
+            <Card.Footer className="bg-transparent d-flex align-items-center text-muted py-3 fs-14" style={{ borderTop: '1px dashed #dee2e6' }}>
                 <FaRegClock className="me-2" />
                 {data?.time || ''}
-            </div>
+            </Card.Footer>
         </Card>
     );
 };

@@ -9,17 +9,17 @@ import {
 } from 'Views/Common/Slices/Common_slice';
 
 export const deleteTeacherNote = (endpoint, noteId) => async (dispatch) => {
-    let callback_from;
-    if (/student_dashboard/.test(endpoint)) callback_from = "/students/get_user_notes"
-    else callback_from = "/teachers/get_user_notes"
+    let callback_endpoint;
+    if (/students/.test(endpoint)) callback_endpoint = "/students/get_user_notes"
+    else callback_endpoint = "/teachers/get_user_notes"
 
     try {
         dispatch(handleDeleteNote({ type: "request" }));
         const { data } = await axiosInstance.delete(endpoint, { data: { id: noteId } });
 
         if (data?.error_code === 0) {
-            dispatch(handleDeleteNote({ type: "success" }));
-            dispatch(getTeacherNotesData(callback_from));
+            dispatch(handleDeleteNote({ type: "response" }));
+            dispatch(getTeacherNotesData(callback_endpoint));
         } else {
             dispatch(handleDeleteNote({ type: "failure", message: data?.message || "Error deleting note" }));
         }
@@ -30,22 +30,25 @@ export const deleteTeacherNote = (endpoint, noteId) => async (dispatch) => {
 
 
 export const postTeacherNote = (endpoint, noteData) => async (dispatch) => {
-    let callback_from;
-    if (/student_dashboard/.test(endpoint)) callback_from = "/students/get_user_notes"
-    else callback_from = "/teachers/get_user_notes"
+    let callback_endpoint;
+    if (/students/.test(endpoint)) callback_endpoint = "/students/get_user_notes"
+    else callback_endpoint = "/teachers/get_user_notes"
 
     const fd = new FormData();
+    fd.append("priority", "low");
+    if (noteData?.id) fd.append("id", noteData.id);
     Object.entries(noteData).map(([key, value]) => {
-        fd.append(key, value);
+        if (key !== "id") fd.append(key, value);
     });
-    
+
     try {
         dispatch(handlePostNote({ type: "request" }));
-        const { data } = await axiosInstance.post(endpoint, fd);
+        const method = noteData?.id ? "put" : "post";
+        const { data } = await axiosInstance[method](endpoint, fd);
 
         if (data?.error_code === 0) {
-            dispatch(handlePostNote({ type: "success" }));
-            dispatch(getTeacherNotesData(`/${callback_from}/get_user_notes`));
+            dispatch(handlePostNote({ type: "response" }));
+            dispatch(getTeacherNotesData(callback_endpoint));
         } else {
             dispatch(handlePostNote({ type: "failure", message: data?.message || "Error" }));
         }
@@ -68,68 +71,6 @@ export const getTeacherNotesData = (endpoint) => async (dispatch) => {
         dispatch(handleTeacherNotesData({ type: "failure", message: err?.message || "" }));
     }
 }
-// export const getTeacherNotesData = (params = {}) => async (dispatch) => {
-//     try {
-//         // Start loading state
-//         dispatch(handleTeacherNotesData({ type: "request" }));
-
-//         // API call with params
-//         const { data } = await axiosInstance.get("/teachers/get_user_notes", { params });
-
-//         if (data?.error_code === 0) {
-//             dispatch(
-//                 handleTeacherNotesData({
-//                     type: "response",
-//                     data: Array.isArray(data?.data) ? data.data : []
-//                 })
-//             );
-//         } else {
-//             dispatch(
-//                 handleTeacherNotesData({
-//                     type: "failure",
-//                     data: [],
-//                     message: data?.message || "Failed to fetch notes."
-//                 })
-//             );
-//         }
-//     } catch (err) {
-//         dispatch(
-//             handleTeacherNotesData({
-//                 type: "failure",
-//                 data: [],
-//                 message: err?.message || "Something went wrong."
-//             })
-//         );
-//     }
-// };
-
-
-// login api 
-export const handleLogin = (login_data, navigate) => async (dispatch) => {
-    //     let username = login_data?.username || '';
-    //     let password = login_data?.password || '';
-    //     if (!username || !password) return dispatch(update_app_data({ type: "validation", data: true }));
-
-    //     try {
-    //         dispatch(login_reducer({ type: 'request' }))
-    //         const {data} = await axios.post(`${BASE_URL}/login/`, {}, {
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Basic ${btoa(`${username}:${password}`)}`
-    //             }
-    //         });
-
-    //         if (data.error_code === 200) {
-    //             dispatch(login_reducer({ type: 'response', data: data?.data }))
-    //             LoginSuccessNavigateTo(data?.data?.role, navigate)
-    //         }
-    //         else dispatch(login_reducer({ type: 'failure', data: { message:data?.message, type: "error" } }))
-    //     } catch (err) {
-    //         dispatch(login_reducer({ type: 'failure', data: { message: err?.message, type: "error" } }))
-    //     }
-}
-
-
 
 //refresh token
 export const handlerefreshToken = (refresh_token) => async (dispatch) => {
@@ -157,16 +98,9 @@ export const getBooks = (params) => async (dispatch) => {
         const { data } = await axiosInstance.post("/teachers/get_books", params || {});
 
         if (data?.error_code === 0) {
-            dispatch(handleGetBooks({
-                type: "response",
-                data: data?.data?.books || []
-            }));
+            dispatch(handleGetBooks({ type: "response", data: data?.data?.books || [] }));
         } else {
-
-            dispatch(handleGetBooks({
-                type: "failure",
-                message: data?.message || "Failed to load books"
-            }));
+            dispatch(handleGetBooks({ type: "failure", message: data?.message || "Failed to load books" }));
         }
     } catch (err) {
 

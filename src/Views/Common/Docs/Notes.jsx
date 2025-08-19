@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { deleteTeacherNote, getTeacherNotesData } from "../Actions/Common_action";
 import Image from "Utils/Image";
 import SpinnerComponent from "Components/Spinner/Spinner";
-import { updateModalShow } from "../Slices/Common_slice";
+import { edit_note_data, updateModalShow } from "../Slices/Common_slice";
 import ButtonComponent from "Components/Button/Button";
 import Icons from "Utils/Icons";
 
@@ -47,23 +47,26 @@ const Notes = () => {
 
                 {commonState.teachernotesdata?.glow ?
                     <div className="col-12 d-flex flex-column justify-content-center align-items-center text-center p-4">
-                        <img src={Image.Task_empty} style={{ height: "180px", width: "180px" }} alt="Picture" />
                         <p className="mt-3">Getting Notes...</p>
                         <SpinnerComponent />
                     </div>
                     :
-                    commonState?.teachernotesdata?.data?.length > 0 ? (
+                    commonState?.teachernotesdata?.data?.length > 0 ?
                         commonState?.teachernotesdata?.data?.map((note, index) => (
                             <div key={note.id || index} className=" col-md-6 col-lg-4 col-xxl-3 p-1">
-                                <NoteCard notesDeleteOnClick={() => deleteNotes(note?.id)} data={note} />
+                                <NoteCard
+                                    data={note}
+                                    notesEditOnClick={() => dispatch(edit_note_data({ data: note, show: true, close_btn: true, modal_from: "notes", modal_type: "add_note" }))}
+                                    notesDeleteOnClick={() => deleteNotes(note?.id)}
+                                />
                             </div>
                         ))
-                    ) : (
+                        :
                         <div className="col-12 d-flex flex-column justify-content-center align-items-center text-center p-4">
                             <img src={Image.Task_empty} style={{ height: "180px", width: "180px" }} alt="Picture" />
                             <p className="mt-3">No Notes Available</p>
                         </div>
-                    )}
+                }
             </div>
         </div>
     );
