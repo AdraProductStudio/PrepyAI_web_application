@@ -217,9 +217,8 @@ export const postClassrooms = (form_data) => async (dispatch) => {
       dispatch(update_error({ Err: message, Toast_Type: "success" }));
       dispatch(updateModalShow({ show: false }))
     }
-
   } catch (error) {
-    console.log(error, "error from Register");
+    console.warn(error, "error from Register");
   }
 };
 
@@ -243,7 +242,7 @@ export const postSubjects = (form_data) => async (dispatch) => {
     }
 
   } catch (error) {
-    console.log(error, "error from post subject");
+    console.warn(error, "error from post subject");
   }
 };
 
@@ -268,7 +267,7 @@ export const postStudents = (form_data) => async (dispatch) => {
     }
 
   } catch (error) {
-    console.log(error, "error from post subject");
+    console.warn(error, "error from post subject");
   }
 };
 
@@ -293,7 +292,7 @@ export const deleteStudents = (student_id) => async (dispatch) => {
     }
 
   } catch (error) {
-    console.log(error, "error from post subject");
+    console.warn(error, "error from post subject");
   }
 }
 

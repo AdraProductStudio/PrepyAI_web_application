@@ -2,16 +2,14 @@ import { Fragment } from "react";
 import ReactDropdownSelect from "Components/Input/ReactDropdownSelect";
 import SelectBox from "Components/Input/SelectBox";
 import Input from "Components/Input/Input";
-import ButtonComponent from "Components/Button/Button";
 import Textbox from "Components/Input/textbox";
 import Icons from "Utils/Icons";
 import Checkbox from "Components/Input/Checkbox";
 
 export function Inputfunctions(funBy) {
     if (!funBy || funBy.length === 0) return null;
-    
+
     return funBy?.map((ipVal, iPInd) => {
-        console.log(ipVal,"dasdsa")
         switch (ipVal?.category) {
             case "heading":
                 return <div className={ipVal?.divClassName} >
@@ -94,7 +92,7 @@ export function Inputfunctions(funBy) {
 
                                 <div className="mt-4 w-100">
                                     {ipVal?.value?.map((data, index) => {
-                                        const { id, name:filename, fileimage, datetime, size:filesize } = data;
+                                        const { id, name: filename, fileimage, datetime, size: filesize } = data;
                                         return (
                                             // typeof data === "string" ?
                                             //     <div className="file-atc-box w-100" key={id}>

@@ -4,7 +4,6 @@ import Icons from 'Utils/Icons';
 import Image from 'Utils/Image';
 import { update_selected_books } from '../Slice/teachersSlice';
 import { get_bookmarks } from '../Actions/TeacherActions';
-import { useEffect } from 'react';
 import { updatePostClassroomsData, updatePostStudentData, updatePostSubjectsData } from '../Slice/teachersSlice';
 
 const JsonData = (params) => {

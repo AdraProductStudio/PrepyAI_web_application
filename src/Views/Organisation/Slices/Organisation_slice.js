@@ -52,7 +52,6 @@ const OrganisationSlice = createSlice({
         },
 
         updateOrgSettingsInputs: (state, action) => {
-            console.log(action.payload , 'payload')
             const { field, value } = action.payload
             state.settingsInputs[field] = value
         },
