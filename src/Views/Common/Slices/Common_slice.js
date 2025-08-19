@@ -92,32 +92,35 @@ const commonSlice = createSlice({
         setNotes(state, action) {
             state.notes = action.payload;
         },
-
         handlePostNote: (state, action) => {
             const { type, data } = action.payload;
             switch (type) {
                 case "request":
-                    state.postNoteStatus["glow"] = true;
-                    state.postNoteStatus["data"] = [];
+                    state.teachernotesdata["glow"] = true;
+                    state.teachernotesdata["data"] = [];
                     break;
 
                 case "response":
-                    state.postNoteStatus["glow"] = false;
-                    state.postNoteStatus["data"] = data;
+                    state.teachernotesdata["glow"] = false;
+                    state.modal.show = false;
+                    state.modal.type = null;
+                    state.modal.from = null;
+                    state.modal.close_btn = false;
+                    state.notesdata.title = "";
+                    state.notesdata.content = "";
+                    state.notesdata.edit = null;
+                    state.notesdata.id = null;
                     break;
 
                 case "failure":
-                    state.postNoteStatus["glow"] = false;
-                    state.postNoteStatus
-                    ["data"] = [];
+                    state.teachernotesdata["glow"] = false;
+                    state.teachernotesdata["data"] = [];
                     break;
 
                 default:
                     break;
             }
         },
-
-
         handleTeacherNotesData(state, action) {
             const { type, data } = action.payload;
 
@@ -130,6 +133,7 @@ const commonSlice = createSlice({
                 case "response":
                     state.teachernotesdata["glow"] = false;
                     state.teachernotesdata["data"] = data;
+                    state.notesdata.edit = null;
                     break;
 
                 case "failure":
@@ -143,6 +147,12 @@ const commonSlice = createSlice({
         },
         updateModalShow(state, actions) {
             const { show, size, modal_from, modal_type, close_btn } = actions.payload;
+            if (modal_type === "add_note") {
+                state.notesdata.title = "";
+                state.notesdata.content = "";
+                state.notesdata.id = null;
+            }
+
             state.modal.show = show
             state.modal.size = size || "md"
             state.modal.from = modal_from || null
@@ -224,7 +234,18 @@ const commonSlice = createSlice({
             const { type, data } = action.payload;
             state.notesdata[type] = data || "";
         },
-
+        edit_note_data(state, action) {
+            const { show, size, modal_from, modal_type, close_btn, data } = action.payload;
+            Object.entries(data)?.map(([key, value]) => (
+                state.notesdata[key === "notes" ? "content" : key] = value || ""
+            ))
+            state.notesdata.edit = true;
+            state.modal.show = show
+            state.modal.size = size || "md"
+            state.modal.from = modal_from || null
+            state.modal.type = modal_type || null
+            state.modal.close_btn = close_btn || false
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -267,8 +288,6 @@ const commonSlice = createSlice({
                         break;
                 }
             })
-
-
 
             //For handling response error [setting toast error message]
             .addMatcher(
@@ -314,7 +333,7 @@ const { actions, reducer } = commonSlice;
 export const {
     update_app_data, update_error, updateModalShow, update_search,
     logout, handleTeacherNotesData, handlePostNote, handleDeleteNote,
-    update_note_data, handleGetBooks
+    update_note_data, handleGetBooks, edit_note_data
 
 } = actions;
 
