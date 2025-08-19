@@ -1,6 +1,5 @@
 import axiosInstance from "Services/axiosInstance"
 import { clearForm, setLoading, updateClassroomsOverviewData, updateDashboardOverviewData, updateGetAllClassroomsData, updateStudentsTableData, updateTeachersTableData } from "../Slices/adminSlice"
-import { type } from "@testing-library/user-event/dist/type"
 import { update_error } from "Views/Common/Slices/Common_slice"
 
 export const handleGetAllClassrooms = (params) => async (dispatch) => {

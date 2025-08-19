@@ -43,6 +43,7 @@ import CompletedTest from "Views/Teachers/Docs/CompletedTest";
 import TeachersAssigned from "Views/Teachers/Docs/TeachersAssigned";
 import SelfTakingTest from "Views/Teachers/Docs/SelfTakingTest";
 import StudentsPerformanceLayout from "Views/Teachers/Layout/StudentsPerformanceLayout";
+import TeachersAuth from "Views/Teachers/Layout/TeachersAuth";
 
 import StudentsLayout from "Views/Students/Layout/Layout";
 import StudentDashboard from "Views/Students/Docs/index";
@@ -52,6 +53,12 @@ import StudentsBooks from "Views/Students/Docs/Books";
 import StudentAttachments from "Views/Students/Docs/StudentAttachments";
 import BooksOverviewLayout from "Views/Students/Layout/BooksOverviewLayout";
 import McqTest from "Views/Students/Docs/McqTest";
+import McqTestStatus from "Views/Students/Docs/McqTestStatus";
+import StudentAuth from "Views/Students/Layout/StudentAuth";
+import GenerateQuestionLayout from "Views/Students/Layout/GenerateQuestionLayout";
+import GenerateQuestion from "Views/Students/Docs/GenerateQuestion";
+import McqQuestions from "Views/Students/Docs/McqQuestions";
+import LongQuestions from "Views/Students/Docs/LongQuestions";
 
 import LearnersLayout from 'Views/Learners/Layout/Layout'
 import Dashboard from "Views/Learners/Docs/Dashboard";
@@ -77,12 +84,6 @@ import PersonalInfo from "Views/Superadmin/Docs/PersonalInfo";
 import Profile from "Views/Superadmin/Docs/Profile";
 import Settings from "Views/Superadmin/Docs/Settings";
 import SuperAdminDashboard from "Views/Superadmin/Docs/SuperAdminDashboard";
-import McqTestStatus from "Views/Students/Docs/McqTestStatus";
-import StudentAuth from "Views/Students/Layout/StudentAuth";
-import GenerateQuestionLayout from "Views/Students/Layout/GenerateQuestionLayout";
-import GenerateQuestion from "Views/Students/Docs/GenerateQuestion";
-import McqQuestions from "Views/Students/Docs/McqQuestions";
-import LongQuestions from "Views/Students/Docs/LongQuestions";
 
 
 function App() {
@@ -116,14 +117,15 @@ function App() {
           </Route>
 
           {/* Teachers */}
-          <Route path="teachers_dashboard" element={<TeacherLayout />}>
+          <Route path="teachers_dashboard" element={<TeachersAuth />}>
+          <Route element={<TeacherLayout/>}>
             <Route path="home" element={<TeacherDashboard />} />
             <Route path="classrooms" >
               <Route index element={<StudentClassroom />} />
               <Route path=":class_id" element={<Subject />} />
               <Route path=":class_id/:subject_id">
                 <Route index element={<SubjectDetails />} />
-                <Route path="students_details" element={<StudentOverview />} />
+                <Route path=":student_id/students_details" element={<StudentOverview />} />
                 <Route element={<ScheduleTestLayout />} >
                   <Route path="create_test" element={<CreateTest />} />
                   <Route path="preview_test" element={<PreviewTest />} />
@@ -145,6 +147,7 @@ function App() {
               <Route path="overview" element={<StudentOverview />} />
             </Route>
             <Route path="notes" element={<Notes />} />
+            </Route>
           </Route>
 
           {/* Students */}

@@ -1,15 +1,31 @@
-import React from "react"
-import ReactPaginate from 'react-paginate'
+import { useCommonState } from "Components/CustomHooks";
+import React from "react";
+import ReactPaginate from "react-paginate";
+import { useDispatch } from "react-redux";
+import { update_app_data } from "Views/Common/Slices/Common_slice";
 
-const ReactPaginateComp = () => {
+const ReactPaginateComp = ({totalPages}) => {
+  const { commonState } = useCommonState();
+  const dispatch = useDispatch();
+
+  const handlePageClick = (e)=>{
+          const selectedPage = e.selected + 1;
+          const data = {
+                currentPage: selectedPage,
+                totalCount: 10,
+                siblingCount: 10,
+            }
+            dispatch(update_app_data({type:"pagination" ,data}))
+  }
+
   return (
     <ReactPaginate
       breakLabel="..."
       nextLabel=">"
-      // onPageChange={handlePageClick}
+      onPageChange={handlePageClick}
       pageRangeDisplayed={2}
       marginPagesDisplayed={2}
-      pageCount={150}
+      pageCount={totalPages}
       previousLabel="<"
       renderOnZeroPageCount={null}
       containerClassName="pagination justify-content-end"
@@ -23,7 +39,7 @@ const ReactPaginateComp = () => {
       breakLinkClassName="page-link"
       activeClassName="active"
     />
-  )
-}
+  );
+};
 
-export default ReactPaginateComp
+export default ReactPaginateComp;

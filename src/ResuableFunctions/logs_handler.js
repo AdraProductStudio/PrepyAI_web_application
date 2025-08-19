@@ -2,11 +2,11 @@ import Cookies from "js-cookie";
 import { decryptData, encryptData } from "Security/Crypto/Crypto";
 
 export function decryption() {
-    return decryptData(Cookies.get('project_log'))
+return decryptData(Cookies.get('project_log'))
 }
 
 export function encryption(data) {
-    return encryptData(data)
+return encryptData(data)
 }
 
 export function decrypt_app_data_logs() {
@@ -33,11 +33,11 @@ export function decrypt_app_data_logs() {
             case 'organisation_dashboard':
                 return logs['ORGANIZATION'] || {}
 
-            default:
-                return {}
-        }
-    }
-    return {};
+default:
+return {}
+}
+}
+return {};
 }
 
 export function view_logout() {
@@ -76,11 +76,11 @@ export function view_logout() {
                 Cookies.set('project_log', encryptData(logs));
                 break;
 
-            default:
-                break;
+default:
+break;
 
-        }
-    } else {
-        Cookies.remove('project_log')
-    }
+}
+} else {
+Cookies.remove('project_log')
+}
 }
