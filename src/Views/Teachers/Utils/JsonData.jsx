@@ -4,17 +4,34 @@ import Icons from 'Utils/Icons';
 import Image from 'Utils/Image';
 import { update_selected_books } from '../Slice/teachersSlice';
 import { get_bookmarks } from '../Actions/TeacherActions';
+import { useEffect } from 'react';
+import { updatePostClassroomsData, updatePostStudentData, updatePostSubjectsData } from '../Slice/teachersSlice';
 
 const JsonData = (params) => {
     const dispatch = useDispatch();
     const navigate = useCustomNavigate();
-    const { commonState, teachersState } = useCommonState();
-
+    const { commonState,teachersState } = useCommonState();
 
     const jsonOnly = {
+        dashboard_count_details:[
+            {
+                icon: Icons.student_dashboard_to_no_stud_icon, 
+                count: teachersState?.teacher_DashboardData?.data?.total_no_of_students || 0,
+                description: "Total number of tests conducted"
+            },
+            {
+                icon: Icons.student_dashboard_to_no_cls_icon,
+                count: teachersState?.teacher_DashboardData?.data?.total_no_of_classrooms || 0, 
+                description: "Total number of classes"
+            }
+        ],
+
+        classroom_card_details : [{ icons: Icons?.no_of_students, content: 'No of Students', count: teachersState?.teacher_GetClassrooms?.data?.classrooms?.no_of_students || 0 }, { icons: Icons?.no_of_subjects, content: 'No of Subjects', count: teachersState?.teacher_GetClassrooms?.data?.classrooms?.no_of_subjects || 0}],
+
+
         days: ["Friday", "Thursday", "Wednesday", "Tuesday", "Monday"],
 
-        history_table_header: ['Book Name', 'Chapter', 'Date', 'Duration', 'Status'],
+        history_table_header: ['Book Name', 'Date', 'Duration', 'Status'],
 
         student_table_headers: ['S.no', 'Student Name', 'Contact No', 'Email', 'Status', 'Number of  Attempt', 'Reg.No', 'Action'],
 
@@ -301,13 +318,168 @@ const JsonData = (params) => {
                     if (e.key === "Enter") dispatch(handlePostNote(commonState?.notesdata));
                 },
             }
+        ],
+        classroomModal:[
+                  {
+                    name: "Enter a Class Name",
+                    type: "text",
+                    category: "input",
+                    placeholder: "Enter Your Class Name",
+                    value: teachersState?.teacher_PostClassrooms?.data?.classroom_name || "",
+                    change: (e) => dispatch(updatePostClassroomsData({ classroom_name: e.target.value })),
+                    divClassName: "col-12 mb-4",
+                     className: "p-2 ", 
+                    isMandatory: true,
+                    // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
+                  },
+                  {
+                    name: "Select Teachers",
+                    category: "select",
+                    type: "react_dropdown_select",
+                    options: Array.isArray(teachersState?.teacher_GetTeachers?.data)
+                    ? teachersState.teacher_GetTeachers.data.map(teacher => ({
+                          label: teacher.teacher_name,
+                          value: teacher.user_id,
+                      }))
+                    : [],
+                    multi:true,
+                    placeholder: "Select Teachers",
+                    isMandatory: true,
+                    divClassName: "col-12 mb-4",
+                    className: "p-3",
+                    value: Array.isArray(teachersState?.teacher_PostClassrooms?.data?.teachers)
+                    ? teachersState.teacher_PostClassrooms.data.teachers.map(id => ({
+                    label: teachersState.teacher_GetTeachers.data.find(t => t.user_id === id)?.teacher_name || "",
+                    value: id
+                    }))
+                    : [],
+                    change: (selectedOptions) => dispatch(updatePostClassroomsData({ teachers: selectedOptions.map(opt => opt.value) })),
+                    // Err: commonState?.app_data?.validated ? "Please select Mode of Test" : "",
+                },
+                {
+                    name: "Upload File",
+                    category: "input",
+                    type: "file",
+                    placeholder: "Choose a file",
+                    divClassName: "col-12 mb-3",
+                    accept: ".csv",
+                    fileLength: 1,
+                    value: Array.isArray(teachersState?.teacher_PostClassrooms?.data?.student_file)
+                    ? teachersState?.teacher_PostClassrooms?.data?.student_file?.map(val => val)
+                    : [],   
+                    change: (e) => {
+                        const files = Array.from(e.target.files);
+                        dispatch(updatePostClassroomsData({ student_file: files }));
+                    },
+                    isMandatory: true
+                }
+                
+        ],
+        addSubjects:[
+            {
+                name: "Subject Name",
+                type: "text",
+                category: "input",
+                placeholder: "Enter Your Subject Name",
+                value: teachersState?.teacher_PostSubjects?.data?.subject_name || "",
+                change: (e) => dispatch(updatePostSubjectsData({ subject_name: e.target.value })),
+                divClassName: "col-12 mb-4",
+                className: "p-2 ", 
+                isMandatory: true,
+                // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
+              },
+              {
+                name: "Staff Name",
+                category: "select",
+                type: "react_dropdown_select",
+                options: Array.isArray(teachersState?.teacher_GetClassroomTeachers?.data)
+                  ? teachersState.teacher_GetClassroomTeachers.data.map(teacher => ({
+                      label: teacher.teacher_name,
+                      value: teacher.user_id,
+                    }))
+                  : [],
+                multi: false,
+                placeholder: "Select Teachers",
+                isMandatory: true,
+                divClassName: "col-12 mb-4",
+                className: "p-3",
+                value: teachersState?.teacher_PostSubjects?.data?.teachers
+                  ? [
+                      {
+                        label:
+                          teachersState.teacher_GetClassroomTeachers.data.find(
+                            t => t.user_id === teachersState.teacher_PostSubjects.data.teachers
+                          )?.teacher_name || "",
+                        value: teachersState.teacher_PostSubjects.data.teachers
+                      }
+                    ]
+                  : [],
+                change: (selected) => {
+                  const selectedValue = Array.isArray(selected)
+                    ? selected[0]?.value
+                    : selected?.value;
+                  dispatch(updatePostSubjectsData({ teachers: selectedValue }));
+                }
+              }
+              
+              
+        ],    
+        editStudent:[
+            {
+                name: "Enter Student Name",
+                type: "text",
+                category: "input",
+                placeholder: "Student name",
+                value: teachersState?.teacher_PostStudents?.data?.student_name || "",
+                change: (e) => dispatch(updatePostStudentData({ student_name: e.target.value })),
+                divClassName: "col-12 mb-4",
+                 className: "p-2 ", 
+                isMandatory: true,
+                // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
+              },
+              {
+                name: "Enter a Contact Number",
+                type: "text",
+                category: "input",
+                placeholder: "Contact Number",
+                value: teachersState?.teacher_PostStudents?.data?.contact_no || "",
+                change: (e) => dispatch(updatePostStudentData({ contact_no: e.target.value })),
+                divClassName: "col-12 mb-4",
+                className: "p-2 ", 
+                isMandatory: true,
+                // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
+              },
+              {
+                name: "Enter a Email id",
+                type: "text",
+                category: "input",
+                placeholder: "Email id",
+                value: teachersState?.teacher_PostStudents?.data?.student_email || "",
+                change: (e) => dispatch(updatePostStudentData({ student_email: e.target.value })),
+                divClassName: "col-12 mb-4",
+                 className: "p-2 ", 
+                isMandatory: true,
+                // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
+              },
+              {
+                name: "Enter a Register Number",
+                type: "text",
+                category: "input",
+                placeholder: "Enter Your Register Number",
+                value: teachersState?.teacher_PostStudents?.data?.student_reg_no || "",
+                change: (e) => dispatch(updatePostStudentData({ student_reg_no: e.target.value })),
+                divClassName: "col-12 mb-4",
+                 className: "p-2 ", 
+                isMandatory: true,
+                // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
+              },
         ]
     }
 
     return {
         "jsonOnly": jsonOnly,
         "jsxJson": jsxJson
-    }
+    }   
 }
 
 export default JsonData

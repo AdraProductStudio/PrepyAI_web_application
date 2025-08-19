@@ -11,7 +11,7 @@ const NotesDisplayCard = ({
                 <Card.Title className="fs-16 mb-0">{params?.title || 'Meeting Agenda'}</Card.Title>
             </Card.Header>
             <Card.Body className="display_notes_content">
-                {params?.content || 'Outline the agenda for the team meeting: discuss project updates, brainstorm new ideas, and assign action items.  Outline the agenda for the team meeting: discuss project updates, brainstorm new ideas, and assign action items.Outline the agenda for the team meeting: discuss project updates.'}
+                {params?.notes || 'Outline the agenda for the team meeting: discuss project updates, brainstorm new ideas, and assign action items.  Outline the agenda for the team meeting: discuss project updates, brainstorm new ideas, and assign action items.Outline the agenda for the team meeting: discuss project updates.'}
             </Card.Body>
         </Card>
     )

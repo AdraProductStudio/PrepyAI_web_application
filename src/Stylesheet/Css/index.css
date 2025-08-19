@@ -321,15 +321,33 @@
 
 .student_overview_table_height {
   height: calc(var(--root-height) - var(--header-height) - 23.5rem);
-  overflow-y: scroll;
+}
+
+.students_list_table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .students_list_table thead th {
-  background-color: #F6F6F6;
-  color: #1F1D39;
-  font-weight: 500;
-  font-size: 14px;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 2;
 }
+
+.students_list_table tbody {
+  display: block;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.students_list_table thead,
+.students_list_table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
 
 .test_conducted_chart_height {
   height: 27rem !important;
