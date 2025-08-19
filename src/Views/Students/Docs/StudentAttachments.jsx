@@ -2,13 +2,13 @@ import AttachmentCard from "Components/Card/AttachmentCard";
 import { useCommonState, useCustomNavigate } from "Components/CustomHooks";
 import Img from "Components/Img/Img";
 import SpinnerComponent from "Components/Spinner/Spinner";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import Image from "Utils/Image";
-import JsonData from "Views/Students/Utils/JsonData";
+// import JsonData from "Views/Students/Utils/JsonData";
 
 const StudentAttachments = () => {
-    const { jsonOnly } = JsonData();
-    const { subject_id } = useParams();
+    // const { jsonOnly } = JsonData();
+    // const { subject_id } = useParams();
     const navigate = useCustomNavigate();
     const { studentState } = useCommonState()
 

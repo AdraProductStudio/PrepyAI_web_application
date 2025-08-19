@@ -39,7 +39,6 @@ export const handleDashboardOverview = (params) => async (dispatch) => {
         const data = {data:[{total_teachers: 10, total_students: 20, total_classrooms: 30, total_tests: 40}]}
         // if(data?.error_code === 0) {
         if(data) {
-            console.log(data)
             dispatch(updateDashboardOverviewData({type: "response", data: data?.data[0]}))
         } else{
             dispatch(updateDashboardOverviewData({type: "failure", message: data?.message}))
