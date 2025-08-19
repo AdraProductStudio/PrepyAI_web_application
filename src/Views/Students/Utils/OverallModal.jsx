@@ -1,7 +1,7 @@
 import ButtonComponent from "Components/Button/Button";
 import { useCommonState, useDispatch} from "Components/CustomHooks";
 import ModalComponent from "Components/Modal/Modal";
-import { createStudentNote, updateStudentNote } from "Views/Common/Actions/Common_action";
+import { createStudentNote, deleteStudentNotes, updateStudentNote } from "Views/Common/Actions/Common_action";
 import { updateNoteField } from "Views/Common/Slices/Common_slice";
 
 
@@ -24,6 +24,9 @@ export function OverallModel() {
 
                     case "show_more_note":
                         return<h4 className="m-0">Note</h4>
+
+                    case "delete_note":
+                        return <h5 className="m-0">Delete Note</h5>
                     
                     default:
                         break;
@@ -56,7 +59,7 @@ export function OverallModel() {
                                     <label htmlFor="notes_content" className="col-12 fs-6 text-muted">Add Content Here
                                     <textarea 
                                     name="notes"
-                                    style={{height:"20vh"}} 
+                                    style={{minHeight:"35vh"}} 
                                     id="notes_content" 
                                     className="col-12 border rounded-3 mt-1"
                                     value={content}
@@ -82,7 +85,7 @@ export function OverallModel() {
                                     <label htmlFor="notes_content" className="col-12 fs-6 text-muted">Content
                                     <textarea 
                                     name="notes"
-                                    style={{height:"20vh"}} 
+                                    style={{minHeight:"35vh"}} 
                                     id="notes_content" 
                                     className="col-12 border rounded-3 mt-1"
                                     value={content}
@@ -96,10 +99,15 @@ export function OverallModel() {
                             return(
                             <div>
                                 <h5 className="mt-3">{showMore_title}</h5>
-                                <p className="mt-5 text-muted">{showMore_content}</p>
+                                <div className="overflowY mt-4" style={{height:"48vh"}}>
+                                    <p className="text-muted">{showMore_content}</p>
+                                </div>
                             </div>
                             
                             )
+                        
+                        case "delete_note":
+                            return<div className="col-12 text-center mt-4"><p>Are you sure want to delete the note ?</p></div>
                     default:
                         break;
                 }
@@ -137,7 +145,16 @@ export function OverallModel() {
                             />
                           </div>
                           );
-                        break
+                        
+                        case 'delete_note':
+                            return(
+                            <div>
+                                <ButtonComponent
+                                className="gradient text-white px-5 mt-3"
+                                buttonName="Delete"
+                                clickFunction={()=>dispatch(deleteStudentNotes(commonState.students_notes.deleteId))}/>
+                            </div>
+                            )
 
                     default:
                         break;

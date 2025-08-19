@@ -2,6 +2,7 @@ import Sidebar from "Components/Panel_compnent/Sidebar";
 import { Outlet } from "react-router-dom";
 import JsonData from "./JsonData";
 import Header from "Components/Panel_compnent/Header";
+import { OverallModel } from "Views/Students/Utils/OverallModal";
 
 
 export const Layout = () => {
@@ -20,6 +21,7 @@ export const Layout = () => {
                     <div className="pt-3 main_content_height">
                         <Outlet />
                     </div>
+
                 </div>
             </main>
         </div>

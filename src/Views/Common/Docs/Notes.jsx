@@ -5,10 +5,9 @@ import Image from "Utils/Image";
 import NoteCard from "Components/Card/NoteCard";
 import ButtonComponent from "Components/Button/Button";
 import SpinnerComponent from "Components/Spinner/Spinner";
-import { OverallModel } from "Views/Students/Utils/OverallModal";
 import { useCommonState, useDispatch } from "Components/CustomHooks";
-import {setEditNoteData, showMoreModal, updateModalShow} from "Views/Common/Slices/Common_slice"
-import { getStudentsNotes, deleteStudentNotes ,updateNotePriority } from "Views/Common/Actions/Common_action";
+import {setDeleteId, setEditNoteData, showMoreModal, updateModalShow} from "Views/Common/Slices/Common_slice"
+import { getStudentsNotes, updateNotePriority } from "Views/Common/Actions/Common_action";
 import 'Stylesheet/Css/StudentsNotes.css'
 
 
@@ -22,20 +21,18 @@ const Notes = () => {
     dispatch(getStudentsNotes());
   }, []);
 
-   const handleDeleteNote = (id) => {
-    if (window.confirm("Are you sure you want to delete this note?")) {
-        dispatch(deleteStudentNotes(id));
-      };
-    }
+  const handleDeleteNote = (id) => {
+    dispatch(setDeleteId(id));
+    dispatch(updateModalShow({show:true, close_btn:true, modal_from:"Notes", modal_type:"delete_note"}))
+  }
     
-
   const handlepriority = (id) =>{
     dispatch(updateNotePriority(id))
   }
 
   const handleEdit = (note_data) =>{
       dispatch(setEditNoteData({id: note_data.id, title: note_data.title, content: note_data.notes}));
-      dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "Notes", modal_type: "edit_notes",}));
+      dispatch(updateModalShow({ show: true, size:"lg",close_btn: true, modal_from: "Notes", modal_type: "edit_notes",}));
   }
 
   const handleShowMore = (note_data) => {
@@ -53,7 +50,7 @@ const Notes = () => {
           <ButtonComponent 
             className='gradient text-white px-4' 
             buttonName='+ Add Notes' 
-            clickFunction={() => dispatch(updateModalShow({ show: true, close_btn: true ,modal_from: "Notes", modal_type: "add_notes"}))}/>
+            clickFunction={() => dispatch(updateModalShow({ show: true, size:"lg", close_btn: true ,modal_from: "Notes", modal_type: "add_notes"}))}/>
         </div>
       </div>
 
@@ -87,10 +84,8 @@ const Notes = () => {
               <h6>No Data Found</h6>
             </div>
           </div>
-          
         )}
       </div>
-     <OverallModel/>
   </>);
 };
 

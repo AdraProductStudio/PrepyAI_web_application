@@ -5,6 +5,7 @@ import JsonData from "Views/Students/Utils/JsonData.jsx";
 import Header from "Components/Panel_compnent/Header";
 import { useCustomNavigate } from "Components/CustomHooks";
 import { useEffect } from "react";
+import { OverallModel } from "Views/Students/Utils/OverallModal";
 
 
 const Layout = () => {
@@ -28,6 +29,7 @@ const Layout = () => {
                     </header>
                     <div className="pt-3 main_content_height overflowY">
                         <Outlet />
+                        <OverallModel/>
                     </div>
                 </div>
             </main>

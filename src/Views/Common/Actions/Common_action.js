@@ -6,7 +6,8 @@ import {
     // login_reducer
     updateToast, updateToken,handleGetStudentsNotes,handleDeleteStudentNotes,handleNotePriority,updateNoteField,
     updateModalShow,
-    update_error} from 'Views/Common/Slices/Common_slice';
+    update_error,
+    setDeleteId} from 'Views/Common/Slices/Common_slice';
 
 
 // const BASE_URL = process.env.REACT_APP_API_URL || '';
@@ -83,6 +84,8 @@ export const deleteStudentNotes = (id) => async(dispatch) =>{
       const {data} = await axiosInstance.delete('/students/delete_user_notes',{ data:{id} })
       if (data?.error_code === 0){
         dispatch(handleDeleteStudentNotes({ type:"response", id }));
+        dispatch(setDeleteId(null)); 
+        dispatch(updateModalShow({ show: false }));
       }
       else{
         dispatch(handleDeleteStudentNotes({ type: "failure",id,message: data?.message || '' }));

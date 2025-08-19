@@ -65,6 +65,8 @@ let initialState = {
     editNote: { id: null, title: "", content: "" },
     showMoreNote: { id: null, title: "", content: "" },
     isShowMoreOpen: false,
+    deleteId: null,
+
   },
 };
 
@@ -193,6 +195,10 @@ const commonSlice = createSlice({
         default:
           break;
       }
+    },
+
+    setDeleteId(state, action) {
+      state.students_notes.deleteId = action.payload;
     },
 
     handleNotePriority(state, action) {
@@ -366,7 +372,7 @@ export const {
   updateNoteField,
   handleEditStudentNotes,
   setEditNoteData,
-  showMoreModal,
+  showMoreModal,setDeleteId
 } = actions;
 
 export default reducer;
