@@ -36,7 +36,7 @@ const StudentUpload = () => {
 
         <div className="col-md-5 col-lg-4">
           <div className="input-group h-100 rounded overflow-hidden">
-            <SearchComponent />
+            <SearchComponent placeholder="Search..."/>
           </div>
         </div>
       </Card.Header>

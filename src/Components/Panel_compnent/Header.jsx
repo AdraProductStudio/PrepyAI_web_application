@@ -5,22 +5,24 @@ import { useCommonState } from 'Components/CustomHooks';
 import HeaderCard from 'Components/Card/HeaderCard';
 import Img from "Components/Img/Img";
 import Image from "Utils/Image";
+import { decrypt_app_data_logs } from "ResuableFunctions/logs_handler";
 
 const Header = ({
   offcanvasOn, offcanvasOnButton, children,
   profileOnClick
 }) => {
-  const { commonState } = useCommonState();
+  const { commonState } = useCommonState(); 
 
   const headerContentFunc = () => {
     return (
       <div className="col-12 d-flex flex-wrap align-items-center justify-content-between ">
-        {commonState?.app_data?.current_location === "/student_dashboard/generate_question" ? <div className="col px-2">
-            <span className="text-dark mb-0 fs-6">Welcome</span>
-            <p className="text-dark mb-0 fs-4 fw-bold">Prakash</p>
-          </div>: <div className="col"> {commonState?.app_data?.currentMenuName}</div>
-       
-        }
+        <div className="col px-2">
+          <div>
+            <span className="text-dark mb-0 fs-15 me-2">Welcome</span>
+            <Img src={Image.smile} alt="smile_image" width="20rem" />
+          </div>
+          <p className="text-dark mb-0 ">{commonState?.app_data?.user_name || "User"}</p>
+        </div>
 
         <div className="col d-inline-flex flex-wrap justify-content-end">
           <div className='d-inline-block' onClick={profileOnClick}>

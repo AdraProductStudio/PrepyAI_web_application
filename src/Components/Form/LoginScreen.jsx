@@ -7,6 +7,7 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import { authVerification, handleOAuth } from "Views/Auth/Actions/authActions";
 import { useCustomNavigate, useDispatch } from "Components/CustomHooks";
 import LinkComponent from "Components/Router_components/LinkComponent";
+import Images from "Utils/Image"
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -57,7 +58,18 @@ const LoginScreen = ({
         {/* Left Side Image */}
         <Col md={7} className="backgroundcolor d-none d-md-flex justify-content-center align-items-center p-0" style={{ height: "100vh", overflow: "hidden" }} >
           <Image src={img} alt="login image" className="w-90 h-100" style={{ objectFit: "cover" }} fluid />
-          <Image src={LoginCenterCircle} alt="center circle" fluid className="login-center-circle d-none d-md-block" />
+
+          <div className="login-center-circle d-none d-md-block">
+            <svg xmlns="http://www.w3.org/2000/svg" width="167" height="100" viewBox="0 0 167 100" fill="none">
+              <path opacity="0.4" d="M83.4999 167C129.616 167 167 129.616 167 83.5C167 37.3842 129.616 0 83.4999 0C37.3842 0 0 37.3842 0 83.5C0 129.616 37.3842 167 83.4999 167Z" fill="url(#paint0_linear_1_15158)" />
+              <defs>
+                <linearGradient id="paint0_linear_1_15158" x1="160.074" y1="116.862" x2="6.88778" y2="50.177" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#860752" />
+                  <stop offset="1" stop-color="#FFD9A8" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
         </Col>
 
         {/* Right Side Form */}
@@ -68,7 +80,7 @@ const LoginScreen = ({
                 {/* Top Section */}
                 <Col className="d-flex justify-content-center pb-4">
                   <div className="d-flex flex-column align-items-center gap-4 w-100 px-3" style={{ maxWidth: "500px" }}>
-                    <Image src={Icons?.prepyAi} alt="PrepyAi" fluid className="mb-3 prepy-logo" />
+                    <Image src={Images?.logo} alt="PrepyAi" fluid className="mb-3 prepy-logo" />
                     <h3 className="text-center fw-bold login-title-colour">
                       {title}
                     </h3>
@@ -106,14 +118,14 @@ const LoginScreen = ({
             ) : (
               <Row className="flex-column gap-md-3 gap-lg-5 align-items-center w-100 pb-3">
                 <div className="text-center mt-4 mb-md-4">
-                  <Image src={Icons?.prepyAi} alt="PrepyAi" fluid className="mb-3 prepy-logo" />
+                  <Image src={Images?.logo} alt="PrepyAi" fluid className="mb-3 prepy-logo" />
                 </div>
                 <Col sm={6} md={6}>
                   <Row className="d-flex flex-column gap-3 mb-5 pb-5">
                     {as !== "success" && (
                       <Col>
                         <p className="text-secondary cursor-pointer" onClick={() => navigate(navigateBack)}  >
-                          {Icons?.backIcon}back
+                          {Icons?.back_icon}back
                         </p>
                       </Col>
                     )}

@@ -69,10 +69,6 @@ const StudentDashboard = () => {
                                 }
                             </Card.Body>
                             <Card.Footer className="border-0 bg-transparent p-3">
-                                {/* <div class="mb-3">
-                                    <label for="upload_test_paper" class="form-label">Offline Test</label>
-                                    <input class="form-control" type="file" id="upload_test_paper" />
-                                </div> */}
                                 <ButtonComponent className="Uploadbtn w-100" clickFunction={() => dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "dashboard", modal_type: "upload_test_paper" }))} >
                                     <span className="d-flex justify-content-center align-items-center">{Icons.studentUpload} <span className="ms-3">Upload Test Paper</span></span>
                                 </ButtonComponent>
