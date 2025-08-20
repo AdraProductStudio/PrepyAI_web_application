@@ -18,7 +18,8 @@ let initialState = {
         type: null,
         extraClass: '',
         placement: '',
-        close_btn: false
+        close_btn: false,
+        sidebar_data: []
     },
     app_data: {
         canvasShow: false,
@@ -93,7 +94,8 @@ const commonSlice = createSlice({
             state.notes = action.payload;
         },
         handlePostNote: (state, action) => {
-            const { type, data } = action.payload;
+            const { type } = action.payload;
+
             switch (type) {
                 case "request":
                     state.teachernotesdata["glow"] = true;
@@ -169,6 +171,7 @@ const commonSlice = createSlice({
                     state.canvas.placement = data.placement || '';
                     state.canvas.extraClass = data.extraClass || null;
                     state.canvas.close_btn = data.close_btn || false;
+                    state.canvas.sidebar_data = data.sidebar_data || [];
                     break;
                 case "internet_status":
                     state.app_data.isOnline = data || false;
@@ -181,8 +184,9 @@ const commonSlice = createSlice({
                     state.app_data.currentMenuName = data?.currentLocation || '';
                     state.app_data.validated = false;
                     state.pagination.currentPage = 1;
-                    state.pagination.totalCount = 0;    
+                    state.pagination.totalCount = 0;
                     state.pagination.siblingCount = 10;
+                    state.canvas.show = false;
                     // state.
                     break;
                 case "dimension":
@@ -219,22 +223,28 @@ const commonSlice = createSlice({
             state.app_data.refresh_token = '';
             state.app_data.user_role = '';
             state.app_data.user_id = '';
+            state.canvas.show = false;
+            state.canvas.from = null;
+            state.canvas.type = null;
+            state.canvas.placement = null;
+            state.canvas.extraClass = null;
+            state.canvas.close_btn = false;
+            state.canvas.sidebar_data = [];
         },
         handleGetBooks: (state, action) => {
-            const { type, data, message } = action.payload || {};
+            const { type, data } = action.payload || {};
+
             switch (type) {
                 case "request":
-                    state.loading = true;
-                    state.error = null;
+                    state.books.loading = true;
+                    state.books.data = [];
                     break;
                 case "response":
-                    state.loading = false;
+                    state.books.loading = false;
                     state.books.data = data || [];
-                    state.books.error = null;
                     break;
                 case "failure":
-                    state.loading = false;
-                    state.error = message || "Something went wrong";
+                    state.books.loading = false;
                     break;
                 default:
                     return;

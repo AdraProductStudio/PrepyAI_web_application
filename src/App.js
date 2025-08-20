@@ -84,6 +84,9 @@ import PersonalInfo from "Views/Superadmin/Docs/PersonalInfo";
 import Profile from "Views/Superadmin/Docs/Profile";
 import Settings from "Views/Superadmin/Docs/Settings";
 import SuperAdminDashboard from "Views/Superadmin/Docs/SuperAdminDashboard";
+import AdminAuth from "Views/Admin/Docs/AdminAuth";
+import SuperadminAuth from "Views/Superadmin/Docs/SuperadminAuth";
+import OrganisationAuth from "Views/Organisation/Docs/OrganisationAuth";
 
 
 function App() {
@@ -105,48 +108,50 @@ function App() {
           <Route path="success_message" element={<SucessfullMessage />} />
 
           {/* Admin */}
-          <Route path="admin_dashboard" element={<AdminLayout />}>
-            <Route path="home" element={<AdminDashboard />} />
-            <Route path="classrooms">
-              <Route index element={<Classroom />} />
-              <Route path=":id" element={<ClassroomDetails />} >
-                <Route path="teachers" element={<TeachersDetails />} />
-                <Route path="students" element={<StudentDetails />} />
+          <Route path="admin_dashboard" element={<AdminAuth />}>
+            <Route element={<AdminLayout />}>
+              <Route path="home" element={<AdminDashboard />} />
+              <Route path="classrooms">
+                <Route index element={<Classroom />} />
+                <Route path=":id" element={<ClassroomDetails />} >
+                  <Route path="teachers" element={<TeachersDetails />} />
+                  <Route path="students" element={<StudentDetails />} />
+                </Route>
               </Route>
             </Route>
           </Route>
 
           {/* Teachers */}
           <Route path="teachers_dashboard" element={<TeachersAuth />}>
-          <Route element={<TeacherLayout/>}>
-            <Route path="home" element={<TeacherDashboard />} />
-            <Route path="classrooms" >
-              <Route index element={<StudentClassroom />} />
-              <Route path=":class_id" element={<Subject />} />
-              <Route path=":class_id/:subject_id">
-                <Route index element={<SubjectDetails />} />
-                <Route path=":student_id/students_details" element={<StudentOverview />} />
-                <Route element={<ScheduleTestLayout />} >
-                  <Route path="create_test" element={<CreateTest />} />
-                  <Route path="preview_test" element={<PreviewTest />} />
+            <Route element={<TeacherLayout />}>
+              <Route path="home" element={<TeacherDashboard />} />
+              <Route path="classrooms" >
+                <Route index element={<StudentClassroom />} />
+                <Route path=":class_id" element={<Subject />} />
+                <Route path=":class_id/:subject_id">
+                  <Route index element={<SubjectDetails />} />
+                  <Route path=":student_id/students_details" element={<StudentOverview />} />
+                  <Route element={<ScheduleTestLayout />} >
+                    <Route path="create_test" element={<CreateTest />} />
+                    <Route path="preview_test" element={<PreviewTest />} />
+                  </Route>
+                  <Route path="test" element={<TestPageLayout />}>
+                    <Route index element={<UpcomingTest />} />
+                    <Route path="ongoing_test" element={<OngoingTest />} />
+                    <Route path="completed_test" element={<CompletedTest />} />
+                  </Route>
+                  <Route element={<StudentsPerformanceLayout />} >
+                    <Route path="teachers_assigned" element={<TeachersAssigned />} />
+                    <Route path="self_taking_test" element={<SelfTakingTest />} />
+                  </Route>
+                  <Route path="book" element={<Books />} />
                 </Route>
-                <Route path="test" element={<TestPageLayout />}>
-                  <Route index element={<UpcomingTest />} />
-                  <Route path="ongoing_test" element={<OngoingTest />} />
-                  <Route path="completed_test" element={<CompletedTest />} />
-                </Route>
-                <Route element={<StudentsPerformanceLayout />} >
-                  <Route path="teachers_assigned" element={<TeachersAssigned />} />
-                  <Route path="self_taking_test" element={<SelfTakingTest />} />
-                </Route>
-                <Route path="book" element={<Books />} />
               </Route>
-            </Route>
-            <Route path="students_details" >
-              <Route index element={<Students />} />
-              <Route path="overview" element={<StudentOverview />} />
-            </Route>
-            <Route path="notes" element={<Notes />} />
+              <Route path="students_details" >
+                <Route index element={<Students />} />
+                <Route path="overview" element={<StudentOverview />} />
+              </Route>
+              <Route path="notes" element={<Notes />} />
             </Route>
           </Route>
 
@@ -191,25 +196,29 @@ function App() {
           </Route>
 
           {/* Superadmin */}
-          <Route path="superadmin_dashboard" element={<SuperadminLayout />}>
-            <Route path="home" element={<SuperAdminDashboard />} />
-            <Route path="profile" element={<Profile />}>
-              <Route index element={<PersonalInfo />} />
-              <Route path="settings" element={<Settings />} />
+          <Route path="superadmin_dashboard" element={<SuperadminAuth />}>
+            <Route element={<SuperadminLayout />}>
+              <Route path="home" element={<SuperAdminDashboard />} />
+              <Route path="profile" element={<Profile />}>
+                <Route index element={<PersonalInfo />} />
+                <Route path="settings" element={<Settings />} />
+              </Route>
             </Route>
           </Route>
 
           {/* Organisation */}
-          <Route path="organisation_dashboard" element={<OrganisationLayout />}>
-            <Route path="home" element={<OrganisationDashboard />} />
-            <Route path="org_profile" element={<OrgProfile />}>
-              <Route index element={<OrgPersonalInfo />} />
-              <Route path="settings" element={<OrgSettings />} />
-              <Route path="timetable" element={<TimeTableCard />} />
-            </Route>
-            <Route path="pricing_plan" element={<OrgPricingPlan />} >
-              <Route index element={<OrgMonthlyPlan />} />
-              <Route path="annually" element={<OrgAnnualPlan />} />
+          <Route path="organisation_dashboard" element={<OrganisationAuth />}>
+            <Route element={<OrganisationLayout />}>
+              <Route path="home" element={<OrganisationDashboard />} />
+              <Route path="org_profile" element={<OrgProfile />}>
+                <Route index element={<OrgPersonalInfo />} />
+                <Route path="settings" element={<OrgSettings />} />
+                <Route path="timetable" element={<TimeTableCard />} />
+              </Route>
+              <Route path="pricing_plan" element={<OrgPricingPlan />} >
+                <Route index element={<OrgMonthlyPlan />} />
+                <Route path="annually" element={<OrgAnnualPlan />} />
+              </Route>
             </Route>
           </Route>
 

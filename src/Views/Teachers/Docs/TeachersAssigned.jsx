@@ -5,28 +5,29 @@ import { updateAssignedTestPaginationPage } from "Views/Teachers/Slice/teachersS
 import ReactPaginate from "react-paginate";
 import { useCommonState } from "Components/CustomHooks";
 import { handleTeacherAssingnedTestResult } from "../Actions/Teachers_action";
+import { useParams } from "react-router-dom";
 
 const TeachersAssigned = () => {
+    const { class_id, subject_id } = useParams()
     const { teachersState } = useCommonState();
     const dispatch = useDispatch();
-
-    const studentsPerformance =  teachersState?.studentsPerformance
-    const jsonStudentsData = studentsPerformance.assignedTest.jsonStudentsData
-    const pagination = studentsPerformance.assignedTest.pagination
-
+ 
+    const studentsPerformance = teachersState?.studentsPerformance || {}
+    const jsonStudentsData = studentsPerformance?.assignedTest?.jsonStudentsData || []
+    const pagination = studentsPerformance?.assignedTest?.pagination || 1
     useEffect(() => {
-        if(studentsPerformance.classroom_id && studentsPerformance.subject_id){
+        if (class_id && subject_id) {
             dispatch(handleTeacherAssingnedTestResult({
-                classroom_id: studentsPerformance?.classroom_id,
-                subject_id: studentsPerformance?.subject_id,
+                classroom_id: class_id,
+                subject_id: subject_id,
                 page: studentsPerformance?.assignedTest.pagination.page,
                 show_entries: studentsPerformance?.assignedTest.pagination.show_entries
             }))
         }
-    } ,[studentsPerformance.classroom_id, studentsPerformance.subject_id, studentsPerformance.assignedTest.pagination.page, studentsPerformance.assignedTest.pagination.show_entries, dispatch])
+    }, [class_id, subject_id, dispatch])
 
     const handlePageClick = (event) => {
-        const selectedPage = event.selected + 1 ;
+        const selectedPage = event.selected + 1;
         dispatch(updateAssignedTestPaginationPage(selectedPage))
     }
 
@@ -34,7 +35,7 @@ const TeachersAssigned = () => {
         <div>
             <PerformanceTable
                 studentsData={jsonStudentsData}
-                testType = "teachers_assigned"
+                testType="teachers_assigned"
             />
             <div className="mt-3">
                 <ReactPaginate
