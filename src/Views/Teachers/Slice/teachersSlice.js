@@ -2,6 +2,18 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   selected_books: {},
+  teacher_DashboardData: {
+    glow: true,
+    data: []
+  },
+  teacher_GetClassrooms: {
+    glow: true,
+    data: []
+  },
+  teacher_GetSubjects: {
+    glow: true,
+    data: []
+  },
   teacher_GetStudentList: {
     glow: true,
     data: [],
@@ -111,6 +123,75 @@ const teachersSlice = createSlice({
   reducers: {
     handleStudentsPerformance(state, action) { },
     handleJsonStudentsData(state, action) { },
+    handleTeacherDashboard(state, action) {
+      const { type, data } = action.payload;
+
+      switch (type) {
+        case "request":
+          state.teacher_DashboardData["glow"] = true;
+          state.teacher_DashboardData["data"] = [];
+          break;
+
+        case "response":
+          state.teacher_DashboardData["glow"] = false;
+          state.teacher_DashboardData["data"] = Array.isArray(data) ? data : [];
+          break;
+
+        case "failure":
+          state.teacher_DashboardData["glow"] = false;
+          state.teacher_DashboardData["data"] = [];
+          break;
+
+        default:
+          break;
+      }
+    },
+    handleGetClassrooms(state, action) {
+      const { type, data } = action.payload;
+
+      switch (type) {
+        case "request":
+          state.teacher_GetClassrooms["glow"] = true;
+          state.teacher_GetClassrooms["data"] = [];
+          break;
+
+        case "response":
+          state.teacher_GetClassrooms["glow"] = false;
+          state.teacher_GetClassrooms["data"] = Array.isArray(data) ? data : [];
+          break;
+
+        case "failure":
+          state.teacher_GetClassrooms["glow"] = false;
+          state.teacher_GetClassrooms["data"] = [];
+          break;
+
+        default:
+          break;
+      }
+    },
+    handleGetSubjects(state, action) {
+      const { type, data } = action.payload;
+
+      switch (type) {
+        case "request":
+          state.teacher_GetSubjects["glow"] = true;
+          state.teacher_GetSubjects["data"] = [];
+          break;
+
+        case "response":
+          state.teacher_GetSubjects["glow"] = false;
+          state.teacher_GetSubjects["data"] = Array.isArray(data) ? data : [];
+          break;
+
+        case "failure":
+          state.teacher_GetSubjects["glow"] = false;
+          state.teacher_GetSubjects["data"] = [];
+          break;
+
+        default:
+          break;
+      }
+    },
     handleGetStudentsList(state, action) {
       const { type, data } = action.payload;
 

@@ -705,6 +705,12 @@ td {
   accent-color: #FF6C95;
 }
 
+.questions_answerd {
+  background: linear-gradient(90deg, #EC008C 0%, #FC6767 100%);
+  border-color: #FF6C95;
+  color: white;
+}
+
 .nxt_btn {
   background-color: black;
   color: white;

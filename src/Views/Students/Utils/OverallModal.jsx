@@ -92,6 +92,18 @@ export function OverallModel() {
                     default:
                         break;
                 }
+            case "Generate_Question":
+                switch (commonState?.modal?.type) {
+                    case "select_question_type":
+                        return <h5 className="text-secondary fw-bold">Select Question Type</h5>
+                    case "record_audio":
+                        return <h5 className="text-secondary">Record your Answer</h5>
+                    case "test_result":
+                        return <h5 className="text-secondary">Status - Emergent</h5>
+
+                    default:
+                        break;
+                }
                 break;
 
             default:
