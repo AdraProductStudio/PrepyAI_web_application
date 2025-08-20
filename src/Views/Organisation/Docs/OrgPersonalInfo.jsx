@@ -1,24 +1,22 @@
-// import ButtonComponent from "Components/Button/Button";
 import ButtonComponent from "Components/Button/Button";
 import Input from "Components/Input/Input";
 import React, { useEffect } from "react";
 import { CiEdit } from "react-icons/ci";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import JsonData from "../Utils/JsonData";
 import Img from "Components/Img/Img";
-import { updateOrgProfileInputs } from "../Slices/Organisation_slice";
 import Images from "Utils/Image"
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import { getOrganizationProfileDetails } from "../Actions/organisationAction";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 
 const OrgPersonalInfo = () => {
-  const {jsxOnly } = JsonData()
+  const { jsxOnly } = JsonData()
   const dispatch = useDispatch();
 
-useEffect(()=>{
-  dispatch(getOrganizationProfileDetails())
-},[])
+  useEffect(() => {
+    dispatch(getOrganizationProfileDetails())
+  }, [])
 
 
   return (
@@ -30,7 +28,7 @@ useEffect(()=>{
         >
           <Input
             label={
-              <span style={{cursor: "pointer"}}>
+              <span style={{ cursor: "pointer" }}>
                 <Img
                   src={Images?.default_prfile_pic}
                   alt={"ProfileImage"}
@@ -50,7 +48,7 @@ useEffect(()=>{
             htmlFor={"profileImageInput"}
             accept={"image/*"}
             className={"d-none"}
-            // change={onImageChange}
+          // change={onImageChange}
           />
         </article>
 
@@ -58,15 +56,15 @@ useEffect(()=>{
           <ButtonComponent
             buttonName={<span><CiEdit className=" me-1 fs-5" /> Edit Profile</span>}
             className={"btn-outline-primary profile_edit_button"}
-            clickFunction={()=>{ dispatch(updateModalShow({show:true,close_btn:true,size:"md",modal_from:"Profile",modal_type:"edit_profile"}))}}
-            
+            clickFunction={() => { dispatch(updateModalShow({ show: true, close_btn: true, size: "md", modal_from: "Profile", modal_type: "edit_profile" })) }}
+
           />
         </div>
       </section>
 
       <section className="overflow-auto mt-4 mt-md-4">
         <form className="row">
-         {Inputfunctions(jsxOnly?.profile_details)}        
+          {Inputfunctions(jsxOnly?.profile_details)}
           {/* <div className="d-flex justify-content-end p-md-2">
             <ButtonComponent
               type={"button"}

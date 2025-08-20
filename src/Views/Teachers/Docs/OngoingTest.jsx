@@ -23,7 +23,7 @@ const OngoingTest = () => {
 
     return (
 
-        <div className="row py-3 h-100">
+        <div className="row py-3 h-100 align-content-start">
             {teachersState?.test_records?.glow ?
                 <div className="w-100 h-100 row align-items-center justify-content-center">
                     <div className="col-6 text-center">

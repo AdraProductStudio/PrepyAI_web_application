@@ -19,7 +19,7 @@ const StudentOverview = () => {
     const book_data= teachersState?.teacher_GetStudentOverviewPerfomance?.data
     const overallPerfomanceData = teachersState?.teacher_GetStudentOverviewOverallPerfomance?.data[0]
     const testCardDetails = teachersState?.teacher_GetStudentOverviewTestCount?.data;
-    const spendingHours = teachersState?.teacher_GetStudentOverviewSpendingHours?.data;
+    const spendingHours = Array.isArray(teachersState?.teacher_GetStudentOverviewSpendingHours?.data) ? teachersState?.teacher_GetStudentOverviewSpendingHours?.data : [];
     const filteredMonthly_Perfomance = (overallPerfomanceData?.monthly_performance * 100).toFixed(0);
 
     const data = [

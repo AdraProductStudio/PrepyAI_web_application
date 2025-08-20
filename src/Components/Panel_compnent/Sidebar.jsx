@@ -1,5 +1,4 @@
 import React, { Fragment } from "react"
-import OffCanvas from 'Components/Offcanvas/OffCanvas';
 import NavLinkComp from 'Components/Router_components/NavLink';
 import Img from 'Components/Img/Img';
 import Image from 'Utils/Image';
@@ -8,9 +7,7 @@ import ButtonComponent from "Components/Button/Button";
 import Icons from "Utils/Icons";
 
 const Sidebar = ({
-    menuOptions, responsiveOn,
-    offCanvasShow, handleCanvasOpenOrClose,
-    companyLogo, logoutOnClick
+    menuOptions, responsiveOn, logoutOnClick
 }) => {
     const location = useLocation();
 
@@ -104,7 +101,7 @@ const Sidebar = ({
                 </div>
             </div>
 
-
+            {/* 
             <OffCanvas
                 offCanvasShow={offCanvasShow}
                 offcanvasPlacement="start"
@@ -116,7 +113,7 @@ const Sidebar = ({
                 offcanvasBodyClassname="sidebar-body-with-footer"
                 canvasBody={bodyContent()}
                 canvasFooter={footerContent()}
-            />
+            /> */}
         </Fragment>
     )
 }

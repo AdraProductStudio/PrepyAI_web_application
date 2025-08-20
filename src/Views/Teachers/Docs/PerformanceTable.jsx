@@ -1,15 +1,11 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { DateTime } from "luxon";
 import { CgProfile } from "react-icons/cg";
-import { CustomUseLocationHook, useCommonState } from "Components/CustomHooks";
+import { useCommonState } from "Components/CustomHooks";
 import SpinnerComponent from "Components/Spinner/Spinner";
 
 
 const PerformanceTable = ({ studentsData, testType }) => {
-    const modalRef = useRef(null);
-    const modalInstanceRef = useRef(null);
-    const [activeArrow, setActiveArrow] = useState("");
-    const [modalArray, setModalArray] = useState([]);
 
     const [currentMonth, setCurrentMonth] = useState(DateTime.local());
     const startOfMonth = currentMonth.startOf("month");
@@ -36,8 +32,8 @@ const PerformanceTable = ({ studentsData, testType }) => {
     //Compute colored boxes from StudentsData (memoized for performance)
     const studentsWithColors = useMemo(() => {
         return studentsData?.map((std) => {
-            if(!std?.student_name) return std;
-            
+            if (!std?.student_name) return std;
+
             return {
                 name: std.student_name,
                 test_results: std.test_results,
@@ -55,7 +51,7 @@ const PerformanceTable = ({ studentsData, testType }) => {
                     .map((t) => t.testDate)
             }
         })
-       
+
     }, [studentsData]);
 
     const goToNextMonth = () => {
@@ -130,10 +126,10 @@ const PerformanceTable = ({ studentsData, testType }) => {
                         teachersState?.studentsPerformance.placeholder ?
                             <div className="d-flex justify-content-center align-items-center w-100">
                                 <SpinnerComponent />
-                            </div>  
+                            </div>
                             :
                             <tbody>
-                                {studentsData?.map((std, idx) =>  {
+                                {studentsData?.map((std, idx) => {
                                     const colorInfo = studentsWithColors.find((obj) => obj.name === std.student_name);
                                     return (
                                         <tr key={idx} className="border border-white bg-white">
@@ -141,16 +137,16 @@ const PerformanceTable = ({ studentsData, testType }) => {
                                                 className="bg-white d-flex justify-content-start align-items-center "
                                                 style={{ position: "sticky", left: 0, zIndex: 9, width: "220px" }}
                                             >
-                                                <CgProfile  className="me-2"/>
+                                                <CgProfile className="me-2" />
                                                 <span style={{ fontSize: "0.9rem" }}>{(std.student_name).length <= 12 ? std.student_name : `${(std.student_name).slice(0, 12)}...`}</span>
                                             </td>
                                             {monthDates?.map((date) => {
-                                                let bg =  "#E3F3FF";
-                                                if(colorInfo?.greenBox.includes(date.date)) bg = "#64DD6C";
-                                                else if(colorInfo?.yellowBox.includes(date.date)) bg = "#E0E96C";
-                                                else if(colorInfo?.redBox.includes(date.date)) bg = "#FF5C5C";
-                                                else if(colorInfo?.grayBox.includes(date.date)) bg = "#FF8383";
-                                            
+                                                let bg = "#E3F3FF";
+                                                if (colorInfo?.greenBox.includes(date.date)) bg = "#64DD6C";
+                                                else if (colorInfo?.yellowBox.includes(date.date)) bg = "#E0E96C";
+                                                else if (colorInfo?.redBox.includes(date.date)) bg = "#FF5C5C";
+                                                else if (colorInfo?.grayBox.includes(date.date)) bg = "#FF8383";
+
                                                 return (
                                                     <td key={date.date} className="text-center p-1 ">
                                                         <button
@@ -162,7 +158,7 @@ const PerformanceTable = ({ studentsData, testType }) => {
                                                                 backgroundColor: bg,
                                                             }}
                                                             // onClick={()=> dispatch(handleStudentPerformanceModel({id: std.student_id, date: date.date , testType}))}
-                                                            onClick={()=> console.log({id: std.student_id, date: date.date , testType})}
+                                                            onClick={() => console.log({ id: std.student_id, date: date.date, testType })}
                                                         >
                                                             &nbsp;
                                                         </button>

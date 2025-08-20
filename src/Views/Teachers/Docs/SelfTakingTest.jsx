@@ -5,28 +5,30 @@ import { updateSelfTestPaginationPage } from "Views/Teachers/Slice/teachersSlice
 import ReactPaginate from "react-paginate";
 import { useCommonState } from "Components/CustomHooks";
 import { handleSelfTestResult } from "../Actions/Teachers_action";
+import { useParams } from "react-router-dom";
 
 const SelfTakingTest = () => {
+    const { class_id, subject_id } = useParams()
     const { teachersState } = useCommonState();
     const dispatch = useDispatch();
 
-    const studentsPerformance =  teachersState?.studentsPerformance
-    const jsonStudentsData = studentsPerformance.selfTest.jsonStudentsData
-    const pagination = studentsPerformance.selfTest.pagination
+    const studentsPerformance = teachersState?.studentsPerformance || {}
+    const jsonStudentsData = studentsPerformance?.selfTest?.jsonStudentsData || []
+    const pagination = studentsPerformance?.selfTest?.pagination || 1
 
     useEffect(() => {
-        if(studentsPerformance.classroom_id && studentsPerformance.subject_id){
+        if (class_id && subject_id) {
             dispatch(handleSelfTestResult({
-                classroom_id: studentsPerformance.classroom_id,
-                subject_id: studentsPerformance.subject_id,
+                classroom_id: class_id,
+                subject_id: subject_id,
                 page: studentsPerformance.selfTest.pagination.page,
                 show_entries: studentsPerformance.selfTest.pagination.show_entries
             }))
         }
-    } ,[studentsPerformance.classroom_id, studentsPerformance.subject_id, studentsPerformance.selfTest.pagination.page, studentsPerformance.selfTest.pagination.show_entries, dispatch])
+    }, [class_id, subject_id, studentsPerformance?.selfTest?.pagination?.page, studentsPerformance?.selfTest?.pagination?.show_entries, dispatch])
 
     const handlePageClick = (event) => {
-        const selectedPage = event.selected + 1 ;
+        const selectedPage = event.selected + 1;
         dispatch(updateSelfTestPaginationPage(selectedPage))
     }
 
@@ -34,7 +36,7 @@ const SelfTakingTest = () => {
         <div>
             <PerformanceTable
                 studentsData={jsonStudentsData}
-                testType = "self"
+                testType="self"
             />
             <div className="mt-3">
                 <ReactPaginate

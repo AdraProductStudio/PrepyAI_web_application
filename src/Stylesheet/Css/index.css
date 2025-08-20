@@ -686,6 +686,7 @@ td {
   border-color: #ff0c51 !important;
   color: white;
 }
+
 .questions_answered {
   background-color: #f15682;
   color: black;
@@ -699,11 +700,12 @@ td {
   border: 1px solid #FF6C95 !important;
   background: rgba(255, 108, 149, 0.21) !important;
 }
+
 .selected_question_active input[type="radio"]:checked {
   accent-color: #FF6C95;
 }
 
-.nxt_btn{
+.nxt_btn {
   background-color: black;
   color: white;
 }
@@ -839,7 +841,7 @@ td {
   overflow-y: auto;
 }
 
-.profile_left_card_height{
+.profile_left_card_height {
   height: calc(var(--root-height) - (var(--header-height) + 18rem));
   overflow-y: auto;
 }
@@ -878,14 +880,14 @@ td {
 .subchapter-item {
   position: relative;
   padding: 6px 20px;
-  margin-left: 30px; 
+  margin-left: 30px;
   cursor: pointer;
 }
 
 .subchapter-item::before {
   content: "";
   position: absolute;
-  left: -10px;  
+  left: -10px;
   top: 0;
   width: 20px;
   height: 100%;
@@ -920,12 +922,12 @@ td {
 }
 
 
-.sidebar-book-title{
-  font-size:18px;
+.sidebar-book-title {
+  font-size: 18px;
   font-weight: 800;
-  color:#ec008c;
-  background:(90deg, #EC008C 0%, #FC6767 100%) !important;
-;
+  color: #ec008c;
+  background: (90deg, #EC008C 0%, #FC6767 100%) !important;
+  ;
 }
 
 .custom-dropdown {
@@ -935,14 +937,14 @@ td {
   color: #555 !important;
   font-size: 14px;
   padding: 6px 12px;
-  background-image: linear-gradient(white, white), 
-                    linear-gradient(90deg, #EC008C 0%, #FC6767 100%);
+  background-image: linear-gradient(white, white),
+    linear-gradient(90deg, #EC008C 0%, #FC6767 100%);
   background-origin: border-box;
   background-clip: padding-box, border-box;
   min-width: 150px;
 }
 
-.custom-dropdown:hover, 
+.custom-dropdown:hover,
 .custom-dropdown:focus {
   background-color: white !important;
   color: #000 !important;
@@ -951,6 +953,7 @@ td {
 .custom-dropdown::after {
   margin-left: 8px;
 }
+
 .dropdown-toggle-end {
   display: flex;
   justify-content: space-between;
@@ -969,7 +972,8 @@ td {
 .dropdown-item:active {
   color: #fff !important;
 }
-.dropdown-item:hover{
+
+.dropdown-item:hover {
   background-color: #EC008C !important;
   color: #fff !important;
 }
@@ -979,33 +983,42 @@ td {
   border-radius: 5px !important;
   box-shadow: 0px 7.377px 46.108px 0px rgba(7, 5, 26, 0.07) !important;
 }
-.custom-color{
+
+.custom-color {
   color: #EC008C !important;
 
 }
-.custom-btn{
+
+.custom-btn {
   color: #EC008C !important;
   border: 1px solid #EC008C !important;
 
 }
-.custom-btn:hover{
-  background-color:#EC008C !important ;
+
+.custom-btn:hover {
+  background-color: #EC008C !important;
   color: #fff !important;
 }
-.generate-question-header-text{
- font-family: "Manrope", sans-serif;
+
+.generate-question-header-text {
+  font-family: "Manrope", sans-serif;
   font-size: 26px;
   color: #464646;
   font-weight: 700;
 }
-.generate-question-sub-text{
+
+.generate-question-sub-text {
   font-size: 16px;
   font-weight: 400;
   color: #666666;
 }
 
-.chapter-title{
+.chapter-title {
   font-size: 18px;
   font-weight: 700;
   color: #182988;
+}
+
+.offcanvas_sidebar {
+  width: 22rem !important;
 }

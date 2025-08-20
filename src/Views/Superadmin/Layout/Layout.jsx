@@ -1,34 +1,29 @@
-import { useCustomNavigate } from "Components/CustomHooks";
+import { useCustomNavigate, useDispatch } from "Components/CustomHooks";
 import Header from "Components/Panel_compnent/Header";
 import Sidebar from "Components/Panel_compnent/Sidebar"
-import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import JsonData from "Views/Superadmin/Utils/JsonData";
 import { OverallModel } from "../Utils/OverallModal";
+import { logout, update_app_data } from "Views/Common/Slices/Common_slice";
 
 export default function Layout() {
     const { jsonOnly } = JsonData();
     const navigate = useCustomNavigate();
+    const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (window.location.pathname === "/superadmin_dashboard" || window.location.pathname === "/superadmin_dashboard/") {
-            navigate("/superadmin_dashboard/home");
-        }
-    }, [navigate])
-
-    const profileOnClick = ()=>{
+    const profileOnClick = () => {
         navigate('/superadmin_dashboard/profile')
     }
 
     return (
         <div className="layout_main">
             <div className="d-flex flex-wrap">
-                <Sidebar menuOptions={jsonOnly.sidebar_data} responsiveOn="lg" logoutOnClick={() => console.log("Logout clicked")} />
+                <Sidebar menuOptions={jsonOnly.sidebar_data} responsiveOn="lg" logoutOnClick={() => dispatch(logout())} />
 
                 <main className="col layout_main_content overflow-auto">
                     <div className="container-fluid h-100">
                         <header className="py-2">
-                            <Header offcanvasOn="lg" profileOnClick={profileOnClick} />
+                            <Header offcanvasOn="lg" profileOnClick={profileOnClick} offcanvasOnButton={() => dispatch(update_app_data({ type: 'canvas', data: { show: true, from: 'sidebar', type: 'data', placement: 'start', close_btn: true, sidebar_data: jsonOnly.sidebar_data, extraClass: 'offcanvas_sidebar' } }))} />
                         </header>
                         <div className="pt-3 main_content_height">
                             <Outlet />
