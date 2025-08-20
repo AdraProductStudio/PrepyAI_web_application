@@ -4,6 +4,7 @@ import Sidebar from "Components/Panel_compnent/Sidebar"
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import JsonData from "Views/Teachers/Utils/JsonData";
+import { OverallModel } from "Views/Teachers/Utils/OverallModal";
 
 export default function Layout() {
     const { jsonOnly } = JsonData();
@@ -28,6 +29,7 @@ export default function Layout() {
                         <div className="pt-3 main_content_height">
                             <Outlet />
                         </div>
+                        <OverallModel />
                     </div>
                 </main>
             </div>

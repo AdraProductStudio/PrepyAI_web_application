@@ -1,12 +1,14 @@
-// import { useCommonState } from 'Components/CustomHooks';
+import { useCommonState, useCustomNavigate, useDispatch } from "Components/CustomHooks";
 import Icons from "Utils/Icons"
 import Image from "Utils/Image"
+import { setClassroomCode, setUploadLearnerBook, setUploadTestPaper } from "../Slices/StudentSlice";
+import { handlePostNote, update_note_data } from "Views/Common/Slices/Common_slice";
 
 const JsonData = (params) => {
     //main selectors
-    // const dispatch = useDispatch();
-    // const navigate = useCustomNavigate();
-    // const { commonState } = useCommonState();
+    const dispatch = useDispatch();
+    const navigate = useCustomNavigate();
+    const { commonState, studentState } = useCommonState();
 
     const jsonOnly = {
         sidebar_data: [
@@ -313,9 +315,9 @@ const JsonData = (params) => {
             }
         ],
         data: [
-            { name: 'Exemplar', value: 65, fill: '#EC008C' },
-            { name: 'Developing', value: 35, fill: '#08D110' },
-            { name: 'Emergent', value: 55, fill: '#3E00C2' }
+            { name: 'Exemplar', value: 0, fill: '#EC008C' },
+            { name: 'Developing', value: 0, fill: '#08D110' },
+            { name: 'Emergent', value: 0, fill: '#3E00C2' }
         ],
 
         historyData2: [
@@ -361,26 +363,118 @@ const JsonData = (params) => {
         bookTest: [
             { name: 'Emergent', value: 10, fill: '#4B00D1' },
         ],
-        cardDetails : [{
-        cardTitle: "Explanation",
-        titleValue: "Emergent",
-        explanation: "The Industrial Revolution was a time when new machines were invented, and factories started making goods in large quantities."
-    },{
-        cardTitle: "Explanation",
-        titleValue: "Emergent",
-        explanation: "The Industrial Revolution was a time when new machines were invented, and factories started making goods in large quantities."
-    },
-    {
-        cardTitle: "Explanation",
-        titleValue: "Emergent",
-        explanation: "The Industrial Revolution was a time when new machines were invented, and factories started making goods in large quantities."
-    }
-]
+        cardDetails: [{
+            cardTitle: "Explanation",
+            titleValue: "Emergent",
+            explanation: "The Industrial Revolution was a time when new machines were invented, and factories started making goods in large quantities."
+        }, {
+            cardTitle: "Explanation",
+            titleValue: "Emergent",
+            explanation: "The Industrial Revolution was a time when new machines were invented, and factories started making goods in large quantities."
+        },
+        {
+            cardTitle: "Explanation",
+            titleValue: "Emergent",
+            explanation: "The Industrial Revolution was a time when new machines were invented, and factories started making goods in large quantities."
+        }
+        ]
 
     }
 
     const jsxJson = {
 
+        classroom: [
+            {
+                name: "Classroom Code",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: studentState?.classroom_data?.classroom_code || '',
+                change: (e) => dispatch(setClassroomCode({ type: 'set', classroom_code: e.target.value })),
+                divClassName: "mb-3",
+                isMandatory: true,
+                Err: studentState?.classroom_data?.validated && !studentState?.classroom_data?.classroom_code ? "class code required" : null
+            },
+        ],
+
+        uploadBook: [
+            {
+                name: "Book Name",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: studentState?.upload_learner_book?.book_name || '',
+                change: (e) => dispatch(setUploadLearnerBook({ type: 'set', book_name: e.target.value })),
+                divClassName: "mb-3",
+                isMandatory: true,
+            },
+        ],
+        uploadTest: [
+            {
+                name: "Test Name",
+                category: "select",
+                type: "normal_select",
+                options: studentState?.offline_tests?.map(t => t.test_name) || [],
+                isMandatory: true,
+                value: (() => {
+                    const selected = studentState?.offline_tests?.find(
+                        t => t.test_id === studentState?.upload_test_paper?.test_id
+                    )
+                    return selected?.test_name || ""
+                })(),
+                change: (e) => {
+                    const selectedTest = studentState?.test_names?.find(
+                        t => t.test_name === e.target.value
+                    );
+                    dispatch(setUploadTestPaper({
+                        type: "set",
+                        test_id: selectedTest?.test_id ?? "",
+                        test_name: selectedTest?.test_name ?? ""
+                    }))
+                },
+                divClassName: "m-2",
+            },
+            {
+                name: "Register Number",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: studentState?.upload_test_paper?.register_number || "",
+                change: (e) => dispatch(setUploadTestPaper({ type: 'set', register_number: e.target.value })),
+                divClassName: "m-2",
+                isMandatory: true,
+            },
+        ],
+        notes_input: [
+            {
+                name: "ADD TITLE HERE",
+                category: "input",
+                type: "text",
+                divClassName: "mb-3 fw-bold",
+                placeholder: "Enter Title",
+                isMandatory: true,
+                value: commonState?.notesdata?.title || "",
+                change: (e) => {
+                    dispatch(update_note_data({ type: "title", data: e.target.value }));
+                },
+                keyDown: (e) => {
+                    if (e.key === "Enter") dispatch(handlePostNote(commonState?.notesdata));
+                },
+            },
+            {
+                name: "ADD CONTENT HERE",
+                category: "textbox",
+                className: "",
+                isMandatory: true,
+                value: commonState?.notesdata?.content || "",
+                change: (e) => {
+                    dispatch(update_note_data({ type: "content", data: e.target.value }));
+                },
+                keyDown: (e) => {
+                    if (e.key === "Enter") dispatch(handlePostNote(commonState?.notesdata));
+                },
+            }
+        ]
     }
 
     return {

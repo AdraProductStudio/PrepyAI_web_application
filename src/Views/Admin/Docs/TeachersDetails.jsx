@@ -1,16 +1,10 @@
 import ButtonComponent from "Components/Button/Button"; 
+import { useCommonState } from "Components/CustomHooks";
 import Icons from "Utils/Icons";
+import SpinnerComponent from "Components/Spinner/Spinner";
 
 const TeachersDetails = () => {
-    const table_data = [
-        { s_no: 1, staff_name: "John Doe", subject: "Mathematics", contact_no: "1234567890", email: "test@example.com", qualification: "M.Sc Mathematics" },
-        { s_no: 1, staff_name: "John Doe", subject: "Mathematics", contact_no: "1234567890", email: "test@example.com", qualification: "M.Sc Mathematics" },
-        { s_no: 1, staff_name: "John Doe", subject: "Mathematics", contact_no: "1234567890", email: "test@example.com", qualification: "M.Sc Mathematics" },
-        { s_no: 1, staff_name: "John Doe", subject: "Mathematics", contact_no: "1234567890", email: "test@example.com", qualification: "M.Sc Mathematics" },
-        { s_no: 1, staff_name: "John Doe", subject: "Mathematics", contact_no: "1234567890", email: "test@example.com", qualification: "M.Sc Mathematics" },
-        { s_no: 1, staff_name: "John Doe", subject: "Mathematics", contact_no: "1234567890", email: "test@example.com", qualification: "M.Sc Mathematics" },
-    ]
-
+    const { adminState } = useCommonState();
     return (
         <div className="table-responsive">
             <table className="table table-bordered">
@@ -22,20 +16,28 @@ const TeachersDetails = () => {
                     </tr>
                 </thead>
                 <tbody className="staff_table_data">
-                    {table_data?.map((row, index) => (
-                        <tr key={index}>
-                            <td className="text-center">{index + 1}</td>
-                            <td className="text-center">{row?.staff_name}</td>
-                            <td className="text-center">{row?.subject}</td>
-                            <td className="text-center">{row?.contact_no}</td>
-                            <td className="text-center">{row?.email}</td>
-                            <td className="text-center">{row?.qualification}</td>
-                            <td className="text-center">
-                                <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.edit_icon} />
-                                <ButtonComponent type="button" className="btn-transparent`" buttonName={Icons?.delete_icons} />
-                            </td>
-                        </tr>
-                    ))}
+                    {   
+                        adminState?.placeholder ?
+                            <div className="d-flex justify-content-center align-items-center">
+                                <SpinnerComponent />
+                            </div>
+                        :
+                        adminState?.teachersTableData.length > 0 && (
+                            adminState?.teachersTableData.map((row, index) => (
+                                <tr key={index}>
+                                    <td className="text-center">{index + 1}</td>
+                                    <td className="text-center">{row?.staff_name}</td>
+                                    <td className="text-center">{row?.subject_name}</td>
+                                    <td className="text-center">{row?.contact_no}</td>
+                                    <td className="text-center">{row?.email}</td>
+                                    <td className="text-center">{row?.qualification}</td>           
+                                    <td className="text-center">
+                                        <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.edit_icon} />
+                                        <ButtonComponent type="button" className="btn-transparent`" buttonName={Icons?.delete_icons} />
+                                    </td>
+                                </tr>
+                        )   ))
+                    }
                 </tbody>
             </table>
         </div>

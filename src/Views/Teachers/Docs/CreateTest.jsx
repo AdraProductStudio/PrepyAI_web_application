@@ -1,9 +1,21 @@
 import ButtonComponent from "Components/Button/Button";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions"
+import { getBooks } from "Views/Common/Actions/Common_action";
 import JsonData from "Views/Teachers/Utils/JsonData";
+import { get_student_details } from "../Actions/TeacherActions";
 
 const CreateTest = () => {
     const { jsxJson } = JsonData();
+    const { class_id, subject_id } = useParams();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getBooks({ classroom_id: "18", subject_id: "1" }));
+        dispatch(get_student_details({classroom_id: "18",page:1}))
+    }, [dispatch, class_id, subject_id]);
 
     return (
         <div className="p-5 h-100">
@@ -27,3 +39,4 @@ const CreateTest = () => {
 }
 
 export default CreateTest
+

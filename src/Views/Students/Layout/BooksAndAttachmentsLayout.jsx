@@ -7,10 +7,28 @@ import { SearchComponent } from "ResuableFunctions/SearchFun";
 import NavLinkComp from "Components/Router_components/NavLink";
 import LinkComponent from "Components/Router_components/LinkComponent";
 import TestPerformanceChartStudent from "Components/Charts/TestPerformanceChart_student";
+import { useCommonState, useDispatch } from "Components/CustomHooks";
+import { useEffect } from "react";
+import { handleGetSubjectAttachments, handleGetSubjectBooks, handleGetUpcomingTests } from "../Actions/StudentAction";
+import { updateModalShow } from "Views/Common/Slices/Common_slice";
+import { updateTestId } from "../Slices/StudentSlice";
+import { OverallModel } from "../Utils/OverallModal";
+import Img from "Components/Img/Img";
+import Image from "Utils/Image";
+import SpinnerComponent from "Components/Spinner/Spinner";
+
 
 const BooksAndAttachmentsLayout = () => {
     const { subject_id } = useParams();
     const { jsonOnly } = JsonData({ subject_id });
+    const dispatch = useDispatch()
+    const {studentState} = useCommonState()
+    
+    useEffect(() => {
+        dispatch(handleGetSubjectBooks(subject_id))
+        dispatch(handleGetSubjectAttachments(subject_id))
+        dispatch(handleGetUpcomingTests(subject_id))
+    }, [])
 
     return (
         <div className="container-fluid">
@@ -62,14 +80,33 @@ const BooksAndAttachmentsLayout = () => {
                                 <h5>Upcoming Tests</h5>
                             </Card.Header>
                             <Card.Body className="upcoming_test_history_body">
-                                {Array.from({ length: 4 }).map((_, index) => (
-                                    <ActivityCard key={index} />
-                                ))}
+                                { studentState?.upcoming_tests_loading ? 
+                                    <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "200px" }}>
+                                        <SpinnerComponent /> <p className="m-0">loading...</p>
+                                    </div> 
+                                    :
+                                    studentState?.upcoming_tests.length > 0 ? (
+                                        studentState?.upcoming_tests.map((test, idx)=> (
+                                            <ActivityCard key={idx} data={test} 
+                                                startFunction={() => {
+                                                    dispatch(updateModalShow({ show: true, close_btn: false, modal_from: "dashboard", modal_type: "start_test" }))
+                                                    dispatch(updateTestId({ id: test.test_id }))
+                                                }}
+                                            />
+                                        ))
+                                    ) : (
+                                        <div className="d-flex flex-column justify-content-center align-items-center w-100" style={{ minHeight: '200px' }}>
+                                            <span><Img src={Image.no_data_found} width={80} /></span>
+                                            <p>No upcoming tests</p>
+                                        </div>
+                                    )
+                                }
                             </Card.Body>
                         </Card>
                     </div>
                 </div>
             </div>
+            <OverallModel />
         </div>
     )
 }

@@ -6,13 +6,17 @@ import teachersReducer from 'Views/Teachers/Slice/teachersSlice';
 import organisationReducer from 'Views/Organisation/Slices/Organisation_slice';
 import superadminReducer from 'Views/Superadmin/Slices/SuperAdmin_slice'
 
+import superadminReducer from 'Views/Superadmin/Slices/SuperAdmin_slice'
+import adminReducer from 'Views/Admin/Slices/adminSlice';
+
 const reducers = combineReducers({
     commonState: commonReducer,
     studentState: StudentReducer,
     authState: authReducer,
     teachersState: teachersReducer,
     organisationState: organisationReducer,
-    superadminState:superadminReducer
+    superadminState:superadminReducer,
+    adminState: adminReducer
 })
 
 const store = configureStore({
@@ -24,7 +28,7 @@ const store = configureStore({
         name: 'PrepyAI Dashboard',
         trace: false,
         maxAge: 30,
-        shouldRecordChanges: false,
+        shouldRecordChanges: true,
         shouldCatchErrors: true,
         actionsDenylist: ['very/frequent/action'],
     },

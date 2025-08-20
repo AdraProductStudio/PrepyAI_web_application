@@ -130,7 +130,6 @@ export const handleOAuth = (navigate, endpoint) => async (dispatch) => {
     if (success) {
       window.location.href = data;
     }
-    console.log(response, "sadsad");
   } catch (error) { }
 };
 

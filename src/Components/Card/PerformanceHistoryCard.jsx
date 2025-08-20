@@ -3,8 +3,10 @@ import { Card, Row, Col } from 'react-bootstrap';
 import JsonData from 'Views/Students/Utils/JsonData';
 import PerformanceAndHistoryChart from 'Components/Charts/PerformanceAndHistoryChart';
 import PerformanceHistoryBookCard from './PerformanceHistoryBookCard';
+import Img from "Components/Img/Img";
+import Image from "Utils/Image";
 
-const PerformanceHistoryCard = () => {
+const PerformanceHistoryCard = ({ history_data, performance_data }) => {
   const { jsonOnly } = JsonData();
 
   return (
@@ -33,7 +35,19 @@ const PerformanceHistoryCard = () => {
         </Row>
 
         <Col xs={12} className='mt-4'>
-          <PerformanceHistoryBookCard className="p-3 pb-1" />
+          {
+            history_data?.length > 0 ?
+              history_data?.map((test, idx) => (
+                <div key={idx} className="my-3">
+                  <PerformanceHistoryBookCard className="p-3 pb-1" data={test} />
+                </div>
+              ))
+              :
+              <div className="d-flex flex-column justify-content-center align-items-center w-100 border-top pt-3">
+                <span><Img src={Image.no_data_found} width={50} /></span>
+                <p className="m-0">No test history</p>
+              </div>
+          }
         </Col>
       </Card.Body>
     </Card>

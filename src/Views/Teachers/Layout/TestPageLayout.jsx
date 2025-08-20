@@ -7,7 +7,7 @@ import JsonData from "Views/Teachers/Utils/JsonData"
 
 const TestPageLayout = () => {
     const { class_id, subject_id } = useParams();
-    const { jsonOnly } = JsonData({ class_id, subject_id });
+    const { jsonOnly } = JsonData({ class_id, subject_id }); 
 
     return (
         <div className="h-100">
@@ -22,7 +22,7 @@ const TestPageLayout = () => {
                     <div className="w-100 h-100 p-1">
                         <div className="row" style={{ height: "5%" }}>
                             {jsonOnly?.test_options.map((item, index) => (
-                                <div className="col-1">
+                                <div className="col-4 col-md-3 col-lg-2 col-xxl-1">
                                     <NavLinkComp to={item.route} key={index} end={true} className="test_page_options">
                                         {item.name}
                                     </NavLinkComp>

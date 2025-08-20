@@ -50,16 +50,9 @@ axiosInstance.interceptors.request.use((config) => {
   const token = state?.commonState?.app_data?.token || '';
 
   //Bearer token
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  if (config.data instanceof FormData) {
-    config.headers['Content-Type'] = 'multipart/form-data';
-  } else {
-    config.headers['Content-Type'] = 'application/json';
-  } 
-
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  if (config.data instanceof FormData) config.headers['Content-Type'] = 'multipart/form-data';
+  else config.headers['Content-Type'] = 'application/json';
   return config;
 });
 

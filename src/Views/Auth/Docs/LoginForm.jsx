@@ -6,11 +6,13 @@ import ButtonSpinner from "Components/Spinner/ButtonSpinner";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import LinkComponent from "Components/Router_components/LinkComponent";
 import { useCommonState, useDispatch } from "Components/CustomHooks";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const { authState } = useCommonState();
   const dispatch = useDispatch();
   const { jsxJson } = JsonData();
+  const navigate = useNavigate();
 
   const form = (
     <div className="pb-3">
@@ -36,7 +38,7 @@ const LoginForm = () => {
     <ButtonSpinner
       type="button"
       className="btn-brand-color py-3 w-100"
-      clickFunction={() => dispatch(handleLogin(authState?.logindata))}
+      clickFunction={() => dispatch(handleLogin(authState?.logindata, navigate))}
       title={authState?.loginisLoading ? "Logging in..." : "Login"}
       is_spinner={authState?.loginisLoading}
     />
