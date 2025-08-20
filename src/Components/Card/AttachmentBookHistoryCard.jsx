@@ -19,8 +19,11 @@ const AttachmentBookHistoryCard = ({
 
             <Card.Body className="">
                 {
-                    studentState?.book_test_history_loading ? <div className="d-flex justify-content-center align-items-center" style={{minHeight: "300px"}}>
-                        <SpinnerComponent /> <p className="m-0">loading...</p>
+                    studentState?.loading['book_test_history'] ? <div className="d-flex justify-content-center align-items-center" style={{minHeight: "300px"}}>
+                        <div className="col-5 text-center">
+                            <SpinnerComponent />
+                            <p className="m-0">Loading...</p>
+                        </div>
                     </div>
                         :
                         bookTestHistory.length > 0 ? (

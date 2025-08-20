@@ -2,12 +2,12 @@ import ButtonComponent from "Components/Button/Button";
 import { useCustomNavigate } from "Components/CustomHooks";
 import Img from "Components/Img/Img";
 import { Card } from "react-bootstrap";
-import Icons from "Utils/Icons";
+// import Icons from "Utils/Icons";
 import Image from "Utils/Image";
 
 const BookCard = ({
     data = {},
-    onClickDelete, className, viewFunction, previewFunction
+    onClickDelete, className, viewFunction, previewFunction, generateFunction
 }) => {
  const navigate = useCustomNavigate()
     function dynamicContent() {
@@ -20,7 +20,7 @@ const BookCard = ({
                             <ButtonComponent type="button" className="btn-transparent fs-14 text-primary" buttonName="View" clickFunction={previewFunction}  />
                         </div>
                         <div className="col text-end border-start">
-                            <ButtonComponent type="button" className="btn-transparent fs-14 brand_text_color" buttonName="Generate Question" clickFunction={()=>navigate('/student_dashboard/generate_question')} />
+                            <ButtonComponent type="button" className="btn-transparent fs-14 brand_text_color" buttonName="Generate Question" clickFunction={generateFunction} />
                         </div>
                     </Card.Footer>
                 )

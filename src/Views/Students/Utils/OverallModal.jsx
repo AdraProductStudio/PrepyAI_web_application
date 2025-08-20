@@ -7,7 +7,7 @@ import { useRef } from "react";
 import Icons from "Utils/Icons";
 import Image from "Utils/Image";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
-import { handleJoinClassRoom, handleStartTest, handleSubmitTest, handleUploadLearnerBook, handleUploadTestPaper } from "../Actions/StudentAction";
+import { handleEditProfileDetails, handleJoinClassRoom, handleStartTest, handleSubmitTest, handleUploadLearnerBook, handleUploadTestPaper } from "../Actions/StudentAction";
 import { setClassroomCode, setUploadLearnerBook, setUploadTestPaper } from "../Slices/StudentSlice";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import JsonData from "./JsonData";
@@ -49,7 +49,6 @@ export function OverallModel() {
         } else if (studentState?.question_type == "long_questions") {
             navigate('long_questions')
             dispatch(updateModalShow({ show: false }))
-
         }
     }
 
@@ -61,9 +60,13 @@ export function OverallModel() {
                         return <h5>Upload Book</h5>
                     case "upload_test_paper":
                         return <h5>Upload Test Paper</h5>
+                    case "start_test":
+                        return <h5>Start Test</h5>
                     default:
                         break;
                 }
+                break;
+
             case "Generate_Question":
                 switch (commonState?.modal?.type) {
                     case "select_question_type":
@@ -82,7 +85,20 @@ export function OverallModel() {
                 switch (commonState?.modal?.type) {
                     case "add_class":
                         return <h5>Join class room</h5>
+                    default:
+                        break;
                 }
+                break;
+
+
+            case "profile":
+                switch (commonState?.modal?.type) {
+                    case "edit_profile":
+                        return <h5>Edit Profile</h5>
+                    default:
+                        break
+                }
+                break;
 
             case "notes":
                 switch (commonState?.modal?.type) {
@@ -92,19 +108,6 @@ export function OverallModel() {
                     default:
                         break;
                 }
-            case "Generate_Question":
-                switch (commonState?.modal?.type) {
-                    case "select_question_type":
-                        return <h5 className="text-secondary fw-bold">Select Question Type</h5>
-                    case "record_audio":
-                        return <h5 className="text-secondary">Record your Answer</h5>
-                    case "test_result":
-                        return <h5 className="text-secondary">Status - Emergent</h5>
-
-                    default:
-                        break;
-                }
-                break;
 
             default:
                 break;
@@ -135,8 +138,14 @@ export function OverallModel() {
                                     <span className="d-flex" onClick={() => fileInputRef.current && fileInputRef.current.click()}>{Icons.studentUploadLarge}</span>
                                 </div>
                                 <div className="pt-3">
-                                    <strong>Browse your book</strong>
-                                    <p>Formats pdf, docs, doc & Max file size 1 GB</p>
+                                    {studentState?.upload_learner_book?.book_file ? (
+                                        <small className="m-0">{studentState.upload_learner_book.book_file.name}</small>
+                                    ) : (
+                                        <>
+                                            <strong>Browse your book</strong>
+                                            <p>Formats pdf, docs, doc & Max file size 1 GB</p>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                             <div className="d-flex justify-content-between align-items-center">
@@ -145,18 +154,20 @@ export function OverallModel() {
                                         type="button"
                                         className="btn border border-dark px-5"
                                         buttonName="Cancel"
-                                        clickFunction={() => {
-                                            dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
-                                            dispatch(setUploadLearnerBook({ type: 'set', book_name: '', book_file: null }))
-                                        }
-                                        }
+                                        clickFunction={() => dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))}
                                     />
                                 </div>
                                 <div>
                                     <ButtonComponent
                                         type="button"
                                         className="btn btn-brand-color px-5 py-2"
-                                        buttonName={`${studentState?.upload_learner_book.loading ? 'uploading...' : 'upload'}`}
+                                        // buttonName={`${studentState?.upload_learner_book.loading ? 'Uploading...' : 'Upload'}`}
+                                        buttonName={studentState?.upload_learner_book?.loading ? (
+                                            <div className="d-flex justify-content-center align-items-center">
+                                                <p className="m-0">Uploading...</p> <SpinnerComponent className="my-0 ms-2 p-0" />
+                                            </div>)
+                                            : ('Upload')
+                                        }
                                         clickFunction={() => handleUpload('learner_book')}
                                     />
                                 </div>
@@ -179,10 +190,16 @@ export function OverallModel() {
                                     />
                                 </div>
                                 <div>
+
                                     <ButtonComponent
                                         type="button"
                                         className="btn btn-brand-color px-5 py-2"
-                                        buttonName={studentState?.mcq_loading ? (<>starting <SpinnerComponent /></>) : ('Start')}
+                                        buttonName={studentState?.mcq_loading ? (
+                                            <div className="d-flex justify-content-center align-items-center">
+                                                <p className="m-0">Starting...</p> <SpinnerComponent className="p-0 my-0 ms-2" />
+                                            </div>)
+                                            : ('Start')
+                                        }
                                         clickFunction={() => dispatch(handleStartTest(studentState?.test_id, navigate))}
                                     // clickFunction={() => setTimeout(()=>dispatch(handleStartTest(studentState?.test_id, navigate)), 1000) }
                                     />
@@ -209,8 +226,14 @@ export function OverallModel() {
                                     <span className="d-flex" onClick={() => fileInputRef.current && fileInputRef.current.click()}>{Icons.studentUploadLarge}</span>
                                 </div>
                                 <div className="pt-3">
-                                    <strong>Browse your test file</strong>
-                                    <p>Formats pdf, docs, doc & Max file size 1 GB</p>
+                                    {studentState?.upload_test_paper?.test_file ? (
+                                        <small className="m-0">{studentState.upload_test_paper.test_file.name}</small>
+                                    ) : (
+                                        <>
+                                            <strong>Browse your test file</strong>
+                                            <p>Formats pdf, docs, doc & Max file size 1 GB</p>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                             <div className="d-flex justify-content-between align-items-center">
@@ -219,18 +242,20 @@ export function OverallModel() {
                                         type="button"
                                         className="btn border border-dark px-5"
                                         buttonName="Cancel"
-                                        clickFunction={() => {
-                                            dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
-                                            dispatch(setUploadTestPaper({ type: 'set', test_name: '', register_number: '', test_file: null }))
-                                        }
-                                        }
+                                        clickFunction={() => dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))}
                                     />
                                 </div>
                                 <div>
                                     <ButtonComponent
                                         type="button"
                                         className="btn btn-brand-color px-5 py-2"
-                                        buttonName={`${studentState?.upload_test_paper.loading ? 'uploading...' : 'upload'}`}
+                                        // buttonName={`${studentState?.upload_test_paper.loading ? 'Uploading...' : 'Upload'}`}
+                                        buttonName={studentState?.upload_test_paper?.loading ? (
+                                            <div className="d-flex justify-content-center align-items-center">
+                                                <p className="m-0">Uploading...</p> <SpinnerComponent className="p-0 my-0 ms-2" />
+                                            </div>)
+                                            : ('Upload')
+                                        }
                                         clickFunction={() => handleUpload('test_paper')}
                                     />
                                 </div>
@@ -281,7 +306,7 @@ export function OverallModel() {
                         return <div className="">
                             <div className="text-center">
                                 <span><Img src={Image.start_test_pic} width={200} /></span>
-                                <p className="gradient-text my-3">Are you sure do you want to submit this</p>
+                                <p className="gradient-text my-3">Are you sure you want to submit your test?</p>
                             </div>
                             <div className="d-flex justify-content-between align-items-center">
                                 <div className="">
@@ -301,6 +326,11 @@ export function OverallModel() {
                                     />
                                 </div>
                             </div>
+                        </div>
+
+                    case "auto_submit":
+                        return <div className="d-flex justify-content-center align-items-center p-4">
+                            <p className="my-0 mx-2 gradient-text">Auto submitting...</p><SpinnerComponent />
                         </div>
 
                     default:
@@ -433,7 +463,7 @@ export function OverallModel() {
                                 <div className="col p-1">
                                     <ButtonComponent
                                         type="button"
-                                        className="btn btn-outline-dark px-4 w-100"
+                                        className="btn btn-outline-dark w-100"
                                         buttonName="Cancel"
                                         clickFunction={() => dispatch(updateModalShow({ show: null, close_btn: false, modal_from: "notes", modal_type: "add_note" }))}
                                     />
@@ -441,12 +471,35 @@ export function OverallModel() {
                                 <div className="col p-1">
                                     <ButtonComponent
                                         type="button"
-                                        className="btn btn-brand-color px-5 py-2 w-100"
+                                        className="btn btn-brand-color w-100 py-2"
                                         buttonName={commonState?.notesdata?.id ? "Update" : "Add"}
                                         clickFunction={() => dispatch(postTeacherNote(commonState?.notesdata?.id ? "students/edit_user_notes" : "students/create_user_notes", { title: commonState?.notesdata?.title || "", content: commonState?.notesdata?.content || "", id: commonState?.notesdata?.id || null }))}
                                     />
                                 </div>
                             </div>
+                        </div>
+
+                    default:
+                        break;
+                }
+                break;
+
+            case "profile":
+                switch (commonState?.modal?.type) {
+                    case "edit_profile":
+                        return <div className="w-100">
+                            {Inputfunctions(jsxJson?.student_profile)}
+                            <ButtonComponent type="button"
+                                buttonName={studentState?.loading['edit_profile'] ? (
+                                    <div className="d-flex justify-content-center align-items-center">
+                                        <p className="m-0">Editing...</p> <SpinnerComponent className="p-0 my-0 ms-2" />
+                                    </div>
+                                ) :
+                                    'Edit'
+                                }
+                                className="brand_color w-100 text-white"
+                                clickFunction={() => dispatch(handleEditProfileDetails(studentState?.editProfileInputs))}
+                            />
                         </div>
 
                     default:

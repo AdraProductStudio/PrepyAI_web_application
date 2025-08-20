@@ -21,7 +21,8 @@ const PerformanceHistoryBookCard = ({
                     </p>
 
                     <div className="col-12 text-end fs-12 text-secondary">
-                        <span className="pe-2">{data?.test_date || null}</span>
+                        <span>{data?.test_date || null}</span>
+                        <br/>
                         <span>{data?.test_time || 0}</span>
                     </div>
                 </div>

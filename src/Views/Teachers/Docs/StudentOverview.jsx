@@ -12,11 +12,11 @@ import { useDispatch } from "react-redux";
 import { GetStudentOverviewOverallPerfomance, GetStudentOverviewPerfomance, GetStudentOverviewSpendingHours, GetStudentOverviewTestCount } from "../Actions/teacherAction";
 
 const StudentOverview = () => {
-    const { class_id, student_id,subject_id } = useParams();
+    const { class_id, student_id, subject_id } = useParams();
     const dispatch = useDispatch();
     const { jsonOnly } = JsonData();
-    const {teachersState} = useCommonState();
-    const book_data= teachersState?.teacher_GetStudentOverviewPerfomance?.data
+    const { teachersState } = useCommonState();
+    const book_data = teachersState?.teacher_GetStudentOverviewPerfomance?.data
     const overallPerfomanceData = teachersState?.teacher_GetStudentOverviewOverallPerfomance?.data[0]
     const testCardDetails = teachersState?.teacher_GetStudentOverviewTestCount?.data;
     const spendingHours = Array.isArray(teachersState?.teacher_GetStudentOverviewSpendingHours?.data) ? teachersState?.teacher_GetStudentOverviewSpendingHours?.data : [];
@@ -24,8 +24,8 @@ const StudentOverview = () => {
 
     const data = [
         { backgroundColor: "#FDADC7", question_types: "Overall Question Answers", no_of_books: testCardDetails[0]?.no_of_books, no_of_tests: testCardDetails[0]?.no_of_tests },
-        { backgroundColor: "#FFB6B9", question_types: "Multiple Question Answers", no_of_books: testCardDetails[1]?.no_of_books, no_of_tests: testCardDetails[1]?.no_of_tests  },
-        { backgroundColor: "#F1D4D4", question_types: "Short Question Answers", no_of_books: testCardDetails[2]?.no_of_books, no_of_tests: testCardDetails[2]?.no_of_tests  }
+        { backgroundColor: "#FFB6B9", question_types: "Multiple Question Answers", no_of_books: testCardDetails[1]?.no_of_books, no_of_tests: testCardDetails[1]?.no_of_tests },
+        { backgroundColor: "#F1D4D4", question_types: "Short Question Answers", no_of_books: testCardDetails[2]?.no_of_books, no_of_tests: testCardDetails[2]?.no_of_tests }
     ]
 
 
@@ -40,12 +40,12 @@ const StudentOverview = () => {
         }
     }
 
-    useEffect(()=>{
-        dispatch(GetStudentOverviewPerfomance({classroom_id:class_id,student_id}))
-        dispatch(GetStudentOverviewOverallPerfomance({classroom_id:class_id,student_id}))
-        dispatch(GetStudentOverviewTestCount({classroom_id:class_id,student_id}))
-        dispatch(GetStudentOverviewSpendingHours({classroom_id:class_id,student_id}))
-    },[])
+    useEffect(() => {
+        dispatch(GetStudentOverviewPerfomance({ classroom_id: class_id, student_id }))
+        dispatch(GetStudentOverviewOverallPerfomance({ classroom_id: class_id, student_id }))
+        dispatch(GetStudentOverviewTestCount({ classroom_id: class_id, student_id }))
+        dispatch(GetStudentOverviewSpendingHours({ classroom_id: class_id, student_id }))
+    }, [])
 
     return (
         <section>
@@ -61,7 +61,7 @@ const StudentOverview = () => {
                     <Card.Body className="p-2">
                         <div className="row">
                             {data?.length > 0 && data?.map((item, index) => (
-                                <div className ="col-12 col-sm-6 col-xxl-3 p-2" key={index}>
+                                <div className="col-12 col-sm-6 col-xxl-3 p-2" key={index}>
                                     <StudentOverviewCard data={item} style={{ backgroundColor: item?.backgroundColor || '' }} />
                                 </div>
                             ))}

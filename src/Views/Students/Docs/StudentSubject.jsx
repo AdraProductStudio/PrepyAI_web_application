@@ -7,7 +7,6 @@ import Image from "Utils/Image";
 import { handleGetAllSubjects } from "../Actions/StudentAction"
 import { useEffect } from "react"
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
-import { OverallModel } from "../Utils/OverallModal";
 import SpinnerComponent from "Components/Spinner/Spinner";
 
 const StudentSubject = () => {
@@ -28,7 +27,7 @@ const StudentSubject = () => {
                 </div>
 
                 <div className="w-100 row align-content-start small_header_content_main overflowY">
-                    {studentState?.subjects_loading ?
+                    {studentState?.loading['all_subjects'] ?
                         <div className="d-flex justify-content-center align-items-center h-100">
                             <div className="col-5 text-center">
                                 <p>Getting subjects...</p>
@@ -60,7 +59,6 @@ const StudentSubject = () => {
                     }
                 </div>
             </div>
-            <OverallModel />
         </div>
     )
 }
