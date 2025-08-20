@@ -52,6 +52,12 @@ import StudentsBooks from "Views/Students/Docs/Books";
 import StudentAttachments from "Views/Students/Docs/StudentAttachments";
 import BooksOverviewLayout from "Views/Students/Layout/BooksOverviewLayout";
 import McqTest from "Views/Students/Docs/McqTest";
+import McqTestStatus from "Views/Students/Docs/McqTestStatus";
+import McqTestLayout from "Views/Students/Layout/McqTestLayout";
+import StudentProfile from "Views/Students/Docs/Profile";
+import StudentPersonalInfo from "Views/Students/Docs/PersonalInfo";
+import StudentSettings from "Views/Students/Docs/Settings";
+
 
 import LearnersLayout from 'Views/Learners/Layout/Layout'
 import Dashboard from "Views/Learners/Docs/Dashboard";
@@ -77,7 +83,13 @@ import Profile from "Views/Superadmin/Docs/Profile";
 import Settings from "Views/Superadmin/Docs/Settings";
 import SuperAdminDashboard from "Views/Superadmin/Docs/SuperAdminDashboard";
 import LearnersAuth from "Views/Learners/Layout/LearnersAuth";
-import McqTestStatus from "Views/Students/Docs/McqTestStatus";
+
+import StudentAuth from "Views/Students/Layout/StudentAuth";
+import GenerateQuestionLayout from "Views/Students/Layout/GenerateQuestionLayout";
+import GenerateQuestion from "Views/Students/Docs/GenerateQuestion";
+import McqQuestions from "Views/Students/Docs/McqQuestions";
+import LongQuestions from "Views/Students/Docs/LongQuestions";
+import McqTestLayout from "Views/Students/Layout/McqTestLayout";
 
 
 function App() {
@@ -151,13 +163,21 @@ function App() {
                 <Route index element={<StudentsBooks />} />
                 <Route path="attachments" element={<StudentAttachments />} />
               </Route>
-              {/* <Route path=":subject_id/attachments/:attachment_id" element={<BooksOverviewLayout />} /> */}
-               <Route path=":subject_id/books/:book_idx" element={<BooksOverviewLayout />} />
+              <Route path="notes" element={<Notes />} />
+              <Route path="profile" element={<StudentProfile />} >
+                <Route index element={<StudentPersonalInfo />} />
+                <Route path="settings" element={<StudentSettings />} />
             </Route>
-            <Route path="test" element={<McqTest />} />
-            <Route path="test_status" element={<McqTestStatus />} />
-            <Route path="notes" element={<Notes />} />
-            <Route path="profile" element={<ReusableProfile />} />
+            </Route>
+            <Route path="generate_question/:id" element={<GenerateQuestionLayout />}>
+              <Route index element={<GenerateQuestion />} />
+              <Route path="mcq_questions" element={<McqQuestions />} />
+              <Route path="long_questions" element={<LongQuestions />} />
+            </Route>
+            <Route path="test" element={<McqTestLayout />}>
+              <Route index  element={<McqTest />} />
+              <Route path="test_status" element={<McqTestStatus />} />
+            </Route>
           </Route>
 
           {/* Learners */}

@@ -782,7 +782,7 @@ const TeacherSlice = createSlice({
             questions: [],
             result: [],
             summary: {},
-            test_end_on: "2025-08-05T15:56:09.707Z",
+            test_end_on: Cookies.get("testEndOn") || '',
             remaining_time: null,
             selectedQuestionIndex: 0,
             answeredQuestionPercentage: 0,
@@ -791,13 +791,15 @@ const TeacherSlice = createSlice({
             submit_test: false
         },
 
-        test_id: null,
+        test_id: localStorage.getItem("test_id") || null,
         mcq_loading: false,
 
-        learner_books_loading: false,
+        loading: {},
         all_learner_books: {},
         all_tests: [],
         overall_performance: [],
+        subject_performance: [],
+        book_performance: [],
         all_test_history: [],
         book_test_history: [],
         all_subjects: [],
@@ -805,15 +807,6 @@ const TeacherSlice = createSlice({
         subject_attachments: {},
         upcoming_tests: [],
         offline_tests: [],
-        all_tests_loading: false,
-        overall_performance_loading: false,
-        all_test_history_loading: false,
-        book_test_history_loading: false,
-        subjects_loading: false,
-        subject_books_loading: false,
-        subject_attachments_loading: false,
-        upcoming_tests_loading: false,
-        offline_tests_loading: false,
 
         classroom_data: {
             classroom_code: '',
@@ -829,14 +822,46 @@ const TeacherSlice = createSlice({
             register_number: null,
             test_file: null,
             loading: false,
-        }
+        },
 
+        question_type: "",
+        recording: "",
+
+        isProfileEditing: false,
+        profileInputs: {
+            first_name: "",
+            last_name: "",
+            email_id: "",
+            phone_number: "",
+            reg_no: "",
+            class_name: "",
+            address: ""
+        },
+        editProfileInputs: {
+            first_name: "",
+            last_name: "",
+            email_id: "",
+            phone_number: "",
+            reg_no: "",
+            class_name: "",
+            address: ""
+
+        },
+        settingsInputs: {
+            old_password: "",
+            new_password: "",
+            confirm_password: "",
+        }
     },
     reducers: {
         caluculateRemainingTime: (state, action) => {
             const { remaining_time } = action.payload;
             if (!remaining_time) state.mcq_test.test_end_on = "";
             state.mcq_test.remaining_time = remaining_time;
+        },
+        updateTestEndOn: (state, action) => {
+            const { test_end_on } = action.payload;
+            state.mcq_test.test_end_on = test_end_on;
         },
         updateSelectedQuestionIndex: (state, action) => {
             state.mcq_test.selectedQuestionIndex = action.payload.selectedQuestionIndex;
@@ -854,7 +879,7 @@ const TeacherSlice = createSlice({
             state.mcq_test.is_question_loaded = true;
         },
         updateRemainingTestTiming(state, action) {
-            state.mcq_test.remaining_time = action.payload
+            state.mcq_test.remaining_time = action.payload || null
         },
         updateTimeOverCloseTest(state, action) {
             Cookies.remove("testEndOn")
@@ -863,7 +888,18 @@ const TeacherSlice = createSlice({
             state.mcq_test.remaining_time = null;
             state.mcq_test.answeredQuestionPercentage = 0;
             state.mcq_test.selectedQuestionIndex = 0;
+            state.mcq_test.questions = [];
+            state.mcq_test.submit = true
+        },
+        updateManualCloseTest(state, action) {
+            Cookies.remove("testEndOn")
+            state.mcq_test.remaining_time = null;
+            state.mcq_test.test_end_on = null;
+            state.mcq_test.remaining_time = null;
+            state.mcq_test.answeredQuestionPercentage = 0;
+            state.mcq_test.selectedQuestionIndex = 0;
             state.mcq_test.questions = []
+            state.mcq_test.submit = true
         },
         updateMcqSubmitSpinner(state, action) {
             const { type, data, submit_spinner_loading } = action.payload
@@ -924,205 +960,74 @@ const TeacherSlice = createSlice({
                     break;
             }
         },
+        updateQuestionType(state, action) {
+            state.question_type = action.payload
+        },
+        updateAudioRecording(state, action) {
+            state.recording = action.payload
+        },
         updateMcqResult(state, action) {
             const { data } = action.payload
             state.mcq_test.result = data.results || []
             state.mcq_test.summary = data.summary || {}
+            state.mcq_test.isDataPresentInIndexedDb = false
+        },
+        resetMcq: (state) => {
+            state.mcq_test = {
+                is_question_loaded: false,
+                questions: [],
+                result: [],
+                summary: {},
+                test_end_on: Cookies.get("testEndOn") || '',
+                remaining_time: null,
+                selectedQuestionIndex: 0,
+                answeredQuestionPercentage: 0,
+                isDataPresentInIndexedDb: false,
+                submit_spinner_loading: false,
+                submit_test: false,
+            };
+        },
+        setLoading(state, action) {
+            const { key, value } = action.payload;
+            state.loading[key] = value;
         },
         getLearnerBooks(state, action) {
-            const { type, data, learner_books_loading } = action.payload
-
-            switch (type) {
-                case "request":
-                    state.learner_books_loading = learner_books_loading
-                    break;
-
-                case "response":
-                    state.all_learner_books = data || {}
-                    state.learner_books_loading = false
-                    break;
-
-                case "failure":
-                    state.all_learner_books = {}
-                    state.learner_books_loading = false
-                    break;
-
-                default:
-                    break;
-            }
+            state.all_learner_books = action.payload || {}
         },
         getAllTests(state, action) {
-            const { type, data, all_tests_loading } = action.payload
-
-            switch (type) {
-                case "request":
-                    state.all_tests_loading = all_tests_loading
-                    break;
-
-                case "response":
-                    state.all_tests = data || []
-                    state.all_tests_loading = false
-                    break;
-
-                case "failure":
-                    state.all_tests = []
-                    state.all_tests_loading = false
-                    break;
-
-                default:
-                    break;
-            }
+           state.all_tests = action.payload || []
         },
         getOverallPerformance(state, action) {
-            const { type, data, overall_performance_loading } = action.payload
-
-            switch (type) {
-                case "request":
-                    state.overall_performance_loading = overall_performance_loading
-                    break;
-                case "response":
-                    state.overall_performance = data || []
-                    state.overall_performance_loading = false
-                    break;
-
-                case "failure":
-                    state.overall_performance = []
-                    state.overall_performance_loading = false
-                    break;
-
-                default:
-                    break;
-            }
+            state.overall_performance = action.payload || []
+        },
+        getSubjectPerformance(state, action) {
+            state.subject_performance = action.payload || []
+        },
+        getBookPerformance(state, action) {
+            state.book_performance = action.payload || []
         },
         getAllTestHistory(state, action) {
-            const { type, data, all_test_history_loading } = action.payload
-
-            switch (type) {
-                case "request":
-                    state.all_test_history_loading = all_test_history_loading
-                    break;
-                case "response":
-                    state.all_test_history = data || []
-                    state.all_test_history_loading = false
-                    break;
-
-                case "failure":
-                    state.all_test_history = []
-                    state.all_test_history_loading = false
-                    break;
-
-                default:
-                    break;
-            }
+            state.all_test_history = action.payload || []
         },
         getBookTestHistory(state, action) {
-            const { type, data, book_test_history_loading } = action.payload
-
-            switch (type) {
-                case "request":
-                    state.book_test_history_loading = book_test_history_loading
-                    break;
-                case "response":
-                    state.book_test_history = data || []
-                    state.book_test_history_loading = false
-                    break;
-
-                case "failure":
-                    state.book_test_history = []
-                    state.book_test_history_loading = false
-                    break;
-
-                default:
-                    break;
-            }
+            state.book_test_history = action.payload || []
         },
         getAllSubjects(state, action) {
-            const { type, data, subjects_loading } = action.payload
-
-            switch (type) {
-                case "request":
-                    state.subjects_loading = subjects_loading
-                    break;
-                case "response":
-                    state.all_subjects = data || []
-                    state.subjects_loading = false
-                    break;
-
-                case "failure":
-                    state.all_subjects = []
-                    state.subjects_loading = false
-                    break;
-
-                default:
-                    break;
-            }
+            state.all_subjects = action.payload || []
         },
         getSubjectBooks(state, action) {
-            const { type, data, subject_books_loadingg } = action.payload
-
-            switch (type) {
-                case "request":
-                    state.subject_books_loadingg = subject_books_loadingg
-                    break;
-                case "response":
-                    state.subject_books = data || []
-                    state.subject_books_loadingg = false
-                    break;
-
-                case "failure":
-                    state.subject_books = []
-                    state.subject_books_loadingg = false
-                    break;
-
-                default:
-                    break;
-            }
+           state.subject_books = action.payload || []
         },
         getSubjectAttachments(state, action) {
-            const { type, data, subject_attachments_loading } = action.payload
-
-            switch (type) {
-                case "request":
-                    state.subject_attachments_loading = subject_attachments_loading
-                    break;
-                case "response":
-                    state.subject_attachments = data || {}
-                    state.subject_attachments_loading = false
-                    break;
-
-                case "failure":
-                    state.subject_attachments = {}
-                    state.subject_attachments_loading = false
-                    break;
-
-                default:
-                    break;
-            }
+           state.subject_attachments = action.payload|| {}
         },
         getUpcomingTests(state, action) {
-            const { type, data, upcoming_tests_loading } = action.payload
-
-            switch (type) {
-                case "request":
-                    state.upcoming_tests_loading = upcoming_tests_loading
-                    break;
-                case "response":
-                    state.upcoming_tests = data || []
-                    state.upcoming_tests_loading = false
-                    break;
-
-                case "failure":
-                    state.upcoming_tests = []
-                    state.upcoming_tests_loading = false
-                    break;
-
-                default:
-                    break;
-            }
+            state.upcoming_tests = action.payload || []
         },
         updateTestId(state, action) {
             const { id } = action.payload
             state.test_id = id
+            localStorage.setItem("test_id", id)
         },
         getMcqQuestions(state, action) {
             const { type, data, loading } = action.payload
@@ -1130,13 +1035,13 @@ const TeacherSlice = createSlice({
             switch (type) {
                 case "request":
                     state.mcq_loading = loading
+                    break;
                 case "response":
-                    state.mcq_test.questions = data || []
+                    // state.mcq_test.questions = data || []
                     state.mcq_loading = false
                     break;
-
                 case "failure":
-                    state.mcq_test.questions = []
+                    // state.mcq_test.questions = []
                     state.mcq_loading = false
                     break;
 
@@ -1145,23 +1050,8 @@ const TeacherSlice = createSlice({
             }
         },
         getOfflineTests(state, action) {
-            const { type, data, offline_tests_loading  } = action.payload
-
-            switch (type) {
-                case "request":
-                    state.offline_tests = offline_tests_loading
-                case "response":
-                    state.offline_tests = data || []
-                    state.offline_tests_loading = false
-                    break;
-
-                case "failure":
-                    state.offline_tests_loading = false
-                    break;
-
-                default:
-                    break;
-            }
+            const data = action.payload
+            state.offline_tests = (Array.isArray(data) || (typeof data !== "object")) ? data : [];
         },
 
         setUploadLearnerBook(state, action) {
@@ -1261,9 +1151,62 @@ const TeacherSlice = createSlice({
                 default:
                     break;
             }
+        },
+        updatePersonalInfoInputs: (state, action) => {
+            if (!action.payload) return
+
+            state.profileInputs = {
+                ...state.profileInputs,
+                ...action.payload,
+            }
+
+            state.editProfileInputs = {
+                ...state.editProfileInputs,
+                ...action.payload,
+            }
+        },
+        updateSettingsInputs: (state, action) => {
+            const { field, value } = action.payload;
+            state.settingsInputs[field] = value
+        },
+        resetSettingsInputs: (state, action) => {
+            state.settingsInputs.old_password = ""
+            state.settingsInputs.new_password = ""
+            state.settingsInputs.confirm_password = ""
+        },
+        editProfileInputs: (state, action) => {
+            const { field, value } = action.payload;
+            state.editProfileInputs[field] = value
+
+        },
+        updateProfileEditing: (state, action) => {
+            state.isProfileEditing = !state.isProfileEditing
         }
 
 
+    },
+    extraReducers(builder) {
+        builder
+            .addCase("common_slice/updateModalShow", (state, action) => {
+                const { show } = action.payload
+                if (!show) {
+                    state.classroom_data = {
+                        classroom_code: '',
+                        loading: false
+                    };
+                    state.upload_learner_book = {
+                        book_name: "",
+                        book_file: null,
+                        loading: false,
+                    };
+                    state.upload_test_paper = {
+                        test_name: '',
+                        register_number: null,
+                        test_file: null,
+                        loading: false,
+                    };
+                }
+            })
     }
 })
 
@@ -1272,11 +1215,13 @@ const TeacherSlice = createSlice({
 const { actions, reducer } = TeacherSlice;
 
 export const {
-    caluculateRemainingTime, updateSelectedQuestionIndex, updateRemainingTestTiming, updateTimeOverCloseTest,
-    updateAnswers, updateMcqSubmitSpinner, getQuestionFromDb, getQuestionsEndpoint,updateMcqResult, getLearnerBooks, getAllTests,
-    getOverallPerformance, getAllTestHistory, getAllSubjects, getSubjectBooks,
-    getSubjectAttachments, getUpcomingTests, getOfflineTests, getBookTestHistory, updateTestId, getMcqQuestions,
-    setUploadLearnerBook, setClassroomCode, setUploadTestPaper
+    caluculateRemainingTime, updateSelectedQuestionIndex, updateRemainingTestTiming, updateTimeOverCloseTest, updateManualCloseTest,
+    updateAnswers, updateTestEndOn, updateMcqSubmitSpinner, getQuestionFromDb, getQuestionsEndpoint, updateMcqResult, resetMcq,
+    setLoading, getLearnerBooks, getAllTests, getOverallPerformance, getSubjectPerformance, getBookPerformance,
+    getAllTestHistory, getAllSubjects, getSubjectBooks, getSubjectAttachments, getUpcomingTests,
+    getOfflineTests, getBookTestHistory, updateTestId, getMcqQuestions,
+    setUploadLearnerBook, setClassroomCode, setUploadTestPaper, updateAudioRecording, updateQuestionType,
+    updatePersonalInfoInputs, updateSettingsInputs, resetSettingsInputs, editProfileInputs, updateProfileEditing
 
 } = actions;
 

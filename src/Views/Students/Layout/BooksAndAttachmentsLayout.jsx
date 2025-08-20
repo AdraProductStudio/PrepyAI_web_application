@@ -9,18 +9,17 @@ import LinkComponent from "Components/Router_components/LinkComponent";
 import TestPerformanceChartStudent from "Components/Charts/TestPerformanceChart_student";
 import { useCommonState, useDispatch } from "Components/CustomHooks";
 import { useEffect } from "react";
-import { handleGetSubjectAttachments, handleGetSubjectBooks, handleGetUpcomingTests } from "../Actions/StudentAction";
+import { handleGetSubjectAttachments, handleGetSubjectBooks, handleGetSubjectPerformance, handleGetUpcomingTests } from "../Actions/StudentAction";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import { updateTestId } from "../Slices/StudentSlice";
-import { OverallModel } from "../Utils/OverallModal";
 import Img from "Components/Img/Img";
 import Image from "Utils/Image";
 import SpinnerComponent from "Components/Spinner/Spinner";
 
 
 const BooksAndAttachmentsLayout = () => {
-    const { subject_id } = useParams();
-    const { jsonOnly } = JsonData({ subject_id });
+    const { subject_id} = useParams();
+    const { jsonOnly } = JsonData({ subject_id});
     const dispatch = useDispatch()
     const {studentState} = useCommonState()
     
@@ -28,6 +27,7 @@ const BooksAndAttachmentsLayout = () => {
         dispatch(handleGetSubjectBooks(subject_id))
         dispatch(handleGetSubjectAttachments(subject_id))
         dispatch(handleGetUpcomingTests(subject_id))
+        dispatch(handleGetSubjectPerformance(subject_id))
     }, [])
 
     return (
@@ -69,7 +69,7 @@ const BooksAndAttachmentsLayout = () => {
                                 <h5>Performance</h5>
                             </Card.Header>
                             <Card.Body>
-                                <TestPerformanceChartStudent />
+                                <TestPerformanceChartStudent data={studentState?.subject_performance}/>
                             </Card.Body>
                         </Card>
                     </div>
@@ -80,9 +80,12 @@ const BooksAndAttachmentsLayout = () => {
                                 <h5>Upcoming Tests</h5>
                             </Card.Header>
                             <Card.Body className="upcoming_test_history_body">
-                                { studentState?.upcoming_tests_loading ? 
+                                { studentState?.loading['upcoming_tests'] ? 
                                     <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "200px" }}>
-                                        <SpinnerComponent /> <p className="m-0">loading...</p>
+                                        <div className="col-5 text-center">
+                                            <SpinnerComponent />
+                                            <p className="m-0">Loading...</p>
+                                        </div>
                                     </div> 
                                     :
                                     studentState?.upcoming_tests.length > 0 ? (
@@ -106,7 +109,6 @@ const BooksAndAttachmentsLayout = () => {
                     </div>
                 </div>
             </div>
-            <OverallModel />
         </div>
     )
 }

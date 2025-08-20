@@ -16,13 +16,13 @@ const PerformanceHistoryCard = ({history_data, performance_data}) => {
       </Card.Header>
       <Card.Body className="performance_history_body">
         <Row className="align-items-center">
-          <Col xs={12} md={6} className="d-flex justify-content-center">
+          <Col xs={12} xl={6} className="d-flex justify-content-center">
             <div style={{ width: '100%', maxWidth: '300px', height: '200px' }}>
-              <PerformanceAndHistoryChart data={jsonOnly?.data} />
+              <PerformanceAndHistoryChart />
             </div>
           </Col>
 
-          <Col xs={12} md={6}>
+          <Col xs={12} xl={6}>
             <div className="d-flex flex-column justify-content-between">
               {jsonOnly?.data?.map((item) => (
                 <div key={item.name} className="d-flex justify-content-center align-items-center mb-2">

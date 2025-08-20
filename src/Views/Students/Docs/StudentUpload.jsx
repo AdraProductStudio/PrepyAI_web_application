@@ -43,9 +43,12 @@ const StudentUpload = () => {
 
       <Card.Body className='p-2 student_upload_body'>
         <Row className="row-cols-1 row-cols-md-2">
-          { studentState?.learner_books_loading ? 
+          {studentState.loading["learner_books"] ?
             <div className="d-flex justify-content-center align-items-center w-100" style={{ minHeight: '600px' }}>
-              <SpinnerComponent /> <p className="m-0">loading...</p>
+              <div className="col-5 text-center">
+                <SpinnerComponent />
+                <p className="m-0">Loading...</p>
+              </div>
             </div>
             :
             searchRegex.length > 0 ? (

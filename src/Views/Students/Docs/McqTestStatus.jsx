@@ -1,58 +1,86 @@
 import React from "react"
-import { useCommonState } from "Components/CustomHooks"
+import { useCommonState, useDispatch } from "Components/CustomHooks"
 import { Card, Row, Col, Badge, ProgressBar } from "react-bootstrap"
+import TestResultsChart from "Components/Charts/TestResultsChart"
+import Icons from "Utils/Icons"
+import LinkComponent from "Components/Router_components/LinkComponent"
+import ButtonComponent from "Components/Button/Button"
+import { updateModalShow } from "Views/Common/Slices/Common_slice"
+import { resetMcq } from "../Slices/StudentSlice"
+import { useNavigate } from "react-router-dom"
 
 function McqTestStatus() {
   const { studentState } = useCommonState()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const summary = studentState?.mcq_test?.summary || {}
   const results = studentState?.mcq_test?.result || []
 
   const { correct = 0, wrong = 0, unanswered = 0 } = summary
 
+  const goBack = ()=>{
+    dispatch(resetMcq())
+    localStorage.removeItem('test_id')
+  }
+
   return (
-    <div className="p-3">
-      <Card className="mb-4 p-3 shadow-sm">
+
+    <div className="px-5">
+      <Card className="mb-4 py-3 px-4 shadow-sm">
         <Row>
           <Col md={6}>
-            <h5 className="fw-bold mb-3">Test Results</h5>
-            <div className="mb-2">
-              <Badge bg="success" className="me-2">
-                Correct: {correct}
-              </Badge>
-              <Badge bg="danger" className="me-2">
-                Wrong: {wrong}
-              </Badge>
-              <Badge bg="secondary">
-                Unanswered: {unanswered}
-              </Badge>
-            </div>
-            <ProgressBar>
-              <ProgressBar
-                now={(correct / (correct + wrong + unanswered)) * 100}
-                variant="success"
-                key={1}
-              />
-              <ProgressBar
-                now={(wrong / (correct + wrong + unanswered)) * 100}
-                variant="danger"
-                key={2}
-              />
-              <ProgressBar
-                now={(unanswered / (correct + wrong + unanswered)) * 100}
-                variant="secondary"
-                key={3}
-              />
-            </ProgressBar>
+            <LinkComponent to={"/student_dashboard/home"} onLinkClick={goBack} className="brand-link-color">
+              <span>{Icons.back_button_icon_blue}</span>
+              <span className="align-middle">Back to Dashboard</span>
+            </LinkComponent>
+
+            <h5 className="fw-bold my-3">Test Results</h5>
+
+            <ButtonComponent
+              type="button"
+              className="btn btn-brand-color px-5 py-2 my-3"
+              buttonName="Developing"
+              clickFunction={() => console.log('developing')}
+            />
+
           </Col>
-          <Col md={6} className="d-flex align-items-center justify-content-center">
-            {/* <div className="text-center">
-              <h6 className="fw-bold">Score Distribution</h6>
-              <p>Pie chart placeholder</p>
-            </div> */}
+
+          <Col md={6} className="d-flex justify-content-end">
+            <div className="d-flex flex-column flex-sm-row align-items-center gap-4">
+
+              <div style={{ minWidth: "200px" }}>
+                <TestResultsChart correct={correct} wrong={wrong} unanswered={unanswered} />
+              </div>
+
+              <div>
+                <p className="mb-2 d-flex align-items-center">
+                  <span
+                    className="me-2 rounded-circle d-inline-block"
+                    style={{ width: "12px", height: "12px", backgroundColor: "#28a745" }}
+                  ></span>
+                  <span className="text-success fw-semibold">Correct Answers</span>: {correct}
+                </p>
+                <p className="mb-2 d-flex align-items-center">
+                  <span
+                    className="me-2 rounded-circle d-inline-block"
+                    style={{ width: "12px", height: "12px", backgroundColor: "#ed6c79ff" }}
+                  ></span>
+                  <span className="text-danger fw-semibold">Wrong Answers</span>: {wrong}
+                </p>
+                <p className="mb-0 d-flex align-items-center">
+                  <span
+                    className="me-2 rounded-circle d-inline-block"
+                    style={{ width: "12px", height: "12px", backgroundColor: "#6c757d" }}
+                  ></span>
+                  <span className="text-secondary fw-semibold">Unanswered</span>: {unanswered}
+                </p>
+              </div>
+            </div>
           </Col>
         </Row>
       </Card>
+
 
       {results.map((q, index) => {
         const isCorrect = q.Clicked_Answer === q.Correct_Answer
@@ -71,13 +99,12 @@ function McqTestStatus() {
                 return (
                   <div
                     key={opt.id}
-                    className={`p-2 rounded mb-2 border ${
-                      correctAnswer
-                        ? "bg-success bg-opacity-25"
-                        : selected && !correctAnswer
+                    className={`p-3 rounded mb-2 border ${correctAnswer
+                      ? "bg-success bg-opacity-25"
+                      : selected && !correctAnswer
                         ? "bg-danger bg-opacity-25"
                         : "bg-light"
-                    }`}
+                      }`}
                   >
                     <input
                       type="radio"
@@ -90,7 +117,7 @@ function McqTestStatus() {
                 )
               })}
 
-              <div className="mt-2">
+              <div className="mt-3">
                 <strong>Explanation:</strong>{" "}
                 <span>{q.Explanation}</span>
               </div>

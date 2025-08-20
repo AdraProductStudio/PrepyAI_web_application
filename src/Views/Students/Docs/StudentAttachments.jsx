@@ -15,9 +15,12 @@ const StudentAttachments = () => {
 
     return (
         <div>
-            {studentState?.subject_attachments_loading ? 
+            {studentState?.loading['subject_attachments'] ? 
                 <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "500px" }}>
-                    <SpinnerComponent /> <p className="m-0">loading...</p>
+                    <div className="col-5 text-center">
+                        <SpinnerComponent />
+                        <p className="m-0">Loading...</p>
+                    </div>
                 </div> 
                 :
                 Object.entries(studentState?.subject_attachments || []).length > 0 ? (
