@@ -13,9 +13,12 @@ const StudentsBooks = () => {
 
     return (
         <div className="row">
-            {studentState?.subject_books_loadingg ? 
+            {studentState?.loading['subject_books'] ? 
                 <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "500px" }}>
-                    <SpinnerComponent /> <p className="m-0">loading...</p>
+                    <div className="col-5 text-center">
+                        <SpinnerComponent />
+                        <p className="m-0">Loading...</p>
+                    </div>
                 </div> 
                 :
                 searchRegex.length > 0 ? (
@@ -30,9 +33,8 @@ const StudentsBooks = () => {
                                 <BookCard
                                     className="border"
                                     data={book}
-                                    previewFunction={() =>
-                                        navigate(`/student_dashboard/subjects/${subject_id}/books/${idx}`)
-                                    }
+                                    previewFunction={() =>navigate(`/student_dashboard/subjects/${subject_id}/books/${idx}`)}
+                                    generateFunction={() => navigate(`/student_dashboard/generate_question/${book.book_id}`)}
                                 />
                             </div>
                         ))
@@ -50,9 +52,8 @@ const StudentsBooks = () => {
                             <BookCard
                                 className="border"
                                 data={book}
-                                previewFunction={() =>
-                                    navigate(`/student_dashboard/subjects/${subject_id}/books/${idx}`)
-                                }
+                                previewFunction={() =>navigate(`/student_dashboard/subjects/${subject_id}/books/${idx}`)}
+                                generateFunction={() => navigate(`/student_dashboard/generate_question/${book.book_id}`)}
                             />
                         </div>
                     ))

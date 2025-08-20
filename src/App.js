@@ -59,6 +59,11 @@ import GenerateQuestionLayout from "Views/Students/Layout/GenerateQuestionLayout
 import GenerateQuestion from "Views/Students/Docs/GenerateQuestion";
 import McqQuestions from "Views/Students/Docs/McqQuestions";
 import LongQuestions from "Views/Students/Docs/LongQuestions";
+import McqTestLayout from "Views/Students/Layout/McqTestLayout";
+import StudentProfile from "Views/Students/Docs/Profile";
+import StudentPersonalInfo from "Views/Students/Docs/PersonalInfo";
+import StudentSettings from "Views/Students/Docs/Settings";
+
 
 import LearnersLayout from 'Views/Learners/Layout/Layout'
 import Dashboard from "Views/Learners/Docs/Dashboard";
@@ -87,7 +92,6 @@ import SuperAdminDashboard from "Views/Superadmin/Docs/SuperAdminDashboard";
 import AdminAuth from "Views/Admin/Docs/AdminAuth";
 import SuperadminAuth from "Views/Superadmin/Docs/SuperadminAuth";
 import OrganisationAuth from "Views/Organisation/Docs/OrganisationAuth";
-
 
 function App() {
   return (
@@ -159,30 +163,33 @@ function App() {
           <Route path="student_dashboard" element={<StudentAuth />}>
             <Route element={<StudentsLayout />}>
               <Route path="home" element={<StudentDashboard />} />
+              <Route path="notes" element={<Notes />} />
+
               <Route path="subjects">
                 <Route index element={<StudentSubject />} />
                 <Route path=":subject_id" element={<BooksAndAttachmentsLayout />}>
                   <Route index element={<StudentsBooks />} />
                   <Route path="attachments" element={<StudentAttachments />} />
                 </Route>
-                {/* <Route path=":subject_id/attachments/:attachment_id" element={<BooksOverviewLayout />} /> */}
                 <Route path=":subject_id/books/:book_idx" element={<BooksOverviewLayout />} />
               </Route>
-              <Route path="test" element={<McqTest />} />
-              <Route path="test_status" element={<McqTestStatus />} />
-              <Route path="notes" element={<Notes />} />
-              <Route path="profile" element={<ReusableProfile />} />
+
+              <Route path="profile" element={<StudentProfile />} >
+                <Route index element={<StudentPersonalInfo />} />
+                <Route path="settings" element={<StudentSettings />} />
+              </Route>
             </Route>
-            <Route path="generate_question" element={<GenerateQuestionLayout />}>
+
+            <Route path="generate_question/:id" element={<GenerateQuestionLayout />}>
               <Route index element={<GenerateQuestion />} />
               <Route path="mcq_questions" element={<McqQuestions />} />
               <Route path="long_questions" element={<LongQuestions />} />
             </Route>
-          </Route>
-          <Route path="student_dashboard/generate_question" element={<GenerateQuestionLayout />}>
-            <Route index element={<GenerateQuestion />} />
-            <Route path="mcq_questions" element={<McqQuestions />} />
-            <Route path="long_questions" element={<LongQuestions />} />
+
+            <Route path="test" element={<McqTestLayout />}>
+              <Route index element={<McqTest />} />
+              <Route path="test_status" element={<McqTestStatus />} />
+            </Route>
           </Route>
 
           {/* Learners */}

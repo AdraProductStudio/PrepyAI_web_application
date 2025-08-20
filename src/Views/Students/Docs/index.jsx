@@ -7,7 +7,6 @@ import ActivityCard from 'Components/Card/ActivtyCard';
 import { useCommonState, useDispatch } from "Components/CustomHooks"
 import { handleGetAllTestHistory, handleGetAllTests, handleGetOfflineTests, handleGetOverallPerformance } from "../Actions/StudentAction"
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
-import { OverallModel } from "../Utils/OverallModal";
 import { updateTestId } from "../Slices/StudentSlice";
 import '../../../Stylesheet/Css/Student.css'
 import ButtonComponent from "Components/Button/Button";
@@ -43,11 +42,11 @@ const StudentDashboard = () => {
                                 <Card.Title className='fs-16 mb-0'> Activities </Card.Title>
                             </Card.Header>
                             <Card.Body className="activity_card_body">
-                                {studentState?.all_tests_loading ?
+                                {studentState?.loading['all_tests'] ?
                                     <div className="d-flex justify-content-center align-items-center h-100">
                                         <div className="col-5 text-center">
                                             <SpinnerComponent />
-                                            <p className="m-0">loading...</p>
+                                            <p className="m-0">Loading...</p>
                                         </div>
                                     </div>
                                     :
@@ -55,7 +54,7 @@ const StudentDashboard = () => {
                                         studentState?.all_tests?.map((test, idx) => (
                                             <ActivityCard key={idx} data={test}
                                                 startFunction={() => {
-                                                    dispatch(updateModalShow({ show: true, close_btn: false, modal_from: "dashboard", modal_type: "start_test" }))
+                                                    dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "dashboard", modal_type: "start_test" }))
                                                     dispatch(updateTestId({ id: test.test_id }))
                                                 }}
 
@@ -80,7 +79,6 @@ const StudentDashboard = () => {
                     </Col>
                 </Row>
             </Col >
-            <OverallModel />
         </Row>
     )
 }
