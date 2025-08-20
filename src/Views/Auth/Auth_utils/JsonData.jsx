@@ -101,7 +101,7 @@ const JsonData = () => {
         Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.email_id ? "email required" : null,
       },
       {
-        name: "Password",
+        name: "New Password",
         type: authState?.app_data?.shownewPassword ? "text" : "password",
         category: "input",
         placeholder: "********",

@@ -1028,3 +1028,9 @@ td {
 .offcanvas_sidebar {
   width: 22rem !important;
 }
+
+input::placeholder {
+  color: #c7c1c1 !important; 
+  font-weight: 400;
+  line-height: normal;
+}

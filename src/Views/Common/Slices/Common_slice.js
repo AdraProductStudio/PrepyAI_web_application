@@ -35,6 +35,7 @@ let initialState = {
         user_role: decrypt_app_data_logs()?.role_name || '',
         user_id: decrypt_app_data_logs()?.user_id || '',
         user_image: decrypt_app_data_logs()?.profile_image || '',
+        user_name: decrypt_app_data_logs()?.user_name || '',
     },
     pagination: {
         currentPage: 1,
@@ -292,6 +293,7 @@ const commonSlice = createSlice({
                         state.app_data.refresh_token = data?.refresh_token || '';
                         state.app_data.user_image = data?.profile_image || '';
                         state.app_data.user_role = data?.role_name || '';
+                        state.app_data.user_name = data?.user_name || '';
                         state.app_data.validated = false;
                         break;
 

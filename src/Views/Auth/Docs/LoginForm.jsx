@@ -52,7 +52,7 @@ const LoginForm = () => {
       children={form}
       title={title}
       button={button}
-      as="Sign in"
+      as="Sign in with Email"
       bottomalert={"Not Registered Yet?"}
       navigatepath={"/learners_registration"}
       linkTitle="Create an account"
