@@ -496,6 +496,12 @@ const TeacherSlice = createSlice({
                 default:
                     break;
             }
+        },
+        updateQuestionType(state,action){
+            state.question_type=action.payload
+        },
+        updateAudioRecording(state,action){
+            state.recording = action.payload
         }
 
 

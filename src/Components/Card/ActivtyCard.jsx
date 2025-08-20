@@ -3,6 +3,7 @@ import { Card } from "react-bootstrap"
 import { useDispatch } from "react-redux";
 import { data } from "react-router-dom";
 import Icons from "Utils/Icons";
+import { updateModalShow } from "Views/Common/Slices/Common_slice";
 
 const ActivityCard = ({data, startFunction}) => {
     function dynamicContent() {

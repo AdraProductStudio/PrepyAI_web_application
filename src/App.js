@@ -179,6 +179,11 @@ function App() {
               <Route path="long_questions" element={<LongQuestions />} />
             </Route>
           </Route>
+          <Route path="student_dashboard/generate_question" element={<GenerateQuestionLayout />}>
+            <Route index element={<GenerateQuestion />} />
+            <Route path="mcq_questions" element={<McqQuestions />} />
+            <Route path="long_questions" element={<LongQuestions />} />
+          </Route>
 
           {/* Learners */}
           <Route path="learners_dashboard" element={<LearnersAuth />}>
