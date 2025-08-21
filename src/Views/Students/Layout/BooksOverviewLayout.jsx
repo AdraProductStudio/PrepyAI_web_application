@@ -17,7 +17,7 @@ const BooksOverviewLayout = () => {
     const { studentState } = useCommonState()
     const dispatch = useDispatch()
     const navigate = useCustomNavigate()
-    
+
     const book = studentState?.subject_books[book_idx]
     useEffect(() => {
         dispatch(handleGetSubjectBooks(subject_id))
@@ -26,7 +26,7 @@ const BooksOverviewLayout = () => {
             dispatch(handleGetBookTestHistory(book.book_id))
             dispatch(handleGetBookPerformance(book.book_id))
         }
-    }, [subject_id, book?.book_id])
+    }, [])
 
 
     const isValidUrl = (url) => {
@@ -56,8 +56,8 @@ const BooksOverviewLayout = () => {
 
             <div className="w-100 small_header_content_main d-flex overflowY">
                 <div className="col-8 p-1">
-                {
-                    <Card className="border-0 rounded-3 shadow-sm px-3 h-100 overflowY">
+                    {
+                        <Card className="border-0 rounded-3 shadow-sm px-3 h-100 overflowY">
                             <Card.Body>
                                 {/* <PdfViewer pdfUrl={book?.url} className="col-12" /> */}
                                 {
@@ -76,8 +76,8 @@ const BooksOverviewLayout = () => {
                                 }
 
                             </Card.Body>
-                    </Card>
-                }
+                        </Card>
+                    }
                 </div>
 
                 <div className="col-4">
