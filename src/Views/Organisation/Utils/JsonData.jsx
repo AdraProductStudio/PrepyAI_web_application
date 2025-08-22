@@ -1,13 +1,14 @@
-// import { useCommonState, useCustomNavigate, useDispatch } from "Components/CustomHooks";
-// import { update_app_data } from "Views/Common/Slices/Common_slice";
+import { useCommonState, useDispatch } from "Components/CustomHooks";
 import Icons from "Utils/Icons";
 import { CiUser } from "react-icons/ci"
 import { CiSettings } from "react-icons/ci";
+import { edit_org_profile_Inputs, updateCreateAdminInputs, updateOrgSettingsInputs } from "../Slices/Organisation_slice";
 
-const JsonData = (params) => {
-  // const dispatch = useDispatch();
+const JsonData = (params = {}) => {
+  const dispatch = useDispatch()
   // const navigate = useCustomNavigate();
-  // const { commonState } = useCommonState();
+  const { commonState, organisationState } = useCommonState()
+  const { organizationInfo } = params
 
   const jsonOnly = {
     sidebar_data: [
@@ -28,18 +29,18 @@ const JsonData = (params) => {
       {
         icon: Icons.admins,
         title: "Total No.of Admins",
-        value: "02/10",
+        value: organizationInfo?.admins,
       },
       {
         icon: Icons.teachers,
         title: "Total No.of Teachers",
-        value: "50/100",
+        value: organizationInfo?.teachers,
       },
       {
         icon: Icons.billing,
         title: "Billing History",
         subTitle: "Total spent",
-        value: "02/10",
+        value: organizationInfo?.billing_history,
       },
     ],
 
@@ -255,12 +256,12 @@ const JsonData = (params) => {
       {
         name: "Personal Information",
         icon: <CiUser />,
-        to: "/org_profile"
+        to: "/organisation_dashboard/org_profile"
       },
       {
         name: "Settings",
         icon: <CiSettings />,
-        to: "/org_profile/settings"
+        to: "/organisation_dashboard/org_profile/settings"
       },
       // {
       //   name: "Time Table",
@@ -316,6 +317,229 @@ const JsonData = (params) => {
   }
 
   const jsxOnly = {
+    create_admin: [
+      {
+        name: "Insitute Name",
+        type: "text",
+        title: " ",
+        category: "input",
+        placeholder: "",
+        value: organisationState?.createAdminInputs?.institute_name || '',
+        change: (e) => dispatch(updateCreateAdminInputs({ field: "institute_name", value: e.target.value })),
+        // keyDown: (e) => {
+        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+        // },
+        divClassName: "mb-3",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated && !organisationState?.createAdminInputs?.institute_name ? "Insititute name required" : null
+      },
+      {
+        name: "Admin Name",
+        type: "text",
+        title: " ",
+        category: "input",
+        placeholder: "",
+        value: organisationState?.createAdminInputs?.admin_name || '',
+        change: (e) => dispatch(updateCreateAdminInputs({ field: "admin_name", value: e.target.value })),
+        // keyDown: (e) => {
+        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+        // },
+        divClassName: "mb-3",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated && !organisationState?.createAdminInputs?.admin_name ? "Organization name required" : null
+      },
+      {
+        name: "Email Id ",
+        type: "text",
+        title: "",
+        category: "input",
+        placeholder: "",
+        value: organisationState?.createAdminInputs?.email_id || '',
+        change: (e) => dispatch(updateCreateAdminInputs({ field: "email_id", value: e.target.value })),
+        // keyDown: (e) => {
+        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+        // },
+        divClassName: "mb-3",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated && !organisationState?.createAdminInputs?.email_id ? "Email required" : null
+      },
+
+    ],
+    profile_details: [
+      {
+        name: "First Name",
+        value: organisationState?.profileInputs?.first_name || '',
+        type: "text",
+        title: " ",
+        category: "input",
+        placeholder: "",
+        divClassName: "mb-3 col-12 col-lg-8",
+      },
+      {
+        name: "Last Name",
+        value: organisationState?.profileInputs?.last_name || '',
+        type: "text",
+        title: " ",
+        category: "input",
+        placeholder: "",
+        divClassName: "mb-3 col-12 col-lg-8",
+      },
+      {
+        name: "Email",
+        value: organisationState?.profileInputs?.email_id || '',
+        type: "text",
+        title: " ",
+        category: "input",
+        placeholder: "",
+        divClassName: "mb-3  col-12 col-lg-8",
+      },
+      {
+        name: "Phone Number",
+        value: organisationState?.profileInputs?.phone_number || '',
+        type: "text",
+        title: " ",
+        category: "input",
+        placeholder: "",
+        divClassName: "mb-3  col-12 col-lg-8",
+      },
+      {
+        name: "Address",
+        value: organisationState?.profileInputs?.address || '',
+        type: "text",
+        title: " ",
+        category: "input",
+        placeholder: "",
+        divClassName: "mb-3  col-12 col-lg-8",
+      }
+
+    ],
+    organization_edit_profile: [
+      {
+        name: "First Name",
+        type: "text",
+        title: " ",
+        category: "input",
+        placeholder: "",
+        value: organisationState?.editProfileInputs?.first_name || '',
+        change: (e) => dispatch(edit_org_profile_Inputs({ field: 'first_name', value: e.target.value })),
+        // keyDown: (e) => {
+        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+        // },
+        divClassName: "mb-3",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated && !organisationState?.editProfileInputs?.first_name ? "First name required" : null
+      },
+      {
+        name: "Last Name",
+        type: "text",
+        title: " ",
+        category: "input",
+        placeholder: "",
+        value: organisationState?.editProfileInputs?.last_name || '',
+        change: (e) => dispatch(edit_org_profile_Inputs({ field: 'last_name', value: e.target.value })),
+        // keyDown: (e) => {
+        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+        // },
+        divClassName: "mb-3",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated && !organisationState?.editProfileInputs?.last_name ? "Last name required" : null
+      },
+      {
+        name: "Email",
+        type: "text",
+        title: " ",
+        category: "input",
+        placeholder: "",
+        value: organisationState?.editProfileInputs?.email_id || '',
+        change: (e) => dispatch(edit_org_profile_Inputs({ field: 'email_id', value: e.target.value })),
+        // keyDown: (e) => {
+        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+        // },
+        divClassName: "mb-3",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated && !organisationState?.editProfileInputs?.email_id ? "Email required" : null
+      },
+      {
+        name: "Phone Number",
+        type: "text",
+        title: " ",
+        category: "input",
+        placeholder: "",
+        value: organisationState?.editProfileInputs?.phone_number || '',
+        change: (e) => dispatch(edit_org_profile_Inputs({ field: 'phone_number', value: e.target.value })),
+        // keyDown: (e) => {
+        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+        // },
+        divClassName: "mb-3",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated && !organisationState?.editProfileInputs?.phone_number ? "Phone Number required" : null
+      },
+      {
+        name: "Address",
+        type: "text",
+        title: " ",
+        category: "input",
+        placeholder: "",
+        value: organisationState?.editProfileInputs?.address || '',
+        change: (e) => dispatch(edit_org_profile_Inputs({ field: 'address', value: e.target.value })),
+        // keyDown: (e) => {
+        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+        // },
+        divClassName: "mb-3",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated && !organisationState?.editProfileInputs?.address ? "Address required" : null
+      }
+
+    ],
+    settings_details: [
+      {
+        name: "Current Password",
+        type: "text",
+        title: " ",
+        category: "input",
+        placeholder: "Current Password",
+        value: organisationState?.settingsInputs?.old_password || '',
+        change: (e) => dispatch(updateOrgSettingsInputs({ field:'old_password', value: e.target.value })),
+        // keyDown: (e) => {
+        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+        // },
+        divClassName: "mb-3",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated && !organisationState?.settingsInputs?.old_password ? "First name required" : null
+      },
+      {
+        name: "New Password",
+        type: "text",
+        title: " ",
+        category: "input",
+        placeholder: "Current Password",
+        value: organisationState?.settingsInputs?.confirm_password || '',
+        change: (e) => dispatch(updateOrgSettingsInputs({ field: 'confirm_password', value: e.target.value })),
+        // keyDown: (e) => {
+        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+        // },
+        divClassName: "mb-3",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated && !organisationState?.settingsInputs?.confirm_password ? "Confirm Password required" : null
+      },
+      {
+        name: "Confirm Password",
+        type: "text",
+        title: " ",
+        category: "input",
+        placeholder: "Confirm Password",
+        value: organisationState?.settingsInputs?.new_password || '',
+        change: (e) => dispatch(updateOrgSettingsInputs({ field: 'new_password', value: e.target.value })),
+        // keyDown: (e) => {
+        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+        // },
+        divClassName: "mb-3",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated && !organisationState?.settingsInputs?.new_password ? "New password required" : null
+      },
+
+    ]
+
 
   }
 

@@ -1,5 +1,5 @@
 import ButtonComponent from "Components/Button/Button";
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
 import { FaRegClock } from "react-icons/fa";
 import Icons from "Utils/Icons";
 

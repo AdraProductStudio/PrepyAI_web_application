@@ -1,31 +1,22 @@
-// import ButtonComponent from "Components/Button/Button";
 import ButtonComponent from "Components/Button/Button";
 import Input from "Components/Input/Input";
-import React from "react";
+import React, { useEffect } from "react";
 import { CiEdit } from "react-icons/ci";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import JsonData from "../Utils/JsonData";
 import Img from "Components/Img/Img";
-import { updateOrgProfileInputs } from "../Slices/Organisation_slice";
+import Images from "Utils/Image"
+import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
+import { getOrganizationProfileDetails } from "../Actions/organisationAction";
+import { updateModalShow } from "Views/Common/Slices/Common_slice";
 
 const OrgPersonalInfo = () => {
-  const { jsonOnly } = JsonData()
-
+  const { jsxOnly } = JsonData()
   const dispatch = useDispatch();
-  const profileInputs = useSelector((state) => state.organisationState.profileInputs);
 
-  const onInputChange = (e) => {
-    const { name, value } = e.target;
-    dispatch(updateOrgProfileInputs({ field: name, value }));
-  };
-
-  const onImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imgURL = URL.createObjectURL(file);
-      document.querySelector("label[for='profileImageInput'] img").src = imgURL;
-    }
-  };
+  useEffect(() => {
+    dispatch(getOrganizationProfileDetails())
+  }, [])
 
 
   return (
@@ -37,9 +28,9 @@ const OrgPersonalInfo = () => {
         >
           <Input
             label={
-              <span style={{cursor: "pointer"}}>
+              <span style={{ cursor: "pointer" }}>
                 <Img
-                  src={"/sample.jpg"}
+                  src={Images?.default_prfile_pic}
                   alt={"ProfileImage"}
                   fluid={"fluid"}
                   width={"100px"}
@@ -57,50 +48,23 @@ const OrgPersonalInfo = () => {
             htmlFor={"profileImageInput"}
             accept={"image/*"}
             className={"d-none"}
-            change={onImageChange}
+          // change={onImageChange}
           />
         </article>
 
         <div>
           <ButtonComponent
             buttonName={<span><CiEdit className=" me-1 fs-5" /> Edit Profile</span>}
-            className={"btn-outline-primary"}
+            className={"btn-outline-primary profile_edit_button"}
+            clickFunction={() => { dispatch(updateModalShow({ show: true, close_btn: true, size: "md", modal_from: "Profile", modal_type: "edit_profile" })) }}
+
           />
         </div>
       </section>
 
       <section className="overflow-auto mt-4 mt-md-4">
         <form className="row">
-          {jsonOnly?.orgPersonalInfoInputs.map((input, idx) => (
-            <div key={idx} className="mb-3 col-12 col-md-6 p-md-2">
-              <Input
-                htmlFor={Input.id}
-                labelClassName={"text-primary-emphasis"}
-                label={input.label}
-                type={input.type}
-                name={input.id}
-                value={profileInputs?.[input.id]}
-                change={onInputChange}
-              />
-            </div>
-          ))}
-
-          <div className="mb-3 col-12 p-md-2">
-            <label
-              htmlFor="exampleInputEmail1"
-              className="form-label text-primary-emphasis"
-            >
-              Address
-            </label>
-            <textarea
-              className="form-control"
-              id="exampleInputEmail1"
-              name="address"
-              value={profileInputs?.address}
-              onChange={onInputChange}
-            />
-          </div>
-
+          {Inputfunctions(jsxOnly?.profile_details)}
           {/* <div className="d-flex justify-content-end p-md-2">
             <ButtonComponent
               type={"button"}

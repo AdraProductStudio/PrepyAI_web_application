@@ -1,36 +1,39 @@
+import { useCommonState } from "Components/CustomHooks";
 import React from "react";
 
-const data = [
-    {
-        name: "Teacher",
-        value: 100,
-        color: "#F28AD8",
-        gradient: "url(#grad-teacher)",
-        cx: 160,
-        cy: 80,
-        r: 75,
-    },
-    {
-        name: "Students",
-        value: 30,
-        color: "#ff9a9e",
-        gradient: "url(#grad-students)",
-        cx: 100,
-        cy: 135,
-        r: 45,
-    },
-    {
-        name: "Tests",
-        value: 20,
-        color: "#ff4ecd",
-        gradient: "url(#grad-tests)",
-        cx: 210,
-        cy: 150,
-        r: 40,
-    },
-];
 
 export default function ClassroomOverviewChart() {
+    const { adminState } = useCommonState()
+    const data = [
+        {
+            name: "Teacher",
+            value: adminState?.classroom_overview.teachers,
+            color: "#F28AD8",
+            gradient: "url(#grad-teacher)",
+            cx: 160,
+            cy: 80,
+            r: 75,
+        },
+        {
+            name: "Students",
+            value: adminState?.classroom_overview.students,
+            color: "#ff9a9e",
+            gradient: "url(#grad-students)",
+            cx: 100,
+            cy: 135,
+            r: 45,
+        },
+        {
+            name: "Tests",
+            value: adminState?.classroom_overview.tests,
+            color: "#ff4ecd",
+            gradient: "url(#grad-tests)",
+            cx: 210,
+            cy: 150,
+            r: 40,
+        },
+    ];
+    
     return (
         <div style={{ textAlign: "center" }}>
             <svg width="300" height="220">

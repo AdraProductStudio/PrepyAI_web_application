@@ -2,14 +2,13 @@ import { Fragment } from "react";
 import ReactDropdownSelect from "Components/Input/ReactDropdownSelect";
 import SelectBox from "Components/Input/SelectBox";
 import Input from "Components/Input/Input";
-import ButtonComponent from "Components/Button/Button";
 import Textbox from "Components/Input/textbox";
 import Icons from "Utils/Icons";
 import Checkbox from "Components/Input/Checkbox";
 
 export function Inputfunctions(funBy) {
     if (!funBy || funBy.length === 0) return null;
-    
+
     return funBy?.map((ipVal, iPInd) => {
         switch (ipVal?.category) {
             case "heading":
@@ -79,10 +78,10 @@ export function Inputfunctions(funBy) {
                                         mandatory={ipVal?.isMandatory}
                                         className="d-none"
                                         htmlFor="file_upload"
-                                        accept={ipVal?.accept}
                                         multiple={true}
                                         inputError={ipVal?.Err}
                                         disabled={ipVal?.disabled}
+                                        accept={ipVal?.accept}
                                     />
 
                                     <div className='border py-2 rounded-2 col-12 text-center'>
@@ -93,7 +92,7 @@ export function Inputfunctions(funBy) {
 
                                 <div className="mt-4 w-100">
                                     {ipVal?.value?.map((data, index) => {
-                                        const { id, filename, fileimage, datetime, filesize } = data;
+                                        const { id, name: filename, fileimage, datetime, size: filesize } = data;
                                         return (
                                             // typeof data === "string" ?
                                             //     <div className="file-atc-box w-100" key={id}>
@@ -121,7 +120,7 @@ export function Inputfunctions(funBy) {
                                             //     </div>
                                             //     :
                                             <div className="file-atc-box w-100" key={id}>
-                                                {filename.match(/.(jpg|jpeg|png|gif|svg)$/i) ?
+                                                {filename.match(/.(jpg|jpeg|png|gif|svg|ods)$/i) ?
                                                     <div className="file-image">
                                                         {" "}
                                                         <img src={fileimage} alt="" />
@@ -136,18 +135,18 @@ export function Inputfunctions(funBy) {
                                                     <div className="col-9">
                                                         <p>
                                                             <span>Size : {filesize}</span>,
-                                                            <span className="ps-1 ml-2">
+                                                            {/* <span className="ps-1 ml-2">
                                                                 Modified Time : {datetime}
-                                                            </span>
+                                                            </span> */}
                                                         </p>
                                                     </div>
                                                     <div className="file-actions col-3">
-                                                        <ButtonComponent
+                                                        {/* <ButtonComponent
                                                             type="button"
                                                             className="file-action-btn w-100 text-end"
                                                             clickFunction={() => ipVal?.deleteImg(id)}
                                                             buttonName="Delete"
-                                                        />
+                                                        /> */}
                                                     </div>
                                                 </div>
                                             </div>
@@ -203,7 +202,7 @@ export function Inputfunctions(funBy) {
                         rows={5}
                         className=""
                         label={ipVal?.name}
-                        labelClassName="text-secondary mb-0 fs-14"
+                        labelClassName="text-secondary fw-bold mb-0 fs-14"
                         mandatory={ipVal?.isMandatory}
                         inputError={ipVal?.Err}
                         disabled={ipVal?.disabled}

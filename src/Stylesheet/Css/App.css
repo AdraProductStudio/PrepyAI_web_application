@@ -43,6 +43,8 @@
   --main-body-height: 88vh;
   --brand-link-color: #182988;
   --theme-secondary-color: #B2B9C0;
+  --bs-accordion-active-background: linear-gradient(90deg, #EC008C 0%, #FC6767 100%);
+
 }
 
 .main_bg {

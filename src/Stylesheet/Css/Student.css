@@ -1,10 +1,3 @@
-.NoteCard {
-    background-color: #F4FAB3;
-    max-width: 347px;
-    max-height: 342px;
-    border-radius: 7px;
-}
-
 .sidebar-wrapper {
     width: 250px;
     display: flex;
@@ -23,8 +16,13 @@
 
 .Uploadbtn {
     background-color: white;
-    border: 2px dashed #E73C3C;
-    color: #E73C3C;
+    border: 2px dashed #E73C3C !important;
+    /* color: #E73C3C; */
+}
+
+.upload_book_div {
+    border: 1px #E73C3C dotted !important;
+    border-radius: 10px;
 }
 
 

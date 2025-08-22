@@ -1,8 +1,11 @@
 import ButtonComponent from "Components/Button/Button";
 import { Card } from "react-bootstrap"
+import { useDispatch } from "react-redux";
+import { data } from "react-router-dom";
 import Icons from "Utils/Icons";
+import { updateModalShow } from "Views/Common/Slices/Common_slice";
 
-const ActivityCard = () => {
+const ActivityCard = ({data, startFunction}) => {
     function dynamicContent() {
         const path = window.location.pathname;
         switch (true) {
@@ -10,15 +13,19 @@ const ActivityCard = () => {
                 return (
                     <div className="col row">
                         <div className="col-8 px-2">
-                            <h6 className="mb-1 fs-14">Class 12 th Maths Test</h6>
-                            <p className="text-secondary fs-13 mb-0">Online - (Multiple Questions) May 12, 2025, 11:30am</p>
+                            <h6 className="mb-1 fs-14">{data?.classroom_name}</h6>
+                            <p className="text-secondary fs-13 mb-0">
+                                <span>{data.mode_of_test} - (Multiple Questions)</span>
+                                <br />
+                                <span>{data.test_date}, {data.test_time}</span>
+                            </p>
                         </div>
                         <div className="col-4 text-end">
                             <ButtonComponent
                                 type="button"
                                 className="btn btn-brand-color"
                                 buttonName="Start test"
-                                clickFunction={() => console.log("View Details Clicked")}
+                                clickFunction= {startFunction}
                             />
                         </div>
                     </div>
@@ -27,8 +34,8 @@ const ActivityCard = () => {
             case /teachers_dashboard/.test(path):
                 return (
                     <div className="col">
-                        <h6 className="mb-1 fs-14">Class 12 th Maths Test</h6>
-                        <p className="text-secondary fs-13 mb-0">Online - (Multiple Questions) May 12, 2025, 11:30am</p>
+                        <h6 className="mb-1 fs-14">{data?.classroom_name || "" + " "+ data?.subject_name || ""}</h6>
+                        <p className="text-secondary fs-13 mb-0">{data?.mode_of_test || ""} - ({data?.type_of_question || ""}) {data?.test_date || ""}, {data?.test_time || ""}</p>
                     </div>
                 )
 

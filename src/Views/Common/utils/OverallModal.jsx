@@ -4,8 +4,6 @@ import ModalComponent from "Components/Modal/Modal";
 
 export function OverallModel() {
     const { commonState } = useCommonState();
-    // const dispatch = useDispatch();
-    // const navigate = useCustomNavigate();
 
     function modalHeaderFun() {
         switch (commonState?.modal?.from) {

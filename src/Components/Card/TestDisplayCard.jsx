@@ -30,8 +30,8 @@ const TestDisplayCard = ({
                     <div className="w-100 row align-items-end">
                         <div className="col-8">
                             <h6 className="">{data?.title || 'heading'}</h6>
-                            <p className="fs-13 text-secondary mb-1">04-03-2025 | 4:00 PM</p>
-                            <p className="fs-13 text-secondary mb-1">Online</p>
+                            <p className="fs-13 text-secondary mb-1">{data?.test_date || ''} | {data?.test_time || ''}</p>
+                            <p className="fs-13 text-secondary mb-1">{data?.mode}</p>
                         </div>
                         <div className="col-4">
                             <div className="upcoming_card_time">
@@ -46,9 +46,9 @@ const TestDisplayCard = ({
             case /test\/completed_test/.test(path):
                 return <div className="p-2">
                     <div className="w-100">
-                        <h6 className="">{data?.title || 'heading'}</h6>
-                        <p className="fs-13 text-secondary mb-1">04-03-2025 | 4:00 PM</p>
-                        <p className="fs-13 text-secondary mb-1">Online</p>
+                        <h6 className="">{data?.test_name || ''}</h6>
+                        <p className="fs-13 text-secondary mb-1">{data?.test_date || ''} | {data?.test_time || ''}</p>
+                        <p className="fs-13 text-secondary mb-1">{data?.mode}</p>
                     </div>
                 </div>
 
@@ -57,8 +57,8 @@ const TestDisplayCard = ({
                     <div className="w-100 row">
                         <div className="col-8">
                             <h6 className="">{data?.title || 'heading'}</h6>
-                            <p className="fs-13 text-secondary mb-1">04-03-2025 | 4:00 PM</p>
-                            <p className="fs-13 text-secondary mb-1">Online</p>
+                            <p className="fs-13 text-secondary mb-1">{data?.test_date || ''} | {data?.test_time || ''}</p>
+                            <p className="fs-13 text-secondary mb-1">{data?.mode}</p>
                         </div>
                         <div className="col-4">
                             <div className="col-12 text-end">

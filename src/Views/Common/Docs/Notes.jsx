@@ -7,7 +7,7 @@ import ButtonComponent from "Components/Button/Button";
 import SpinnerComponent from "Components/Spinner/Spinner";
 import { useCommonState, useDispatch } from "Components/CustomHooks";
 import {setDeleteId, setEditNoteData, showMoreModal, updateModalShow} from "Views/Common/Slices/Common_slice"
-import { getStudentsNotes, updateNotePriority } from "Views/Common/Actions/Common_action";
+import { getNotes, updateNotePriority } from "Views/Common/Actions/Common_action";
 import 'Stylesheet/Css/StudentsNotes.css'
 
 
@@ -15,10 +15,9 @@ import 'Stylesheet/Css/StudentsNotes.css'
 const Notes = () => {
   const dispatch = useDispatch();
   const { commonState } = useCommonState();
-  const { glow, data } = commonState?.students_notes
-
+  const{glow,data}=commonState.notes
   useEffect(() => {
-    dispatch(getStudentsNotes());
+    dispatch(getNotes());
   }, []);
 
   const handleDeleteNote = (id) => {
@@ -65,7 +64,7 @@ const Notes = () => {
         ) : data?.length ? (
           <div className="w-100 small_header_content_main row overflowY">
          { data?.map((note_data) => (
-               <div className="col-md-6 col-lg-4 col-xxl-3 p-2" key={note_data.s_no}>
+               <div className="col-md-6 col-lg-4 col-xxl-3 p-2 " key={note_data.s_no}>
                  <NoteCard 
                  data={note_data} 
                  onShowMore={() => handleShowMore(note_data)} 

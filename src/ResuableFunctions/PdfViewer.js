@@ -24,28 +24,28 @@ const PdfViewer = ({
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    useEffect(() => {
-        const fetchPdfAsBlob = async () => {
-            try {
-                const response = await fetch(pdfUrl);
-                const blob = await response.blob();
-                const blobUrl = URL.createObjectURL(blob);
-                console.log(blobUrl)
-                setPdfBlobUrl(blobUrl);
-            } catch (error) {
-                console.error("Failed to fetch PDF as blob:", error);
-            }
-        };
+    // useEffect(() => {
+    //     const fetchPdfAsBlob = async () => {
+    //         try {
+    //             const response = await fetch(pdfUrl);
+    //             const blob = await response.blob();
+    //             const blobUrl = URL.createObjectURL(blob);
+    //             console.log(blobUrl)
+    //             setPdfBlobUrl(blobUrl);
+    //         } catch (error) {
+    //             console.error("Failed to fetch PDF as blob:", error);
+    //         }
+    //     };
 
-        if (pdfUrl) {
-            fetchPdfAsBlob();
-        }
-    }, [pdfUrl]);
+    //     if (pdfUrl) {
+    //         fetchPdfAsBlob();
+    //     }
+    // }, [pdfUrl]);
 
     return (
         <div ref={containerRef} className={className}>
             <h3>{title || ''}</h3>
-            {pdfBlobUrl ? (
+            {/* {pdfBlobUrl ? (
                 <iframe
                     src={pdfBlobUrl}
                     title={title || ''}
@@ -56,7 +56,7 @@ const PdfViewer = ({
                 />
             ) : (
                 <div>Loading PDF...</div>
-            )}
+            )} */}
         </div>
     );
 };

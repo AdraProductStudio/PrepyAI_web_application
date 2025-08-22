@@ -224,6 +224,10 @@ const back_button_icon_blue = <svg xmlns="http://www.w3.org/2000/svg" width="24"
   <path d="M10.5999 12.7108C10.5061 12.6178 10.4317 12.5072 10.381 12.3854C10.3302 12.2635 10.3041 12.1328 10.3041 12.0008C10.3041 11.8688 10.3302 11.7381 10.381 11.6162C10.4317 11.4944 10.5061 11.3838 10.5999 11.2908L15.1899 6.71079C15.2836 6.61783 15.358 6.50723 15.4088 6.38537C15.4595 6.26351 15.4857 6.1328 15.4857 6.00079C15.4857 5.86878 15.4595 5.73808 15.4088 5.61622C15.358 5.49436 15.2836 5.38376 15.1899 5.29079C15.0025 5.10454 14.749 5 14.4849 5C14.2207 5 13.9672 5.10454 13.7799 5.29079L9.18986 9.88079C8.62806 10.4433 8.3125 11.2058 8.3125 12.0008C8.3125 12.7958 8.62806 13.5583 9.18986 14.1208L13.7799 18.7108C13.9661 18.8955 14.2175 18.9997 14.4799 19.0008C14.6115 19.0016 14.7419 18.9763 14.8638 18.9266C14.9856 18.8768 15.0964 18.8035 15.1899 18.7108C15.2836 18.6178 15.358 18.5072 15.4088 18.3854C15.4595 18.2635 15.4857 18.1328 15.4857 18.0008C15.4857 17.8688 15.4595 17.7381 15.4088 17.6162C15.358 17.4944 15.2836 17.3838 15.1899 17.2908L10.5999 12.7108Z" fill="#182988" />
 </svg>
 
+const back_icon= <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M10.5999 12.7108C10.5061 12.6178 10.4317 12.5072 10.381 12.3854C10.3302 12.2635 10.3041 12.1328 10.3041 12.0008C10.3041 11.8688 10.3302 11.7381 10.381 11.6162C10.4317 11.4944 10.5061 11.3838 10.5999 11.2908L15.1899 6.71079C15.2836 6.61783 15.358 6.50723 15.4088 6.38537C15.4595 6.26351 15.4857 6.1328 15.4857 6.00079C15.4857 5.86878 15.4595 5.73808 15.4088 5.61622C15.358 5.49436 15.2836 5.38376 15.1899 5.29079C15.0025 5.10454 14.749 5 14.4849 5C14.2207 5 13.9672 5.10454 13.7799 5.29079L9.18986 9.88079C8.62806 10.4433 8.3125 11.2058 8.3125 12.0008C8.3125 12.7958 8.62806 13.5583 9.18986 14.1208L13.7799 18.7108C13.9661 18.8955 14.2175 18.9997 14.4799 19.0008C14.6115 19.0016 14.7419 18.9763 14.8638 18.9266C14.9856 18.8768 15.0964 18.8035 15.1899 18.7108C15.2836 18.6178 15.358 18.5072 15.4088 18.3854C15.4595 18.2635 15.4857 18.1328 15.4857 18.0008C15.4857 17.8688 15.4595 17.7381 15.4088 17.6162C15.358 17.4944 15.2836 17.3838 15.1899 17.2908L10.5999 12.7108Z" fill="black" />
+</svg>
+
 const calender_icon = <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
   <rect x="5" y="5" width="22" height="22" rx="6" fill="#EDEDFB" />
   <path d="M5 11C5 7.68629 7.68629 5 11 5H21C24.3137 5 27 7.68629 27 11V12H5V11Z" fill="#353297" />
@@ -577,6 +581,111 @@ const favorite_outline_icon = <svg xmlns="http://www.w3.org/2000/svg" width="22"
 <path d="M11.0007 14.1082L8.76832 15.4559C8.31439 15.7299 7.75416 15.3236 7.87365 14.807L8.38011 12.6175C8.43017 12.401 8.35653 12.1746 8.18871 12.029L6.49191 10.5571C6.09105 10.2094 6.30579 9.55067 6.83457 9.506L9.07228 9.31697C9.29421 9.29822 9.4875 9.15808 9.57432 8.95297L10.4481 6.88857C10.6547 6.4004 11.3466 6.4004 11.5532 6.88857L12.427 8.95297C12.5138 9.15808 12.7071 9.29822 12.929 9.31697L15.1667 9.506C15.6955 9.55067 15.9103 10.2094 15.5094 10.5571L13.8126 12.029C13.6448 12.1746 13.5711 12.401 13.6212 12.6175L14.4473 16.189M19.0925 9.40178C19.4936 9.05426 19.2792 8.3953 18.7503 8.35043L13.937 7.94207C13.7153 7.92326 13.5221 7.78326 13.4353 7.57836L11.5531 3.13741C11.3463 2.64959 10.655 2.64959 10.4482 3.13741L8.56601 7.57836C8.47916 7.78326 8.28605 7.92326 8.0643 7.94207L3.24917 8.35059C2.72057 8.39543 2.50597 9.05386 2.90662 9.40158L6.55701 12.5697C6.72485 12.7154 6.79842 12.9419 6.74823 13.1584L5.65623 17.868C5.53644 18.3847 6.0967 18.7913 6.55076 18.5173L10.6906 16.0186C10.8813 15.9035 11.12 15.9035 11.3107 16.0186L15.4483 18.5159C15.9026 18.7901 16.4632 18.3827 16.3426 17.8659L15.2446 13.1592C15.194 12.9423 15.2677 12.7152 15.436 12.5694L19.0925 9.40178Z" fill="#717171"/>
 </svg>
 
+const studentUpload = <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
+  <path d="M13.0645 17.8737V12.457" stroke="url(#paint0_linear_2787_9452)" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M15.7077 15.168H10.291" stroke="url(#paint1_linear_2787_9452)" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M23.8327 11.918V18.418C23.8327 22.7513 22.7493 23.8346 18.416 23.8346H7.58268C3.24935 23.8346 2.16602 22.7513 2.16602 18.418V7.58464C2.16602 3.2513 3.24935 2.16797 7.58268 2.16797H9.20768C10.8327 2.16797 11.1902 2.64464 11.8077 3.46797L13.4327 5.63464C13.8443 6.1763 14.0827 6.5013 15.166 6.5013H18.416C22.7493 6.5013 23.8327 7.58464 23.8327 11.918Z" stroke="url(#paint2_linear_2787_9452)" stroke-width="1.5" stroke-miterlimit="10" />
+  <defs>
+    <linearGradient id="paint0_linear_2787_9452" x1="13.0645" y1="15.1654" x2="14.0645" y2="15.1654" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+    <linearGradient id="paint1_linear_2787_9452" x1="10.291" y1="15.668" x2="15.7077" y2="15.668" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+    <linearGradient id="paint2_linear_2787_9452" x1="2.16602" y1="13.0013" x2="23.8327" y2="13.0013" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+  </defs>
+</svg>
+
+const studentUploadLarge = <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 45 45" fill="none">
+  <path d="M22.6133 30.9375V21.5625" stroke="url(#paint0_linear_2787_12303)" stroke-width="2.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M27.1875 26.25H17.8125" stroke="url(#paint1_linear_2787_12303)" stroke-width="2.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M41.25 20.625V31.875C41.25 39.375 39.375 41.25 31.875 41.25H13.125C5.625 41.25 3.75 39.375 3.75 31.875V13.125C3.75 5.625 5.625 3.75 13.125 3.75H15.9375C18.75 3.75 19.3687 4.575 20.4375 6L23.25 9.75C23.9625 10.6875 24.375 11.25 26.25 11.25H31.875C39.375 11.25 41.25 13.125 41.25 20.625Z" stroke="url(#paint2_linear_2787_12303)" stroke-width="2.5" stroke-miterlimit="10" />
+  <defs>
+    <linearGradient id="paint0_linear_2787_12303" x1="22.6133" y1="26.25" x2="23.6133" y2="26.25" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+    <linearGradient id="paint1_linear_2787_12303" x1="17.8125" y1="26.75" x2="27.1875" y2="26.75" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+    <linearGradient id="paint2_linear_2787_12303" x1="3.75" y1="22.5" x2="41.25" y2="22.5" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+  </defs>
+</svg>
+
+const mcqIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M12.3711 8.87891H17.6211" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M6.37891 8.87891L7.12891 9.62891L9.37891 7.37891" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M12.3711 15.8789H17.6211" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M6.37891 15.8789L7.12891 16.6289L9.37891 14.3789" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+
+const longQueIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M8 12.1992H15" stroke="#909090" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M8 16.1992H12.38" stroke="#909090" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M10 6H14C16 6 16 5 16 4C16 2 15 2 14 2H10C9 2 8 2 8 4C8 6 9 6 10 6Z" stroke="#909090" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M16 4.01953C19.33 4.19953 21 5.42953 21 9.99953V15.9995C21 19.9995 20 21.9995 15 21.9995H9C4 21.9995 3 19.9995 3 15.9995V9.99953C3 5.43953 4.67 4.19953 8 4.01953" stroke="#909090" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+
+const mcqActiveIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M12.3711 8.87891H17.6211" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M6.37891 8.87891L7.12891 9.62891L9.37891 7.37891" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M12.3711 15.8789H17.6211" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M6.37891 15.8789L7.12891 16.6289L9.37891 14.3789" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+const longQueActiveIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M8 12.1992H15" stroke="#fff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M8 16.1992H12.38" stroke="#fff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M10 6H14C16 6 16 5 16 4C16 2 15 2 14 2H10C9 2 8 2 8 4C8 6 9 6 10 6Z" stroke="#fff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M16 4.01953C19.33 4.19953 21 5.42953 21 9.99953V15.9995C21 19.9995 20 21.9995 15 21.9995H9C4 21.9995 3 19.9995 3 15.9995V9.99953C3 5.43953 4.67 4.19953 8 4.01953" stroke="#fff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+
+const pauseIcon = <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+  <path d="M14.9609 27.5C21.8645 27.5 27.4609 21.9036 27.4609 15C27.4609 8.09644 21.8645 2.5 14.9609 2.5C8.05738 2.5 2.46094 8.09644 2.46094 15C2.46094 21.9036 8.05738 27.5 14.9609 27.5Z" stroke="url(#paint0_linear_3097_2749)" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M13.4 18.1625V11.8375C13.4 11.2375 13.15 11 12.5125 11H10.8875C10.25 11 10 11.2375 10 11.8375V18.1625C10 18.7625 10.25 19 10.8875 19H12.5C13.15 19 13.4 18.7625 13.4 18.1625Z" stroke="url(#paint1_linear_3097_2749)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M20.0008 18.1625V11.8375C20.0008 11.2375 19.7508 11 19.1133 11H17.5008C16.8633 11 16.6133 11.2375 16.6133 11.8375V18.1625C16.6133 18.7625 16.8633 19 17.5008 19H19.1133C19.7508 19 20.0008 18.7625 20.0008 18.1625Z" stroke="url(#paint2_linear_3097_2749)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <defs>
+    <linearGradient id="paint0_linear_3097_2749" x1="2.46094" y1="15" x2="27.4609" y2="15" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+    <linearGradient id="paint1_linear_3097_2749" x1="10" y1="15" x2="13.4" y2="15" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+    <linearGradient id="paint2_linear_3097_2749" x1="16.6133" y1="15" x2="20.0008" y2="15" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+  </defs>
+</svg>
+
+const playIcon = <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M14.9629 27.5C21.8664 27.5 27.4629 21.9036 27.4629 15C27.4629 8.09644 21.8664 2.5 14.9629 2.5C8.05933 2.5 2.46289 8.09644 2.46289 15C2.46289 21.9036 8.05933 27.5 14.9629 27.5Z" stroke="url(#paint0_linear_3114_12351)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M10.9258 15.2863V13.1988C10.9258 10.5988 12.7633 9.53631 15.0133 10.8363L16.8258 11.8863L18.6383 12.9363C20.8883 14.2363 20.8883 16.3613 18.6383 17.6613L16.8258 18.7113L15.0133 19.7613C12.7633 21.0613 10.9258 19.9988 10.9258 17.3988V15.2863Z" stroke="url(#paint1_linear_3114_12351)" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <defs>
+    <linearGradient id="paint0_linear_3114_12351" x1="2.46289" y1="15" x2="27.4629" y2="15" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+    <linearGradient id="paint1_linear_3114_12351" x1="10.9258" y1="15.2988" x2="20.3258" y2="15.2988" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+  </defs>
+</svg>
+
+
 const Icons = {
   menu_dot_icon, no_of_students, no_of_subjects, delete_icons,
   no_of_books, no_of_tests, pdfDeleteIcon, testScreenEditIcon,
@@ -600,7 +709,9 @@ const Icons = {
   DotSVG, subscriptionSVG, organisation, revenue,
   profile, settings, admins, teachers, billing, activeUsers,
   sidebar_pricing_active_icon, sidebar_pricing_icon, logoutIcon,
-  menuIcon,favorite_outline_icon
+  menuIcon,favorite_outline_icon,studentUpload, studentUploadLarge,
+  mcqIcon, longQueIcon, mcqActiveIcon, longQueActiveIcon, playIcon, pauseIcon,
+  back_icon
 }
 
 export default Icons;
