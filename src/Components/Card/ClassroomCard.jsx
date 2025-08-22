@@ -6,7 +6,7 @@ export default function ClassroomCard({
     cardClassName = "col-3",
     cardBodyClassName = "p-0",
     cardTitleClassName = "p-4 pb-3 border-bottom",
-    buttonName, onclick, data
+    buttonName, onclick, data, onClickDelete
 }) {
     const items = [{ icons: Icons?.no_of_students, content: 'No of Students', count: data?.no_of_students || 0 }, { icons: Icons?.no_of_subjects, content: 'No of Subjects', count: data?.no_of_subjects || 0 }]
 
@@ -16,16 +16,16 @@ export default function ClassroomCard({
                 <Card.Title className={cardTitleClassName}>
                     <div className="w-100 d-flex">
                         <div className="col-10">
-                            <h6>{data?.title || ''}</h6>
-                            <p className="text-secondary fs-13 mb-0">Created on: {data?.date || ''}</p>
+                            <h6>{data?.classroom_name || ''}</h6>
+                            <p className="text-secondary fs-13 mb-0">Created on: {data?.created_at || ''}</p>
                         </div>
                         <div className="col-2 text-end">
-                            <ButtonComponent
-                                type="button"
-                                className="btn"
-                                buttonName={Icons?.menu_dot_icon}
-                                clickFunction={onclick}
-                            />
+                        <ButtonComponent
+                            type="button"
+                            className="btn"
+                            buttonName={Icons?.delete_icons}
+                            clickFunction={onClickDelete}
+                        />
                         </div>
                     </div>
                 </Card.Title>

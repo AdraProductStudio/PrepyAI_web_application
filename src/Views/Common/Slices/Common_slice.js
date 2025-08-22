@@ -9,7 +9,8 @@ let initialState = {
         size: "md",
         from: null,
         type: null,
-        close_btn: false
+        close_btn: false,
+        modal_data:null,
     },
     canvas: {
         show: false,
@@ -54,12 +55,13 @@ const commonSlice = createSlice({
     initialState,
     reducers: {
         updateModalShow(state, actions) {
-            const { show, size, modal_from, modal_type, close_btn } = actions.payload;
+            const { show, size, modal_from, modal_type, close_btn, data } = actions.payload;
             state.modal.show = show
             state.modal.size = size || "md"
             state.modal.from = modal_from || null
             state.modal.type = modal_type || null
             state.modal.close_btn = close_btn || false
+            state.modal.modal_data = data || null
         },
         update_app_data(state, action) {
             const { type, data } = action.payload;
@@ -85,7 +87,6 @@ const commonSlice = createSlice({
                     state.pagination.currentPage = 1;
                     state.pagination.totalCount = 0;    
                     state.pagination.siblingCount = 10;
-                    // state.
                     break;
                 case "dimension":
                     state.app_data.innerWidth = data?.innerWidth || 0;

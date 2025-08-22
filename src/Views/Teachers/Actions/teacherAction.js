@@ -1,5 +1,6 @@
 import axiosInstance from "Services/axiosInstance";
 import {
+  handleAllClassRooms,
   handleGetClassrooms,
   handleGetClassroomTeachers,
   handleGetStudentOverviewOverallPerfomance,
@@ -11,6 +12,7 @@ import {
   handleGetStudentsListByTeacher,
   handleGetSubjects,
   handleGetTeachers,
+  handleGradeByClassroom,
   handleTeacherDashboard,
 } from "../Slice/teachersSlice";
 import { update_app_data, update_error, updateModalShow } from "Views/Common/Slices/Common_slice";
@@ -37,6 +39,53 @@ export const getTeacherDashboardDatas = (params) => async (dispatch) => {
   } catch (err) {
     dispatch(
       handleTeacherDashboard({ type: "failure", message: err?.message || "" })
+    );
+  }
+};
+
+export const getAllClassRooms = (params) => async (dispatch) => {
+  try {
+    dispatch(handleAllClassRooms({ type: "request" }));
+    const { data } = await axiosInstance.get("/teachers/get_all_classrooms");
+    if (data?.error_code === 0) {
+      dispatch(
+        handleAllClassRooms({ type: "response", data: data?.data || [] })
+      );
+    } else {
+      dispatch(
+        handleAllClassRooms({
+          type: "failure",
+          message: data?.message || "",
+        })
+      );
+    }
+  } catch (err) {
+    dispatch(
+      handleAllClassRooms({ type: "failure", message: err?.message || "" })
+    );
+  }
+};
+
+export const getGradeByClassroom = (params) => async (dispatch) => {
+  console.log(params,"Dsdsad")
+  try {
+    dispatch(handleGradeByClassroom({ type: "request" }));
+    const { data } = await axiosInstance.post("/teachers/classroom_performance",{classroom_id:params?.classroom_id[0]});
+    if (data?.error_code === 0) {
+      dispatch(
+        handleGradeByClassroom({ type: "response", data: data?.data || [] })
+      );
+    } else {
+      dispatch(
+        handleGradeByClassroom({
+          type: "failure",
+          message: data?.message || "",
+        })
+      );
+    }
+  } catch (err) {
+    dispatch(
+      handleGradeByClassroom({ type: "failure", message: err?.message || "" })
     );
   }
 };
@@ -322,26 +371,96 @@ export const postStudents= (form_data) => async (dispatch) => {
 
 // Delete
 
-export const deleteStudents = (student_id) => async(dispatch)=>{
-  if (!student_id) {
+export const deleteStudents = (data) => async (dispatch) => {
+  const id = data?.id;
+  const id_from = data?.from;
+  const pagination = data?.pagination;
+  const student_id = data?.student_id;
+  let response;
+  if (!id || !id_from) {
     return dispatch(update_app_data({ type: "validation", data: true }));
   }
 
   try {
-    const response = await axiosInstance.post("/teachers/delete_student", {student_id});
+    switch (id_from) {
+      case "student":
+        response = await axiosInstance.post("/teachers/delete_student", {
+          student_id,
+        });
+        break;
 
-    const { message, success } = response?.data;
+      case "classroom":
+        response = await axiosInstance.post("/teachers/delete_student", {
+          student_id,
+        });
+        break;
+
+      default:
+        return;
+    }
+
+    const { message, success } = response?.data || {};
 
     if (!success) {
-      dispatch(update_error({ Err: message, Toast_Type: "error" }));
+      return dispatch(update_error({ Err: message, Toast_Type: "error" }));
     }
-    if (success) {
-      dispatch(update_error({ Err: message, Toast_Type: "success" }));
+    dispatch(update_error({ Err: message, Toast_Type: "success" }));
+
+    if (id_from === "classroom") {
+      dispatch(
+        GetStudentsListByTeacher({
+          classroom_id: "all_classrooms",
+          search_query: pagination?.search_query,
+          show_entries: pagination?.show_entries,
+          page: pagination?.page,
+          sort_by: "joined_at",
+          sort_order: "asc",
+        })
+      );
+    } else if (id_from === "student") {
+      dispatch(
+        GetStudentsListBySubject({
+          subject_id: id,
+          search_query: pagination?.search_query,
+          show_entries: pagination?.show_entries,
+          page: pagination?.page,
+          sort_by: "joined_at",
+          sort_order: "asc",
+        })
+      );
     }
+
+    dispatch(updateModalShow({ show: false }));
+  } catch (error) {
+    console.error("Error while deleting student:", error);
+    dispatch(update_error({ Err: "Something went wrong", Toast_Type: "error" }));
+  }
+};
+
+
+
+export const deleteSubjects = (id) => async(dispatch)=>{
+  if (!id) {
+    return dispatch(update_app_data({ type: "validation", data: true }));
+  }
+
+  try {
+
 
   } catch (error) {
     console.log(error, "error from post subject");
   }
 }
 
+export const deleteClassrooms = (id) => async(dispatch)=>{
+  if (!id) {
+    return dispatch(update_app_data({ type: "validation", data: true }));
+  }
 
+  try {
+
+
+  } catch (error) {
+    console.log(error, "error from post subject");
+  }
+}

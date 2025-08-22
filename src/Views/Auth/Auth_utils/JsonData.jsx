@@ -5,8 +5,9 @@ import {
   update_organization_register, update_otp_verification, update_student_register,
   update_teacher_register,
 } from "Views/Auth/Slices/authSlice";
-import { handleRegister, handleLogin } from "Views/Auth/Actions/authActions";
+import { handleRegister, handleLogin, handleForgetPass, handleCreatePassword } from "Views/Auth/Actions/authActions";
 import { useCommonState, useCustomNavigate, useDispatch } from "Components/CustomHooks";
+import Icons from "Utils/Icons";
 
 const JsonData = () => {
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ const JsonData = () => {
       },
       {
         name: "Password",
-        type: commonState?.login_data?.showPassword ? "text" : "password",
+        type: authState?.app_data?.shownewPassword ? "text" : "password",
         category: "input",
         placeholder: "********",
         className: "pe-5 login-input",
@@ -43,10 +44,10 @@ const JsonData = () => {
         keyDown: (e) => {
           if (e.key === "Enter") dispatch(handleLogin(authState?.logindata, navigate));
         },
-        // eyeFunction: () => dispatch(update_login_data({ showPassword: !commonState?.login_data?.showPassword })),
-        // eyeIcon: authState?.app_data?.showPassword
-        //   ? Icons?.EyeClose
-        //   : Icons?.EyeOpen,
+        eyeFunction: () => dispatch(update_input_eye({ shownewPassword: !authState?.app_data?.shownewPassword })),
+        eyeIcon: authState?.app_data?.shownewPassword
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-1",
         isMandatory: false,
         Err: commonState?.app_data?.validated && !authState?.logindata?.password ? "password required" : null,
@@ -77,9 +78,6 @@ const JsonData = () => {
         className: "pe-5 login-input",
         value: authState?.learnersregisterdata?.last_name || "",
         change: (e) => dispatch(update_learners_register({ last_name: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
         divClassName: "mb-3",
         isMandatory: false,
         Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.last_name ? "lastName required" : null,
@@ -91,9 +89,6 @@ const JsonData = () => {
         placeholder: "mail@abc",
         value: authState?.learnersregisterdata?.email_id || "",
         change: (e) => dispatch(update_learners_register({ email_id: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
         divClassName: "mb-3",
         className: "pe-5 login-input",
         isMandatory: true,
@@ -107,14 +102,11 @@ const JsonData = () => {
         className: "pe-5 login-input",
         value: authState?.learnersregisterdata?.new_password || "",
         change: (e) => dispatch(update_learners_register({ new_password: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
         eyeFunction: () =>
           dispatch(update_input_eye({ shownewPassword: !authState?.app_data?.shownewPassword })),
-        // eyeIcon: authState?.app_data?.shownewPassword
-        //   ? Icons?.EyeClose
-        //   : Icons?.EyeOpen,
+        eyeIcon: authState?.app_data?.shownewPassword
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
         Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.shownewPassword ? "password required" : null,
@@ -127,18 +119,15 @@ const JsonData = () => {
         className: "pe-5 login-input",
         value: authState?.learnersregisterdata?.confirm_password || "",
         change: (e) => dispatch(update_learners_register({ confirm_password: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
         eyeFunction: () =>
           dispatch(
             update_input_eye({
               showConfirmPassword: !authState?.app_data?.showConfirmPassword,
             })
           ),
-        // eyeIcon: authState?.app_data?.showConfirmPassword
-        //   ? Icons?.EyeClose
-        //   : Icons?.EyeOpen,
+        eyeIcon: authState?.app_data?.showConfirmPassword
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
         Err: commonState?.app_data?.validated && !authState?.learnersRegister?.showConfirmPassword ? "confirmPassword required" : null,
@@ -174,11 +163,7 @@ const JsonData = () => {
         placeholder: "Enter Your Last Name",
         className: "pe-5 login-input",
         value: authState?.organizationRegisterdata?.last_name || "",
-        change: (e) =>
-          dispatch(update_organization_register({ last_name: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        change: (e) => dispatch(update_organization_register({ last_name: e.target.value })),
         divClassName: "mb-3",
         isMandatory: false,
         Err:
@@ -198,9 +183,6 @@ const JsonData = () => {
           dispatch(
             update_organization_register({ organization_name: e.target.value })
           ),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
         divClassName: "mb-3",
         className: "login-input",
         isMandatory: false,
@@ -219,9 +201,6 @@ const JsonData = () => {
         value: authState?.organizationRegisterdata?.email_id || "",
         change: (e) =>
           dispatch(update_organization_register({ email_id: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
         divClassName: "mb-3 ",
         className: "pe-5 login-input",
         isMandatory: false,
@@ -241,9 +220,6 @@ const JsonData = () => {
           dispatch(
             update_organization_register({ phone_number: e.target.value })
           ),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
         divClassName: "mb-3",
         className: "pe-5 login-input",
         isMandatory: true,
@@ -261,9 +237,6 @@ const JsonData = () => {
         value: authState?.organizationRegisterdata?.location || "",
         change: (e) =>
           dispatch(update_organization_register({ location: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
         divClassName: "mb-3",
         className: "pe-5 login-input",
         isMandatory: true,
@@ -275,7 +248,7 @@ const JsonData = () => {
       },
       {
         name: "Password",
-        type: commonState?.login_data?.showPassword ? "text" : "password",
+        type: authState?.app_data?.shownewPassword ? "text" : "password",
         category: "input",
         placeholder: "********",
         className: "pe-5 login-input",
@@ -284,18 +257,15 @@ const JsonData = () => {
           dispatch(
             update_organization_register({ new_password: e.target.value })
           ),
-        // keyDown: (e) => {
-        // if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
         eyeFunction: () =>
           dispatch(
             update_input_eye({
-              shownewPassword: !commonState?.login_data?.shownewPassword,
+              shownewPassword: !authState?.app_data?.shownewPassword,
             })
           ),
-        // eyeIcon: commonState?.organizationRegister?.password
-        //   ? Icons?.EyeClose
-        //   : Icons?.EyeOpen,
+          eyeIcon: authState?.app_data?.shownewPassword
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
         Err:
@@ -306,7 +276,7 @@ const JsonData = () => {
       },
       {
         name: "Confirm Password",
-        type: commonState?.login_data?.showPassword ? "text" : "password",
+        type: authState?.app_data?.showConfirmPassword ? "text" : "password",
         category: "input",
         placeholder: "********",
         className: "pe-5 login-input",
@@ -315,18 +285,15 @@ const JsonData = () => {
           dispatch(
             update_organization_register({ confirm_password: e.target.value })
           ),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
         eyeFunction: () =>
           dispatch(
             update_input_eye({
               showConfirmPassword: !authState?.app_data?.showConfirmPassword,
             })
           ),
-        // eyeIcon: commonState?.organizationRegister?.confirmPassword
-        //   ? Icons?.EyeClose
-        //   : Icons?.EyeOpen,
+          eyeIcon: authState?.app_data?.showConfirmPassword
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
         Err:
@@ -345,9 +312,9 @@ const JsonData = () => {
         value: authState?.adminRegisterdata?.first_name || "",
         change: (e) =>
           dispatch(update_admin_register({ first_name: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        keyDown: (e) => {
+            if (e.key === 'Enter') dispatch(handleRegister(authState?.adminRegisterdata, navigate, "/register/admin"))
+        },
         divClassName: "mb-3",
         className: "login-input",
         isMandatory: true,
@@ -365,11 +332,7 @@ const JsonData = () => {
         className: "pe-5 login-input",
         value: authState?.adminRegisterdata?.last_name || "",
         change: (e) =>
-          dispatch(update_admin_register({ last_name: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
-        // eyeFunction: () => dispatch(update_login_data({ showPassword: !commonState?.login_data?.showPassword })),
+        dispatch(update_admin_register({ last_name: e.target.value })),
         divClassName: "mb-3",
         isMandatory: false,
         Err:
@@ -385,10 +348,7 @@ const JsonData = () => {
         placeholder: "Enter Your Institute Name",
         value: authState?.adminRegisterdata?.institute_name || "",
         change: (e) =>
-          dispatch(update_admin_register({ institute_name: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        dispatch(update_admin_register({ institute_name: e.target.value })),
         divClassName: "mb-3",
         disabled: true,
         className: "login-input",
@@ -407,10 +367,7 @@ const JsonData = () => {
         placeholder: "mail@abc",
         value: authState?.adminRegisterdata?.email_id || "",
         change: (e) =>
-          dispatch(update_admin_register({ email_id: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        dispatch(update_admin_register({ email_id: e.target.value })),
         divClassName: "mb-3 ",
         className: "pe-5 login-input",
         isMandatory: true,
@@ -426,10 +383,7 @@ const JsonData = () => {
         placeholder: "999-999-9999",
         value: authState?.adminRegisterdata?.phone_number || "",
         change: (e) =>
-          dispatch(update_admin_register({ phone_number: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        dispatch(update_admin_register({ phone_number: e.target.value })),
         divClassName: "mb-3",
         className: "pe-5 login-input",
         isMandatory: true,
@@ -446,10 +400,7 @@ const JsonData = () => {
         placeholder: "Enter Institute Location",
         value: authState?.adminRegisterdata?.location || "",
         change: (e) =>
-          dispatch(update_admin_register({ location: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        dispatch(update_admin_register({ location: e.target.value })),
         divClassName: "mb-3 ",
         className: "pe-5 login-input",
         isMandatory: true,
@@ -461,25 +412,22 @@ const JsonData = () => {
       },
       {
         name: "Password",
-        type: commonState?.login_data?.showPassword ? "text" : "password",
+        type: authState?.app_data?.shownewPassword ? "text" : "password",
         category: "input",
         placeholder: "********",
         className: "pe-5 login-input",
         value: authState?.adminRegisterdata?.new_password || "",
         change: (e) =>
-          dispatch(update_admin_register({ new_password: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        dispatch(update_admin_register({ new_password: e.target.value })),
         eyeFunction: () =>
           dispatch(
             update_input_eye({
-              shownewPassword: !commonState?.login_data?.shownewPassword,
+              shownewPassword: !authState?.app_data?.shownewPassword,
             })
           ),
-        // eyeIcon: commonState?.adminRegister?.password
-        //   ? Icons?.EyeClose
-        //   : Icons?.EyeOpen,
+        eyeIcon: authState?.app_data?.shownewPassword
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
         Err:
@@ -490,25 +438,22 @@ const JsonData = () => {
       },
       {
         name: "Confirm Password",
-        type: commonState?.login_data?.showPassword ? "text" : "password",
+        type: authState?.app_data?.showConfirmPassword ? "text" : "password",
         category: "input",
         placeholder: "********",
         className: "pe-5 login-input",
         value: authState?.adminRegisterdata?.confirm_password || "",
         change: (e) =>
-          dispatch(update_admin_register({ confirm_password: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        dispatch(update_admin_register({ confirm_password: e.target.value })),
         eyeFunction: () =>
           dispatch(
             update_input_eye({
               showConfirmPassword: !authState?.app_data?.showConfirmPassword,
             })
           ),
-        // eyeIcon: commonState?.adminRegister?.confirmPassword
-        //   ? Icons?.EyeClose
-        //   : Icons?.EyeOpen,
+        eyeIcon: authState?.app_data?.showConfirmPassword
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
         Err:
@@ -527,9 +472,9 @@ const JsonData = () => {
         value: authState?.teacherRegisterdata?.first_name || "",
         change: (e) =>
           dispatch(update_teacher_register({ first_name: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        keyDown: (e) => {
+            if (e.key === 'Enter') dispatch(handleRegister(authState?.teacherRegisterdata, navigate, "/register/teacher"))
+        },
         divClassName: "mb-3",
         className: "login-input",
         isMandatory: true,
@@ -547,11 +492,7 @@ const JsonData = () => {
         className: "pe-5 login-input",
         value: authState?.teacherRegisterdata?.last_name || "",
         change: (e) =>
-          dispatch(update_teacher_register({ last_name: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
-        // eyeFunction: () => dispatch(update_login_data({ showPassword: !commonState?.login_data?.showPassword })),
+        dispatch(update_teacher_register({ last_name: e.target.value })),
         divClassName: "mb-3",
         isMandatory: false,
         Err:
@@ -567,10 +508,7 @@ const JsonData = () => {
         placeholder: "Enter Your Institute Name",
         value: authState?.teacherRegisterdata?.institute_name || "",
         change: (e) =>
-          dispatch(update_teacher_register({ institute_name: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        dispatch(update_teacher_register({ institute_name: e.target.value })),
         divClassName: "mb-3",
         disabled: true,
         className: "login-input",
@@ -588,10 +526,7 @@ const JsonData = () => {
         placeholder: "mail@abc",
         value: authState?.teacherRegisterdata?.email_id || "",
         change: (e) =>
-          dispatch(update_teacher_register({ email_id: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        dispatch(update_teacher_register({ email_id: e.target.value })),
         divClassName: "mb-3",
         disabled: true,
         className: "pe-5 login-input",
@@ -609,10 +544,7 @@ const JsonData = () => {
         placeholder: "999-999-9999",
         value: authState?.teacherRegisterdata?.phone_number || "",
         change: (e) =>
-          dispatch(update_teacher_register({ phone_number: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        dispatch(update_teacher_register({ phone_number: e.target.value })),
         divClassName: "mb-3",
         className: "pe-5 login-input",
         isMandatory: true,
@@ -624,25 +556,22 @@ const JsonData = () => {
       },
       {
         name: "Password",
-        type: commonState?.login_data?.showPassword ? "text" : "password",
+        type: authState?.app_data?.shownewPassword ? "text" : "password",
         category: "input",
         placeholder: "********",
         className: "pe-5 login-input",
         value: authState?.teacherRegisterdata?.new_password || "",
         change: (e) =>
-          dispatch(update_teacher_register({ new_password: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        dispatch(update_teacher_register({ new_password: e.target.value })),
         eyeFunction: () =>
           dispatch(
             update_input_eye({
-              shownewPassword: !commonState?.login_data?.shownewPassword,
+              shownewPassword: !authState?.app_data?.shownewPassword,
             })
           ),
-        // eyeIcon: commonState?.teacherRegister?.password
-        //   ? Icons?.EyeClose
-        //   : Icons?.EyeOpen,
+        eyeIcon: authState?.app_data?.shownewPassword
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
         Err:
@@ -653,7 +582,7 @@ const JsonData = () => {
       },
       {
         name: "Confirm Password",
-        type: commonState?.login_data?.showPassword ? "text" : "password",
+        type: authState?.app_data?.showConfirmPassword ? "text" : "password",
         category: "input",
         placeholder: "********",
         className: "pe-5 login-input",
@@ -662,18 +591,15 @@ const JsonData = () => {
           dispatch(
             update_teacher_register({ confirm_password: e.target.value })
           ),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
         eyeFunction: () =>
           dispatch(
             update_input_eye({
               showConfirmPassword: !authState?.app_data?.showConfirmPassword,
             })
           ),
-        // eyeIcon: commonState?.teacherRegister?.confirmPassword
-        //   ? Icons?.EyeClose
-        //   : Icons?.EyeOpen,
+        eyeIcon: authState?.app_data?.showConfirmPassword
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
         Err:
@@ -692,9 +618,9 @@ const JsonData = () => {
         value: authState?.studentRegisterdata?.first_name || "",
         change: (e) =>
           dispatch(update_student_register({ first_name: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        keyDown: (e) => {
+            if (e.key === 'Enter') dispatch(handleRegister(authState?.studentRegisterdata, navigate, "/register/student"))
+        },
         divClassName: "mb-3",
         className: "login-input",
         isMandatory: true,
@@ -713,10 +639,6 @@ const JsonData = () => {
         value: authState?.studentRegisterdata?.last_name || "",
         change: (e) =>
           dispatch(update_student_register({ last_name: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
-        // eyeFunction: () => dispatch(update_login_data({ showPassword: !commonState?.login_data?.showPassword })),
         divClassName: "mb-3",
         isMandatory: false,
         Err:
@@ -732,10 +654,7 @@ const JsonData = () => {
         placeholder: "Enter Your Institute Name",
         value: authState?.studentRegisterdata?.institute_name || "",
         change: (e) =>
-          dispatch(update_student_register({ institute_name: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        dispatch(update_student_register({ institute_name: e.target.value })),
         divClassName: "mb-3",
         className: "login-input",
         disabled: true,
@@ -753,10 +672,7 @@ const JsonData = () => {
         placeholder: "mail@abc",
         value: authState?.studentRegisterdata?.email_id || "",
         change: (e) =>
-          dispatch(update_student_register({ email_id: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        dispatch(update_student_register({ email_id: e.target.value })),
         divClassName: "mb-3",
         className: "pe-5 login-input",
         disabled: true,
@@ -775,10 +691,7 @@ const JsonData = () => {
         placeholder: "999-999-9999",
         value: authState?.studentRegisterdata?.phone_number || "",
         change: (e) =>
-          dispatch(update_student_register({ phone_number: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        dispatch(update_student_register({ phone_number: e.target.value })),
         divClassName: "mb-3",
         className: "pe-5 login-input",
         isMandatory: true,
@@ -796,19 +709,16 @@ const JsonData = () => {
         className: "pe-5 login-input",
         value: authState?.studentRegisterdata?.new_password || "",
         change: (e) =>
-          dispatch(update_student_register({ new_password: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        dispatch(update_student_register({ new_password: e.target.value })),
         eyeFunction: () =>
           dispatch(
             update_input_eye({
               shownewPassword: !authState?.app_data?.shownewPassword,
             })
           ),
-        // eyeIcon: authState?.app_data?.password
-        //   ? Icons?.EyeClose
-        //   : Icons?.EyeOpen,
+        eyeIcon: authState?.app_data?.shownewPassword
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
         Err:
@@ -819,7 +729,7 @@ const JsonData = () => {
       },
       {
         name: "Confirm Password",
-        type: commonState?.login_data?.showPassword ? "text" : "password",
+        type: authState?.app_data?.showConfirmPassword ? "text" : "password",
         category: "input",
         placeholder: "********",
         className: "pe-5 login-input",
@@ -828,18 +738,15 @@ const JsonData = () => {
           dispatch(
             update_student_register({ confirm_password: e.target.value })
           ),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
         eyeFunction: () =>
           dispatch(
             update_input_eye({
               showConfirmPassword: !authState?.app_data?.showConfirmPassword,
             })
           ),
-        // eyeIcon: authState?.app_data?.showConfirmPassword
-        //   ? Icons?.EyeClose
-        //   : Icons?.EyeOpen,
+        eyeIcon: authState?.app_data?.showConfirmPassword
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
         Err:
@@ -858,9 +765,9 @@ const JsonData = () => {
         value: authState?.forgotPassworddata?.email_id || "",
         change: (e) =>
           dispatch(update_forgot_password({ email_id: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
+        keyDown: (e) => {
+            if (e.key === 'Enter') dispatch(handleForgetPass(authState?.forgotPassworddata, navigate, "/forget_password"))
+        },
         divClassName: "mb-1",
         className: "login-input",
         isMandatory: false,
@@ -880,17 +787,17 @@ const JsonData = () => {
         value: authState?.createPassworddata?.new_password || "",
         change: (e) => dispatch(update_create_password({ new_password: e.target.value })),
         // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+        //     if (e.key === 'Enter') dispatch(handleCreatePassword(authState?.createPassworddata, routeState, navigate, "/reset_password"))
         // },
         eyeFunction: () =>
           dispatch(
             update_input_eye({
-              shownewPassword: !commonState?.login_data?.shownewPassword,
+              shownewPassword: !authState?.app_data?.shownewPassword,
             })
           ),
-        // eyeIcon: commonState?.learnersRegister?.password
-        //   ? Icons?.EyeClose
-        //   : Icons?.EyeOpen,
+        eyeIcon: authState?.app_data?.shownewPassword
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
         Err:
@@ -907,18 +814,15 @@ const JsonData = () => {
         className: "pe-5 login-input",
         value: authState?.createPassworddata?.confirm_password || "",
         change: (e) => dispatch(update_create_password({ confirm_password: e.target.value })),
-        // keyDown: (e) => {
-        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-        // },
         eyeFunction: () =>
           dispatch(
             update_input_eye({
               showConfirmPassword: !authState?.app_data?.showConfirmPassword,
             })
           ),
-        // eyeIcon: commonState?.learnersRegister?.confirmPassword
-        //   ? Icons?.EyeClose
-        //   : Icons?.EyeOpen,
+        eyeIcon: authState?.app_data?.showConfirmPassword
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
         Err:
@@ -933,7 +837,7 @@ const JsonData = () => {
         name: "",
         type: "text",
         category: "input",
-        value: authState?.otpVerificationdata?.otp1 || '',
+        value: authState?.otpVerificationdata?.otp1 || '',     
         change: (e) => {
           let v = e.target.value.replace(/\D/g, "");
 
@@ -952,7 +856,7 @@ const JsonData = () => {
             if (val) {
               dispatch(update_otp_verification({ otp1: "" }));
             } else if (otpRefs.current[0]) {
-              otpRefs.current[0].focus(); // stays on same input
+              otpRefs.current[0].focus();
             }
           }
         },

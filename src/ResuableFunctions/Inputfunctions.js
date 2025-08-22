@@ -11,7 +11,6 @@ export function Inputfunctions(funBy) {
     if (!funBy || funBy.length === 0) return null;
     
     return funBy?.map((ipVal, iPInd) => {
-        console.log(ipVal,"dasdsa")
         switch (ipVal?.category) {
             case "heading":
                 return <div className={ipVal?.divClassName} >
@@ -36,6 +35,7 @@ export function Inputfunctions(funBy) {
                                 labelClassName="text-secondary mb-0 fs-14"
                                 mandatory={ipVal?.isMandatory}
                                 disableSelectBox={ipVal?.disabled}
+                                className={`rounded custom-select ${ipVal?.className}`}
                             />
                             <div className='text-danger pt-2 ps-1 fs-15'>
                                 {ipVal?.Err}
@@ -54,7 +54,7 @@ export function Inputfunctions(funBy) {
                                 create={ipVal?.create}
                                 value={ipVal?.value}
                                 change={ipVal?.change}
-                                className='rounded filter-select-dropdown'
+                                className={ipVal?.className}
                                 disabled={ipVal?.disabled}
                             />
                             <div className='text-danger pt-2 ps-1 fs-15'>
@@ -78,7 +78,7 @@ export function Inputfunctions(funBy) {
                                         label={ipVal?.name}
                                         labelClassName="text-secondary mb-0 fs-14"
                                         mandatory={ipVal?.isMandatory}
-                                        className="d-none"
+                                        className={`d-none ${ipVal?.inputClassName}`}
                                         htmlFor="file_upload"
                                         multiple={true}
                                         inputError={ipVal?.Err}
@@ -86,7 +86,7 @@ export function Inputfunctions(funBy) {
                                         accept={ipVal?.accept}
                                     />
 
-                                    <div className='border py-2 rounded-2 col-12 text-center'>
+                                    <div className={`border py-2 rounded-2 col-12 text-center ${ipVal?.className}`}>
                                         <span className='me-2'>{Icons.fileUploadIcon}</span>
                                         <span className='text-secondary fs-15'>{ipVal?.value?.length >= ipVal?.fileLength ? `Only ${ipVal?.fileLength} ${ipVal?.name} can be selectable` : `Click here to choose image`}</span>
                                     </div>
@@ -167,7 +167,7 @@ export function Inputfunctions(funBy) {
                                 keyDown={ipVal?.keyDown}
                                 label={ipVal?.name}
                                 ref={ipVal?.ref}
-                                labelClassName="text-secondary mb-0 fs-14"
+                                labelClassName={`text-secondary mb-0 fs-14 ${ipVal?.labelClassName}`}
                                 mandatory={ipVal?.isMandatory}
                                 inputError={ipVal?.Err}
                                 disabled={ipVal?.disabled}
@@ -202,7 +202,7 @@ export function Inputfunctions(funBy) {
                         change={ipVal?.change}
                         cols={10}
                         rows={5}
-                        className=""
+                        className={`${ipVal?.className}`}
                         label={ipVal?.name}
                         labelClassName="text-secondary mb-0 fs-14"
                         mandatory={ipVal?.isMandatory}
