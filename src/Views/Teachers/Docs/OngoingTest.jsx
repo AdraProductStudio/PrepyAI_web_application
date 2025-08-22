@@ -16,7 +16,7 @@ const OngoingTest = () => {
 
     useEffect(() => {
         if (class_id) {
-            dispatch(getTestRecords({ classroom_id:class_id, type: "cancelled" }));
+            dispatch(getTestRecords({ classroom_id:class_id, type: "ongoing" }));
         }
 
     }, [])
