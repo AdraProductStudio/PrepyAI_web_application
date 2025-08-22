@@ -1,12 +1,6 @@
 import axiosInstance from "Services/axiosInstance";
 import {
   handleGetClassrooms,
-<<<<<<< HEAD
-  handleGetStudentsList,
-  handleGetSubjects,
-  handleTeacherDashboard,
-} from "../Slice/teachersSlice";
-=======
   handleGetClassroomTeachers,
   handleGetStudentOverviewOverallPerfomance,
   handleGetStudentOverviewPerfomance,
@@ -302,7 +296,6 @@ export const deleteStudents = (student_id) => async (dispatch) => {
   }
 }
 
->>>>>>> staging
 
 export const getTeacherDashboardDatas = (params) => async (dispatch) => {
   try {
@@ -331,17 +324,10 @@ export const getClassrooms = (params) => async (dispatch) => {
   try {
     dispatch(handleGetClassrooms({ type: "request" }));
     const { data } = await axiosInstance.get("/teachers/get_classroom");
-<<<<<<< HEAD
-    if (data?.error_code === 0) {
-      dispatch(handleGetClassrooms({ type: "response", data: data?.data || [] }));
-    } else 
-    {
-=======
 
     if (data?.error_code === 0) {
       dispatch(handleGetClassrooms({ type: "response", data: data?.data?.classrooms || [] }));
     } else {
->>>>>>> staging
       dispatch(handleGetClassrooms({ type: "failure", message: data?.message || "" }));
     }
   } catch (err) {
@@ -351,37 +337,10 @@ export const getClassrooms = (params) => async (dispatch) => {
   }
 };
 
-<<<<<<< HEAD
-export const getSubjects = (params) => async (dispatch) => {
-  try {
-    dispatch(handleGetSubjects({ type: "request" }));
-    const { data } = await axiosInstance.post("/teachers/get_subjects",params);
-    if (data?.error_code === 0) {
-      dispatch(
-        handleGetSubjects({ type: "response", data: data?.data || [] })
-      );
-    } else {
-      dispatch(
-        handleGetSubjects({ type: "failure", message: data?.message || "" })
-      );
-    }
-  } catch (err) {
-    dispatch(
-      handleGetSubjects({ type: "failure", message: err?.message || "" })
-    );
-  }
-};
-
-export const GetStudentsList = (params) => async (dispatch) => {
-  try {
-    dispatch(handleGetStudentsList({ type: "request" }));
-    const { data } = await axiosInstance.post("/teachers/get_students_by_subject",params);
-=======
 export const GetStudentsList = (params) => async (dispatch) => {
   try {
     dispatch(handleGetStudentsList({ type: "request" }));
     const { data } = await axiosInstance.post("/teachers/get_students_by_subject", params);
->>>>>>> staging
     if (data?.error_code === 0) {
       dispatch(
         handleGetStudentsList({ type: "response", data: data?.data || [] })

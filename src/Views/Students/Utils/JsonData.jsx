@@ -364,7 +364,7 @@ const JsonData = (params) => {
             { name: 'Emergent', value: 10, fill: '#4B00D1' },
         ],
         cardDetails: [{
-            cardTitle: "Explanation",
+            cardTitle: "Evidence_based",
             titleValue: "Emergent",
             explanation: "The Industrial Revolution was a time when new machines were invented, and factories started making goods in large quantities."
         }, {
@@ -373,11 +373,10 @@ const JsonData = (params) => {
             explanation: "The Industrial Revolution was a time when new machines were invented, and factories started making goods in large quantities."
         },
         {
-            cardTitle: "Explanation",
+            cardTitle: "Opinion",
             titleValue: "Emergent",
             explanation: "The Industrial Revolution was a time when new machines were invented, and factories started making goods in large quantities."
-        }
-        ]
+        }]
 
     }
 

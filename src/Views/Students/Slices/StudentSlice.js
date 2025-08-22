@@ -58,8 +58,19 @@ const TeacherSlice = createSlice({
             test_file: null,
             loading: false,
         },
-         question_type:"",
-         recording:""
+         recording:"",
+         generate_question:{
+             test_language: "",
+             level_of_test: "",
+             long_questions:[],
+             mcq_questions:[],
+             loading:false,
+             summary:{},
+             test_status:"",
+             overall_levels:[],
+             performance:""
+
+         }
     },
     reducers: {
         caluculateRemainingTime: (state, action) => {
@@ -152,9 +163,6 @@ const TeacherSlice = createSlice({
                 default:
                     break;
             }
-        },
-        updateQuestionType(state,action){
-            state.question_type=action.payload
         },
         updateAudioRecording(state,action){
             state.recording = action.payload
@@ -497,13 +505,68 @@ const TeacherSlice = createSlice({
                     break;
             }
         },
-        updateQuestionType(state,action){
-            state.question_type=action.payload
+        updateGenerateQuestionFields(state, action) {
+            const updates = action.payload
+            Object.entries(updates).forEach(([key, value]) => {
+                state.generate_question[key] = value
+            })
         },
-        updateAudioRecording(state,action){
-            state.recording = action.payload
-        }
+        updateGenerateMcqQuestions(state,action){
+            state.generate_question.mcq_questions = action.payload
+        },
+         updateGenerateLongQuestions(state,action){
+            state.generate_question.long_questions = action.payload
+        },
+        updateMcqQuestionAnswer(state, action) {
+            const {answers,summary} = action.payload
+            state.generate_question.summary = summary
+            const existingQuestions = Array.isArray(state?.generate_question?.mcq_questions?.test_questions)
+                ? state?.generate_question?.mcq_questions?.test_questions
+                : []
 
+            state.generate_question.mcq_questions.test_questions = existingQuestions?.map((q) => {
+                const answer = answers.find(a => a.Question_no === q.Question_no)
+
+                if (answer) {
+                    return {
+                        ...q,
+                        candidate_answer: answer.Clicked_Answer,
+                        correct_answer: answer.Correct_Answer,
+                        Explanation: answer.Explanation,
+                        options: answer.options
+                    }
+                }
+                return q;
+            })
+        },
+        updateLongQuestionAnswerValue(state, action) {
+            const { Question_no, answer } = action.payload;
+            const question = state.generate_question.long_questions?.test_questions?.find(
+                (q) => q.Question_no === Question_no
+            )
+            if (question) {
+                question.Answer = answer;
+            }
+        },
+        updateLongQuestionAnswer(state,action){
+            const {answers,overall_levels,performance} = action.payload
+            state.generate_question.overall_levels = overall_levels
+            state.generate_question.performance = performance
+            const existingQuestions = Array.isArray(state?.generate_question?.long_questions?.test_questions)
+                ? state?.generate_question?.long_questions?.test_questions
+                : []
+            state.generate_question.long_questions.test_questions = existingQuestions?.map((q)=>{
+                 const answer = answers.find(a => a.Question_no === q.Question_no)
+                    if (answer) {
+                    return {
+                        ...q,
+                        Explanation: answer.Explanation,
+                    }
+                }
+                return q;
+            })
+        },
+      
 
     }
 })
@@ -517,7 +580,8 @@ export const {
     updateAnswers, updateMcqSubmitSpinner, getQuestionFromDb, getQuestionsEndpoint,updateQuestionType,updateAudioRecording, updateMcqResult, getLearnerBooks, getAllTests,
     getOverallPerformance, getAllTestHistory, getAllSubjects, getSubjectBooks,
     getSubjectAttachments, getUpcomingTests, getOfflineTests, getBookTestHistory, updateTestId, getMcqQuestions,
-    setUploadLearnerBook, setClassroomCode, setUploadTestPaper
+    setUploadLearnerBook, setClassroomCode, setUploadTestPaper,updateGenerateQuestionFields,updateGenerateMcqQuestions,updateGenerateLongQuestions,
+    updateMcqQuestionAnswer,updateLongQuestionAnswerValue,updateLongQuestionAnswer
 
 } = actions;
 

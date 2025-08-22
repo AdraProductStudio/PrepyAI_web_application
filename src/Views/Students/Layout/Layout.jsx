@@ -2,13 +2,8 @@ import Sidebar from "Components/Panel_compnent/Sidebar";
 import { Outlet } from "react-router-dom";
 import JsonData from "Views/Students/Utils/JsonData.jsx";
 import Header from "Components/Panel_compnent/Header";
-<<<<<<< HEAD
-import { useCustomNavigate } from "Components/CustomHooks";
-import { useEffect } from "react";
-=======
 import { useDispatch } from "Components/CustomHooks";
 import { logout } from "Views/Common/Slices/Common_slice";
->>>>>>> staging
 import { OverallModel } from "../Utils/OverallModal";
 
 

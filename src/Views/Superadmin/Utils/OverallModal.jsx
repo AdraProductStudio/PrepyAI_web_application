@@ -55,7 +55,7 @@ export function OverallModel() {
                     case "edit_profile":
                         return <div className="w-100">
                             {Inputfunctions(jsxJson?.super_admin_profile)}
-                            <ButtonComponent type="button" buttonName="Submit" className="brand_color w-100 text-white" clickFunction={()=>dispatch(editProfileDetails(superadminState?.profileInputs))} />
+                            <ButtonComponent type="button" buttonName="Submit" className="brand_color w-100 text-white" clickFunction={()=>dispatch(editProfileDetails(superadminState?.editProfileInputs))} />
                         </div>
 
                     default:

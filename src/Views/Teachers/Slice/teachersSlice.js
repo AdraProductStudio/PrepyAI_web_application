@@ -1,30 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-<<<<<<< HEAD
-    studentsPerformance: {
-        activeTab: "teachers",
-        searchResults: [],
-        jsonStudentsData: []
-    },
-    teacher_DashboardData:{
-    glow: true,
-    data: []
-    },
-    teacher_GetClassrooms:{
-    glow: true,
-    data: []
-    },
-    teacher_GetSubjects:{
-    glow: true,
-    data: []
-    },
-    teacher_GetStudentList:{
-      glow:true,
-      data:[],
-    }
-    
-=======
   selected_books: {},
   teacher_DashboardData: {
     glow: true,
@@ -141,20 +117,14 @@ const initialState = {
   teacher_PostStudents: {
     data: {}
   },
->>>>>>> staging
 }
 
 const teachersSlice = createSlice({
   name: "teachersSlice",
   initialState: initialState,
   reducers: {
-<<<<<<< HEAD
-    handleStudentsPerformance(state, action) {},
-    handleJsonStudentsData(state, action) {},
-=======
     handleStudentsPerformance(state, action) { },
     handleJsonStudentsData(state, action) { },
->>>>>>> staging
     handleTeacherDashboard(state, action) {
       const { type, data } = action.payload;
 
@@ -166,8 +136,6 @@ const teachersSlice = createSlice({
 
         case "response":
           state.teacher_DashboardData["glow"] = false;
-<<<<<<< HEAD
-=======
           state.teacher_DashboardData["data"] = Array.isArray(data) ? data : [];
           break;
 
@@ -400,7 +368,6 @@ const teachersSlice = createSlice({
 
         case "response":
           state.teacher_DashboardData["glow"] = false;
->>>>>>> staging
           state.teacher_DashboardData["data"] = data;
           break;
 
@@ -414,76 +381,6 @@ const teachersSlice = createSlice({
       }
     },
     handleGetClassrooms(state, action) {
-<<<<<<< HEAD
-        const { type, data } = action.payload;
-  
-        switch (type) {
-          case "request":
-            state.teacher_GetClassrooms["glow"] = true;
-            state.teacher_GetClassrooms["data"] = [];
-            break;
-  
-          case "response":
-            state.teacher_GetClassrooms["glow"] = false;
-            state.teacher_GetClassrooms["data"] = data;
-            break;
-  
-          case "failure":
-            state.teacher_GetClassrooms["glow"] = false;
-            state.teacher_GetClassrooms["data"] = [];
-            break;
-  
-          default:
-            break;
-        }
-      },
-      handleGetSubjects(state, action) {
-        const { type, data } = action.payload;
-  
-        switch (type) {
-          case "request":
-            state.teacher_GetSubjects["glow"] = true;
-            state.teacher_GetSubjects["data"] = [];
-            break;
-  
-          case "response":
-            state.teacher_GetSubjects["glow"] = false;
-            state.teacher_GetSubjects["data"] = data;
-            break;
-  
-          case "failure":
-            state.teacher_GetSubjects["glow"] = false;
-            state.teacher_GetSubjects["data"] = [];
-            break;
-  
-          default:
-            break;
-        }
-      },
-      handleGetStudentsList(state, action) {
-        const { type, data } = action.payload;
-  
-        switch (type) {
-          case "request":
-            state.teacher_GetStudentList["glow"] = true;
-            state.teacher_GetStudentList["data"] = [];
-            break;
-  
-          case "response":
-            state.teacher_GetStudentList["glow"] = false;
-            state.teacher_GetStudentList["data"] = data;
-            break;
-  
-          case "failure":
-            state.teacher_GetStudentList["glow"] = false;
-            state.teacher_GetStudentList["data"] = [];
-            break;
-  
-          default:
-            break;
-        }
-      },
-=======
       const { type, data } = action.payload;
 
       switch (type) {
@@ -735,21 +632,12 @@ const teachersSlice = createSlice({
       const { data } = action.payload;
       state.teacher_PostStudents.data = data
     },
->>>>>>> staging
   },
 });
 
 const { actions, reducer } = teachersSlice
 
 export const {
-<<<<<<< HEAD
-    handleStudentsPerformance,
-    handleJsonStudentsData,
-    handleTeacherDashboard,
-    handleGetClassrooms,
-    handleGetSubjects,
-    handleGetStudentsList
-=======
   handleStudentsPerformance,
   handleJsonStudentsData,
   handleTeacherDashboard,
@@ -780,7 +668,6 @@ export const {
   handleGetStudentsListByTeacher,
   handleGetClassroomTeachers,
   updatePostStudentData
->>>>>>> staging
 } = actions
 
 export default reducer

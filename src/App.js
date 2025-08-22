@@ -168,7 +168,7 @@ function App() {
               <Route path="notes" element={<Notes />} />
               <Route path="profile" element={<ReusableProfile />} />
             </Route>
-            <Route path="generate_question" element={<GenerateQuestionLayout />}>
+            <Route path="generate_question/:id" element={<GenerateQuestionLayout />}>
               <Route index element={<GenerateQuestion />} />
               <Route path="mcq_questions" element={<McqQuestions />} />
               <Route path="long_questions" element={<LongQuestions />} />
