@@ -54,7 +54,7 @@ const McqQuestions = () => {
     <Container fluid>
       <Row className='mb-4'>
         <Col className='d-flex align-items-center'>
-          <p className="mb-0 chapter-title">Chapter 1. An Introduction to the Human Body</p>
+          <p className="mb-0 chapter-title">{generate_question?.chapter_name}</p>
         </Col>
         <Col className='d-flex justify-content-end me-5'>
           {generate_question?.test_status === "submitted" ? <ButtonComponent type="button" buttonName="Re-Generate" className="brand_color text-white px-5" clickFunction={() => {
@@ -79,7 +79,7 @@ const McqQuestions = () => {
 
       <Row className="w-100">
         {generate_question?.loading ? <div className='d-flex justify-content-center align-items-center' style={{ minHeight: "75vh", width: "100%" }}>
-          <Spinner size={100} />
+          <Spinner />
         </div> :
           <Card className='border-0'>
             <Card.Body>
@@ -109,7 +109,7 @@ const McqQuestions = () => {
                           name={`option-${qidx}`}
                           formClassName="ps-4 test_radio_btn"
                           formId={`${opt.id}-${idx}`}
-                          change={() => handleOptionSelect(question.Question_no, opt.id)}
+                          change={() => generate_question?.test_status !== "submitted" && handleOptionSelect(question.Question_no, opt.id)}
                           formChecked={question.candidate_answer === opt.id}
                         />
                       </div>

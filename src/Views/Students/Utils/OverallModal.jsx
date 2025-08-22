@@ -87,11 +87,11 @@ export function OverallModel() {
             case "Generate_Question":
                 switch (commonState?.modal?.type) {
                     case "select_question_type":
-                        return <h5 className="text-secondary fw-bold">Select Question Type</h5>
+                        return <h5 className="text-secondary fw-bold mb-0">Select Question Type</h5>
                     case "record_audio":
-                        return <h5 className="text-secondary">Record your Answer</h5>
+                        return <h5 className="text-secondary mb-0">Record your Answer</h5>
                     case "test_result":
-                        return <h5 className="text-secondary">Status - Emergent</h5>
+                        return <h5 className="text-secondary mb-0">Status - {studentState?.generate_question?.performance}</h5>
 
                     default:
                         break;
@@ -384,8 +384,8 @@ export function OverallModel() {
                                     <Card
                                         className={
                                             studentState?.generate_question?.type_of_question === "mcq"
-                                                ? "brand_color shadow-sm py-3 active-card border-0"
-                                                : "shadow-lg py-3 inactive-card border-0"
+                                                ? "brand_color shadow-sm py-3 active-card border-0 cursor-pointer"
+                                                : "shadow-lg py-3 inactive-card border-0 cursor-pointer"
                                         }
                                         onClick={() => dispatch(updateGenerateQuestionFields({type_of_question:"mcq"}))}
                                     >
@@ -407,8 +407,8 @@ export function OverallModel() {
                                     <Card
                                         className={
                                              studentState?.generate_question?.type_of_question === "long_answer"
-                                                ? "brand_color shadow-sm py-3 active-card border-0"
-                                                : "shadow-lg py-3 inactive-card border-0"
+                                                ? "brand_color shadow-sm py-3 active-card border-0 cursor-pointer"
+                                                : "shadow-lg py-3 inactive-card border-0 cursor-pointer"
                                         }
                                         onClick={() => dispatch(updateGenerateQuestionFields({type_of_question:"long_answer"}))}
                                     >
@@ -551,7 +551,7 @@ export function OverallModel() {
             showModalHeader={true}
             modalHeaderClassname=""
             modalHeader={modalHeaderFun()}
-            modalBodyClassname="py-2"
+            modalBodyClassname="py-2 overflow-auto"
             modalBody={<div className=''>{modalBodyFun()}</div>}
             showModalFooter={true}
             modalFooterClassname="border-0"
