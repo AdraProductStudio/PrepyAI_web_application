@@ -79,6 +79,19 @@ const TeacherSlice = createSlice({
             old_password: "",
             new_password: "",
             confirm_password: "",
+        },
+        recording: "",
+        generate_question: {
+            test_language: "",
+            level_of_test: "",
+            long_questions: [],
+            mcq_questions: [],
+            loading: false,
+            summary: {},
+            test_status: "",
+            overall_levels: [],
+            performance: ""
+
         }
     },
     reducers: {
@@ -401,6 +414,67 @@ const TeacherSlice = createSlice({
         updateAudioRecording(state, action) {
             state.recording = action.payload
         },
+        updateGenerateQuestionFields(state, action) {
+            const updates = action.payload
+            Object.entries(updates).forEach(([key, value]) => {
+                state.generate_question[key] = value
+            })
+        },
+        updateGenerateMcqQuestions(state, action) {
+            state.generate_question.mcq_questions = action.payload
+        },
+        updateGenerateLongQuestions(state, action) {
+            state.generate_question.long_questions = action.payload
+        },
+        updateMcqQuestionAnswer(state, action) {
+            const { answers, summary } = action.payload
+            state.generate_question.summary = summary
+            const existingQuestions = Array.isArray(state?.generate_question?.mcq_questions?.test_questions)
+                ? state?.generate_question?.mcq_questions?.test_questions
+                : []
+
+            state.generate_question.mcq_questions.test_questions = existingQuestions?.map((q) => {
+                const answer = answers.find(a => a.Question_no === q.Question_no)
+
+                if (answer) {
+                    return {
+                        ...q,
+                        candidate_answer: answer.Clicked_Answer,
+                        correct_answer: answer.Correct_Answer,
+                        Explanation: answer.Explanation,
+                        options: answer.options
+                    }
+                }
+                return q;
+            })
+        },
+        updateLongQuestionAnswerValue(state, action) {
+            const { Question_no, answer } = action.payload;
+            const question = state.generate_question.long_questions?.test_questions?.find(
+                (q) => q.Question_no === Question_no
+            )
+            if (question) {
+                question.Answer = answer;
+            }
+        },
+        updateLongQuestionAnswer(state, action) {
+            const { answers, overall_levels, performance } = action.payload
+            state.generate_question.overall_levels = overall_levels
+            state.generate_question.performance = performance
+            const existingQuestions = Array.isArray(state?.generate_question?.long_questions?.test_questions)
+                ? state?.generate_question?.long_questions?.test_questions
+                : []
+            state.generate_question.long_questions.test_questions = existingQuestions?.map((q) => {
+                const answer = answers.find(a => a.Question_no === q.Question_no)
+                if (answer) {
+                    return {
+                        ...q,
+                        Explanation: answer.Explanation,
+                    }
+                }
+                return q;
+            })
+        },
         updatePersonalInfoInputs: (state, action) => {
             if (!action.payload) return
 
@@ -470,7 +544,9 @@ export const {
     getAllTestHistory, getAllSubjects, getSubjectBooks, getSubjectAttachments, getUpcomingTests,
     getOfflineTests, getBookTestHistory, updateTestId, getMcqQuestions,
     setUploadLearnerBook, setClassroomCode, setUploadTestPaper, updateAudioRecording, updateQuestionType,
-    updatePersonalInfoInputs, updateSettingsInputs, resetSettingsInputs, editProfileInputs, updateProfileEditing
+    updatePersonalInfoInputs, updateSettingsInputs, resetSettingsInputs, editProfileInputs, updateProfileEditing,
+    updateGenerateQuestionFields, updateGenerateMcqQuestions, updateGenerateLongQuestions,
+    updateMcqQuestionAnswer, updateLongQuestionAnswerValue, updateLongQuestionAnswer
 
 } = actions;
 

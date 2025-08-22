@@ -5,7 +5,7 @@ import React, { Fragment } from 'react'
 import Image from 'Utils/Image'
 import Icons from 'Utils/Icons'
 import AccordionSidebar from 'Components/Accordion/AccordionSidebar'
-import { useCustomNavigate } from 'Components/CustomHooks'
+import { useCommonState, useCustomNavigate } from 'Components/CustomHooks'
 
 const GenerateQuestionSidebar = ({
     menuOptions, responsiveOn,
@@ -14,24 +14,7 @@ const GenerateQuestionSidebar = ({
 }) => {
 
     const navigate = useCustomNavigate()
-
-    const accordionData = [
-        {
-            name: "Main Menu 1",
-            options: [
-                { name: "Sub Option 1" },
-                { name: "Sub Option 2" }
-            ]
-        },
-        {
-            name: "Main Menu 2",
-            options: [
-                { name: "Sub Option A" },
-                { name: "Sub Option B" }
-            ]
-        }
-    ];
-
+    const {generate_question} = useCommonState()?.studentState
 
     const headerFun = () => {
         return <div className='w-100'>
@@ -42,12 +25,12 @@ const GenerateQuestionSidebar = ({
     function bodyContent() {
         return (
             <nav className='navmenu w-100'>
-                <p className='text-center mt-3 sidebar-book-title'>Anatomy & Physiology</p>
-                {accordionData?.map((item, index) => (
+                <p className='text-center mt-3 sidebar-book-title'>{generate_question?.bookmarks?.book_title}</p>
+                {generate_question?.bookmarks?.bookmarks?.map((item, index) => (
                     <AccordionSidebar
                         key={index}
                         accordionData={item}
-                         accordionIndex={index}
+                        accordionIndex={index}
                     />
                 ))}
             </nav>
@@ -75,7 +58,7 @@ const GenerateQuestionSidebar = ({
                         </div>
                     </div>
 
-                    <div className="sidebar-body-with-footer">
+                    <div className="sidebar-body-with-footer overflow-auto">
                         {bodyContent()}
                     </div>
 

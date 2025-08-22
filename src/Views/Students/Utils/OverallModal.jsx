@@ -6,9 +6,9 @@ import ModalComponent from "Components/Modal/Modal";
 import { useRef } from "react";
 import Icons from "Utils/Icons";
 import Image from "Utils/Image";
-import { updateModalShow } from "Views/Common/Slices/Common_slice";
-import { handleEditProfileDetails, handleJoinClassRoom, handleStartTest, handleSubmitTest, handleUploadLearnerBook, handleUploadTestPaper } from "../Actions/StudentAction";
-import { setClassroomCode, setUploadLearnerBook, setUploadTestPaper } from "../Slices/StudentSlice";
+import { update_error, updateModalShow } from "Views/Common/Slices/Common_slice";
+import { handleEditProfileDetails, handleGenerateQuestion, handleJoinClassRoom, handleStartTest, handleSubmitTest, handleUploadLearnerBook, handleUploadTestPaper } from "../Actions/StudentAction";
+import { setClassroomCode, setUploadLearnerBook, setUploadTestPaper, updateGenerateQuestionFields } from "../Slices/StudentSlice";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import JsonData from "./JsonData";
 import SpinnerComponent from "Components/Spinner/Spinner";
@@ -16,6 +16,7 @@ import { Card } from "react-bootstrap";
 import { updateAudioRecording, updateQuestionType } from "../Slices/StudentSlice";
 import StatusCard from "Components/Card/StatusCard";
 import { postTeacherNote } from "Views/Common/Actions/Common_action";
+import AudioRecorder from "../Docs/AudioRecorder";
 
 export function OverallModel() {
     const { commonState, studentState } = useCommonState();
@@ -43,14 +44,30 @@ export function OverallModel() {
     }
 
     const submitQuestionType = () => {
-        if (studentState?.question_type == "mcq_questions") {
-            navigate('mcq_questions')
-            dispatch(updateModalShow({ show: false }))
-        } else if (studentState?.question_type == "long_questions") {
-            navigate('long_questions')
-            dispatch(updateModalShow({ show: false }))
+        const {test_language,level_of_test,book_id,type_of_question,chapter_name,bookmarks} = studentState?.generate_question || {};
+
+        if (!test_language || !level_of_test || !book_id || !type_of_question || !chapter_name) {
+            return dispatch(update_error({ Err: "Required All the fields", Toast_Type: "error" }));
         }
+
+        const selectedBookMarks = bookmarks?.bookmarks?.find(b => b.title === chapter_name);
+        const questionRoutes = {mcq: "mcq_questions",long_answer: "long_questions",}
+
+        const targetRoute = questionRoutes[type_of_question];
+        if (!targetRoute) {
+            return dispatch(update_error({ Err: "Invalid question type", Toast_Type: "error" }));
+        }
+        const payload = {
+            chapter_range: [selectedBookMarks?.chapter_range],
+            type_of_question,
+            level_of_question: level_of_test,
+            chapters: [chapter_name],
+            book_id,
+            test_language,
+        }
+        dispatch(handleGenerateQuestion(payload,navigate,targetRoute,type_of_question))
     }
+
 
     function modalHeaderFun() {
         switch (commonState?.modal?.from) {
@@ -108,6 +125,19 @@ export function OverallModel() {
                     default:
                         break;
                 }
+            case "Generate_Question":
+                switch (commonState?.modal?.type) {
+                    case "select_question_type":
+                        return <h5 className="text-secondary fw-bold">Select Question Type</h5>
+                    case "record_audio":
+                        return <h5 className="text-secondary">Record your Answer</h5>
+                    case "test_result":
+                        return <h5 className="text-secondary">Status - {studentState?.generate_question?.performance}</h5>
+
+                    default:
+                        break;
+                }
+                break;
 
             default:
                 break;
@@ -349,20 +379,21 @@ export function OverallModel() {
                     case "select_question_type":
                         return (
                             <div>
-                                <div className="d-flex justify-content-center align-items-center gap-3">
+                                <div className="d-flex justify-content-center align-items-center">
+                                    <div className="col-5 p-2">
                                     <Card
                                         className={
-                                            studentState?.question_type === "mcq_questions"
+                                            studentState?.generate_question?.type_of_question === "mcq"
                                                 ? "brand_color shadow-sm py-3 active-card border-0"
                                                 : "shadow-lg py-3 inactive-card border-0"
                                         }
-                                        onClick={() => dispatch(updateQuestionType("mcq_questions"))}
+                                        onClick={() => dispatch(updateGenerateQuestionFields({type_of_question:"mcq"}))}
                                     >
                                         <Card.Body className="p-2 d-flex flex-column align-items-center gap-2">
-                                            <span>{studentState?.question_type === "mcq_questions" ? Icons.mcqActiveIcon : Icons.mcqIcon}</span>
+                                            <span>{studentState?.generate_question?.type_of_question === "mcq" ? Icons.mcqActiveIcon : Icons.mcqIcon}</span>
                                             <p
                                                 className={
-                                                    studentState?.question_type === "mcq_questions"
+                                                     studentState?.generate_question?.type_of_question === "mcq"
                                                         ? "mb-0 text-white text-center fs-5"
                                                         : "mb-0 text-secondary text-center fs-5"
                                                 }
@@ -371,20 +402,21 @@ export function OverallModel() {
                                             </p>
                                         </Card.Body>
                                     </Card>
-
+                                    </div>
+                                    <div className="col-5 p-2">
                                     <Card
                                         className={
-                                            studentState?.question_type === "long_questions"
+                                             studentState?.generate_question?.type_of_question === "long_answer"
                                                 ? "brand_color shadow-sm py-3 active-card border-0"
                                                 : "shadow-lg py-3 inactive-card border-0"
                                         }
-                                        onClick={() => dispatch(updateQuestionType("long_questions"))}
+                                        onClick={() => dispatch(updateGenerateQuestionFields({type_of_question:"long_answer"}))}
                                     >
                                         <Card.Body className="p-2 d-flex flex-column align-items-center gap-2">
-                                            <span>{studentState?.question_type === "long_questions" ? Icons.longQueActiveIcon : Icons.longQueIcon}</span>
+                                            <span>{ studentState?.generate_question?.type_of_question === "long_answer" ? Icons.longQueActiveIcon : Icons.longQueIcon}</span>
                                             <p
                                                 className={
-                                                    studentState?.question_type === "long_questions"
+                                                     studentState?.generate_question?.type_of_question === "long_answer"
                                                         ? "mb-0 text-white text-center fs-5"
                                                         : "mb-0 text-secondary text-center fs-5"
                                                 }
@@ -393,6 +425,7 @@ export function OverallModel() {
                                             </p>
                                         </Card.Body>
                                     </Card>
+                                    </div>
                                 </div>
 
                                 <div className="d-flex justify-content-end mt-5">
@@ -408,49 +441,18 @@ export function OverallModel() {
 
 
                     case "record_audio":
-                        return studentState?.recording === "completed" ? (
-                            <div className="d-flex flex-column justify-content-center align-items-center gap-4">
-                                <div className="d-flex justify-content-center align-items-center gap-2 w-100 px-5">
-                                    <span>{Icons.playIcon}</span>
-                                    <Img
-                                        src={Image?.record_isolation}
-                                        alt="Record"
-                                        fluid
-                                        width="100%"
-                                        height="100%"
-                                        style={{ cursor: "pointer" }}
-                                    />
-                                </div>
-                                <ButtonComponent type="button" className="btn-brand-color px-5" buttonName="Continue" />
-                            </div>
-                        ) : (
-                            <div
-                                className="d-flex flex-column justify-content-center align-items-center w-100"
-                                onClick={() => {
-                                    dispatch(updateAudioRecording("recording"))
-                                    setTimeout(() => {
-                                        dispatch(updateAudioRecording("completed"))
-                                    }, 5000)
-                                }}
-                            >
-                                <Img
-                                    src={studentState?.recording === "recording" ? Image?.recording : Image?.record}
-                                    alt="Record"
-                                    fluid
-                                    width="100px"
-                                    height="100%"
-                                    style={{ cursor: "pointer" }}
+                        return (
+                            <div className="d-flex flex-column justify-content-center align-items-center w-100">
+                                <AudioRecorder
+                                    onComplete={(url, blob) => {
+                                        dispatch(updateAudioRecording("completed"));
+                                    }}
                                 />
-                                <p className="text-secondary fw-bold fs-5 mt-2">
-                                    {studentState?.recording === "recording"
-                                        ? "Recording..."
-                                        : "Tap and Start speaking..."}
-                                </p>
                             </div>
-                        );
+                        )
                     case 'test_result':
-                        return (jsonOnly?.cardDetails?.map((card) => {
-                            return <StatusCard cardTitle={card.cardTitle} titleValue={card.titleValue} explanation={card.explanation} />
+                        return (studentState?.generate_question?.overall_levels?.map((card) => {
+                            return <StatusCard cardTitle={card.level} titleValue={card.status} explanation={card.reasoning} />
                         })
                         )
 
@@ -526,7 +528,8 @@ export function OverallModel() {
                     case "test_result":
                         return <div className="d-flex gap-3">
                             <ButtonComponent type="button" buttonName="Cancell" className="custom-btn" clickFunction={() => dispatch(updateModalShow({ show: false }))} />
-                            <ButtonComponent type="button" buttonName="Take a Retest" className="brand_color text-white" clickFunction={() => dispatch(updateModalShow({ show: true, close_btn: true, size: "md", modal_from: "Generate_Question", modal_type: "select_question_type" }))} />
+                            <ButtonComponent type="button" buttonName="Take a Retest" className="brand_color text-white" clickFunction={() => {
+                                dispatch(updateModalShow({ show: true, close_btn: true, size: "md", modal_from: "Generate_Question", modal_type: "select_question_type" }))}} />
                         </div>
 
                     default:

@@ -7,7 +7,7 @@ import Image from "Utils/Image";
 
 const BookCard = ({
     data = {},
-    onClickDelete, className, viewFunction, previewFunction, generateFunction
+    onClickDelete, className, viewFunction, previewFunction
 }) => {
  const navigate = useCustomNavigate()
     function dynamicContent() {
@@ -20,7 +20,7 @@ const BookCard = ({
                             <ButtonComponent type="button" className="btn-transparent fs-14 text-primary" buttonName="View" clickFunction={previewFunction}  />
                         </div>
                         <div className="col text-end border-start">
-                            <ButtonComponent type="button" className="btn-transparent fs-14 brand_text_color" buttonName="Generate Question" clickFunction={generateFunction} />
+                            <ButtonComponent type="button" className="btn-transparent fs-14 brand_text_color" buttonName="Generate Question" clickFunction={()=> navigate(`/student_dashboard/generate_question/${data?.book_id}`)} />
                         </div>
                     </Card.Footer>
                 )
@@ -29,7 +29,6 @@ const BookCard = ({
                 break;
         }
     }
- 
     return (
         <Card className={`${className?.includes("border") ? "border" : "border-0"} rounded-4 shadow-sm px-3 h-100 ${className}`}>
             <Card.Header className="bg-transparent border-0 border-bottom row align-items-center px-0">
