@@ -13,22 +13,22 @@ const NoteCard = ({data, addFavoriteOnClick,notesEditOnClick, notesDeleteOnClick
 
     return (
         <Card className="NoteCard rounded-4 p-3 shadow-sm border-0 h-100 mb-3" style={{ backgroundColor: '#F4FAB3' || '#fafaf8ff'}} >
-            <Row className="align-items-center justify-content-between py-1 mb-3 heading ">
+            <Row className="align-items-end justify-content-between py-1 mb-3 heading ">
                 <Col>
                     <p className="text-secondary fs-13 m-0">{data?.date || ''}</p>
-                    <h5 className="fw-semibold mt-2 mb-1">{data?.title || ''}</h5>
+                    <h5 className="fw-semibold mt-2 mb-2">{data?.title || ''}</h5>
                 </Col>
-                <Col xs="auto" className="d-flex">
-                    <ButtonComponent className="btn" buttonName={noteFavoriteIcon} clickFunction={addFavoriteOnClick} />
-                    <ButtonComponent className="btn" buttonName={Icons?.NotesEditIcon} clickFunction={notesEditOnClick} />
-                    <ButtonComponent className="btn" buttonName={Icons?.NoteDeleteIcon} clickFunction={notesDeleteOnClick} />
+                <Col xs="auto" className="d-flex ">
+                    <ButtonComponent className="btn pb-2" buttonName={noteFavoriteIcon} clickFunction={addFavoriteOnClick} />
+                    <ButtonComponent className="btn pb-2" buttonName={Icons?.NotesEditIcon} clickFunction={notesEditOnClick} />
+                    <ButtonComponent className="btn pb-2" buttonName={Icons?.NoteDeleteIcon} clickFunction={notesDeleteOnClick} />
                 </Col>
             </Row>
             <div className="text-dark" style={{ fontSize: "15px" }}>
-                {shortertext}
+                <p className="m-0">{shortertext}</p>
                 {longertext && (
                     <ButtonComponent 
-                    className="btn btn-link text-decoration-none p-0 ms-1 " 
+                    className="btn btn-link text-decoration-none p-0 " 
                     clickFunction={() => onShowMore?.(normaltext)}
                     buttonName='show more' />     
                 )}

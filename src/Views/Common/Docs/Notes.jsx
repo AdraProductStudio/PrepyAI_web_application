@@ -64,7 +64,7 @@ const Notes = () => {
         ) : data?.length ? (
           <div className="w-100 small_header_content_main row overflowY">
          { data?.map((note_data) => (
-               <div className="col-md-6 col-lg-4 col-xxl-3 p-2 " key={note_data.s_no}>
+               <div className="col-md-6 col-lg-4 col-xxl-3 p-2 ps-0 pe-3" key={note_data.s_no}>
                  <NoteCard 
                  data={note_data} 
                  onShowMore={() => handleShowMore(note_data)} 
