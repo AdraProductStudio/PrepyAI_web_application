@@ -291,25 +291,8 @@ const TeacherSlice = createSlice({
             }
         },
         getOfflineTests(state, action) {
-            const { type, data, offline_tests_loading } = action.payload
-
-            switch (type) {
-                case "request":
-                    state.offline_tests = offline_tests_loading
-                case "response":
-                    state.offline_tests = (Array.isArray(data) || (typeof data !== "object")) ? data : [];
-                    state.offline_tests_loading = false
-                    break;
-
-                case "failure":
-                    state.offline_tests_loading = false
-                    break;
-
-                default:
-                    break;
-            }
+            state.offline_tests = action.payload || []
         },
-
         setUploadLearnerBook(state, action) {
             const { type, data, book_file, book_name, loading } = action.payload;
 
