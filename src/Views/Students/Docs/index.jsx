@@ -27,16 +27,16 @@ const StudentDashboard = () => {
     }, [])
     return (
         <Row className="g-3">
-            <Col xs={12} md={5} className="p-2">
+            <Col xs={12} lg={7}  xl={5} className="p-2">
                 <StudentUpload />
             </Col>
 
-            <Col xs={12} md={7} >
+            <Col xs={12} lg={5} xl={7} >
                 <Row>
-                    <Col xs={12} sm={6} className="p-2">
+                    <Col xs={12} md={6} lg={12} xl={6} className="p-2">
                         <PerformanceHistoryCard history_data={studentState?.all_test_history} />
                     </Col>
-                    <Col xs={12} sm={6} className="p-2">
+                    <Col xs={12} md={6} lg={12} xl={6} className="p-2">
                         <Card className='border-0 rounded-4 shadow-sm h-100'>
                             <Card.Header className="border-bottom bg-transparent py-3">
                                 <Card.Title className='fs-16 mb-0'> Activities </Card.Title>

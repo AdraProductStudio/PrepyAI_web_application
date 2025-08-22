@@ -7,7 +7,7 @@ import IndividualBookTestPerformance from "Components/Card/IndividualBookTestPer
 import { useCommonState, useCustomNavigate, useDispatch } from "Components/CustomHooks";
 import AttachmentBookHistoryCard from "Components/Card/AttachmentBookHistoryCard";
 import { handleGetBookPerformance, handleGetBookTestHistory, handleGetSubjectBooks } from "../Actions/StudentAction";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Img from "Components/Img/Img";
 import Image from "Utils/Image";
 import ButtonComponent from "Components/Button/Button";
@@ -15,18 +15,22 @@ import ButtonComponent from "Components/Button/Button";
 const BooksOverviewLayout = () => {
     const { subject_id, book_idx } = useParams()
     const { studentState } = useCommonState()
+    const [called, setCalled] = useState(false)
     const dispatch = useDispatch()
     const navigate = useCustomNavigate()
     
     const book = studentState?.subject_books[book_idx]
     useEffect(() => {
         dispatch(handleGetSubjectBooks(subject_id))
+    }, [])
 
-        if (book?.book_id) {
+    useEffect(() => {
+        if (!called && book?.book_id) {
             dispatch(handleGetBookTestHistory(book.book_id))
             dispatch(handleGetBookPerformance(book.book_id))
+            setCalled(true)
         }
-    }, [subject_id, book?.book_id])
+    }, [ called, dispatch])
 
 
     const isValidUrl = (url) => {

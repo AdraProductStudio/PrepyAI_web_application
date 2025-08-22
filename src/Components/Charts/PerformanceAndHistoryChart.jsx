@@ -61,28 +61,33 @@ const PerformanceAndHistoryChart = ({ data = [], size = 150, strokeWidth = 10, g
                                         strokeWidth={strokeWidth}
                                         fill="none"
                                     />
+                                   
+                                    {
+                                        item.value > 0 && (
 
-                                    <circle
-                                        cx={totalWidth / 2}
-                                        cy={totalWidth / 2}
-                                        r={radius}
-                                        stroke={item.fill || '#3E00C2'}
-                                        strokeWidth={strokeWidth}
-                                        strokeDasharray={circumference}
-                                        strokeDashoffset={circumference}
-                                        strokeLinecap="round"
-                                        fill="none"
-                                        transform={`rotate(-90 ${totalWidth / 2} ${totalWidth / 2})`}
-                                    >
-                                        <animate
-                                            attributeName="stroke-dashoffset"
-                                            from={circumference}
-                                            to={progressOffset}
-                                            dur=".5s"
-                                            fill="freeze"
-                                            begin="0s"
-                                        />
-                                    </circle>
+                                            <circle
+                                                cx={totalWidth / 2}
+                                                cy={totalWidth / 2}
+                                                r={radius}
+                                                stroke={item.fill || '#3E00C2'}
+                                                strokeWidth={strokeWidth}
+                                                strokeDasharray={circumference}
+                                                strokeDashoffset={circumference}
+                                                strokeLinecap="round"
+                                                fill="none"
+                                                transform={`rotate(-90 ${totalWidth / 2} ${totalWidth / 2})`}
+                                            >
+                                                <animate
+                                                    attributeName="stroke-dashoffset"
+                                                    from={circumference}
+                                                    to={progressOffset}
+                                                    dur=".5s"
+                                                    fill="freeze"
+                                                    begin="0s"
+                                                />
+                                            </circle>
+                                        )
+                                    }
                                 </g>
                             )
                         })}

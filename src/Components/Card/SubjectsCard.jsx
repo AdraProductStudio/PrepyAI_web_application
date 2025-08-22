@@ -37,7 +37,7 @@ export default function SubjectsCard({
                                 {item.content}
                             </div>
                             <div className="col-2 fs-16 text-secondary">
-                                <span className="pe-3">:</span>
+                                <span className="pe-2">:</span>
                                 {item.count}
                             </div>
                         </div>

@@ -321,7 +321,13 @@ export function OverallModel() {
                                     <ButtonComponent
                                         type="button"
                                         className="btn btn-brand-color px-5 py-2"
-                                        buttonName={studentState?.mcq_test?.submit_spinner ? (<>submiting... <SpinnerComponent /></>) : ('Submit')}
+                                        buttonName={studentState?.mcq_test?.submit_spinner_loading ? (
+                                            <div className="d-flex justify-content-center align-items-center">
+                                                <p className="m-0">Submitting...</p> <SpinnerComponent className="p-0 my-0 ms-2" />
+                                            </div>
+                                        )
+                                            : ('Submit')
+                                        }
                                         clickFunction={() => dispatch(handleSubmitTest(studentState?.test_id, navigate))}
                                     />
                                 </div>

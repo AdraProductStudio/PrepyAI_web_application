@@ -50,7 +50,7 @@ const StudentSubject = () => {
                         ) : (
                             <>
                                 {studentState?.all_subjects?.map((item, idx) => (
-                                    <div className="col-3 p-2" key={idx}>
+                                    <div className="col-12 col-sm-6 col-md-4 col-lg-3 p-2" key={idx}>
                                         <SubjectsCard cardClassName="w-100 pointer" data={item} buttonName="View" onclickCard={() => navigate(`/student_dashboard/subjects/${item.subject_id}`)} />
                                     </div>))
                                 }

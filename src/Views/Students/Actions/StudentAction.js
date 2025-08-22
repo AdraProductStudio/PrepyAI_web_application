@@ -29,6 +29,7 @@ import {
     setLoading,
     updateSettingsInputs,
     resetSettingsInputs,
+    resetMcq,
 
 } from "Views/Students/Slices/StudentSlice"
 import { IndexedDbDeleteFun } from "../IndexDbDeleteFun";
@@ -75,6 +76,7 @@ export const handleStartTest = (test_id, navigate) => async (dispatch) => {
 
     // delete index db
     await IndexedDbDeleteFun()
+    dispatch(resetMcq())
     try {
         const { data } = await axiosInstance.post("students/start_test", { test_id })
 
@@ -114,9 +116,9 @@ export const handleStartTest = (test_id, navigate) => async (dispatch) => {
 
             // Update redux
             dispatch(getMcqQuestions({ type: "response" }))
-            dispatch(update_error({ Err: data.message, Toast_Type: "success" }))
             dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
-            setTimeout(() => navigate(`/student_dashboard/test`), 1000)
+            navigate(`/student_dashboard/test`)
+            dispatch(update_error({ Err: 'Test started', Toast_Type: "success" })) 
 
         } else {
             dispatch(getMcqQuestions({ type: "failure" }))
@@ -249,7 +251,6 @@ export const handleGetLearnerBooks = () => async (dispatch) => {
 
     try {
         const { data } = await axiosInstance.get("students/get_learner_books")
-        dispatch(getLearnerBooks({ type: "request", learner_books_loading: true }))
 
         if (data?.error_code === 0) {
             dispatch(getLearnerBooks(data?.data))
@@ -285,7 +286,7 @@ export const handleGetOverallPerformance = () => async (dispatch) => {
     dispatch(setLoading({ key: "overall_performance", value: true }))
 
     try {
-        dispatch(getOverallPerformance({ type: "request", overall_performance_loading: true }))
+
         const { data } = await axiosInstance.get("students/get_dashboard_performance")
         if (data?.error_code === 0) {
             dispatch(getOverallPerformance(data?.data))
@@ -340,7 +341,7 @@ export const handleGetAllTestHistory = () => async (dispatch) => {
     dispatch(setLoading({ key: "all_test_history", value: true }))
 
     try {
-        dispatch(getAllTestHistory({ type: "request", all_test_history_loading: true }))
+        
         const { data } = await axiosInstance.get("students/get_dashboard_test_history")
 
         if (data?.error_code === 0) {
@@ -359,7 +360,7 @@ export const handleGetBookTestHistory = (book_id) => async (dispatch) => {
     dispatch(setLoading({ key: "book_test_history", value: true }))
 
     try {
-        dispatch(getBookTestHistory({ type: "request", book_test_history_loading: true }))
+        
         const { data } = await axiosInstance.post("students/get_book_test_history", { book_id })
         if (data?.error_code === 0) {
 
@@ -378,7 +379,7 @@ export const handleGetAllSubjects = () => async (dispatch) => {
     dispatch(setLoading({ key: "all_subjects", value: true }))
 
     try {
-        dispatch(getAllSubjects({ type: "request", subjects_loading: true }))
+        
         const { data } = await axiosInstance.get("students/get_subjects")
 
         if (data?.error_code === 0) {
@@ -397,7 +398,7 @@ export const handleGetSubjectBooks = (subject_id) => async (dispatch) => {
     dispatch(setLoading({ key: "subject_books", value: true }))
 
     try {
-        dispatch(getSubjectBooks({ type: "request", subject_books_loadingg: true }))
+
         const { data } = await axiosInstance.get(`students/get_subject_books?subject_id=${subject_id}`)
 
         if (data?.error_code === 0) {
@@ -434,7 +435,7 @@ export const handleGetUpcomingTests = () => async (dispatch) => {
     dispatch(setLoading({ key: "upcoming_tests", value: true }))
 
     try {
-        dispatch(getUpcomingTests({ type: "request", upcoming_tests_loading: true }))
+       
         const { data } = await axiosInstance.get("students/get_upcoming_test")
 
         if (data?.error_code === 0) {
@@ -451,16 +452,15 @@ export const handleGetUpcomingTests = () => async (dispatch) => {
 
 export const handleGetOfflineTests = () => async (dispatch) => {
     try {
-        dispatch(getOfflineTests({ type: "request", offline_tests_loading: true }))
         const { data } = await axiosInstance.get("students/get_offline_test")
 
         if (data?.error_code === 0) {
-            dispatch(getOfflineTests({ type: "response", data: data?.data }))
+            dispatch(getOfflineTests(data?.data))
         } else {
             dispatch(update_error({ Err: data?.message, Toast_Type: "error" }))
         }
     } catch (error) {
-        dispatch(getOfflineTests({ type: "failure", message: error?.message }))
+        dispatch(update_error({ Err: error?.response?.data?.message || error?.message || "Something went wrong", Toast_Type: "error" }))
     }
 } 
 
