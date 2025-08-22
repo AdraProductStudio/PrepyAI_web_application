@@ -62,8 +62,13 @@ const initialState = {
       }
     },
   },
-  teacher_DashboardData: {
+
+  teacher_GetAllClassRooms: {
     glow: true,
+    data: []
+  },
+  teacher_GradeByClassroom: {
+    gloe: true,
     data: []
   },
   teacher_GetTeachers: {
@@ -71,14 +76,6 @@ const initialState = {
     data: []
   },
   teacher_GetClassroomTeachers: {
-    glow: true,
-    data: []
-  },
-  teacher_GetClassrooms: {
-    glow: true,
-    data: [],
-  },
-  teacher_GetSubjects: {
     glow: true,
     data: []
   },
@@ -115,6 +112,12 @@ const initialState = {
   teacher_PostStudents: {
     data: {}
   },
+  teacher_CreateStudents: {
+    data: {}
+  },
+  teacher_Current_Grade_Classroom: {
+    data: {}
+  }
 }
 
 const teachersSlice = createSlice({
@@ -355,22 +358,22 @@ const teachersSlice = createSlice({
     updateSelfTestTotalPageCount(state, action) {
       state.studentsPerformance.selfTest.pagination.total_pages = action.payload
     },
-    handleTeacherDashboard(state, action) {
+    handleAllClassRooms(state, action) {
       const { type, data } = action.payload;
 
       switch (type) {
         case "request":
-          state.teacher_DashboardData["glow"] = true;
-          state.teacher_DashboardData["data"] = [];
+          state.teacher_GetAllClassRooms["glow"] = true;
+          state.teacher_GetAllClassRooms["data"] = [];
           break;
 
         case "response":
-          state.teacher_DashboardData["glow"] = false;
-          state.teacher_DashboardData["data"] = data;
+          state.teacher_GetAllClassRooms["glow"] = false;
+          state.teacher_GetAllClassRooms["data"] = data;
           break;
 
         case "failure":
-          state.teacher_DashboardData["glow"] = false;
+          state.teacher_GetAllClassRooms["glow"] = false;
           state.teacher_DashboardData["data"] = [];
           break;
 
@@ -378,51 +381,23 @@ const teachersSlice = createSlice({
           break;
       }
     },
-    handleGetClassrooms(state, action) {
+    handleGradeByClassroom(state, action) {
       const { type, data } = action.payload;
 
       switch (type) {
         case "request":
-          state.teacher_GetClassrooms["glow"] = true;
-          state.teacher_GetClassrooms["data"] = [];
+          state.teacher_GradeByClassroom["glow"] = true;
+          state.teacher_GradeByClassroom["data"] = [];
           break;
 
         case "response":
-          state.teacher_GetClassrooms["glow"] = false;
-          state.teacher_GetClassrooms["data"] = data;
+          state.teacher_GradeByClassroom["glow"] = false;
+          state.teacher_GradeByClassroom["data"] = data;
           break;
 
         case "failure":
-          state.teacher_GetClassrooms["glow"] = false;
-          state.teacher_GetClassrooms["data"] = [];
-          break;
-
-        case "POST":
-          const [key, value] = Object.entries(action.payload)[0] || [];
-          state.teacher_GetClassrooms.postData[key] = value || "";
-          break;
-
-        default:
-          break;
-      }
-    },
-    handleGetSubjects(state, action) {
-      const { type, data } = action.payload;
-
-      switch (type) {
-        case "request":
-          state.teacher_GetSubjects["glow"] = true;
-          state.teacher_GetSubjects["data"] = [];
-          break;
-
-        case "response":
-          state.teacher_GetSubjects["glow"] = false;
-          state.teacher_GetSubjects["data"] = data;
-          break;
-
-        case "failure":
-          state.teacher_GetSubjects["glow"] = false;
-          state.teacher_GetSubjects["data"] = [];
+          state.teacher_GradeByClassroom["glow"] = false;
+          state.teacher_GradeByClassroom["data"] = [];
           break;
 
         default:
@@ -629,8 +604,31 @@ const teachersSlice = createSlice({
     },
     update_edit_student(state, action) {
       const { data } = action.payload;
-      state.teacher_PostStudents.data = data
+      state.teacher_PostClassrooms.data = data;
     },
+    update_edit_classroom(state, action) {
+      const { data } = action.payload;
+      state.teacher_PostClassrooms.data = data;
+    },
+    update_Create_student(state, action) {
+      const [key, value] = Object.entries(action.payload)[0] || [];
+      state.teacher_PostStudents.data[key] = value || "";
+    },
+    update_Grade_by_classroom(state, action) {
+      const [key, value] = Object.entries(action.payload)[0] || [];
+      state.teacher_Current_Grade_Classroom.data[key] = value || "";
+    }
+  },
+  extraReducers(builder) {
+    builder.addCase("common_slice/updateModalShow", (state, action) => {
+      const { show } = action.payload;
+      if (!show) {
+        state.teacher_PostClassrooms.data = {};
+        state.teacher_PostSubjects.data = {};
+        state.teacher_PostStudents.data = {};
+        state.teacher_CreateStudents.data = {};
+      }
+    });
   },
 });
 
@@ -661,12 +659,17 @@ export const {
   handleGetStudentOverviewOverallPerfomance,
   handleGetStudentOverviewTestCount,
   handleGetStudentOverviewSpendingHours,
+  handleAllClassRooms,
   updatePostClassroomsData,
   handleGetTeachers,
   updatePostSubjectsData,
   handleGetStudentsListByTeacher,
   handleGetClassroomTeachers,
-  updatePostStudentData
+  updatePostStudentData,
+  update_edit_classroom,
+  update_Create_student,
+  update_Grade_by_classroom,
+  handleGradeByClassroom
 } = actions
 
 export default reducer
