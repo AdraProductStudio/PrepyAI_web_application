@@ -97,7 +97,7 @@ const GenerateQuestion = () => {
             <hr className='w-100 text-secondary' />
             <Row className="mt-3">
                 {generate_question?.loading ? <div className='d-flex justify-content-center align-items-center'  style={{ minHeight: "75vh", width: "100%" }}>
-                        <Spinner size={100} /> 
+                        <Spinner  /> 
                         </div> :
                         <Card className="border-0 shadow-0 overflow-auto">
                             <Card.Body className="d-flex justify-content-center align-items-center" style={{ minHeight: "75vh" }}>

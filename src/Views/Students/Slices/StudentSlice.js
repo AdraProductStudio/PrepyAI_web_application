@@ -81,6 +81,7 @@ const TeacherSlice = createSlice({
             confirm_password: "",
         },
         recording: "",
+        offCanvasShow:false,
         generate_question: {
             test_language: "",
             level_of_test: "",
@@ -503,6 +504,10 @@ const TeacherSlice = createSlice({
         },
         updateProfileEditing: (state, action) => {
             state.isProfileEditing = !state.isProfileEditing
+        },
+        updateGenerateQuestionCanvas:(state,action)=>{
+            state.offCanvasShow = action.payload
+
         }
 
 
@@ -545,7 +550,7 @@ export const {
     setUploadLearnerBook, setClassroomCode, setUploadTestPaper, updateAudioRecording, updateQuestionType,
     updatePersonalInfoInputs, updateSettingsInputs, resetSettingsInputs, editProfileInputs, updateProfileEditing,
     updateGenerateQuestionFields, updateGenerateMcqQuestions, updateGenerateLongQuestions,
-    updateMcqQuestionAnswer, updateLongQuestionAnswerValue, updateLongQuestionAnswer
+    updateMcqQuestionAnswer, updateLongQuestionAnswerValue, updateLongQuestionAnswer,updateGenerateQuestionCanvas
 
 } = actions;
 
