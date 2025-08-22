@@ -9,7 +9,6 @@ import Spinner from 'Components/Spinner/CustomSpinner';
 import { useParams } from 'react-router-dom';
 
 const LongQuestions = () => {
-  const [submited, setSubmitted] = useState(false)
   const dispatch = useDispatch()
   const { generate_question } = useCommonState()?.studentState
   const {id} = useParams()
@@ -52,7 +51,7 @@ const handleAnswerChange = (Question_no, value) => {
       <Row className="mb-4">
         <Col className="d-flex align-items-center">
           <p className="mb-0 chapter-title">
-            Chapter 1. An Introduction to the Human Body
+            {generate_question?.chapter_name}
           </p>
         </Col>
         <Col className="d-flex justify-content-end me-5">
@@ -104,7 +103,7 @@ const handleAnswerChange = (Question_no, value) => {
                 value={question.Answer || ""}
                 onChange={(e) => handleAnswerChange(question.Question_no, e.target.value)}
                 disabled={generate_question?.test_status === "submitted"}
-                className="p-3 text-secondary fs-4"
+                className="p-3 text-secondary fs-5"
                 style={{
                   borderRadius: '8px',
                   border: "1px solid #ddd",
