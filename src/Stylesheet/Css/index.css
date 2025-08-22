@@ -6,9 +6,10 @@
 .eye_button {
   position: absolute;
   right: 0.9rem;
-  top: 0.5rem;
+  bottom: 16px;
   cursor: pointer;
   z-index: 1;
+  width: 20px;
 }
 
 /* main  */
@@ -280,11 +281,19 @@
 .display_notes {
   height: 15rem;
 }
+.dropdown-toggle::after {
+  display: none !important;
+}
 
 .display_notes_content {
   color: rgba(0, 0, 0, 0.60);
   font-size: 12px;
   font-weight: 400;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-height: 1.5;
+  max-height: calc(1.5em * 10);
 }
 
 .student_overview_main {
@@ -1077,4 +1086,33 @@ input::placeholder {
   to {
     transform: rotate(360deg);
   }
+}
+
+.modal-inputs{
+  padding: 14px !important;
+  border-radius: 4px !important;
+  border: 1px solid #ddd !important;
+  box-shadow: none !important;
+  font-size: 16px !important;
+}
+
+.modal-inputs::placeholder {
+  color: #b0b0b0;  
+  opacity: 1;      
+}
+.file-inputs{
+  padding: 40px !important;
+  border: none !important;             
+  border: 2px dashed #ec008c !important;
+  border-radius: 1 !important;
+  outline: none !important;  
+  opacity: 0.6;
+}
+.file-inputs{
+  color: #0A1629;
+}
+.grade-dashboard-teacher-input:focus{
+outline: none !important;
+box-shadow: none !important;
+border-color: inherit !important;
 }

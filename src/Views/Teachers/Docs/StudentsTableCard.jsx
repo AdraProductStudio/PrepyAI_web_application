@@ -18,15 +18,24 @@ const StudentsTableCard = ({ className, navigate_to, data, glow }) => {
   const dispatch = useDispatch();
 
   const handleEdit = (student) => {
-    dispatch(update_edit_student({ data: student }))
-    dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "studentsEdit", modal_type: "studentsEdit" }))
-  }
+    dispatch(update_edit_student({ data: student }));
+    dispatch(
+      updateModalShow({
+        show: true,
+        close_btn: true,
+        modal_from: "students",
+        modal_type: "studentsEdit",
+      })
+    );
+  };
 
   return (
     <Card className={`border-0 rounded-4 shadow-sm ${className}`}>
       <Card.Header className="bg-transparent pt-3 border-0">
         <h5>Students</h5>
-        <p className="text-secondary fs-14 mb-1">{data?.total_count || 0} students</p>
+        <p className="text-secondary fs-14 mb-1">
+          {data?.total_count || 0} students
+        </p>
       </Card.Header>
       <Card.Body className="p-0">
         {glow ? (
@@ -69,7 +78,46 @@ const StudentsTableCard = ({ className, navigate_to, data, glow }) => {
                       <ButtonComponent
                         type="button"
                         className="btn-transparent"
-                        clickFunction={() => dispatch(deleteStudents(student?.student_id))}
+                        clickFunction={() => {
+                          dispatch(
+                            updateModalShow({
+                              show: true,
+                              close_btn: true,
+                              modal_from: "techaersdeletemodal",
+                              modal_type: "techaersdeletemodal",
+                              data: () =>
+                                dispatch(
+                                  deleteStudents(
+                                    student?.classroom_id
+                                      ? {
+                                          id: student?.classroom_id,
+                                          student_id: student?.student_id,
+                                          from: "classroom",
+                                          pagination: {
+                                            search_query: data?.search_query,
+                                            show_entries: data?.show_entries,
+                                            page: data?.current_page,
+                                            sort_by: data?.sort_by,
+                                            sort_order: data?.sort_order,
+                                          },
+                                        }
+                                      : {
+                                          id: data?.subject_id,
+                                          student_id: student?.student_id,
+                                          from: "student",
+                                          pagination: {
+                                            search_query: data?.search_query,
+                                            show_entries: data?.show_entries,
+                                            page: data?.current_page,
+                                            sort_by: data?.sort_by,
+                                            sort_order: data?.sort_order,
+                                          },
+                                        }
+                                  )
+                                ),
+                            })
+                          );
+                        }}
                         buttonName={Icons?.delete_icons}
                       />
                       <ButtonComponent
@@ -77,7 +125,7 @@ const StudentsTableCard = ({ className, navigate_to, data, glow }) => {
                         className="btn-transparent"
                         buttonName={Icons?.extend_icon}
                         clickFunction={() =>
-                          navigate(`${student.classroom_id}/${student.student_id}/${navigate_to}`)
+                          navigate(`${student.student_id}/${navigate_to}`)
                         }
                       />
                     </td>
@@ -100,7 +148,7 @@ const StudentsTableCard = ({ className, navigate_to, data, glow }) => {
 
       <OverallModel />
     </Card>
-  )
-}
+  );
+};
 
 export default StudentsTableCard;

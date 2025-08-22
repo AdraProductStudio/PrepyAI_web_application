@@ -462,6 +462,24 @@ const arrowRightWhiteIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" h
 const arrowRightIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" fill="none">
   <path d="M16 8L14.57 9.393L20.15 15H8V17H20.15L14.57 22.573L16 24L24 16L16 8Z" fill="black" />
 </svg>
+const sortBy =   <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" 
+className="bi bi-filter" viewBox="0 0 16 16">
+<path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+</svg>
+
+const filterIcon =   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
+className="bi bi-chevron-down" viewBox="0 0 16 16">
+<path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 
+.708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+</svg>
+
+const deleteIcon = <svg width="49" height="49" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.875 12.2103C36.0763 11.5365 29.2367 11.1895 22.4175 11.1895C18.375 11.1895 14.3325 11.3936 10.29 11.802L6.125 12.2103" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path opacity="0.34" d="M17.3535 10.1477L17.8027 7.47315C18.1293 5.53357 18.3743 4.08398 21.8248 4.08398H27.1739C30.6244 4.08398 30.8898 5.61523 31.196 7.49357L31.6452 10.1477" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M38.4865 18.6621L37.1594 39.2217C36.9348 42.4271 36.751 44.9179 31.0548 44.9179H17.9473C12.251 44.9179 12.0673 42.4271 11.8427 39.2217L10.5156 18.6621" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path opacity="0.34" d="M21.0898 33.6875H27.8886" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path opacity="0.34" d="M19.3965 25.5215H29.6048" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
 
 const DotSVG = ({ fill }) => {
   return (
@@ -687,6 +705,18 @@ const close_icon = <svg xmlns="http://www.w3.org/2000/svg" width="59" height="59
 </svg>
 
 
+const EyeOpen = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+</svg>
+
+const EyeClose = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye-slash" viewBox="0 0 16 16">
+<path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755q-.247.248-.517.486z"/>
+<path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829"/>
+<path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z"/>
+</svg>
+
+
 const Icons = {
   menu_dot_icon, no_of_students, no_of_subjects, delete_icons,
   no_of_books, no_of_tests, pdfDeleteIcon, testScreenEditIcon,
@@ -710,7 +740,7 @@ const Icons = {
   DotSVG, subscriptionSVG, organisation, revenue,
   profile, settings, admins, teachers, billing, activeUsers,
   sidebar_pricing_active_icon, sidebar_pricing_icon, logoutIcon,
-  menuIcon, studentUpload, studentUploadLarge,
+  menuIcon,sortBy,filterIcon,deleteIcon,EyeClose,EyeOpen, studentUpload, studentUploadLarge,
   mcqIcon, longQueIcon, mcqActiveIcon, longQueActiveIcon, playIcon, pauseIcon,
   back_icon,close_icon
 }
