@@ -710,11 +710,30 @@ td {
 .correct_answer_active {
   border: 1px solid #28a745 !important;
   background: rgba(40, 167, 69, 0.2) !important;
+  accent-color: #28a745 !important;
 }
 
 .wrong_answer_active {
   border: 1px solid #dc3545 !important;
   background: rgba(220, 53, 69, 0.2) !important;
+}
+
+
+.correct_answer_active input[type="radio"]:checked,
+.correct_answer_active input[type="checkbox"]:checked,
+.correct_answer_active .form-check-input:checked {
+  accent-color: #28a745 !important; 
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+}
+
+
+.wrong_answer_active input[type="radio"]:checked,
+.wrong_answer_active input[type="checkbox"]:checked,
+.wrong_answer_active .form-check-input:checked {
+  accent-color: #dc3545 !important; 
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
 }
 
 .nxt_btn {
@@ -871,10 +890,14 @@ td {
   box-shadow: none !important;
   border-radius: 8px !important;
 }
+.accordion-button:hover{
+  background: linear-gradient(90deg, #EC008C 0%, #FC6767 100%) !important;
+  color: #fff !important;
+}
 
 .sidebar-accordion .accordion-button:not(.collapsed) {
   background: linear-gradient(90deg, #EC008C 0%, #FC6767 100%) !important;
-  color: #fff !important;
+  color: #080707 !important;
 }
 
 .sidebar-accordion .accordion-button:focus {
@@ -882,12 +905,27 @@ td {
 }
 
 .sidebar-accordion .accordion-button::after {
-  filter: brightness(0);
+  filter: brightness(0) !important;
 }
 
 .sidebar-accordion .accordion-button:not(.collapsed)::after {
-  filter: brightness(0) invert(1);
+  filter: brightness(0) invert(0) !important;
 }
+
+.sidebar-accordion .accordion-item.accordion-open .accordion-button {
+  background: #ececec !important;
+  color: #333 !important;
+}
+
+.sidebar-accordion .accordion-item.accordion-selected .accordion-button {
+  background: linear-gradient(90deg, #EC008C 0%, #FC6767 100%) !important;
+  color: #fff !important;
+}
+
+.sidebar-accordion .accordion-item:not(:has(.accordion-body)) .accordion-button::after {
+  display: none !important;
+}
+
 
 .subchapter-item {
   position: relative;
@@ -962,6 +1000,21 @@ td {
   background-color: white !important;
   color: #000 !important;
 }
+
+.custom-dropdown:focus,
+.custom-dropdown:focus-visible,
+.custom-dropdown:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+.custom-dropdown input::placeholder {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #999 !important;
+}
+
+
 
 .custom-dropdown::after {
   margin-left: 8px;

@@ -75,7 +75,7 @@ const handleAnswerChange = (Question_no, value) => {
   
       <Row className="w-100">
           {generate_question?.loading ? <div className='d-flex justify-content-center align-items-center' style={{ minHeight: "75vh", width: "100%" }}>
-            <Spinner size={100} />
+            <Spinner />
           </div>  :
         <Card className="border-0">
           {generate_question?.long_questions?.test_questions?.map((question, index) => (

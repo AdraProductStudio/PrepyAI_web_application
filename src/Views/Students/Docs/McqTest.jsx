@@ -227,7 +227,7 @@ const McqTest = () => {
                                 {currentQuestion?.options?.map((opt, idx) => (
                                     <div
                                         key={opt.id}
-                                        className={`border p-3 my-2 rounded-2 cursor-pointer ${currentQuestion?.candidate_answer === opt.id
+                                        className={`test_radio_box border p-3 my-2 rounded-2 cursor-pointer ${currentQuestion?.candidate_answer === opt.id
                                             ? "selected_question_active"
                                             : ""
                                             }`}

@@ -1,20 +1,21 @@
 import ButtonComponent from 'Components/Button/Button'
 import Img from 'Components/Img/Img'
 import OffCanvas from 'Components/Offcanvas/OffCanvas'
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import Image from 'Utils/Image'
 import Icons from 'Utils/Icons'
 import AccordionSidebar from 'Components/Accordion/AccordionSidebar'
 import { useCommonState, useCustomNavigate } from 'Components/CustomHooks'
+import Spinner from 'Components/Spinner/CustomSpinner'
 
 const GenerateQuestionSidebar = ({
     menuOptions, responsiveOn,
-    offCanvasShow, handleCanvasOpenOrClose,
+    handleCanvasOpenOrClose,
     companyLogo, logoutOnClick
 }) => {
 
     const navigate = useCustomNavigate()
-    const {generate_question} = useCommonState()?.studentState
+    const {generate_question,offCanvasShow} = useCommonState()?.studentState
 
     const headerFun = () => {
         return <div className='w-100'>
@@ -24,16 +25,27 @@ const GenerateQuestionSidebar = ({
 
     function bodyContent() {
         return (
-            <nav className='navmenu w-100'>
-                <p className='text-center mt-3 sidebar-book-title'>{generate_question?.bookmarks?.book_title}</p>
-                {generate_question?.bookmarks?.bookmarks?.map((item, index) => (
-                    <AccordionSidebar
-                        key={index}
-                        accordionData={item}
-                        accordionIndex={index}
-                    />
-                ))}
+            <nav className='navmenu w-100 h-100'>
+                {generate_question?.bookmarks_loading ? (
+                    <div className='h-100 d-flex align-items-center justify-content-center'>
+                    <Spinner />
+                    </div>
+                ) : (
+                    <>
+                        <p className='text-center mt-3 sidebar-book-title'>
+                            {generate_question?.bookmarks?.book_title}
+                        </p>
+                        {generate_question?.bookmarks?.bookmarks?.map((item, index) => (
+                            <AccordionSidebar
+                                key={index}
+                                accordionData={item}
+                                accordionIndex={index}
+                            />
+                        ))}
+                    </>
+                )}
             </nav>
+
         );
     }
 
@@ -72,6 +84,7 @@ const GenerateQuestionSidebar = ({
             <OffCanvas
                 offCanvasShow={offCanvasShow}
                 offcanvasPlacement="start"
+                offcanvasCloseButton= "true"
                 offcanvasClassname="rounded border-0 sidebar offcanvas-sidebar"
                 handleCanvasOpenOrClose={handleCanvasOpenOrClose}
                 canvasHeader={headerFun('198px', '33px', companyLogo)}

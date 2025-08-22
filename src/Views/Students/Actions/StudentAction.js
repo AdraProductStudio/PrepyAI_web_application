@@ -662,14 +662,18 @@ export const handleChangePassword = (payload) => async (dispatch) => {
 
 export const getBookmarks = (book_id)=>async (dispatch)=>{
     try {
+        dispatch(updateGenerateQuestionFields({bookmarks_loading:true}))
         const { data } = await axiosInstance.post("students/get_bookmarks", {book_id} )
         if(data?.error_code === 0){
             dispatch(updateGenerateQuestionFields({bookmarks:data?.data,chapter_name:data?.data?.bookmarks?.[0]?.title}))
+             dispatch(updateGenerateQuestionFields({bookmarks_loading:false}))
         }else{
             dispatch(update_error({Err:data?.message|| "Failed to fetch bookmarks",Toast_Type:"error"}))
+             dispatch(updateGenerateQuestionFields({bookmarks_loading:false}))
         }
     } catch (error) {
         dispatch(update_error({ Err: error?.response?.data?.message || error?.message || "Something went wrong", Toast_Type: "error" }))
+        dispatch(updateGenerateQuestionFields({bookmarks_loading:false}))
     }
 }
 
