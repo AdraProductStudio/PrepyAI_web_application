@@ -79,6 +79,38 @@ export function OverallModel() {
             break;
         }
         break;
+
+      case "notes":
+        switch (commonState?.modal?.type) {
+          case "add_note":
+            return <div className='p-2 w-100'>
+              {Inputfunctions(jsxJson.notes_input)}
+
+              <div className="d-flex justify-content-between align-items-center">
+                <div className="col p-1">
+                  <ButtonComponent
+                    type="button"
+                    className="btn btn-outline-dark px-4 w-100"
+                    buttonName="Cancel"
+                    clickFunction={() => dispatch(updateModalShow({ show: null, close_btn: false, modal_from: "notes", modal_type: "add_note" }))}
+                  />
+                </div>
+                <div className="col p-1">
+                  <ButtonComponent
+                    type="button"
+                    className="btn btn-brand-color px-5 py-2 w-100"
+                    buttonName={commonState?.notesdata?.id ? "Update" : "Add"}
+                    clickFunction={() => dispatch(postTeacherNote(commonState?.notesdata?.id ? "teachers/edit_user_notes" : "teachers/create_user_notes", { title: commonState?.notesdata?.title || "", content: commonState?.notesdata?.content || "", id: commonState?.notesdata?.id || null }))}
+                  />
+                </div>
+              </div>
+            </div>
+
+          default:
+            break;
+        }
+        break;
+
       case "subjects":
         switch (commonState?.modal?.type) {
           case "subjects":
@@ -88,6 +120,7 @@ export function OverallModel() {
             break;
         }
         break;
+
       case "studentsEdit":
         switch (commonState?.modal?.type) {
           case "studentsEdit":
@@ -97,6 +130,7 @@ export function OverallModel() {
             break;
         }
         break;
+        
       case "techaersdeletemodal":
         switch (commonState?.modal?.type) {
           case "techaersdeletemodal":
