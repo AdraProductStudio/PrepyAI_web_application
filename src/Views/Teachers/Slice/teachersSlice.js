@@ -137,7 +137,7 @@ const teachersSlice = createSlice({
 
         case "response":
           state.teacher_DashboardData["glow"] = false;
-          state.teacher_DashboardData["data"] = Array.isArray(data) ? data : [];
+          state.teacher_DashboardData["data"] = data;
           break;
 
         case "failure":
@@ -183,7 +183,7 @@ const teachersSlice = createSlice({
 
         case "response":
           state.teacher_GetSubjects["glow"] = false;
-          state.teacher_GetSubjects["data"] = Array.isArray(data) ? data : [];
+          state.teacher_GetSubjects["data"] = data;
           break;
 
         case "failure":
