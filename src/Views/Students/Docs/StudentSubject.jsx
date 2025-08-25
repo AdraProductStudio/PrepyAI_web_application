@@ -23,7 +23,7 @@ const StudentSubject = () => {
         <div className="h-100">
             <div className="container-fluid">
                 <div className="w-100 border-bottom pb-3">
-                    <h5> Subjects </h5>
+                    <h5 className="ms-2"> Subjects </h5>
                 </div>
 
                 <div className="w-100 row align-content-start small_header_content_main overflowY">

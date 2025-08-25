@@ -7,9 +7,9 @@ export default function McqTestLayout() {
 
     return (
         <div className="w-100">
-            <main className="co">
+            <main className="">
                 <div className="container-fluid ">
-                    <header className="py-2">
+                    <header className="mb-2">
                         <Header offcanvasOn="xl" />
                     </header>
                     <div className="pt-3 main_content_height overflowY">

@@ -156,8 +156,8 @@ export const loadQuestionsFromIndexedDB = () => (dispatch) => {
 }
 
 export const handleSubmitTest = (test_id, navigate) => async (dispatch) => {
-    dispatch(updateMcqSubmitSpinner({ type: "request", submit_spinner_loading: true })) // reset local state
-    dispatch(updateManualCloseTest())
+    dispatch(updateMcqSubmitSpinner({ type: "request", submit_spinner_loading: true })) 
+   
 
     try {
         const db = await initializeDB(
@@ -198,6 +198,7 @@ export const handleSubmitTest = (test_id, navigate) => async (dispatch) => {
                     dispatch(updateMcqResult({ data: data.data }));
                     dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
                     navigate('/student_dashboard/test/test_status')
+                    dispatch(updateManualCloseTest()) // reset local state
                 } else {
                     dispatch(updateMcqSubmitSpinner({ type: "failure" }))
                     dispatch(update_error({ Err: data.message, Toast_Type: "error" }))
@@ -215,7 +216,6 @@ export const handleSubmitTest = (test_id, navigate) => async (dispatch) => {
 // auto submit when time is over
 export const handleCloseTestAutomatic = (test_id, candidate_answers, navigate) => async (dispatch) => {
     dispatch(updateModalShow({ show: true, close_btn: false, modal_from: 'test', modal_type: 'auto_submit' }))
-    dispatch(updateTimeOverCloseTest()) // reset local state
 
     try {
         const responses = candidate_answers
@@ -239,6 +239,7 @@ export const handleCloseTestAutomatic = (test_id, candidate_answers, navigate) =
             dispatch(update_error({ Err: data.message, Toast_Type: "success" }))
             dispatch(updateMcqResult({ data: data.data }))
             navigate("/student_dashboard/test/test_status")
+            dispatch(updateTimeOverCloseTest()) // reset local state
         } else {
             dispatch(updateMcqSubmitSpinner({ type: "failure" }))
             dispatch(update_error({ Err: data.message, Toast_Type: "error" }))

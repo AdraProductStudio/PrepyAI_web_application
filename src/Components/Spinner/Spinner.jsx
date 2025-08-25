@@ -6,7 +6,7 @@ const SpinnerComponent = ({
     className
 }) => {
     return (
-        <Spinner animation="border" role="status" variant={variant} className={className} >
+        <Spinner animation="border" role="status" variant={variant} className={className}  >
             <span className="visually-hidden">Loading...</span>
         </Spinner>
     )

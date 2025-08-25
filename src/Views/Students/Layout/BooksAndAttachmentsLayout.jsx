@@ -1,13 +1,13 @@
 import Icons from "Utils/Icons";
 import { Card } from "react-bootstrap";
 import JsonData from "Views/Students/Utils/JsonData";
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet, useLocation, useParams } from "react-router-dom";
 import ActivityCard from "Components/Card/ActivtyCard";
 import { SearchComponent } from "ResuableFunctions/SearchFun";
 import NavLinkComp from "Components/Router_components/NavLink";
 import LinkComponent from "Components/Router_components/LinkComponent";
 import TestPerformanceChartStudent from "Components/Charts/TestPerformanceChart_student";
-import { useCommonState, useDispatch } from "Components/CustomHooks";
+import { CustomUseLocationHook, useCommonState, useDispatch } from "Components/CustomHooks";
 import { useEffect } from "react";
 import { handleGetSubjectAttachments, handleGetSubjectBooks, handleGetSubjectPerformance, handleGetUpcomingTests } from "../Actions/StudentAction";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
@@ -22,6 +22,7 @@ const BooksAndAttachmentsLayout = () => {
     const { jsonOnly } = JsonData({ subject_id});
     const dispatch = useDispatch()
     const {studentState} = useCommonState()
+    const location = CustomUseLocationHook();
     
     useEffect(() => {
         dispatch(handleGetSubjectBooks(subject_id))
@@ -52,9 +53,11 @@ const BooksAndAttachmentsLayout = () => {
                                     </div>
                                 ))}
                             </div>
-                            <div className="col-3 text-end">
-                                <SearchComponent />
+
+                            <div className={`col-3 text-end ${location.includes("attachments") ? "invisible" : ""}`}>
+                                <SearchComponent placeholder="Search..." />
                             </div>
+
                         </Card.Header>
                         <Card.Body style={{ height: "calc(100% - 3rem)" }} className="overflowY">
                             <Outlet />
@@ -92,7 +95,7 @@ const BooksAndAttachmentsLayout = () => {
                                         studentState?.upcoming_tests.map((test, idx)=> (
                                             <ActivityCard key={idx} data={test} 
                                                 startFunction={() => {
-                                                    dispatch(updateModalShow({ show: true, close_btn: false, modal_from: "dashboard", modal_type: "start_test" }))
+                                                    dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "dashboard", modal_type: "start_test" }))
                                                     dispatch(updateTestId({ id: test.test_id }))
                                                 }}
                                             />

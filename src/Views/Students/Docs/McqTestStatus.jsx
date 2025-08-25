@@ -26,7 +26,7 @@ function McqTestStatus() {
 
   return (
 
-    <div className="px-5">
+    <div className="px-5 mt-1">
       <Card className="mb-4 py-3 px-4 shadow-sm">
         <Row>
           <Col md={6}>
@@ -35,11 +35,11 @@ function McqTestStatus() {
               <span className="align-middle">Back to Dashboard</span>
             </LinkComponent>
 
-            <h5 className="fw-bold my-3">Test Results</h5>
+            <h5 className="fw-bold my-3 ms-2">Test Results</h5>
 
             <ButtonComponent
               type="button"
-              className="btn btn-brand-color px-5 py-2 my-3"
+              className="btn btn-brand-color px-4 py-2 my- ms-2"
               buttonName="Developing"
               clickFunction={() => console.log('developing')}
             />
@@ -118,7 +118,7 @@ function McqTestStatus() {
               })}
 
               <div className="mt-3">
-                <strong>Explanation:</strong>{" "}
+                <strong>Explanation :</strong>{" "}
                 <span>{q.Explanation}</span>
               </div>
             </Card.Body>

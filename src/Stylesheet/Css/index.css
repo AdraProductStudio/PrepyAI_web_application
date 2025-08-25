@@ -592,13 +592,13 @@ td {
 
 .performance_history_badge {
   position: absolute;
-  width: 40%;
+  width: 30%;
   top: 0rem;
   right: 0rem;
   background: #DDE2FF;
   color: #4258D6;
   font-size: 13px;
-  padding: 0.2rem 1rem;
+  padding: 0.2rem 2rem;
   border-radius: 0 .5rem 0 0;
 }
 
@@ -672,8 +672,14 @@ td {
 }
 
 .question_number_btn.active {
-  border-color: #FF6C95 !important;
+  /* border-color: #FF6C95 !important; */
   background: black !important;
+  color: white !important;
+}
+
+.question_number_btn:hover {
+  /* border-color: #FF6C95 !important; */
+  background: #555  !important;
   color: white !important;
 }
 
@@ -687,11 +693,11 @@ td {
   color: white;
 }
 
-.questions_answered {
-  background-color: #f15682;
-  color: black;
+/* questions answered */
+.btn-brand-color.alt-hover:hover {
+  background: #555 !important;
+  color: white !important;
 }
-
 .questions_unanswered {
   color: black;
 }
@@ -700,6 +706,13 @@ td {
   border: 1px solid #FF6C95 !important;
   background: rgba(255, 108, 149, 0.21) !important;
 }
+
+.test_radio_box:hover {
+  background: rgba(255, 108, 149, 0.15) !important; /* light pink */
+  border: 1px solid #FF6C95 !important;
+  cursor: pointer;
+}
+
 
 .selected_question_active input[type="radio"]:checked,
 .selected_question_active input[type="checkbox"]:checked {
@@ -720,6 +733,20 @@ td {
 .nxt_btn {
   background-color: black;
   color: white;
+}
+
+.nxt_btn:hover{
+  background-color: white;
+  color: black;
+}
+
+.arrow-black { display: none; }
+.nxt_btn:hover .arrow-black { display: inline; }
+.nxt_btn:hover .arrow-white { display: none; }
+
+.prev_btn {
+  background-color: white;
+  border: 1px solid black;
 }
 
 .question-progress-bar .progress-bar {
@@ -1077,4 +1104,15 @@ input::placeholder {
   to {
     transform: rotate(360deg);
   }
+}
+
+.small-spinner {
+  width: 1rem !important;
+  height: 1rem !important;
+}
+
+/* Icon text */
+
+.icon_text {
+  font-size: 0.8rem;
 }
