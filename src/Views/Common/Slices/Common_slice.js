@@ -239,7 +239,7 @@ const commonSlice = createSlice({
           break;
         case "response":
           state.notes.glow = false;
-          state.notes.data = state.students_notes.data.filter(
+          state.notes.data = state.notes.data.filter(
             (note) => note.id !== id
           );
           state.notes.deleteId = null;
@@ -251,6 +251,7 @@ const commonSlice = createSlice({
           state.notes.deleteError = message || "Failed to delete note";
 
           break;
+
         default:
           break;
       }

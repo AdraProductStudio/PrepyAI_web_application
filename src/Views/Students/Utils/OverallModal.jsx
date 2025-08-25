@@ -122,7 +122,6 @@ export function OverallModel() {
                     default:
                         break;
                 }
-            default:
                 break;
         }
     }
@@ -487,7 +486,7 @@ export function OverallModel() {
                                             name="notes"
                                             style={{minHeight:"35vh"}} 
                                             id="notes_content" 
-                                            className="col-12 border rounded-3 mt-1"
+                                            className="col-12 p-2 border rounded-3 mt-1"
                                             value={content}
                                             onChange={(e) => dispatch(updateNoteField({ field: "content", value: e.target.value }))} />
                                         </label>
@@ -513,7 +512,7 @@ export function OverallModel() {
                                             name="notes"
                                             style={{minHeight:"35vh"}} 
                                             id="notes_content" 
-                                            className="col-12 border rounded-3 mt-1"
+                                            className="col-12 p-2 border rounded-3 mt-1"
                                             value={content}
                                             onChange={(e) => dispatch(updateNoteField({ field: "content", value: e.target.value }))} />
                                         </label>
@@ -624,7 +623,6 @@ export function OverallModel() {
                     default:
                         break;
                 }
-            default:
                 break;
         }
     }
