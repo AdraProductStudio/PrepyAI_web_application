@@ -3,10 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { Card, Col, Container, Row, Form } from 'react-bootstrap';
 import { updateModalShow } from 'Views/Common/Slices/Common_slice';
 import { useCommonState, useDispatch } from 'Components/CustomHooks';
-import { updateGenerateQuestionFields, updateLongQuestionAnswerValue } from '../Slices/StudentSlice';
-import { getBookmarks, submitLongQuestionTest } from '../Actions/StudentAction';
+import { updateGenerateLongQuestions, updateGenerateQuestionFields, updateLongQuestionAnswerValue } from '../Slices/StudentSlice';
+import { getAllQuestionsFromDB, getBookmarks, handleUpdateLongQuestionAnswer, submitLongQuestionTest } from '../Actions/StudentAction';
 import Spinner from 'Components/Spinner/CustomSpinner';
 import { useParams } from 'react-router-dom';
+import LinkComponent from 'Components/Router_components/LinkComponent';
+import Icons from 'Utils/Icons';
 
 const LongQuestions = () => {
   const dispatch = useDispatch()
@@ -17,9 +19,28 @@ const LongQuestions = () => {
 
   useEffect(() => {
     if (!id) return
+    if(!generate_question?.bookmarks?.bookmarks || generate_question?.bookmarks?.bookmarks.length === 0){
     dispatch(getBookmarks(id))
     dispatch(updateGenerateQuestionFields({book_id: id}))
+    }
   }, [])
+
+  useEffect(() => {
+  const loadFromDB = async () => {
+    try {
+      const dbQuestions = await getAllQuestionsFromDB()
+      if (dbQuestions.length > 0 && !generate_question?.long_questions?.test_questions) {
+         const testId = dbQuestions[0].test_id
+         dispatch(updateGenerateLongQuestions({test_id: testId,test_questions: dbQuestions}))
+         dispatch(updateGenerateQuestionFields({ test_status: "generated" }))
+      }
+    } catch (error) {
+      console.error("Failed to load long questions from IndexedDB:", error)
+    }
+  }
+  loadFromDB()
+}, [])
+
 
 
   const handleTestSubmit = () => {
@@ -41,8 +62,9 @@ const LongQuestions = () => {
   }
 
 const handleAnswerChange = (Question_no, value) => {
-  dispatch(updateLongQuestionAnswerValue({ Question_no, answer: value }))
+  dispatch(handleUpdateLongQuestionAnswer(Question_no, value))
 }
+
 
 
   return (
@@ -50,9 +72,10 @@ const handleAnswerChange = (Question_no, value) => {
 
       <Row className="mb-4">
         <Col className="d-flex align-items-center">
-          <p className="mb-0 chapter-title">
-            {generate_question?.chapter_name}
-          </p>
+          <LinkComponent to={`/student_dashboard/generate_question/${id}`} className="brand-link-color d-flex align-items-center justify-content-center">
+                    <span className=''>{Icons.back_button_icon_blue}</span>
+                    <span className="chapter-title">{generate_question?.chapter_name}</span>
+                </LinkComponent>
         </Col>
         <Col className="d-flex justify-content-end me-5">
           {generate_question?.test_status === "submitted" ? <ButtonComponent type="button" buttonName="Re-Generate" className="brand_color text-white px-5" clickFunction={() => {

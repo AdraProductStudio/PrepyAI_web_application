@@ -17,6 +17,7 @@ import { updateAudioRecording, updateQuestionType } from "../Slices/StudentSlice
 import StatusCard from "Components/Card/StatusCard";
 import { postTeacherNote } from "Views/Common/Actions/Common_action";
 import AudioRecorder from "../Docs/AudioRecorder";
+import { useParams } from "react-router-dom";
 
 export function OverallModel() {
     const { commonState, studentState } = useCommonState();
@@ -24,6 +25,7 @@ export function OverallModel() {
     const dispatch = useDispatch()
     const navigate = useCustomNavigate()
     const { jsonOnly, jsxJson } = JsonData()
+    const { id } = useParams()
 
     const handleUpload = (type) => {
         const formData = new FormData()
@@ -47,7 +49,10 @@ export function OverallModel() {
         const {test_language,level_of_test,book_id,type_of_question,chapter_name,bookmarks} = studentState?.generate_question || {};
 
         if (!test_language || !level_of_test || !book_id || !type_of_question || !chapter_name) {
+            navigate(`/student_dashboard/generate_question/${id}`)
+            dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
             return dispatch(update_error({ Err: "Required All the fields", Toast_Type: "error" }));
+
         }
 
         const selectedBookMarks = bookmarks?.bookmarks?.find(b => b.title === chapter_name);

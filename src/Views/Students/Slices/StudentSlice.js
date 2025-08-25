@@ -89,7 +89,7 @@ const TeacherSlice = createSlice({
             mcq_questions: [],
             loading: false,
             summary: {},
-            test_status: "",
+            test_status: "start",
             overall_levels: [],
             performance: ""
 
