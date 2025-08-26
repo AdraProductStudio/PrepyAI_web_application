@@ -604,7 +604,7 @@ const teachersSlice = createSlice({
     },
     update_edit_student(state, action) {
       const { data } = action.payload;
-      state.teacher_PostClassrooms.data = data;
+      state.teacher_PostStudents.data = data;
     },
     update_edit_classroom(state, action) {
       const { data } = action.payload;

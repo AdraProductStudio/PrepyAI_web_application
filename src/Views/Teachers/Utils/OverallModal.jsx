@@ -72,7 +72,7 @@ export function OverallModel() {
         switch (commonState?.modal?.type) {
           case "createClassroom":
             return <> {Inputfunctions(jsxJson.classroomModal)}
-              <ButtonComponent title={"Create"} className="btn-md btn-brand-color p-2 w-100" clickFunction={() => dispatch(postClassrooms(teachersState?.teacher_PostClassrooms?.data))} buttonName={"Create"} />
+              <ButtonComponent title={"Create"} className="btn-md btn-brand-color p-3 w-100" clickFunction={() => dispatch(postClassrooms(teachersState?.teacher_PostClassrooms?.data))} buttonName={"Create"} />
             </>
 
           default:
@@ -114,7 +114,7 @@ export function OverallModel() {
       case "subjects":
         switch (commonState?.modal?.type) {
           case "subjects":
-            return <> {Inputfunctions(jsxJson.addSubjects)}<ButtonComponent className="btn-md btn-brand-color w-100" buttonName={"Add Subject"} clickFunction={() => dispatch(postSubjects({ subject_name: teachersState?.teacher_PostSubjects?.data?.subject_name, classroom_id: class_id, teachers_id: teachersState?.teacher_PostSubjects?.data?.teachers }))} /></>
+            return <> {Inputfunctions(jsxJson.addSubjects)}<ButtonComponent className="btn-md btn-brand-color p-3 w-100" buttonName={"Add Subject"} clickFunction={() => dispatch(postSubjects({ subject_name: teachersState?.teacher_PostSubjects?.data?.subject_name, classroom_id: class_id, teachers_id: teachersState?.teacher_PostSubjects?.data?.teachers }))} /></>
 
           default:
             break;

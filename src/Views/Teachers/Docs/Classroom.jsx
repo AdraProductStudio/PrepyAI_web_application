@@ -88,7 +88,17 @@ const Classroom = () => {
               :
               data?.map((val, index) => (
                 <div className="col-3 p-2" key={index}>
-                  <ClassroomCard cardClassName="w-100 h-100" data={val} buttonName="View" onclick={() => navigate(`/teachers_dashboard/classrooms/${val?.classroom_id}`)} />
+                  <ClassroomCard cardClassName="w-100 h-100" data={val} buttonName="View" onclick={() => navigate(`/teachers_dashboard/classrooms/${val?.classroom_id}`)} onClickDelete={()=>{
+                    dispatch(
+                      updateModalShow({
+                        show: true,
+                        close_btn: true,
+                        modal_from: "techaersdeletemodal",
+                        modal_type: "techaersdeletemodal",
+                        data:()=>dispatch(deleteClassrooms(val?.classroom_id)),
+                      })
+                    );
+                  }} />
                 </div>
               ))
           }

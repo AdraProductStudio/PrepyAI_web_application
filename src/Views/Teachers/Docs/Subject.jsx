@@ -136,9 +136,10 @@ const Subject = () => {
               data?.subjects?.map((val, index) => (
                 <div className="col-3 p-2" key={index}>
                   <SubjectsCard
-                    cardClassName="w-100 pointer"
+                    cardClassName="w-100"
                     data={val}
                     buttonName="View"
+                    cardBodyClassName={"pointer"}
                     onclickCard={() =>
                       navigate(
                         `/teachers_dashboard/classrooms/${class_id}/${index}`

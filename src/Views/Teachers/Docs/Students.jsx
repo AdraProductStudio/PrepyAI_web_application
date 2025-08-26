@@ -2,14 +2,17 @@ import ReactPaginateComp from "Components/Pagination/ReactPaginateComp";
 import StudentsTableCard from "./StudentsTableCard";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { GetStudentsListByTeacher } from "../Actions/teacherAction";
+import { getAllClassRooms, getGradeByClassroom, GetStudentsListByTeacher } from "../Actions/teacherAction";
 import { useCommonState } from "Components/CustomHooks";
 import { useParams } from "react-router-dom";
 import ButtonComponent from "Components/Button/Button";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import Icons from "Utils/Icons";
+import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
+import JsonData from "../Utils/JsonData";
 
 const Students = () => {
+  const { jsxJson } = JsonData();
   const { subject_id } = useParams();
   const dispatch = useDispatch();
   const { teachersState, commonState } = useCommonState();
@@ -30,6 +33,14 @@ const Students = () => {
     );
   }, [pagination]);
 
+      useEffect(()=>{
+          dispatch(getGradeByClassroom(data))
+      },[data])
+
+      useEffect(()=>{
+          dispatch(getAllClassRooms())
+      },[])
+      
   return (
     <div className="container-fluid">
       <div className="w-100 border-bottom row pb-3">
@@ -55,23 +66,7 @@ const Students = () => {
             <span className="align-middle">Sort by</span>
           </ButtonComponent>
 
-          <ButtonComponent
-            type="button"
-            className="btn btn-outline-dark border py-2 d-flex align-items-center gap-2"
-            clickFunction={() =>
-              dispatch(
-                updateModalShow({
-                  show: true,
-                  close_btn: true,
-                  modal_from: "TeacherClassroom",
-                  modal_type: "createClassroom",
-                })
-              )
-            }
-          >
-            <span className="align-middle">All Classes</span>
-            {Icons.filterIcon}
-          </ButtonComponent>
+           <div className="custom-select-wrapper">{Inputfunctions(jsxJson.selectGradeByClassRoom)}</div>
 
           <ButtonComponent
             type="button"

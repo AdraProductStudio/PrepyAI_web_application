@@ -80,7 +80,6 @@ export const getAllClassRooms = (params) => async (dispatch) => {
 };
 
 export const getGradeByClassroom = (params) => async (dispatch) => {
-  console.log(params, "Dsdsad")
   try {
     dispatch(handleGradeByClassroom({ type: "request" }));
     const { data } = await axiosInstance.post("/teachers/classroom_performance", { classroom_id: params?.classroom_id[0] });

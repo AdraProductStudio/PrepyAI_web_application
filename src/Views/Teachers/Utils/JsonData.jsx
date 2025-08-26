@@ -192,25 +192,36 @@ const JsonData = (params) => {
         options: commonState?.books?.data?.map((book) => book.book_name),
         placeholder: "Select Book",
         isMandatory: true,
-        value: teachersState?.create_test?.selected_books?.book_name || '',
+        value: teachersState?.create_test?.selected_books?.book_name || "",
         change: (e) => {
-          const book = commonState?.books?.data?.find(book => book.book_name === e.target.value)
-          dispatch(update_selected_books({ key: "selected_books", value: book }))
-          dispatch(get_bookmarks({ book_id: book?.book_id }))
+          const book = commonState?.books?.data?.find(
+            (book) => book.book_name === e.target.value
+          );
+          dispatch(
+            update_selected_books({ key: "selected_books", value: book })
+          );
+          dispatch(get_bookmarks({ book_id: book?.book_id }));
         },
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated ? "Please select a book" : "",
-
       },
       {
         name: "Chapter",
         category: "select",
         type: "normal_select",
-        options: teachersState?.test_records?.data?.map((chapter) => chapter.title),
+        options: teachersState?.test_records?.data?.map(
+          (chapter) => chapter.title
+        ),
         placeholder: "Select Chapter",
         isMandatory: true,
-        value: teachersState?.create_test?.selected_chapter || '',
-        change: (e) => dispatch(update_selected_books({ key: "selected_chapter", value: e.target.value })),
+        value: teachersState?.create_test?.selected_chapter || "",
+        change: (e) =>
+          dispatch(
+            update_selected_books({
+              key: "selected_chapter",
+              value: e.target.value,
+            })
+          ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated ? "Please select a chapter" : "",
       },
@@ -233,10 +244,18 @@ const JsonData = (params) => {
         options: ["MCQ Questions", "Long Questions"],
         placeholder: "Select Type of Questions",
         isMandatory: true,
-        value: teachersState?.create_test?.question_type || '',
-        change: (e) => dispatch(update_selected_books({ key: "question_type", value: e.target.value })),
+        value: teachersState?.create_test?.question_type || "",
+        change: (e) =>
+          dispatch(
+            update_selected_books({
+              key: "question_type",
+              value: e.target.value,
+            })
+          ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
-        Err: commonState?.app_data?.validated ? "Please select type of questions" : "",
+        Err: commonState?.app_data?.validated
+          ? "Please select type of questions"
+          : "",
       },
       {
         name: "Number of Questions",
@@ -245,10 +264,18 @@ const JsonData = (params) => {
         options: [5, 10, 15],
         placeholder: "Select Number of Questions",
         isMandatory: true,
-        value: teachersState?.create_test?.question_quantity || '',
-        change: (e) => dispatch(update_selected_books({ key: "question_quantity", value: e.target.value })),
+        value: teachersState?.create_test?.question_quantity || "",
+        change: (e) =>
+          dispatch(
+            update_selected_books({
+              key: "question_quantity",
+              value: e.target.value,
+            })
+          ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
-        Err: commonState?.app_data?.validated ? "Please enter number of questions" : "",
+        Err: commonState?.app_data?.validated
+          ? "Please enter number of questions"
+          : "",
       },
       {
         name: "Students",
@@ -257,10 +284,15 @@ const JsonData = (params) => {
         options: ["All"],
         placeholder: "Select Students",
         isMandatory: true,
-        value: teachersState?.create_test?.student_all || '',
-        change: (e) => dispatch(update_selected_books({ key: "student_all", value: e.target.value })),
+        value: teachersState?.create_test?.student_all || "",
+        change: (e) =>
+          dispatch(
+            update_selected_books({ key: "student_all", value: e.target.value })
+          ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
-        Err: commonState?.app_data?.validated ? "Please enter number of students" : "",
+        Err: commonState?.app_data?.validated
+          ? "Please enter number of students"
+          : "",
       },
       {
         name: "Date",
@@ -269,8 +301,14 @@ const JsonData = (params) => {
         options: [],
         placeholder: "Select Date",
         isMandatory: true,
-        value: teachersState?.create_test?.selected_date || '',
-        change: (e) => dispatch(update_selected_books({ key: "selected_date", value: e.target.value })),
+        value: teachersState?.create_test?.selected_date || "",
+        change: (e) =>
+          dispatch(
+            update_selected_books({
+              key: "selected_date",
+              value: e.target.value,
+            })
+          ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated ? "Please select a date" : "",
       },
@@ -281,8 +319,14 @@ const JsonData = (params) => {
         options: [],
         placeholder: "Select Date",
         isMandatory: true,
-        value: teachersState?.create_test?.selected_time || '',
-        change: (e) => dispatch(update_selected_books({ key: "selected_time", value: e.target.value })),
+        value: teachersState?.create_test?.selected_time || "",
+        change: (e) =>
+          dispatch(
+            update_selected_books({
+              key: "selected_time",
+              value: e.target.value,
+            })
+          ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated ? "Please select a date" : "",
       },
@@ -293,10 +337,18 @@ const JsonData = (params) => {
         options: [30, 45, 60, 75, 90],
         placeholder: "Select Test Duration",
         isMandatory: true,
-        value: teachersState?.create_test?.time_duration || '',
-        change: (e) => dispatch(update_selected_books({ key: "time_duration", value: e.target.value })),
+        value: teachersState?.create_test?.time_duration || "",
+        change: (e) =>
+          dispatch(
+            update_selected_books({
+              key: "time_duration",
+              value: e.target.value,
+            })
+          ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
-        Err: commonState?.app_data?.validated ? "Please select test duration" : "",
+        Err: commonState?.app_data?.validated
+          ? "Please select test duration"
+          : "",
       },
       {
         name: "Set Questions",
@@ -305,10 +357,18 @@ const JsonData = (params) => {
         options: [1, 2, 3, 4],
         placeholder: "Select Set Questions",
         isMandatory: true,
-        value: teachersState?.create_test?.question_set || '',
-        change: (e) => dispatch(update_selected_books({ key: "question_set", value: e.target.value })),
+        value: teachersState?.create_test?.question_set || "",
+        change: (e) =>
+          dispatch(
+            update_selected_books({
+              key: "question_set",
+              value: e.target.value,
+            })
+          ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
-        Err: commonState?.app_data?.validated ? "Please select Set Questions" : "",
+        Err: commonState?.app_data?.validated
+          ? "Please select Set Questions"
+          : "",
       },
       {
         name: "Mode of Test",
@@ -317,11 +377,16 @@ const JsonData = (params) => {
         options: ["Online", "Offline"],
         placeholder: "Select Mode of Test",
         isMandatory: true,
-        value: teachersState?.create_test?.test_mode || '',
-        change: (e) => dispatch(update_selected_books({ key: "test_mode", value: e.target.value })),
+        value: teachersState?.create_test?.test_mode || "",
+        change: (e) =>
+          dispatch(
+            update_selected_books({ key: "test_mode", value: e.target.value })
+          ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
-        Err: commonState?.app_data?.validated ? "Please select Mode of Test" : "",
-      }
+        Err: commonState?.app_data?.validated
+          ? "Please select Mode of Test"
+          : "",
+      },
     ],
     notes_input: [
       {
@@ -332,9 +397,11 @@ const JsonData = (params) => {
         placeholder: "Enter Title",
         isMandatory: true,
         value: commonState?.notesdata?.title || "",
-        change: (e) => dispatch(update_note_data({ type: "title", data: e.target.value })),
+        change: (e) =>
+          dispatch(update_note_data({ type: "title", data: e.target.value })),
         keyDown: (e) => {
-          if (e.key === "Enter") dispatch(handlePostNote(commonState?.notesdata));
+          if (e.key === "Enter")
+            dispatch(handlePostNote(commonState?.notesdata));
         },
       },
       {
@@ -343,11 +410,13 @@ const JsonData = (params) => {
         className: "",
         isMandatory: true,
         value: commonState?.notesdata?.content || "",
-        change: (e) => dispatch(update_note_data({ type: "content", data: e.target.value })),
+        change: (e) =>
+          dispatch(update_note_data({ type: "content", data: e.target.value })),
         keyDown: (e) => {
-          if (e.key === "Enter") dispatch(handlePostNote(commonState?.notesdata));
+          if (e.key === "Enter")
+            dispatch(handlePostNote(commonState?.notesdata));
         },
-      }
+      },
     ],
     classroomModal: [
       {
@@ -363,7 +432,7 @@ const JsonData = (params) => {
           ),
         divClassName: "col-12 mb-4 mt-2",
         isMandatory: true,
-        className: "modal-inputs"
+        className: "modal-inputs",
         // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
       },
       {
@@ -372,9 +441,9 @@ const JsonData = (params) => {
         type: "react_dropdown_select",
         options: Array.isArray(teachersState?.teacher_GetTeachers?.data)
           ? teachersState.teacher_GetTeachers.data.map((teacher) => ({
-            label: teacher.teacher_name,
-            value: teacher.user_id,
-          }))
+              label: teacher.teacher_name,
+              value: teacher.user_id,
+            }))
           : [],
         multi: true,
         placeholder: "Select Teachers",
@@ -385,12 +454,12 @@ const JsonData = (params) => {
           teachersState?.teacher_PostClassrooms?.data?.teachers
         )
           ? teachersState.teacher_PostClassrooms.data.teachers.map((id) => ({
-            label:
-              teachersState.teacher_GetTeachers.data.find(
-                (t) => t.user_id === id
-              )?.teacher_name || "",
-            value: id,
-          }))
+              label:
+                teachersState.teacher_GetTeachers.data.find(
+                  (t) => t.user_id === id
+                )?.teacher_name || "",
+              value: id,
+            }))
           : [],
         change: (selectedOptions) =>
           dispatch(
@@ -413,8 +482,8 @@ const JsonData = (params) => {
           teachersState?.teacher_PostClassrooms?.data?.student_file
         )
           ? teachersState?.teacher_PostClassrooms?.data?.student_file?.map(
-            (val) => val
-          )
+              (val) => val
+            )
           : [],
         change: (e) => {
           const files = Array.from(e.target.files);
@@ -445,9 +514,9 @@ const JsonData = (params) => {
           teachersState?.teacher_GetClassroomTeachers?.data
         )
           ? teachersState.teacher_GetClassroomTeachers.data.map((teacher) => ({
-            label: teacher.teacher_name,
-            value: teacher.user_id,
-          }))
+              label: teacher.teacher_name,
+              value: teacher.user_id,
+            }))
           : [],
         multi: false,
         placeholder: "Select Teachers",
@@ -456,16 +525,16 @@ const JsonData = (params) => {
         className: "modal-inputs",
         value: teachersState?.teacher_PostSubjects?.data?.teachers
           ? [
-            {
-              label:
-                teachersState.teacher_GetClassroomTeachers.data.find(
-                  (t) =>
-                    t.user_id ===
-                    teachersState.teacher_PostSubjects.data.teachers
-                )?.teacher_name || "",
-              value: teachersState.teacher_PostSubjects.data.teachers,
-            },
-          ]
+              {
+                label:
+                  teachersState.teacher_GetClassroomTeachers.data.find(
+                    (t) =>
+                      t.user_id ===
+                      teachersState.teacher_PostSubjects.data.teachers
+                  )?.teacher_name || "",
+                value: teachersState.teacher_PostSubjects.data.teachers,
+              },
+            ]
           : [],
         change: (selected) => {
           const selectedValue = Array.isArray(selected)
@@ -543,8 +612,8 @@ const JsonData = (params) => {
           teachersState?.teacher_CreateStudents?.data?.student_file
         )
           ? teachersState?.teacher_PostClassrooms?.data?.student_file?.map(
-            (val) => val
-          )
+              (val) => val
+            )
           : [],
         change: (e) => {
           const files = Array.from(e.target.files);
@@ -616,7 +685,7 @@ const JsonData = (params) => {
         divClassName: "col-6 mb-2",
         className: "modal-inputs ms-1",
         isMandatory: true,
-        labelClassName: "ms-2"
+        labelClassName: "ms-2",
         // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
       },
     ],
@@ -626,9 +695,31 @@ const JsonData = (params) => {
         type: "react_dropdown_select",
         options: Array.isArray(teachersState?.teacher_GetAllClassRooms?.data)
           ? teachersState.teacher_GetAllClassRooms.data.map((classroom) => ({
-            label: classroom.classroom_name,
-            value: classroom.classroom_id,
-          }))
+              label: classroom.classroom_name,
+              value: classroom.classroom_id,
+            }))
+          : [],
+        multi: false,
+        divClassName: "grade-dashboard-teacher-input",
+        className: "custom-dropdown",
+        value: [],
+        change: (selectedOptions) =>
+          dispatch(
+            update_Grade_by_classroom({
+              classroom_id: selectedOptions.map((opt) => opt.value),
+            })
+          ),
+      },
+    ],
+    selectStudentsByClassRoom: [
+      {
+        category: "select",
+        type: "react_dropdown_select",
+        options: Array.isArray(teachersState?.teacher_GetAllClassRooms?.data)
+          ? teachersState.teacher_GetAllClassRooms.data.map((classroom) => ({
+              label: classroom.classroom_name,
+              value: classroom.classroom_id,
+            }))
           : [],
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
@@ -642,8 +733,8 @@ const JsonData = (params) => {
           ),
         // Err: commonState?.app_data?.validated ? "Please select Mode of Test" : "",
       },
-    ]
-  }
+    ],
+  };
 
   return {
     jsonOnly: jsonOnly,

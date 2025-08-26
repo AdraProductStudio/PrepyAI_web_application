@@ -353,7 +353,6 @@ export const {
     update_app_data, update_error, updateModalShow, update_search,
     logout, handleTeacherNotesData, handlePostNote, handleDeleteNote,
     update_note_data, handleGetBooks, edit_note_data
-
 } = actions;
 
 export default reducer

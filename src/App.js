@@ -134,7 +134,7 @@ function App() {
                 <Route path=":class_id" element={<Subject />} />
                 <Route path=":class_id/:subject_id">
                   <Route index element={<SubjectDetails />} />
-                  <Route path=":student_id/students_details" element={<StudentOverview />} />
+                  <Route path=":student_id/overview" element={<StudentOverview />} />
                   <Route element={<ScheduleTestLayout />} >
                     <Route path="create_test" element={<CreateTest />} />
                     <Route path="preview_test" element={<PreviewTest />} />
@@ -153,7 +153,7 @@ function App() {
               </Route>
               <Route path="students_details" >
                 <Route index element={<Students />} />
-                <Route path=":class_id/:student_id/overview" element={<StudentOverview />} />
+                <Route path=":student_id/overview" element={<StudentOverview />} />
               </Route>
               <Route path="notes" element={<Notes />} />
             </Route>

@@ -49,7 +49,7 @@ const SubjectDetails = () => {
                 ))}
             </div>
             <div className="w-100 py-4 subject_details_content_height overflowY pe-3">
-               <StudentsTableCard className="h-100" navigate_to="students_details" data={data} glow={glow}/> 
+               <StudentsTableCard className="h-100" navigate_to="overview" data={data} glow={glow}/> 
             </div>
             <div className="mt-3">
                 <ReactPaginateComp  totalPages={data?.total_pages}/>
