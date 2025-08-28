@@ -683,8 +683,31 @@ export const handleGenerateQuestion = (payload,navigate,targetRoute,type_of_ques
     try {
         dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
         dispatch(updateGenerateQuestionFields({loading:true,test_status:""}))
+        await IndexedDbDeleteFun()
         const {data} = await axiosInstance.post('students/generate_questions',payload)
         if(data?.error_code === 0){
+            const questions = data?.data?.test_questions
+            const testId = data?.data?.test_id
+                 initializeDB(
+                process.env.REACT_APP_INDEXEDDB_DATABASE_NAME,
+                process.env.REACT_APP_INDEXEDDB_DATABASE_VERSION,
+                process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME
+            ).then((db) => {
+                const transaction = db.transaction(
+                    process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME,
+                    "readwrite"
+                )
+                const store = transaction.objectStore(process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME)
+
+                questions.forEach((q, index) => {
+                    store.put({
+                        ...q,
+                        id: q.Question_no,
+                        test_id: testId,
+                    })
+                })
+            })
+
             navigate(targetRoute)
             dispatch(updateGenerateQuestionFields({loading:false,test_status:"generated"}))
             if (type_of_question == "mcq") {
@@ -703,12 +726,49 @@ export const handleGenerateQuestion = (payload,navigate,targetRoute,type_of_ques
     }
 }
 
+export const handleUpdateMcqQuestionAnswer = (queId, optId) => async (dispatch, getState) => {
+  try {
+    const state = getState()?.studentState?.generate_question
+    const updatedQuestions = state?.mcq_questions?.test_questions?.map((q) =>
+      q.Question_no === queId ? { ...q, candidate_answer: optId } : q
+    )
+
+    dispatch(
+      updateGenerateMcqQuestions({
+        ...state.mcq_questions,
+        test_questions: updatedQuestions,
+      })
+    )
+    const db = await initializeDB(
+      process.env.REACT_APP_INDEXEDDB_DATABASE_NAME,
+      process.env.REACT_APP_INDEXEDDB_DATABASE_VERSION,
+      process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME
+    )
+
+    const transaction = db.transaction(
+      process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME,
+      "readwrite"
+    )
+    const store = transaction.objectStore(process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME)
+
+    const updatedQ = updatedQuestions.find((q) => q.Question_no === queId)
+     store.put({
+      ...updatedQ,
+      id: updatedQ.Question_no,
+    })
+
+  } catch (error) {
+    console.error("Error updating answer in IndexedDB:", error)
+  }
+}
+
 export const submitTest = (payload)=>async(dispatch)=>{
     try {
          const {data} = await axiosInstance.post('students/validate_self_test',payload)
          if(data?.error_code === 0){
             dispatch(updateMcqQuestionAnswer({answers:data?.data?.results,summary:data?.data?.summary}))
             dispatch(updateGenerateQuestionFields({ test_status: "submitted" }))
+            await IndexedDbDeleteFun()
          }else{
              dispatch(update_error({ Err: data?.message || "Failed to submit test", Toast_Type: "error" }))
              dispatch(updateGenerateQuestionFields({ test_status: "generated" }))
@@ -728,6 +788,7 @@ export const submitLongQuestionTest = (payload) => async (dispatch) => {
         if (data?.error_code === 0) {
             dispatch(updateLongQuestionAnswer({answers:data?.data?.answers,overall_levels:data?.data?.overall_levels?.overall_levels,performance:data?.data?.performance}))
             dispatch(updateGenerateQuestionFields({ loading: false,test_status: "submitted"  }))
+            await IndexedDbDeleteFun()
         }else{
             dispatch(update_error({ Err: data?.message || "Failed to submit test", Toast_Type: "error" }))
             dispatch(updateGenerateQuestionFields({ loading: false,test_status: "generated"}))
@@ -778,3 +839,62 @@ export const convertAudioToText = (formData, test_id, question_no) => async (dis
         dispatch(updateGenerateQuestionFields({ recording: false }))
     }
 }
+
+export const getAllQuestionsFromDB = async () => {
+  const db = await initializeDB(
+    process.env.REACT_APP_INDEXEDDB_DATABASE_NAME,
+    process.env.REACT_APP_INDEXEDDB_DATABASE_VERSION,
+    process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME
+  )
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(
+      process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME,
+      "readonly"
+    )
+    const store = transaction.objectStore(process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME)
+
+    const request = store.getAll()
+    request.onsuccess = (e) => {
+      resolve(e.target.result || [])
+    }
+    request.onerror = (err) => {
+      reject(err)
+    }
+  })
+}
+
+export const handleUpdateLongQuestionAnswer = (Question_no, answer) => async (dispatch, getState) => {
+  try {
+    const state = getState()?.studentState?.generate_question
+
+    dispatch(updateLongQuestionAnswerValue({ Question_no, answer }))
+
+    const db = await initializeDB(
+      process.env.REACT_APP_INDEXEDDB_DATABASE_NAME,
+      process.env.REACT_APP_INDEXEDDB_DATABASE_VERSION,
+      process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME
+    );
+
+    const transaction = db.transaction(
+      process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME,
+      "readwrite"
+    )
+    const store = transaction.objectStore(process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME);
+
+    const updatedQ = state?.long_questions?.test_questions?.find(q => q.Question_no === Question_no);
+
+    if (updatedQ) {
+      store.put({
+        ...updatedQ,
+        id: updatedQ.Question_no,
+        test_id: state?.long_questions?.test_id,
+        Answer: answer 
+      });
+    }
+  } catch (error) {
+    console.error("Error updating long question in IndexedDB:", error);
+  }
+};
+
+

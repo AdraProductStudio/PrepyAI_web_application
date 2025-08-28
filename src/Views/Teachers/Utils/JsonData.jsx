@@ -10,7 +10,6 @@ const JsonData = (params) => {
   const dispatch = useDispatch();
   const navigate = useCustomNavigate();
   const { commonState, teachersState } = useCommonState();
-  console.log(teachersState?.teacher_GetAllClassRooms?.data, "asasdas")
 
   const jsonOnly = {
     dashboard_count_details: [

@@ -5,9 +5,11 @@ import ButtonComponent from 'Components/Button/Button';
 import { updateModalShow } from 'Views/Common/Slices/Common_slice';
 import { useCommonState, useDispatch } from 'Components/CustomHooks';
 import { updateGenerateMcqQuestions, updateGenerateQuestionFields } from '../Slices/StudentSlice';
-import { getBookmarks, submitTest } from '../Actions/StudentAction';
+import { getAllQuestionsFromDB, getBookmarks, handleUpdateMcqQuestionAnswer, submitTest } from '../Actions/StudentAction';
 import Spinner from 'Components/Spinner/CustomSpinner';
 import { useParams } from 'react-router-dom';
+import LinkComponent from 'Components/Router_components/LinkComponent';
+import Icons from 'Utils/Icons';
 
 const McqQuestions = () => {
   const dispatch = useDispatch()
@@ -16,9 +18,28 @@ const McqQuestions = () => {
 
   useEffect(() => {
     if (!id) return
+    if(!generate_question?.bookmarks?.bookmarks || generate_question?.bookmarks?.bookmarks.length === 0){
     dispatch(getBookmarks(id))
     dispatch(updateGenerateQuestionFields({ book_id: id }))
+    }
   }, [])
+
+  useEffect(() => {
+  const loadFromDB = async () => {
+    try {
+      const questionsFromDB = await getAllQuestionsFromDB()
+      if (questionsFromDB.length > 0 && !generate_question?.mcq_questions?.test_questions) {
+         const testId = questionsFromDB[0].test_id
+         dispatch(updateGenerateMcqQuestions({test_id: testId,test_questions: questionsFromDB}))
+         dispatch(updateGenerateQuestionFields({ test_status: "generated" }))
+      }
+    } catch (error) {
+      console.error("Failed to load mcq questions from IndexedDB:", error)
+    }
+  }
+
+  loadFromDB()
+}, [])
 
 
   const handleTestSubmit = () => {
@@ -37,16 +58,12 @@ const McqQuestions = () => {
     dispatch(submitTest(payload))
   }
 
-  const handleOptionSelect = (queId, optId) => {
-    const updatedQuestions = generate_question?.mcq_questions?.test_questions?.map((q) =>
-      q.Question_no === queId ? { ...q, candidate_answer: optId } : q
-    )
-
-    dispatch(updateGenerateMcqQuestions({
-      ...generate_question.mcq_questions,
-      test_questions: updatedQuestions
-    }))
+const handleOptionSelect = (queId, optId) => {
+  if (generate_question?.test_status === "generated") {
+    dispatch(handleUpdateMcqQuestionAnswer(queId, optId))
   }
+}
+
 
 
 
@@ -54,12 +71,15 @@ const McqQuestions = () => {
     <Container fluid>
       <Row className='mb-4'>
         <Col className='d-flex align-items-center'>
-          <p className="mb-0 chapter-title">{generate_question?.chapter_name}</p>
+          <LinkComponent to={`/student_dashboard/generate_question/${id}`} className="brand-link-color d-flex align-items-center justify-content-center">
+                    <span className=''>{Icons.back_button_icon_blue}</span>
+                    <span className="chapter-title">{generate_question?.chapter_name}</span>
+                </LinkComponent>
         </Col>
         <Col className='d-flex justify-content-end me-5'>
-          {generate_question?.test_status === "submitted" ? <ButtonComponent type="button" buttonName="Re-Generate" className="brand_color text-white px-5" clickFunction={() => {
+          {generate_question?.test_status === "submitted" || generate_question?.test_status === "start"  ? <ButtonComponent type="button" buttonName="Re-Generate" className="brand_color text-white px-5" clickFunction={() => {
             dispatch(updateModalShow({ show: true, close_btn: true, size: "md", modal_from: "Generate_Question", modal_type: "select_question_type" }))
-            dispatch(updateGenerateQuestionFields({ mcq_questions: [],summary:{},test_status:"" }))
+            dispatch(updateGenerateQuestionFields({ mcq_questions: [],summary:{},test_status:"start" }))
           }} /> :
             generate_question?.test_status === "generated" ?
               <ButtonComponent type="button" buttonName="Submit" className="brand_color text-white px-5" clickFunction={handleTestSubmit} /> : null
@@ -81,7 +101,7 @@ const McqQuestions = () => {
         {generate_question?.loading ? <div className='d-flex justify-content-center align-items-center' style={{ minHeight: "75vh", width: "100%" }}>
           <Spinner />
         </div> :
-          <Card className='border-0'>
+          <Card className='border-0' style={{minHeight:"75vh"}}>
             <Card.Body>
               {generate_question?.mcq_questions?.test_questions?.map((question, qidx) => (
                 <div key={question.Question_no} className="mb-5">

@@ -18,8 +18,10 @@ const GenerateQuestion = () => {
 
     useEffect(()=>{
         if(!id) return
+        if(!generate_question?.bookmarks?.bookmarks || generate_question?.bookmarks?.bookmarks.length === 0){
         dispatch(getBookmarks(id))
         dispatch(updateGenerateQuestionFields({book_id:id}))
+        }
     },[])
 
     useEffect(() => {
