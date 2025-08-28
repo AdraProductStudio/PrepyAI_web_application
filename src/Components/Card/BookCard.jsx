@@ -20,7 +20,7 @@ const BookCard = ({
                             <ButtonComponent type="button" className="btn-transparent fs-14 text-primary" buttonName="View" clickFunction={previewFunction}  />
                         </div>
                         <div className="col text-end border-start">
-                            <ButtonComponent type="button" className="btn-transparent fs-14 brand_text_color" buttonName="Generate Question" clickFunction={()=> navigate(`/student_dashboard/generate_question/${data?.book_id}`)} />
+                            <ButtonComponent type="button" className="btn-transparent fs-14 brand_text_color" buttonName="Generate questions" clickFunction={()=> navigate(`/student_dashboard/generate_question/${data?.book_id}`)} />
                         </div>
                     </Card.Footer>
                 )

@@ -169,7 +169,7 @@ const McqTest = () => {
                                 {studentState?.mcq_test?.questions?.map((question, questionInd) => {
                                     let btnClass = "question_number_btn p-1";
                                     if (question?.candidate_answer) {
-                                        btnClass += "btn btn-brand-color"; // Pink
+                                        btnClass += "btn btn-brand-color alt-hover"; // Pink
                                     } else if (questionInd === currentQuestionIndex) {
                                         btnClass += " active"; // Black
                                     } else {
@@ -218,7 +218,7 @@ const McqTest = () => {
                             </div>
 
                             <h5>
-                                <strong>Question No: </strong>
+                                <strong>Question No : </strong>
                                 <span>{currentQuestionIndex + 1}</span>
                             </h5>
                             <p>{currentQuestion?.Question}</p>
@@ -227,7 +227,7 @@ const McqTest = () => {
                                 {currentQuestion?.options?.map((opt, idx) => (
                                     <div
                                         key={opt.id}
-                                        className={`test_radio_box border p-3 my-2 rounded-2 cursor-pointer ${currentQuestion?.candidate_answer === opt.id
+                                        className={`border p-3 my-2 rounded-2 cursor-pointer test_radio_box ${currentQuestion?.candidate_answer === opt.id
                                             ? "selected_question_active"
                                             : ""
                                             }`}
@@ -253,11 +253,12 @@ const McqTest = () => {
                     {/* Navigation Buttons */}
                     <div className="d-flex justify-content-between mt-4">
                         <ButtonComponent
-                            className="border border-black"
+                            className="prev_btn"
                             clickFunction={goToPrev}
                             btnDisable={currentQuestionIndex === 0}
+                            buttonName={<>{Icons.arrowLeftIcon} Previous</>}
                         >
-                            {Icons.arrowLeftIcon} Previous
+                           
                         </ButtonComponent>
 
                         {
@@ -265,15 +266,18 @@ const McqTest = () => {
                                 <ButtonComponent
                                     className="nxt_btn"
                                     clickFunction={goToNext}
-                                >
-                                    Next {Icons.arrowRightWhiteIcon}
-                                </ButtonComponent>
+                                    buttonName={
+                                        <>
+                                            Next 
+                                            <span className="arrow-white ms-2">{Icons.arrowRightWhiteIcon}</span>
+                                            <span className="arrow-black ms-2">{Icons.arrowRightIcon}</span>
+                                            
+                                        </>
+                                    }
+                                />
                             )
                                 : (
-                                    <ButtonComponent className="btn btn-brand-color" clickFunction={handleSubmit}>
-                                        Submit Test
-                                    </ButtonComponent>
-
+                                    <ButtonComponent className="btn btn-brand-color" buttonName="Submit test" clickFunction={handleSubmit} />
                                 )
                         }
 

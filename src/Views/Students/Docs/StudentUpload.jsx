@@ -30,7 +30,7 @@ const StudentUpload = () => {
       <Card.Header className="row py-3 bg-transparent justify-content-between align-items-stretch">
         <div className="col-md-5 col-lg-4">
           <ButtonComponent className="Uploadbtn w-100" clickFunction={() => dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "dashboard", modal_type: "upload_book" }))} >
-            <span className="d-flex justify-content-between">{Icons.studentUpload} Upload Your Book</span>
+            <span className="d-flex justify-content-between py-1">{Icons.studentUpload} Upload your book</span>
           </ButtonComponent>
         </div>
 
@@ -80,7 +80,7 @@ const StudentUpload = () => {
               })()
             ) : (
               studentState?.all_learner_books?.books?.length > 0 ? (
-                studentState?.all_learner_books?.books?.map((book, idx) => (
+                studentState?.all_learner_books?.books?.toReversed().map((book, idx) => (
                   <Col key={idx} className="d-flex">
                     <div className="w-100 p-1">
                       <BookCard

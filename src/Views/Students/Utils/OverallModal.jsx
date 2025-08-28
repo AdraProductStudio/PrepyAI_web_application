@@ -74,11 +74,20 @@ export function OverallModel() {
             case "dashboard":
                 switch (commonState?.modal?.type) {
                     case "upload_book":
-                        return <h5>Upload Book</h5>
+                        return <h5 className="m-0">Upload book</h5>
                     case "upload_test_paper":
-                        return <h5>Upload Test Paper</h5>
+                        return <h5 className="m-0">Upload test paper</h5>
                     case "start_test":
-                        return <h5>Start Test</h5>
+                        return <h5 className="m-0">Start test</h5>
+                    default:
+                        break;
+                }
+                break;
+
+            case "test":
+                switch (commonState?.modal?.type) {
+                    case "submit_test":
+                        return <h5 className="m-0">Submit test</h5>
                     default:
                         break;
                 }
@@ -149,10 +158,12 @@ export function OverallModel() {
             case "dashboard":
                 switch (commonState?.modal?.type) {
                     case "upload_book":
-                        return <div className='p-2'>
+                        return <div className='p-2 mt-2'>
                             {Inputfunctions(jsxJson.uploadBook)}
-                            <div className="d-flex justify-content-center align-items-center p-3 my-3 upload_book_div">
-                                <div className="mx-3 pointer">
+                            <div className="d-flex justify-content-center align-items-center p-3 my-4 cursor-pointer upload_book_div" 
+                                onClick={() => fileInputRef.current && fileInputRef.current.click()}>
+
+                                <div className="mx-3">
                                     <span style={{ display: "none" }}>
                                         <Input
                                             type='file'
@@ -165,7 +176,7 @@ export function OverallModel() {
                                             }}
                                         />
                                     </span>
-                                    <span className="d-flex" onClick={() => fileInputRef.current && fileInputRef.current.click()}>{Icons.studentUploadLarge}</span>
+                                    <span>{Icons.studentUploadLarge}</span>
                                 </div>
                                 <div className="pt-3">
                                     {studentState?.upload_learner_book?.book_file ? (
@@ -178,7 +189,7 @@ export function OverallModel() {
                                     )}
                                 </div>
                             </div>
-                            <div className="d-flex justify-content-between align-items-center">
+                            <div className="d-flex justify-content-between align-items-center mt-5">
                                 <div className="">
                                     <ButtonComponent
                                         type="button"
@@ -194,7 +205,7 @@ export function OverallModel() {
                                         // buttonName={`${studentState?.upload_learner_book.loading ? 'Uploading...' : 'Upload'}`}
                                         buttonName={studentState?.upload_learner_book?.loading ? (
                                             <div className="d-flex justify-content-center align-items-center">
-                                                <p className="m-0">Uploading...</p> <SpinnerComponent className="my-0 ms-2 p-0" />
+                                                <p className="m-0">Uploading...</p> <SpinnerComponent className="my-0 ms-2 p-0 small-spinner" />
                                             </div>)
                                             : ('Upload')
                                         }
@@ -207,8 +218,8 @@ export function OverallModel() {
                     case "start_test":
                         return <div className="">
                             <div className="text-center">
-                                <span><Img src={Image.start_test_pic} width={200} /></span>
-                                <p className="gradient-text my-3">Are you sure do you want to Start Test</p>
+                                <span><Img src={Image.start_test_pic} width={100} className="mt-3" /></span>
+                                <p className="gradient-text mb-5 mt-3">Are you sure you want to start the test</p>
                             </div>
                             <div className="d-flex justify-content-between align-items-center">
                                 <div className="">
@@ -226,7 +237,7 @@ export function OverallModel() {
                                         className="btn btn-brand-color px-5 py-2"
                                         buttonName={studentState?.mcq_loading ? (
                                             <div className="d-flex justify-content-center align-items-center">
-                                                <p className="m-0">Starting...</p> <SpinnerComponent className="p-0 my-0 ms-2" />
+                                                <p className="m-0">Starting...</p> <SpinnerComponent className="p-0 my-0 ms-2 small-spinner" />
                                             </div>)
                                             : ('Start')
                                         }
@@ -239,7 +250,9 @@ export function OverallModel() {
                     case "upload_test_paper":
                         return <div>
                             {Inputfunctions(jsxJson.uploadTest)}
-                            <div className="d-flex justify-content-center align-items-center p-3 m-2 my-4 upload_book_div">
+                            <div className="d-flex justify-content-center align-items-center p-3 m-2 my-4 cursor-pointer upload_book_div" 
+                                onClick={() => fileInputRef.current && fileInputRef.current.click()}>
+
                                 <div className="mx-3 pointer">
                                     <span style={{ display: "none" }}>
                                         <Input
@@ -253,7 +266,7 @@ export function OverallModel() {
                                             }}
                                         />
                                     </span>
-                                    <span className="d-flex" onClick={() => fileInputRef.current && fileInputRef.current.click()}>{Icons.studentUploadLarge}</span>
+                                    <span className="d-flex" >{Icons.studentUploadLarge}</span>
                                 </div>
                                 <div className="pt-3">
                                     {studentState?.upload_test_paper?.test_file ? (
@@ -266,7 +279,7 @@ export function OverallModel() {
                                     )}
                                 </div>
                             </div>
-                            <div className="d-flex justify-content-between align-items-center">
+                            <div className="d-flex justify-content-between align-items-center mt-5">
                                 <div className="">
                                     <ButtonComponent
                                         type="button"
@@ -282,7 +295,7 @@ export function OverallModel() {
                                         // buttonName={`${studentState?.upload_test_paper.loading ? 'Uploading...' : 'Upload'}`}
                                         buttonName={studentState?.upload_test_paper?.loading ? (
                                             <div className="d-flex justify-content-center align-items-center">
-                                                <p className="m-0">Uploading...</p> <SpinnerComponent className="p-0 my-0 ms-2" />
+                                                <p className="m-0">Uploading...</p> <SpinnerComponent className="p-0 my-0 ms-2 small-spinner" />
                                             </div>)
                                             : ('Upload')
                                         }
@@ -335,8 +348,8 @@ export function OverallModel() {
                     case "submit_test":
                         return <div className="">
                             <div className="text-center">
-                                <span><Img src={Image.start_test_pic} width={200} /></span>
-                                <p className="gradient-text my-3">Are you sure you want to submit your test?</p>
+                                <span><Img src={Image.start_test_pic} width={100} className="mt-3" /></span>
+                                <p className="gradient-text mt-3 mb-5">Are you sure you want to submit your test?</p>
                             </div>
                             <div className="d-flex justify-content-between align-items-center">
                                 <div className="">
@@ -353,7 +366,7 @@ export function OverallModel() {
                                         className="btn btn-brand-color px-5 py-2"
                                         buttonName={studentState?.mcq_test?.submit_spinner_loading ? (
                                             <div className="d-flex justify-content-center align-items-center">
-                                                <p className="m-0">Submitting...</p> <SpinnerComponent className="p-0 my-0 ms-2" />
+                                                <p className="m-0">Submitting...</p> <SpinnerComponent className="p-0 my-0 ms-2 small-spinner" />
                                             </div>
                                         )
                                             : ('Submit')
@@ -500,7 +513,7 @@ export function OverallModel() {
                             <ButtonComponent type="button"
                                 buttonName={studentState?.loading['edit_profile'] ? (
                                     <div className="d-flex justify-content-center align-items-center">
-                                        <p className="m-0">Editing...</p> <SpinnerComponent className="p-0 my-0 ms-2" />
+                                        <p className="m-0">Editing...</p> <SpinnerComponent className="p-0 my-0 ms-2 small-spinner" />
                                     </div>
                                 ) :
                                     'Edit'

@@ -53,7 +53,7 @@ const BooksOverviewLayout = () => {
                 <ButtonComponent
                     type="button"
                     className="btn btn-brand-color px-2 py-2 mx-2"
-                    buttonName="Generate Questions"
+                    buttonName="Generate questions"
                     clickFunction={() => navigate(`/student_dashboard/generate_question/${book.book_id}`)}
                 />
             </div>

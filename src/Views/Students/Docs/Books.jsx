@@ -47,7 +47,7 @@ const StudentsBooks = () => {
                 })()
             ) : (
                 studentState?.subject_books?.length > 0 ? (
-                    studentState?.subject_books?.map((book, idx) => (
+                    studentState?.subject_books?.toReversed().map((book, idx) => (
                         <div className="col-12 col-md-6 col-lg-4 p-1" key={idx}>
                             <BookCard
                                 className="border"

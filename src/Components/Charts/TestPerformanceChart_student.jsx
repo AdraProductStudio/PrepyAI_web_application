@@ -1,6 +1,6 @@
 import {
     Line, LineChart, ResponsiveContainer,
-    XAxis, ReferenceArea,
+    XAxis, ReferenceArea, Tooltip
 } from "recharts"
 
 const TestPerformanceChartStudent = ({ data }) => {
@@ -112,6 +112,20 @@ const TestPerformanceChartStudent = ({ data }) => {
                             tick={{ fontSize: 12, fill: "#888" }}
                             axisLine={false}
                             tickLine={false}
+                        />
+
+                        <Tooltip
+                            contentStyle={{ backgroundColor: "#fff", borderRadius: 4, border: "1px solid #ccc"}}
+                            labelStyle={{ color: "#333", fontWeight: 500 }}
+                            cursor={{ stroke: "#8884d8", strokeWidth: 2, strokeDasharray: "3 3", pointerEvents: "none" }}
+                            formatter={(value, name) => {
+                                // Map the dataKey to a nicer label
+                                const nameMap = {
+                                    schedule_test: "Schedule test",
+                                    self_test: "Self test"
+                                }
+                                return [value, nameMap[name] || name]
+                            }}
                         />
 
                         {performanceList.map(({ key, color }) => (

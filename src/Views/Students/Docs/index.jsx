@@ -69,7 +69,7 @@ const StudentDashboard = () => {
                             </Card.Body>
                             <Card.Footer className="border-0 bg-transparent p-3">
                                 <ButtonComponent className="Uploadbtn w-100" clickFunction={() => dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "dashboard", modal_type: "upload_test_paper" }))} >
-                                    <span className="d-flex justify-content-center align-items-center">{Icons.studentUpload} <span className="ms-3">Upload Test Paper</span></span>
+                                    <span className="d-flex justify-content-center align-items-center">{Icons.studentUpload} <span className="ms-3 py-1">Upload test paper</span></span>
                                 </ButtonComponent>
                             </Card.Footer>
                         </Card>

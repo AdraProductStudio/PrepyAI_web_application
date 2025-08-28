@@ -29,6 +29,40 @@ const PerformanceAndHistoryChart = ({ data = [], size = 150, strokeWidth = 10, g
 
         chartData.pop()
     }
+        
+    if(data.length > 0)  {
+        data = data.map((item) => {
+            let fill = COLORS.not_attempted
+            let name = "Not Attempted"
+
+            switch (item.value) {
+                case 1:
+                    fill = COLORS.emergent
+                    name = "Emergent"
+                    break
+                case 2:
+                    fill = COLORS.developing
+                    name = "Developing"
+                    break
+                case 3:
+                    fill = COLORS.exemplar
+                    name = "Exemplar"
+                    break
+                default:
+                    fill = COLORS.not_attempted
+                    name = "Not Attempted"
+            }
+
+            return {
+                ...item,
+                name,
+                value: parseFloat(item.value) || 0,
+                fill
+            }
+        })
+
+    }
+
     data = location.pathname.includes("/subjects/") && location.pathname.includes("/books/")
         ? data
         : chartData;
@@ -61,7 +95,7 @@ const PerformanceAndHistoryChart = ({ data = [], size = 150, strokeWidth = 10, g
                                         strokeWidth={strokeWidth}
                                         fill="none"
                                     />
-                                   
+                                      <title >{`${item.name} : ${item.value}%`}</title> 
                                     {
                                         item.value > 0 && (
 
@@ -69,7 +103,7 @@ const PerformanceAndHistoryChart = ({ data = [], size = 150, strokeWidth = 10, g
                                                 cx={totalWidth / 2}
                                                 cy={totalWidth / 2}
                                                 r={radius}
-                                                stroke={item.fill || '#3E00C2'}
+                                                stroke={item.fill}
                                                 strokeWidth={strokeWidth}
                                                 strokeDasharray={circumference}
                                                 strokeDashoffset={circumference}
@@ -85,6 +119,7 @@ const PerformanceAndHistoryChart = ({ data = [], size = 150, strokeWidth = 10, g
                                                     fill="freeze"
                                                     begin="0s"
                                                 />
+                                                <title >{`${item.name} : ${item.value}%`}</title> 
                                             </circle>
                                         )
                                     }
