@@ -18,7 +18,36 @@ const StudentsTableCard = ({ className, navigate_to, data, glow }) => {
   const dispatch = useDispatch();
 
   const handleEdit = (student) => {
-    dispatch(update_edit_student({ data: student }));
+    dispatch(
+      update_edit_student({
+        data: student,
+        getdata: student?.classroom_id
+          ? {
+              id: student?.classroom_id,
+              student_id: student?.student_id,
+              from: "classroom",
+              pagination: {
+                search_query: data?.search_query,
+                show_entries: data?.show_entries,
+                page: data?.current_page,
+                sort_by: data?.sort_by,
+                sort_order: data?.sort_order,
+              },
+            }
+          : {
+              id: data?.subject_id,
+              student_id: student?.student_id,
+              from: "student",
+              pagination: {
+                search_query: data?.search_query,
+                show_entries: data?.show_entries,
+                page: data?.current_page,
+                sort_by: data?.sort_by,
+                sort_order: data?.sort_order,
+              },
+            },
+      })
+    );
     dispatch(
       updateModalShow({
         show: true,

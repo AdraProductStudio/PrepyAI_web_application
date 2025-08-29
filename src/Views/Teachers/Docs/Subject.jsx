@@ -24,16 +24,16 @@ const Subject = () => {
             dispatch(getClassroomTeachers({classroom_id:class_id}))
         }
     },[])
-    const handleDelete = (class_id)=>{
-        dispatch(
-            updateModalShow({
-              show: true,
-              close_btn: true,
-              modal_from: "techaersdeletemodal",
-              modal_type: "techaersdeletemodal",
-            })
-          );
-    }
+    // const handleDelete = (class_id)=>{
+    //     dispatch(
+    //         updateModalShow({
+    //           show: true,
+    //           close_btn: true,
+    //           modal_from: "techaersdeletemodal",
+    //           modal_type: "techaersdeletemodal",
+    //         })
+    //       );
+    // }
 
     const {teachersState} = useCommonState();
     const {data,glow} = teachersState?.teacher_GetSubjects; 
@@ -100,7 +100,7 @@ const Subject = () => {
                   <p className="py-3">Geeting Subject Records</p>
                 </div>
               </div>
-            ) : data?.subjects?.length < 0 ? (
+            ) : ! data?.subjects?.length > 0 ? (
               <div className="w-100 h-100 row align-items-center justify-content-center">
                 <div className="col-6 text-center">
                   <Img

@@ -34,7 +34,7 @@ const ReactDropdownSelect = ({
                 create={create}
                 values={value}
                 onChange={change}
-                className={className}
+                className={`${className} ${disabled ? "dropdown-disabled" : ""}`}
                 disabled={disabled}
                 placeholder={placeholder}
             />

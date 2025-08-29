@@ -1196,3 +1196,35 @@ border-color: inherit !important;
   box-shadow: none !important;
   outline: none !important;
 }
+.border-dashed {
+  border-style: dashed !important;
+}
+
+.dropdown-disabled {
+  background-color: #e9ecef !important;
+  border: 1px solid #ced4da !important; 
+  color: #6c757d !important;           
+  opacity: 1 !important;           
+  cursor: not-allowed !important;
+}
+
+.dropdown-disabled .react-dropdown-select-placeholder {
+  color: #6c757d !important; 
+}
+.btn-clear {
+  border: none !important;
+  background: transparent !important;
+  color: #0d6efd;
+  padding: 0;
+  cursor: pointer;
+}
+
+.btn-clear:hover {
+  text-decoration: underline; 
+}
+
+.btn-clear:focus,
+.btn-clear:active {
+  outline: none !important;
+  box-shadow: none !important;
+}

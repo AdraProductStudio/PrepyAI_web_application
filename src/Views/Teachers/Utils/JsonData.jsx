@@ -2,7 +2,7 @@ import { useCommonState, useCustomNavigate, useDispatch } from 'Components/Custo
 import { handlePostNote, update_app_data, update_note_data } from 'Views/Common/Slices/Common_slice';
 import Icons from 'Utils/Icons';
 import Image from 'Utils/Image';
-import { update_selected_books } from '../Slice/teachersSlice';
+import { clear_form_fields, update_selected_books } from '../Slice/teachersSlice';
 import { get_bookmarks } from '../Actions/TeacherActions';
 import { update_Create_student, update_Grade_by_classroom, updatePostClassroomsData, updatePostStudentData, updatePostSubjectsData } from '../Slice/teachersSlice';
 
@@ -10,7 +10,6 @@ const JsonData = (params) => {
   const dispatch = useDispatch();
   const navigate = useCustomNavigate();
   const { commonState, teachersState } = useCommonState();
-  console.log(teachersState?.teacher_GetAllClassRooms?.data, "asasdas")
 
   const jsonOnly = {
     dashboard_count_details: [
@@ -582,6 +581,7 @@ const JsonData = (params) => {
         divClassName: "col-12 mb-4",
         className: "modal-inputs",
         isMandatory: true,
+        disabled:true
         // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
       },
       {
@@ -600,38 +600,17 @@ const JsonData = (params) => {
     ],
     createStudent: [
       {
-        name: "Upload CSV File",
-        category: "input",
-        type: "file",
-        placeholder: "Choose a file",
-        divClassName: "col-12 mb-2",
-        accept: ".csv",
-        className: "file-inputs mt-2",
-        fileLength: 1,
-        value: Array.isArray(
-          teachersState?.teacher_CreateStudents?.data?.student_file
-        )
-          ? teachersState?.teacher_PostClassrooms?.data?.student_file?.map(
-              (val) => val
-            )
-          : [],
-        change: (e) => {
-          const files = Array.from(e.target.files);
-          dispatch(updatePostClassroomsData({ student_file: files }));
-        },
-        isMandatory: false,
-      },
-      {
         name: "Enter Student Name",
         type: "text",
         category: "input",
         placeholder: "Student name",
-        value: teachersState?.teacher_CreateStudents?.data?.student_name || "",
+        value: teachersState?.teacher_CreateStudents?.data?.name || "",
         change: (e) =>
-          dispatch(update_Create_student({ student_name: e.target.value })),
+          dispatch(update_Create_student({ name: e.target.value })),
         divClassName: "col-6 mb-3",
         className: "modal-inputs",
         isMandatory: true,
+        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false
         // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
       },
       {
@@ -645,6 +624,7 @@ const JsonData = (params) => {
         divClassName: "col-6 mb-3",
         className: "modal-inputs ms-1",
         isMandatory: true,
+        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false
         // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
       },
       {
@@ -652,12 +632,13 @@ const JsonData = (params) => {
         type: "text",
         category: "input",
         placeholder: "Email id",
-        value: teachersState?.teacher_CreateStudents?.data?.student_email || "",
+        value: teachersState?.teacher_CreateStudents?.data?.email_id || "",
         change: (e) =>
-          dispatch(update_Create_student({ student_email: e.target.value })),
+          dispatch(update_Create_student({ email_id: e.target.value })),
         divClassName: "col-12 mb-3",
         className: "modal-inputs pe-2",
         isMandatory: true,
+        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false
         // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
       },
       {
@@ -666,27 +647,77 @@ const JsonData = (params) => {
         category: "input",
         placeholder: "Enter Your Register Number",
         value:
-          teachersState?.teacher_CreateStudents?.data?.student_reg_no || "",
+          teachersState?.teacher_CreateStudents?.data?.register_no || "",
         change: (e) =>
-          dispatch(update_Create_student({ student_reg_no: e.target.value })),
+          dispatch(update_Create_student({ register_no: e.target.value })),
         divClassName: "col-6 mb-2",
         className: "modal-inputs",
         isMandatory: true,
+        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false
         // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
       },
       {
-        name: "Enter a Class",
-        type: "text",
-        category: "input",
-        placeholder: "Enter Your Class",
-        value: teachersState?.teacher_CreateStudents?.data?.student_class || "",
-        change: (e) =>
-          dispatch(update_Create_student({ student_class: e.target.value })),
+        name: "Select Classroom",
+        category: "select",
+        type: "react_dropdown_select",
+        options: Array.isArray(teachersState?.teacher_GetAllClassRooms?.data)
+          ? teachersState.teacher_GetAllClassRooms.data.map((classroom) => ({
+              label: classroom.classroom_name,
+              value: classroom.classroom_name,
+            }))
+          : [],
+        multi: false,
+        placeholder: "Select Classroom",
+        isMandatory: true,
         divClassName: "col-6 mb-2",
         className: "modal-inputs ms-1",
-        isMandatory: true,
-        labelClassName: "ms-2",
-        // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
+        value: teachersState?.teacher_CreateStudents?.data?.classroom_name
+          ? [
+              {
+                label: teachersState.teacher_CreateStudents.data.classroom_name,
+                value: teachersState.teacher_CreateStudents.data.classroom_name,
+              },
+            ]
+          : [],
+        change: (selected) => {
+          const selectedValue = Array.isArray(selected)
+            ? selected[0]?.value
+            : selected?.value;
+          dispatch(update_Create_student({ classroom_name: selectedValue }));
+        },
+        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false
+      }
+      
+    ],
+    createMultiStudets:[
+      {
+        name: "Add Multiple Students",
+        category: "input",
+        type: "file",
+        placeholder: "Choose a file",
+        divClassName: "col-12 mb-2",
+        accept: ".csv",
+        className: "file-inputs mt-2",
+        fileLength: 1,
+        value: Array.isArray(
+          teachersState?.teacher_CreateStudents?.data?.student_file
+        )
+          ? teachersState?.teacher_CreateStudents?.data?.student_file?.map(
+              (val) => val
+            )
+          : [],
+        deleteImg:()=> dispatch(clear_form_fields()),
+        change: (e) => {
+          const files = Array.from(e.target.files);
+          dispatch(update_Create_student({ student_file: files }));
+        },
+        fileUploadValue:"Upload Csv,xlxs files",
+        disabled: Object.entries(teachersState?.teacher_CreateStudents?.data || {})
+        .filter(([key]) => key !== "student_file")
+        .every(([, value]) => value == null || value === "")
+          ? false
+          : true,
+          isMandatory: false,
       },
     ],
     selectGradeByClassRoom: [

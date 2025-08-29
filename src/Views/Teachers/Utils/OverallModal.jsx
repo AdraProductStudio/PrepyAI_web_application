@@ -7,11 +7,13 @@ import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import JsonData from "./JsonData";
 import {
   postClassrooms,
+  postCreateStudent,
   postStudents,
   postSubjects,
 } from "../Actions/teacherAction";
 import { useParams } from "react-router-dom";
 import Icons from "Utils/Icons";
+import { clear_form_fields } from "../Slice/teachersSlice";
 
 export function OverallModel() {
   const { class_id } = useParams();
@@ -120,16 +122,6 @@ export function OverallModel() {
             break;
         }
         break;
-
-      case "studentsEdit":
-        switch (commonState?.modal?.type) {
-          case "studentsEdit":
-            return <> {Inputfunctions(jsxJson.editStudent)}<ButtonComponent className="btn-md btn-brand-color w-100" buttonName={"Edit sutudents"} clickFunction={() => dispatch(postStudents(teachersState?.teacher_PostStudents?.data))} /></>
-
-          default:
-            break;
-        }
-        break;
         
       case "techaersdeletemodal":
         switch (commonState?.modal?.type) {
@@ -176,8 +168,33 @@ export function OverallModel() {
           case "studentCreateModal":
             return (
               <>
-                <div className=" row pt-3 pe-3 ps-3 w-100">{Inputfunctions(jsxJson.createStudent)}</div>
-                <div className="d-flex pt-3 pe-2 ps-3 w-100 gap-3">
+                <div className="row pe-3 ps-3 w-100">
+                  {Inputfunctions(jsxJson.createMultiStudets)}
+                </div>
+                <div className="d-flex mt-3 justify-content-center w-100">
+                  <hr />
+                  <span>( OR )</span>
+                  <hr />
+                </div>
+                {teachersState?.teacher_CreateStudents?.data &&
+                  !Object.entries(teachersState.teacher_CreateStudents.data)
+                    .filter(([key]) => key !== "student_file")
+                    .every(([, value]) => value == null || value === "") && (
+                    <div className="d-flex mt-2 justify-content-end me-3 w-100">
+                      <ButtonComponent
+                        buttonName={"clear"}
+                        clickFunction={()=>dispatch(clear_form_fields())}
+                        type="button"
+                        className="btn p-0 text-primary btn-clear"
+                      />
+                    </div>
+                  )}
+
+                <div className=" row pt-2 pe-3 ps-3 w-100">
+                  {Inputfunctions(jsxJson.createStudent)}
+                </div>
+
+                <div className="d-flex pt-3 mt-3 pe-2 ps-3 w-100 gap-3">
                   <ButtonComponent
                     className="btn-md btn-light w-50 p-3"
                     buttonName={"Close"}
@@ -190,7 +207,9 @@ export function OverallModel() {
                     buttonName={"Create"}
                     clickFunction={() =>
                       dispatch(
-                        postStudents(teachersState?.teacher_PostStudents?.data)
+                        postCreateStudent(
+                          teachersState?.teacher_CreateStudents?.data
+                        )
                       )
                     }
                   />

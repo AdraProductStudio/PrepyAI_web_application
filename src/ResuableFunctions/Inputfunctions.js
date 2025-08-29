@@ -5,6 +5,7 @@ import Input from "Components/Input/Input";
 import Textbox from "Components/Input/textbox";
 import Icons from "Utils/Icons";
 import Checkbox from "Components/Input/Checkbox";
+import ButtonComponent from "Components/Button/Button";
 
 export function Inputfunctions(funBy) {
     if (!funBy || funBy.length === 0) return null;
@@ -85,13 +86,13 @@ export function Inputfunctions(funBy) {
                                         accept={ipVal?.accept}
                                     />
 
-                                    <div className={`border py-2 rounded-2 col-12 text-center ${ipVal?.className}`}>
+                                    <div className={`border py-2 rounded-2 col-12 text-center ${ipVal?.className} ${ipVal?.disabled ? "bg-secondary bg-opacity-25" : ""}`}>
                                         <span className='me-2'>{Icons.fileUploadIcon}</span>
-                                        <span className='text-secondary fs-15'>{ipVal?.value?.length >= ipVal?.fileLength ? `Only ${ipVal?.fileLength} ${ipVal?.name} can be selectable` : `Click here to choose image`}</span>
+                                        <span className='text-secondary fs-15'>{ipVal?.value?.length >= ipVal?.fileLength ? `Only ${ipVal?.fileLength} ${ipVal?.name} can be selectable` : ipVal?.fileUploadValue || `Click here to choose image`}</span>
                                     </div>
                                 </div>
 
-                                <div className="mt-4 w-100">
+                                <div className="mt-1 w-100">
                                     {ipVal?.value?.map((data, index) => {
                                         const { id, name: filename, fileimage, datetime, size: filesize } = data;
                                         return (
@@ -121,7 +122,7 @@ export function Inputfunctions(funBy) {
                                             //     </div>
                                             //     :
                                             <div className="file-atc-box w-100" key={id}>
-                                                {filename.match(/.(jpg|jpeg|png|gif|svg|ods)$/i) ?
+                                                {filename.match(/.(jpg|jpeg|png|gif|svg|ods|csv|xlsx)$/i) ?
                                                     <div className="file-image">
                                                         {" "}
                                                         <img src={fileimage} alt="" />
@@ -142,12 +143,12 @@ export function Inputfunctions(funBy) {
                                                         </p>
                                                     </div>
                                                     <div className="file-actions col-3">
-                                                        {/* <ButtonComponent
+                                                        <ButtonComponent
                                                             type="button"
                                                             className="file-action-btn w-100 text-end"
-                                                            clickFunction={() => ipVal?.deleteImg(id)}
+                                                            clickFunction={() => ipVal?.deleteImg()}
                                                             buttonName="Delete"
-                                                        /> */}
+                                                        />
                                                     </div>
                                                 </div>
                                             </div>
