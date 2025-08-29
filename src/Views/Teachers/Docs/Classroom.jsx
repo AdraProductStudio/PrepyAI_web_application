@@ -19,17 +19,17 @@ const Classroom = () => {
 
   const dispatch = useDispatch();
 
-  const handleEdit = (val) => {
-    dispatch(update_edit_classroom({ data: val }));
-    dispatch(
-      updateModalShow({
-        show: true,
-        close_btn: true,
-        modal_from: "TeacherClassroom",
-        modal_type: "createClassroom",
-      })
-    );
-  };
+  // const handleEdit = (val) => {
+  //   dispatch(update_edit_classroom({ data: val }));
+  //   dispatch(
+  //     updateModalShow({
+  //       show: true,
+  //       close_btn: true,
+  //       modal_from: "TeacherClassroom",
+  //       modal_type: "createClassroom",
+  //     })
+  //   );
+  // };
 
   useEffect(() => {
     dispatch(getClassrooms());

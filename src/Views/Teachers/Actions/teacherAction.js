@@ -274,6 +274,25 @@ export const GetStudentOverviewSpendingHours = (params) => async (dispatch) => {
   }
 };
 
+export const GetStudentsList = (params) => async (dispatch) => {
+  try {
+    dispatch(handleGetStudentsList({ type: "request" }));
+    const { data } = await axiosInstance.post("/teachers/get_students_by_subject", params);
+    if (data?.error_code === 0) {
+      dispatch(
+        handleGetStudentsList({ type: "response", data: data?.data || [] })
+      );
+    } else {
+      dispatch(
+        handleGetStudentsList({ type: "failure", message: data?.message || "" })
+      );
+    }
+  } catch (err) {
+    dispatch(
+      handleGetStudentsList({ type: "failure", message: err?.message || "" })
+    );
+  }
+};
 
 // POST
 
@@ -305,6 +324,8 @@ export const postClassrooms = (form_data) => async (dispatch) => {
     }
     if (success) {
       dispatch(update_error({ Err: message, Toast_Type: "success" }));
+      dispatch(getClassroomTeachers());
+      dispatch(getTeachers());
       dispatch(updateModalShow({ show: false }))
     }
   } catch (error) {
@@ -328,6 +349,7 @@ export const postSubjects = (form_data) => async (dispatch) => {
     }
     if (success) {
       dispatch(update_error({ Err: message, Toast_Type: "success" }));
+      dispatch(getSubjects({classroom_id}))
       dispatch(updateModalShow({ show: false }))
     }
 
@@ -339,6 +361,11 @@ export const postSubjects = (form_data) => async (dispatch) => {
 export const postStudents = (form_data) => async (dispatch) => {
 
   const { student_name, contact_no, student_email, student_reg_no, } = form_data;
+  const id = form_data?.getdata?.id;
+  const id_from = form_data?.getdata?.from;
+  const pagination = form_data?.getdata?.pagination;
+  const student_id = form_data?.getdata?.student_id;
+
   if (!student_name || !contact_no || !student_email || !student_reg_no) {
     return dispatch(update_app_data({ type: "validation", data: true }));
   }
@@ -353,6 +380,29 @@ export const postStudents = (form_data) => async (dispatch) => {
     }
     if (success) {
       dispatch(update_error({ Err: message, Toast_Type: "success" }));
+      if (id_from === "classroom") {
+        dispatch(
+          GetStudentsListByTeacher({
+            classroom_id: "all_classrooms",
+            search_query: pagination?.search_query,
+            show_entries: pagination?.show_entries,
+            page: pagination?.page,
+            sort_by: "joined_at",
+            sort_order: "asc",
+          })
+        );
+      } else if (id_from === "student") {
+        dispatch(
+          GetStudentsListBySubject({
+            subject_id: id,
+            search_query: pagination?.search_query,
+            show_entries: pagination?.show_entries,
+            page: pagination?.page,
+            sort_by: "joined_at",
+            sort_order: "asc",
+          })
+        );
+      }
       dispatch(updateModalShow({ show: false }))
     }
 
@@ -360,6 +410,46 @@ export const postStudents = (form_data) => async (dispatch) => {
     console.warn(error, "error from post subject");
   }
 };
+
+export const postCreateStudent = (form_data) => async(dispatch) => {
+  const { name, contact_no, email_id, register_no, classroom_name } = form_data;
+
+  let response;
+
+  try {
+    if (form_data?.student_file) {
+      if (!form_data?.student_file) {
+        return dispatch(update_app_data({ type: "validation", data: true }));
+      }
+
+      const formData = new FormData();
+      formData.append("student_file", form_data?.student_file[0]);
+      response = await axiosInstance.post("/teachers/add_students", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    } else {
+      if (!name || !contact_no || !email_id || !register_no || !classroom_name) {
+        return dispatch(update_app_data({ type: "validation", data: true }));
+      }
+      response = await axiosInstance.post("/teachers/add_student", form_data);
+    }
+
+    const { message, success } = response?.data;
+
+    if (!success) {
+      dispatch(update_error({ Err: message, Toast_Type: "error" }));
+    }
+    if (success) {
+      dispatch(update_error({ Err: message, Toast_Type: "success" }));
+      dispatch(updateModalShow({ show: false }));
+    }
+
+  } catch (error) {
+    console.log(error, "error from create student");
+  }
+}
 
 
 // Delete
@@ -430,8 +520,6 @@ export const deleteStudents = (data) => async (dispatch) => {
   }
 };
 
-
-
 export const deleteSubjects = (id) => async (dispatch) => {
   if (!id) {
     return dispatch(update_app_data({ type: "validation", data: true }));
@@ -444,27 +532,6 @@ export const deleteSubjects = (id) => async (dispatch) => {
     console.warn(error, "error from post subject");
   }
 }
-
-
-export const GetStudentsList = (params) => async (dispatch) => {
-  try {
-    dispatch(handleGetStudentsList({ type: "request" }));
-    const { data } = await axiosInstance.post("/teachers/get_students_by_subject", params);
-    if (data?.error_code === 0) {
-      dispatch(
-        handleGetStudentsList({ type: "response", data: data?.data || [] })
-      );
-    } else {
-      dispatch(
-        handleGetStudentsList({ type: "failure", message: data?.message || "" })
-      );
-    }
-  } catch (err) {
-    dispatch(
-      handleGetStudentsList({ type: "failure", message: err?.message || "" })
-    );
-  }
-};
 
 export const deleteClassrooms = (id) => async (dispatch) => {
   if (!id) {

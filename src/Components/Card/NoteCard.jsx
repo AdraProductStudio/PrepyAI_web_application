@@ -9,7 +9,7 @@ const NoteCard = ({
 }) => {
 
     return (
-        <Card className="rounded-3 shadow-sm border-0 mb-3" style={{ backgroundColor: '#F4FAB3' || '#fafaf8ff' }}>
+        <Card className="rounded-3 shadow-sm border-0 mb-3 h-100" style={{ backgroundColor: '#F4FAB3' || '#fafaf8ff' }}>
             <Card.Header className="d-flex flex-wrap bg-transparent pt-3" style={{ borderBottom: '1px dashed #dee2e6' }}>
                 <div className="col-5">
                     <p className="text-secondary fs-13 mb-0">{data?.date || ''}</p>

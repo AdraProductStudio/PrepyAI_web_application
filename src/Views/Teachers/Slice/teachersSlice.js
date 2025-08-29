@@ -612,13 +612,17 @@ const teachersSlice = createSlice({
     },
     update_Create_student(state, action) {
       const [key, value] = Object.entries(action.payload)[0] || [];
-      state.teacher_PostStudents.data[key] = value || "";
+      state.teacher_CreateStudents.data[key] = value || "";
     },
     update_Grade_by_classroom(state, action) {
       const [key, value] = Object.entries(action.payload)[0] || [];
       state.teacher_Current_Grade_Classroom.data[key] = value || "";
+    },
+    clear_form_fields(state,action){
+      state.teacher_CreateStudents.data={}
     }
   },
+  
   extraReducers(builder) {
     builder.addCase("common_slice/updateModalShow", (state, action) => {
       const { show } = action.payload;
@@ -669,7 +673,8 @@ export const {
   update_edit_classroom,
   update_Create_student,
   update_Grade_by_classroom,
-  handleGradeByClassroom
+  handleGradeByClassroom,
+  clear_form_fields
 } = actions
 
 export default reducer
