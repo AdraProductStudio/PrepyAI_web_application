@@ -4,15 +4,16 @@ import { useCommonState, useDispatch } from "Components/CustomHooks";
 import Img from "Components/Img/Img";
 import OffCanvas from "Components/Offcanvas/OffCanvas";
 import NavLinkComp from "Components/Router_components/NavLink";
-import { useLocation } from "react-router-dom";
 import Image from "Utils/Image";
 import JsonData from "Views/Teachers/Utils/JsonData";
 import { logout } from "../Slices/Common_slice";
 import Icons from "Utils/Icons";
-
+import { useLocation } from "react-router-dom";
+import { updateModalShow } from "../Slices/Common_slice";
+import Spinner from "Components/Spinner/CustomSpinner";
 
 export function OverallCanvas() {
-    const { commonState } = useCommonState();
+    const { commonState, teachersState } = useCommonState();
     const { jsonOnly } = JsonData();
     const dispatch = useDispatch();
     const location = useLocation();
@@ -27,6 +28,8 @@ export function OverallCanvas() {
             </div>
         </>
     }
+
+
 
     function canvasHeaderFun() {
         switch (commonState?.canvas?.from) {
@@ -69,19 +72,35 @@ export function OverallCanvas() {
                 switch (commonState?.canvas?.type) {
                     case "attachments":
                         return (
-                            <div className="row">
-                                {Object.entries(jsonOnly?.attachments || []).map(([key, value]) => (
-                                    <div className="row mb-3" key={key}>
-                                        <div className="col-12 attachment_title">
-                                            <p>{key}</p>
+                            <div className="row h-100 align-content-start">
+                                {teachersState?.subject_attachments?.glow ?
+                                    <div className="h-100 row align-items-center justify-content-center">
+                                        <div className="col-9 col-lg-5 text-center">
+                                            <Spinner />
+                                            <p className="mt-3">Getting Attachments...</p>
                                         </div>
-                                        {value.map((item, index) => (
-                                            <div className="col-3 mt-4" key={index}>
-                                                <AttachmentCard className="attachment_books" delete_function={() => console.log("Delete function called")} download_function={() => console.log("Download function called")} />
+                                    </div>
+                                    :
+                                    Object.entries(teachersState?.subject_attachments?.data || [])?.length ?
+                                        Object.entries(teachersState?.subject_attachments?.data || []).map(([key, value]) => (
+                                            <div className="row mb-3 align-content-start" key={key}>
+                                                <div className="col-12 attachment_title">
+                                                    <p>{key}</p>
+                                                </div>
+                                                {value.map((item, index) => (
+                                                    <div className="col-12 col-md-6 col-xl-4 col-xxl-3 mt-4 p-1" key={index}>
+                                                        <AttachmentCard className="attachment_books" data={item} delete_function={() => console.log("Delete function called")} />
+                                                    </div>
+                                                ))}
+                                            </div >
+                                        ))
+                                        :
+                                        <div className="h-100 row align-items-center justify-content-center">
+                                            <div className="col-9 col-lg-5 text-center">
+                                                <p>No Attachments found</p>
                                             </div>
-                                        ))}
-                                    </div >
-                                ))}
+                                        </div>
+                                }
                             </div>
                         )
 
@@ -153,7 +172,8 @@ export function OverallCanvas() {
                         return (
                             <div className="shadow-sm w-100 py-3">
                                 <div className="col-3 ms-auto">
-                                    <ButtonComponent type="button" className="btn-brand-color px-4 py-2" buttonName="Add Attachment" />
+                                    <ButtonComponent type="button" className="btn-brand-color px-4 py-2" buttonName="Add Attachment"
+                                        clickFunction={() => dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "teacher", modal_type: "attachments" }))} />
                                 </div>
                             </div>
                         )
@@ -167,7 +187,7 @@ export function OverallCanvas() {
                 switch (commonState?.canvas?.type) {
                     case "data":
                         return <div className="sidebar-footer px-3">
-                        <ButtonComponent className="btn-transparent w-100" clickFunction={() => dispatch(logout())}>
+                            <ButtonComponent className="btn-transparent w-100" clickFunction={() => dispatch(logout())}>
                                 <span className="pe-3">{Icons.logoutIcon}</span>
                                 <span className="text-secondary">Logout</span>
                             </ButtonComponent>
@@ -195,7 +215,7 @@ export function OverallCanvas() {
             offcanvasHeaderClassname="border-0"
             canvasHeader={canvasHeaderFun()}
             offcanvasBodyClassname="py-2"
-            canvasBody={<div className='p-3 py-0'>{canvasBodyFun()}</div>}
+            canvasBody={<div className='p-3 py-0 h-100'>{canvasBodyFun()}</div>}
             canvasFooter={canvasFooterFun()}
             width={commonState?.canvas?.width}
         />

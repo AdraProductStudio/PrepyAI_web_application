@@ -83,7 +83,6 @@ const Classroom = () => {
                     </div>
                 </div>
             </div>
-            <OverallModel />
         </>
     )
 }

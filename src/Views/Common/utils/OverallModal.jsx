@@ -1,22 +1,15 @@
-import { useCommonState } from "Components/CustomHooks";
+import { useCommonState, useDispatch } from "Components/CustomHooks";
 import ModalComponent from "Components/Modal/Modal";
 
-
 export function OverallModel() {
-    const { commonState } = useCommonState();
-    // const dispatch = useDispatch();
-    // const navigate = useCustomNavigate();
+    const { commonState, teachersState } = useCommonState();
+    const dispatch = useDispatch();
+
+
 
     function modalHeaderFun() {
         switch (commonState?.modal?.from) {
-            case "Home":
-                switch (commonState?.modal?.type) {
-                    case "":
-                        return <h5>Home</h5>
-
-                    default:
-                        break;
-                }
+            case "teacher":
                 break;
 
             default:
@@ -26,14 +19,7 @@ export function OverallModel() {
 
     function modalBodyFun() {
         switch (commonState?.modal?.from) {
-            case "Home":
-                switch (commonState?.modal?.type) {
-                    case " ":
-                        return
-
-                    default:
-                        break;
-                }
+            case "teacher":
                 break;
 
             default:
@@ -43,14 +29,7 @@ export function OverallModel() {
 
     function modalFooterFun() {
         switch (commonState?.modal?.from) {
-            case "":
-                switch (commonState?.modal?.type) {
-                    case "":
-                        break
-
-                    default:
-                        break;
-                }
+            case "teacher":
                 break;
 
             default:

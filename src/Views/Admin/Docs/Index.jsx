@@ -108,7 +108,6 @@ const AdminDashboard = () => {
                     </Card>
                 </div>
             </section>
-            <OverallModel />
         </>
 
     )

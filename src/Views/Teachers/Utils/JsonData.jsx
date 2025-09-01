@@ -3,14 +3,13 @@ import { handlePostNote, update_app_data, update_note_data } from 'Views/Common/
 import Icons from 'Utils/Icons';
 import Image from 'Utils/Image';
 import { clear_form_fields, update_perfomance_by_classroom, update_selected_books, update_student_perfomance_dashboard, update_Students_classroom } from '../Slice/teachersSlice';
-import { get_bookmarks } from '../Actions/TeacherActions';
+import { get_bookmarks, handleGetSubjectAttachments } from '../Actions/TeacherActions';
 import { update_Create_student, update_Grade_by_classroom, updatePostClassroomsData, updatePostStudentData, updatePostSubjectsData } from '../Slice/teachersSlice';
 
 const JsonData = (params) => {
   const dispatch = useDispatch();
   const navigate = useCustomNavigate();
   const { commonState, teachersState } = useCommonState();
-
   const jsonOnly = {
     dashboard_count_details: [
       {
@@ -166,21 +165,81 @@ const JsonData = (params) => {
       {
         icon: Icons.attachment_colored,
         title: "Attachments",
-        onClick: () => dispatch(update_app_data({ type: 'canvas', data: { show: true, type: "attachments", from: "teachers", close_btn: true, extraClass: 'attachment_canvas', placement: 'end' } })),
+        onClick: () => {
+          dispatch(handleGetSubjectAttachments(teachersState?.params_data || {}));
+
+          dispatch(update_app_data({
+            type: 'canvas',
+            data: {
+              show: true,
+              type: "attachments",
+              from: "teachers",
+              close_btn: true,
+              extraClass: 'attachment_canvas',
+              placement: 'end'
+            }
+          }));
+        },
       }
+    ],
+    students_details: [
+      {
+        regNo: "reg8797656768",
+        name: "Prakash S",
+        contact: "9790413271",
+        email: "prakash@gmail.com",
+        overall: 50,
+        score: 38,
+        status: "Developing",
+      },
+      {
+        regNo: "reg8797656769",
+        name: "Ravi Kumar",
+        contact: "9876543210",
+        email: "ravi@example.com",
+        overall: 50,
+        score: "-",
+        status: "-",
+      },
+      {
+        regNo: "reg8797656770",
+        name: "Anitha M",
+        contact: "9123456780",
+        email: "anitha@example.com",
+        overall: 50,
+        score: "-",
+        status: "-",
+      }
+      // ➝ add more students
     ],
 
     attachments: {
-      "10-Mar-2025": [{ image: Image.book_image }],
-      "15-Mar-2025": [
+      '10-Mar-2025': [
+        { image: Image.book_image }
+      ],
+      '15-Mar-2025': [
         { image: Image.book_image },
         { image: Image.book_image },
         { image: Image.book_image },
         { image: Image.book_image },
       ],
-      "20-Mar-2025": [{ image: Image.book_image }],
+      '20-Mar-2025': [
+        { image: Image.book_image }
+      ],
     },
-  };
+    student_details: [
+
+      {
+        regNo: "reg8797656768",
+        name: "Prakash S",
+        contact: "9790413271",
+        email: "prakash@gmail.com",
+        overall: 50,
+        score: 38,
+        status: "Developing",
+      },
+    ]
+  }
 
   const jsxJson = {
     create_test: [
@@ -440,9 +499,9 @@ const JsonData = (params) => {
         type: "react_dropdown_select",
         options: Array.isArray(teachersState?.teacher_GetTeachers?.data)
           ? teachersState.teacher_GetTeachers.data.map((teacher) => ({
-              label: teacher.teacher_name,
-              value: teacher.user_id,
-            }))
+            label: teacher.teacher_name,
+            value: teacher.user_id,
+          }))
           : [],
         multi: true,
         placeholder: "Select Teachers",
@@ -453,12 +512,12 @@ const JsonData = (params) => {
           teachersState?.teacher_PostClassrooms?.data?.teachers
         )
           ? teachersState.teacher_PostClassrooms.data.teachers.map((id) => ({
-              label:
-                teachersState.teacher_GetTeachers.data.find(
-                  (t) => t.user_id === id
-                )?.teacher_name || "",
-              value: id,
-            }))
+            label:
+              teachersState.teacher_GetTeachers.data.find(
+                (t) => t.user_id === id
+              )?.teacher_name || "",
+            value: id,
+          }))
           : [],
         change: (selectedOptions) =>
           dispatch(
@@ -481,8 +540,8 @@ const JsonData = (params) => {
           teachersState?.teacher_PostClassrooms?.data?.student_file
         )
           ? teachersState?.teacher_PostClassrooms?.data?.student_file?.map(
-              (val) => val
-            )
+            (val) => val
+          )
           : [],
         change: (e) => {
           const files = Array.from(e.target.files);
@@ -513,9 +572,9 @@ const JsonData = (params) => {
           teachersState?.teacher_GetClassroomTeachers?.data
         )
           ? teachersState.teacher_GetClassroomTeachers.data.map((teacher) => ({
-              label: teacher.teacher_name,
-              value: teacher.user_id,
-            }))
+            label: teacher.teacher_name,
+            value: teacher.user_id,
+          }))
           : [],
         multi: false,
         placeholder: "Select Teachers",
@@ -524,16 +583,16 @@ const JsonData = (params) => {
         className: "modal-inputs",
         value: teachersState?.teacher_PostSubjects?.data?.teachers
           ? [
-              {
-                label:
-                  teachersState.teacher_GetClassroomTeachers.data.find(
-                    (t) =>
-                      t.user_id ===
-                      teachersState.teacher_PostSubjects.data.teachers
-                  )?.teacher_name || "",
-                value: teachersState.teacher_PostSubjects.data.teachers,
-              },
-            ]
+            {
+              label:
+                teachersState.teacher_GetClassroomTeachers.data.find(
+                  (t) =>
+                    t.user_id ===
+                    teachersState.teacher_PostSubjects.data.teachers
+                )?.teacher_name || "",
+              value: teachersState.teacher_PostSubjects.data.teachers,
+            },
+          ]
           : [],
         change: (selected) => {
           const selectedValue = Array.isArray(selected)
@@ -581,7 +640,7 @@ const JsonData = (params) => {
         divClassName: "col-12 mb-4",
         className: "modal-inputs",
         isMandatory: true,
-        disabled:true
+        disabled: true
         // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
       },
       {
@@ -610,8 +669,8 @@ const JsonData = (params) => {
         divClassName: "col-6 mb-3",
         className: "modal-inputs",
         isMandatory: true,
-        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false,
-        Err: commonState?.app_data?.validated && !teachersState?.teacher_CreateStudents?.data?.name ? "Student name required" : null,
+        disabled: teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false,
+        // Err: commonState?.app_data?.validated && !teachersState?.teacher_CreateStudents?.data?.name ? "Student name required" : null,
       },
       {
         name: "Enter a Contact Number",
@@ -624,8 +683,8 @@ const JsonData = (params) => {
         divClassName: "col-6 mb-3",
         className: "modal-inputs ms-1",
         isMandatory: true,
-        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false,
-        Err: commonState?.app_data?.validated && !teachersState?.teacher_CreateStudents?.data?.contact_no ? "Contact number required" : null,
+        disabled: teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false,
+        // Err: commonState?.app_data?.validated && !teachersState?.teacher_CreateStudents?.data?.contact_no ? "Contact number required" : null,
       },
       {
         name: "Enter a Email id",
@@ -638,8 +697,8 @@ const JsonData = (params) => {
         divClassName: "col-12 mb-3",
         className: "modal-inputs pe-2",
         isMandatory: true,
-        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false,
-        Err: commonState?.app_data?.validated && !teachersState?.teacher_CreateStudents?.data?.email_id ? "Email id required" : null,
+        disabled: teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false,
+        // Err: commonState?.app_data?.validated && !teachersState?.teacher_CreateStudents?.data?.email_id ? "Email id required" : null,
       },
       {
         name: "Enter a Register Number",
@@ -653,8 +712,8 @@ const JsonData = (params) => {
         divClassName: "col-6 mb-2",
         className: "modal-inputs",
         isMandatory: true,
-        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false,
-        Err: commonState?.app_data?.validated && !teachersState?.teacher_CreateStudents?.data?.register_no ? "Register number required" : null,
+        disabled: teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false,
+        // Err: commonState?.app_data?.validated && !teachersState?.teacher_CreateStudents?.data?.register_no ? "Register number required" : null,
       },
       {
         name: "Select Classroom",
@@ -662,9 +721,9 @@ const JsonData = (params) => {
         type: "react_dropdown_select",
         options: Array.isArray(teachersState?.teacher_GetAllClassRooms?.data)
           ? teachersState.teacher_GetAllClassRooms.data.map((classroom) => ({
-              label: classroom.classroom_name,
-              value: classroom.classroom_name,
-            }))
+            label: classroom.classroom_name,
+            value: classroom.classroom_name,
+          }))
           : [],
         multi: false,
         placeholder: "Select Classroom",
@@ -673,11 +732,11 @@ const JsonData = (params) => {
         className: "modal-inputs ms-1",
         value: teachersState?.teacher_CreateStudents?.data?.classroom_name
           ? [
-              {
-                label: teachersState.teacher_CreateStudents.data.classroom_name,
-                value: teachersState.teacher_CreateStudents.data.classroom_name,
-              },
-            ]
+            {
+              label: teachersState.teacher_CreateStudents.data.classroom_name,
+              value: teachersState.teacher_CreateStudents.data.classroom_name,
+            },
+          ]
           : [],
         change: (selected) => {
           const selectedValue = Array.isArray(selected)
@@ -685,11 +744,11 @@ const JsonData = (params) => {
             : selected?.value;
           dispatch(update_Create_student({ classroom_name: selectedValue }));
         },
-        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false,
-        Err:commonState?.app_data?.validated && !teachersState?.teacher_CreateStudents?.data?.classroom_name ? "Teacher classroom required" : null,
+        disabled: teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false,
+        Err: commonState?.app_data?.validated && !teachersState?.teacher_CreateStudents?.data?.classroom_name ? "Teacher classroom required" : null,
       }
     ],
-    createMultiStudets:[
+    createMultiStudets: [
       {
         name: "Add Multiple Students",
         category: "input",
@@ -703,21 +762,21 @@ const JsonData = (params) => {
           teachersState?.teacher_CreateStudents?.data?.student_file
         )
           ? teachersState?.teacher_CreateStudents?.data?.student_file?.map(
-              (val) => val
-            )
+            (val) => val
+          )
           : [],
-        deleteImg:()=> dispatch(clear_form_fields()),
+        deleteImg: () => dispatch(clear_form_fields()),
         change: (e) => {
           const files = Array.from(e.target.files);
           dispatch(update_Create_student({ student_file: files }));
         },
-        fileUploadValue:"Upload Csv,xlxs files",
+        fileUploadValue: "Upload Csv,xlxs files",
         disabled: Object.entries(teachersState?.teacher_CreateStudents?.data || {})
-        .filter(([key]) => key !== "student_file")
-        .every(([, value]) => value == null || value === "")
+          .filter(([key]) => key !== "student_file")
+          .every(([, value]) => value == null || value === "")
           ? false
           : true,
-          isMandatory: false,
+        isMandatory: false,
       },
     ],
     selectGradeByClassRoom: [
@@ -726,9 +785,9 @@ const JsonData = (params) => {
         type: "react_dropdown_select",
         options: Array.isArray(teachersState?.teacher_GetAllClassRooms?.data)
           ? teachersState.teacher_GetAllClassRooms.data.map((classroom) => ({
-              label: classroom.classroom_name,
-              value: classroom.classroom_id,
-            }))
+            label: classroom.classroom_name,
+            value: classroom.classroom_id,
+          }))
           : [],
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
@@ -742,15 +801,15 @@ const JsonData = (params) => {
           ),
       },
     ],
-    selectClassRoomForPerfomance :[
+    selectClassRoomForPerfomance: [
       {
         category: "select",
         type: "react_dropdown_select",
         options: Array.isArray(teachersState?.teacher_GetAllClassRooms?.data)
           ? teachersState.teacher_GetAllClassRooms.data.map((classroom) => ({
-              label: classroom.classroom_name,
-              value: classroom.classroom_id,
-            }))
+            label: classroom.classroom_name,
+            value: classroom.classroom_id,
+          }))
           : [],
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
@@ -770,9 +829,9 @@ const JsonData = (params) => {
         type: "react_dropdown_select",
         options: Array.isArray(teachersState?.teacher_GetAllClassRooms?.data)
           ? teachersState.teacher_GetAllClassRooms.data.map((classroom) => ({
-              label: classroom.classroom_name,
-              value: classroom.classroom_id,
-            }))
+            label: classroom.classroom_name,
+            value: classroom.classroom_id,
+          }))
           : [],
         multi: false,
         divClassName: "studentsSelectClasses",
@@ -792,9 +851,9 @@ const JsonData = (params) => {
         type: "react_dropdown_select",
         options: Array.isArray(teachersState?.teacher_GetAllSubjects?.data[teachersState?.teacher_Current_perfomance_Classroom?.data?.classroom_id])
           ? teachersState.teacher_GetAllSubjects.data[teachersState?.teacher_Current_perfomance_Classroom?.data?.classroom_id]?.map((subject) => ({
-              label: subject.subject_name,
-              value: subject.subject_id,
-            }))
+            label: subject.subject_name,
+            value: subject.subject_id,
+          }))
           : [],
         multi: false,
         divClassName: "grade-dashboard-teacher-input",

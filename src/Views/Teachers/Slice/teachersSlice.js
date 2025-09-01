@@ -80,12 +80,12 @@ const initialState = {
     data: []
   },
   teacher_GetStudencePerfomanceBySubject: {
-    glow:true,
-    data:[],
+    glow: true,
+    data: [],
   },
   teacher_GetAllSubjects: {
-    glow:true,
-    data:[],
+    glow: true,
+    data: [],
   },
   teacher_GetStudentListByTeacher: {
     glow: true,
@@ -124,6 +124,21 @@ const initialState = {
     data: {}
   },
   teacher_Current_Grade_Classroom: {
+    data: {}
+  },
+  subject_attachments: {
+    glow: false,
+    data: {}
+  },
+
+  upload_attachment: {
+    glow: true,
+    data: [],
+    message: null,
+  },
+  params_data: {},
+  attachment_books_upload: {
+    glow: false,
     data: {}
   },
   teacher_Current_perfomance_Classroom: {
@@ -625,7 +640,7 @@ const teachersSlice = createSlice({
           break;
       }
     },
-    handldeGetPerfomanceBySubject(state,action){
+    handldeGetPerfomanceBySubject(state, action) {
       const { type, data } = action.payload;
 
       switch (type) {
@@ -648,8 +663,8 @@ const teachersSlice = createSlice({
           break;
       }
     },
-    
-    handldeGetAllSubjects(state,action){
+
+    handldeGetAllSubjects(state, action) {
       const { type, data } = action.payload;
 
       switch (type) {
@@ -684,11 +699,11 @@ const teachersSlice = createSlice({
     },
     updatePostStudentData(state, action) {
       const [key, value] = Object.entries(action.payload)[0] || [];
-      state.teacher_PostStudents.data.data[key] = value || "";
+      state.teacher_PostStudents.data[key] = value || "";
     },
     update_edit_student(state, action) {
-      const { data,getdata } = action.payload;
-      state.teacher_PostStudents.data = {data,getdata};
+      const { data } = action.payload;
+      state.teacher_PostStudents.data = data;
     },
     update_edit_classroom(state, action) {
       const { data } = action.payload;
@@ -706,15 +721,69 @@ const teachersSlice = createSlice({
       const [key, value] = Object.entries(action.payload)[0] || [];
       state.teacher_students_Classroom.data[key] = value || "";
     },
-    update_perfomance_by_classroom(state,action){
+    update_perfomance_by_classroom(state, action) {
       const [key, value] = Object.entries(action.payload)[0] || [];
       state.teacher_Current_perfomance_Classroom.data[key] = value || "";
     },
-    clear_form_fields(state,action){
-      state.teacher_CreateStudents.data={}
+    clear_form_fields(state, action) {
+      state.teacher_CreateStudents.data = {}
+    },
+    getSubjectAttachments(state, action) {
+      const { type, data } = action.payload
+
+      switch (type) {
+        case "request":
+          state.subject_attachments.glow = true
+          state.subject_attachments.data = {}
+          break;
+
+        case "response":
+          state.subject_attachments.glow = false
+          state.subject_attachments.data = data || {}
+          break;
+
+        case "failure":
+          state.subject_attachments.glow = false
+          break;
+
+        default:
+          break;
+      }
+    },
+    handleUploadAttachment(state, action) {
+      const { type, data, message } = action.payload;
+
+      switch (type) {
+        case "request":
+          state.upload_attachment.glow = true;
+          state.upload_attachment.data = [];
+          state.upload_attachment.message = null;
+          break;
+
+        case "response":
+          state.upload_attachment.glow = false;
+          state.upload_attachment.data = data;
+          state.upload_attachment.message = null;
+          break;
+
+        case "failure":
+          state.upload_attachment.glow = false;
+          state.upload_attachment.data = [];
+          state.upload_attachment.message = message;
+          break;
+
+        default:
+          break;
+      }
+    },
+    updateParams(state, action) {
+      state.params_data = action.payload;
+    },
+    handle_attachment_books_upload(state, action) {
+      state.attachment_books_upload = action.payload
     }
   },
-  
+
   extraReducers(builder) {
     builder.addCase("common_slice/updateModalShow", (state, action) => {
       const { show } = action.payload;
@@ -745,6 +814,7 @@ export const {
   save_schedule_request,
   save_schedule_success,
   save_schedule_failure,
+  getSubjectAttachments,
   handledAssignedStudentsTestData, updateAssignedTestPaginationPage, updateAssingnedTestTotalPageCount,
   updateStudentClassAndSubject,
   handleSelfStudentsTestData, updateSelfTestPaginationPage, updateSelfTestTotalPageCount,
@@ -771,7 +841,9 @@ export const {
   update_perfomance_by_classroom,
   handleSubjectsByClassroom,
   update_student_perfomance_dashboard,
-  update_Students_classroom
+  update_Students_classroom,
+  get_students_by_test_slice,
+  handleUploadAttachment, updateParams, handle_attachment_books_upload
 } = actions
 
 export default reducer

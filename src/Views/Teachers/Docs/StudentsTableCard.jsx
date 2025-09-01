@@ -174,8 +174,6 @@ const StudentsTableCard = ({ className, navigate_to, data, glow }) => {
           </div>
         )}
       </Card.Body>
-
-      <OverallModel />
     </Card>
   );
 };

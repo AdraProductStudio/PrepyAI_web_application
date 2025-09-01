@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import { decrypt_app_data_logs, decryption, encryption, view_logout } from "ResuableFunctions/logs_handler";
 
+
 let initialState = {
     login_data: {},
     modal: {
@@ -71,7 +72,8 @@ let initialState = {
         loading: false,
         data: [],
         error: null
-    }
+    },
+
 }
 
 const commonSlice = createSlice({
@@ -263,7 +265,8 @@ const commonSlice = createSlice({
             state.modal.from = modal_from || null
             state.modal.type = modal_type || null
             state.modal.close_btn = close_btn || false
-        }
+        },
+
     },
     extraReducers: (builder) => {
         builder
@@ -307,6 +310,23 @@ const commonSlice = createSlice({
                         break;
                 }
             })
+
+            .addMatcher(
+                (action) => [
+                    "teachersSlice/handleUploadAttachment"
+                ].includes(action.type),
+
+                (state, action) => {
+                    const { type } = action.payload || {};
+                    if (type === "response") {
+                        state.modal.show = false
+                        state.modal.size = "md"
+                        state.modal.from = null
+                        state.modal.type = null
+                        state.modal.close_btn = false
+                    }
+                }
+            )
 
             //For handling response error [setting toast error message]
             .addMatcher(

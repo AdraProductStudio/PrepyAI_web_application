@@ -13,7 +13,9 @@ import {
 } from "../Actions/teacherAction";
 import { useParams } from "react-router-dom";
 import Icons from "Utils/Icons";
-import { clear_form_fields } from "../Slice/teachersSlice";
+import { Form, Button } from "react-bootstrap";
+import { clear_form_fields, handle_attachment_books_upload } from "../Slice/teachersSlice";
+import { handleUploadBook } from "../Actions/TeacherActions";
 
 export function OverallModel() {
   const { class_id } = useParams();
@@ -21,8 +23,31 @@ export function OverallModel() {
   const dispatch = useDispatch();
   const { teachersState, commonState } = useCommonState();
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      dispatch(handle_attachment_books_upload(file));
+    }
+  };
+
+  const handleSubmit = () => {
+    if (!teachersState?.attachment_books_upload) return alert("Please select a file before uploading");
+
+    dispatch(handleUploadBook(teachersState?.params_data, teachersState?.attachment_books_upload));
+  };
+
   function modalHeaderFun() {
     switch (commonState?.modal?.from) {
+      case "teacher":
+        switch (commonState?.modal?.type) {
+          case "attachments":
+            return <h5>Upload Book</h5>
+
+          default:
+            break;
+        }
+        break;
+
       case "TeacherClassroom":
         switch (commonState?.modal?.type) {
           case "createClassroom":
@@ -70,6 +95,55 @@ export function OverallModel() {
 
   function modalBodyFun() {
     switch (commonState?.modal?.from) {
+      case "teacher":
+        switch (commonState?.modal?.type) {
+          case "attachments":
+            return (
+              <div className="p-4 shadow-lg rounded-3" style={{ maxWidth: "500px", margin: "auto" }}>
+                {/* Dropdown */}
+                {/* <Form.Group className="mb-3">
+                                    <Form.Label className="fw-semibold text-primary">Classes</Form.Label>
+                                    <Form.Select
+                                        value={selectedClass}
+                                        onChange={(e) => setSelectedClass(e.target.value)}
+                                    >
+                                        <option>12th A section</option>
+                                        <option>12th B section</option>
+                                        <option>11th A section</option>
+                                    </Form.Select>
+                                </Form.Group> */}
+
+                {/* Drag & Drop Style File Upload */}
+                <div
+                  className="border border-2 border-danger rounded p-4 text-center mb-3"
+                  style={{ borderStyle: "dashed" }}
+                >
+                  <Form.Label className="fw-medium text-danger">
+                    Drag & drop Your book File or <span className="text-primary">Browse</span>
+                  </Form.Label>
+                  <p className="small text-muted">
+                    Format: pdf, docx, doc | Max size: 1 GB
+                  </p>
+                  <Form.Control
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    onChange={handleFileChange}
+                  />
+
+                  {teachersState?.attachment_books_upload?.filename && <p className="small text-success mt-2">📘 {teachersState?.attachment_books_upload?.filename}</p>}
+                </div>
+
+
+
+              </div>
+            );
+
+
+          default:
+            break;
+        }
+        break;
+
       case "TeacherClassroom":
         switch (commonState?.modal?.type) {
           case "createClassroom":
@@ -122,7 +196,7 @@ export function OverallModel() {
             break;
         }
         break;
-        
+
       case "techaersdeletemodal":
         switch (commonState?.modal?.type) {
           case "techaersdeletemodal":
@@ -183,7 +257,7 @@ export function OverallModel() {
                     <div className="d-flex mt-2 justify-content-end me-3 w-100">
                       <ButtonComponent
                         buttonName={"clear"}
-                        clickFunction={()=>dispatch(clear_form_fields())}
+                        clickFunction={() => dispatch(clear_form_fields())}
                         type="button"
                         className="btn p-0 text-primary btn-clear"
                       />
@@ -245,6 +319,25 @@ export function OverallModel() {
 
   function modalFooterFun() {
     switch (commonState?.modal?.from) {
+      case "teacher":
+        switch (commonState?.modal?.type) {
+          case "attachments":
+            return <div>
+              <div className="d-flex justify-content-between gap-2">
+                <Button variant="outline-secondary" onClick={() => dispatch(updateModalShow({ show: false, close_btn: false, modal_from: "", modal_type: "" }))}>
+                  Cancel
+                </Button>
+                <Button variant="danger" onClick={handleSubmit} >
+                  {"Upload Book"}
+                </Button>
+              </div>
+            </div>
+
+          default:
+            break;
+        }
+        break;
+
       case "TeacherClassroom":
         switch (commonState?.modal?.type) {
           case "createClassroom":
