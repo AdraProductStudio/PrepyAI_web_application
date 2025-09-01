@@ -45,6 +45,7 @@ const initialState = {
     classroom_id: null,
     subject_id: null,
     placeholder: false,
+    placeholder2: false,
     assignedTest: {
       jsonStudentsData: [],
       pagination: {
@@ -61,6 +62,7 @@ const initialState = {
         total_pages: null
       }
     },
+    performance_modalData: []
   },
 
   teacher_GetAllClassRooms: {
@@ -381,12 +383,14 @@ const teachersSlice = createSlice({
 
       }
     },
+
     updateSelfTestPaginationPage(state, action) {
       state.studentsPerformance.selfTest.pagination.page = action.payload;
     },
     updateSelfTestTotalPageCount(state, action) {
       state.studentsPerformance.selfTest.pagination.total_pages = action.payload
     },
+
     handleAllClassRooms(state, action) {
       const { type, data } = action.payload;
 
@@ -781,7 +785,30 @@ const teachersSlice = createSlice({
     },
     handle_attachment_books_upload(state, action) {
       state.attachment_books_upload = action.payload
-    }
+    },
+    handlePerformanceModalData(state, action) {
+      const { type, data } = action.payload
+
+      switch (type) {
+        case "request":
+          state.studentsPerformance.performance_modalData = []
+          state.studentsPerformance.placeholder2 = true;
+          break;
+
+        case "response":
+          state.studentsPerformance.performance_modalData = data || []
+          state.studentsPerformance.placeholder2 = false;
+          break;
+
+        case "failure":
+          state.studentsPerformance.performance_modalData = []
+          state.studentsPerformance.placeholder2 = false;
+          break;
+        default:
+          break;
+
+      }
+    },
   },
 
   extraReducers(builder) {
@@ -794,30 +821,26 @@ const teachersSlice = createSlice({
         state.teacher_CreateStudents.data = {};
       }
     });
-  },
-});
+  }
+})
 
 const { actions, reducer } = teachersSlice
 
 export const {
   handleStudentsPerformance,
   handleJsonStudentsData,
-  handleTeacherDashboard,
   handleGetClassrooms,
   handleGetSubjects,
   handleGetStudentsList,
-  handleGetTestRecords,
   handelGetCreate,
-  create_test_onchange,
   update_selected_books,
-  get_student_details_slice,
-  save_schedule_request,
-  save_schedule_success,
-  save_schedule_failure,
-  getSubjectAttachments,
   handledAssignedStudentsTestData, updateAssignedTestPaginationPage, updateAssingnedTestTotalPageCount,
   updateStudentClassAndSubject,
   handleSelfStudentsTestData, updateSelfTestPaginationPage, updateSelfTestTotalPageCount,
+  handleGetTestRecords, create_test_onchange, get_student_details_slice, save_schedule_request,
+  save_schedule_success, save_schedule_failure, getSubjectAttachments, handleUploadAttachment,
+  handlePerformanceModalData, handleGetTeachers, handleTeacherDashboard, handleAllClassRooms,
+  handleGradeByClassroom, handleSubjectsByClassroom,
   handldeGetPerfomanceBySubject,
   handleGetStudentsListBySubject,
   update_edit_student,
@@ -825,9 +848,7 @@ export const {
   handleGetStudentOverviewOverallPerfomance,
   handleGetStudentOverviewTestCount,
   handleGetStudentOverviewSpendingHours,
-  handleAllClassRooms,
   updatePostClassroomsData,
-  handleGetTeachers,
   updatePostSubjectsData,
   handleGetStudentsListByTeacher,
   handleGetClassroomTeachers,
@@ -835,15 +856,14 @@ export const {
   update_edit_classroom,
   update_Create_student,
   update_Grade_by_classroom,
-  handleGradeByClassroom,
   clear_form_fields,
   handldeGetAllSubjects,
   update_perfomance_by_classroom,
-  handleSubjectsByClassroom,
   update_student_perfomance_dashboard,
   update_Students_classroom,
   get_students_by_test_slice,
-  handleUploadAttachment, updateParams, handle_attachment_books_upload
+  updateParams, handle_attachment_books_upload
+
 } = actions
 
 export default reducer

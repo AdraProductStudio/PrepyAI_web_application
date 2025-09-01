@@ -8,15 +8,20 @@ import Icons from "Utils/Icons";
 import JsonData from "Views/Admin/Utils/JsonData";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import { OverallModel } from "../Utils/OverallModal";
-import { handleDashboardOverview } from "../Actions/Admin_action";
+import { getDashboardTeachersList, handleDashboardOverview } from "../Actions/Admin_action";
 import { useEffect } from "react";
+import { useCommonState } from "Components/CustomHooks";
+import { updateEditDashboardTeacher } from "../Slices/adminSlice";
+import SpinnerComponent from "Components/Spinner/Spinner";
 
 const AdminDashboard = () => {
     const dispatch = useDispatch();
     const { jsonOnly } = JsonData();
+    const { adminState } = useCommonState()
     
     useEffect(() => {
         dispatch(handleDashboardOverview())
+        dispatch(getDashboardTeachersList())
     }, [])
 
     return (
@@ -41,7 +46,7 @@ const AdminDashboard = () => {
                     </Card>
                 </div>
 
-                <div className="col-12 p-1 test_conducted_table_height">
+                <div className="col-12 p-1 test_conducted_table_height" style={{height: "30rem"}}>
                     <Card className="h-100 border-0 rounded-4 shadow-sm h-100">
                         <Card.Header className="bg-transparent border-bottom pt-3">
                             <div className="row justify-content-between">
@@ -73,7 +78,7 @@ const AdminDashboard = () => {
                                 </div>
                             </div>
                         </Card.Header>
-                        <Card.Body className="overflowY h-100">
+                        <Card.Body className="overflowY h-100" >
                             <div className="table-responsive">
                                 <table className="table table-bordered">
                                     <thead>
@@ -84,8 +89,14 @@ const AdminDashboard = () => {
                                         </tr>
                                     </thead>
                                     <tbody className="staff_table_data">
-                                        {   jsonOnly?.table_data.length > 0 &&
-                                            jsonOnly?.table_data?.map((row, index) => (
+                                        {   
+                                            adminState?.placeholder ? 
+                                            <tr>
+                                                <td colSpan={8}> <SpinnerComponent/> </td>
+                                            </tr>
+                                            :
+                                            adminState?.dashboard_teachers_list.length > 0 &&
+                                            adminState?.dashboard_teachers_list?.map((row, index) => (
                                                 <tr key={index}>
                                                     <td>{index + 1}</td>
                                                     <td>{row?.staff_name}</td>
@@ -95,8 +106,13 @@ const AdminDashboard = () => {
                                                     <td>{row?.email}</td>
                                                     <td>{row?.qualification}</td>
                                                     <td>
-                                                        <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.edit_icon} />
-                                                        <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.delete_icons} />
+                                                        <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.edit_icon} clickFunction={()=> {   dispatch(updateEditDashboardTeacher(row))
+                                                            dispatch(updateModalShow({show: true, close_btn: true, modal_from: "admin", modal_type: "edit_dashboard_teacher"}))
+                                                        }} />
+                                                        <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.delete_icons} clickFunction={ () => {
+                                                            dispatch(updateEditDashboardTeacher(row))
+                                                            dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "admin", modal_type: "delete_dashboard_teacher" }))
+                                                        }}/>
                                                     </td>
                                                 </tr>
                                             ))

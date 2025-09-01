@@ -15,13 +15,15 @@ import { useParams } from "react-router-dom";
 import Icons from "Utils/Icons";
 import { Form, Button } from "react-bootstrap";
 import { clear_form_fields, handle_attachment_books_upload } from "../Slice/teachersSlice";
-import { handleUploadBook } from "../Actions/TeacherActions";
+import { handleUploadBook } from "../Actions/TeacherActions"; 
+import SpinnerComponent from "Components/Spinner/Spinner";
+
 
 export function OverallModel() {
   const { class_id } = useParams();
   const { jsxJson } = JsonData();
   const dispatch = useDispatch();
-  const { teachersState, commonState } = useCommonState();
+  const { teachersState, commonState, } = useCommonState();
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -42,6 +44,9 @@ export function OverallModel() {
         switch (commonState?.modal?.type) {
           case "attachments":
             return <h5>Upload Book</h5>
+
+          case "performance":
+            return <h5 className="fw-bold">Student Score</h5>;
 
           default:
             break;
@@ -138,6 +143,48 @@ export function OverallModel() {
               </div>
             );
 
+          case "performance":
+            return (
+              <div className="modal-body p-0 m-0 ">
+                <div className="table-responsive">
+                  <table className="table table-bordered text-center align-middle mb-0">
+                    <thead>
+                      <tr>
+                        {jsxJson?.student_performance_modal.map((item, idx) => (
+                          <th className={item.divClassName} key={idx}>
+                            {item.title}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {teachersState?.studentsPerformance.placeholder2 ?
+                        <tr>
+                          <td colSpan={5}>
+                            <SpinnerComponent />
+                          </td>
+                        </tr>
+                        :
+                        teachersState?.studentsPerformance.performance_modalData.length > 0 ? (
+                          teachersState?.studentsPerformance.performance_modalData.map((data, idx) => (
+                            <tr key={idx} >
+                              <td>{data.first_name}</td>
+                              <td>{data.overall}</td>
+                              <td>{data.score}</td>
+                              <td>{data.performance_status}</td>
+                              <td>{data.time_submitted}</td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan={5} className="text-center py-4">No Data Found</td>
+                          </tr>
+                        )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )
 
           default:
             break;
@@ -351,8 +398,7 @@ export function OverallModel() {
       case "subjects":
         switch (commonState?.modal?.type) {
           case "subjects":
-            return
-            break
+            return 
 
           default:
             break;
@@ -362,8 +408,7 @@ export function OverallModel() {
       case "subjects":
         switch (commonState?.modal?.type) {
           case "subjects":
-            return;
-            break;
+            return; 
 
           default:
             break;

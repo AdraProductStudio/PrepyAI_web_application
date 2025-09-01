@@ -867,6 +867,28 @@ const JsonData = (params) => {
           ),
       },
     ],
+    student_performance_modal: [
+      {
+        title: "Name",
+        divClassName: "col-3 border-end border-start text-center p-3 text-primary-emphasis"
+      },
+      {
+        title: "Overall",
+        divClassName: "col-2 border-end text-center p-3 text-primary-emphasis"
+      },
+      {
+        title: "Score",
+        divClassName: "col-2 border-end text-center p-3 text-primary-emphasis"
+      },
+      {
+        title: "Status",
+        divClassName: "col-2 border-end text-center p-3 text-primary-emphasis"
+      },
+      {
+        title: "Time Submitted",
+        divClassName: "col-3 text-center border-end p-3 text-primary-emphasis"
+      }
+    ]
   };
 
   return {

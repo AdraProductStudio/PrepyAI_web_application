@@ -4,6 +4,7 @@ import Sidebar from "Components/Panel_compnent/Sidebar"
 import { Outlet } from "react-router-dom";
 import JsonData from "Views/Admin/Utils/JsonData";
 import { logout, update_app_data } from "Views/Common/Slices/Common_slice";
+import { OverallModel } from "../Utils/OverallModal";
 
 export default function Layout() {
     const { jsonOnly } = JsonData();
@@ -21,6 +22,7 @@ export default function Layout() {
                         </header>
                         <div className="pt-3 main_content_height">
                             <Outlet />
+                            <OverallModel/>
                         </div>
                     </div>
                 </main>
