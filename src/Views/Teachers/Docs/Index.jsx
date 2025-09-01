@@ -13,7 +13,7 @@ import JsonData from "../Utils/JsonData";
 import { handleTeacherDashboard } from "../Slice/teachersSlice";
 import { useDispatch } from "react-redux";
 import { useCommonState } from "Components/CustomHooks";
-import { getAllClassRooms, getGradeByClassroom, getTeacherDashboardDatas } from "../Actions/teacherAction";
+import { getAllClassRooms, GetAllsubjects, getGradeByClassroom, GetPerformanceBysubject, getSubjectByClassroom, getTeacherDashboardDatas } from "../Actions/teacherAction";
 import SpinnerComponent from "Components/Spinner/Spinner";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 
@@ -26,8 +26,11 @@ const TeacherDashboard = () => {
     const {jsonOnly} = JsonData()
     const {glow} = teachersState?.teacher_DashboardData 
     const { jsxJson } = JsonData();
-    const {data} = teachersState?.teacher_Current_Grade_Classroom
-    const gradeByClassroom = teachersState?.teacher_GradeByClassroom?.data
+    const {data} = teachersState?.teacher_Current_Grade_Classroom;
+    const gradeByClassroom = teachersState?.teacher_GradeByClassroom?.data;
+    const studentPerfomancedata = teachersState?.teacher_GetStudencePerfomanceBySubject?.data;
+    const currentStudentSubjectForPerfomance = teachersState?.teacher_Current_perfomance_Classroom?.data;
+
     const graphData = [
         {
             name: 'Page A',
@@ -75,11 +78,18 @@ const TeacherDashboard = () => {
         dispatch(getTeacherDashboardDatas());
         dispatch(getAllClassRooms())
         dispatch(getGradeByClassroom())
+        dispatch(GetPerformanceBysubject())
+        dispatch(GetAllsubjects())
     },[])
 
     useEffect(()=>{
         dispatch(getGradeByClassroom(data))
     },[data])
+
+    useEffect(()=>{
+        dispatch(GetPerformanceBysubject(currentStudentSubjectForPerfomance))
+        console.log(currentStudentSubjectForPerfomance,"asdedwe")
+    },[currentStudentSubjectForPerfomance?.subject_id])
 
     return (
         <>
@@ -106,11 +116,12 @@ const TeacherDashboard = () => {
             <div className="col-7 row">
                 <div className="col-7 px-2 pe-3">
                     <Card className='border-0 rounded-4 shadow-sm py-3 h-100'>
-                        <Card.Header className="border-bottom bg-transparent">
+                        <Card.Header className="border-bottom bg-transparent d-flex justify-content-between align-items-center">
                             <Card.Title className='fs-16'> Student Performance </Card.Title>
+                            <div className="d-flex ">{Inputfunctions(jsxJson.selectClassRoomForPerfomance)} {Inputfunctions(jsxJson?.selectStudentPerfomance)}</div>
                         </Card.Header>
                         <Card.Body className="pe-none">
-                            <StudentsPerformanceChart />
+                            <StudentsPerformanceChart data={ Array.isArray(studentPerfomancedata) ? studentPerfomancedata : []} />
                         </Card.Body>
                     </Card>
                 </div>
@@ -121,9 +132,9 @@ const TeacherDashboard = () => {
                             <Card.Title className='fs-16'> Activities </Card.Title>
                         </Card.Header>
                         <Card.Body className="activity_card_body">
-                            {teachersState?.teacher_DashboardData?.data?.activites?.map((data, index) => (
+                            {Array.isArray(teachersState?.teacher_DashboardData?.data?.activites)? teachersState?.teacher_DashboardData?.data?.activites?.map((data, index) => (
                                 <ActivityCard key={index} data={data} />
-                            ))}
+                            )) : <div className="d-flex justify-content-center align-items-center h-100"><p>no data found</p></div>}
                         </Card.Body>
                     </Card>
                 </div>
