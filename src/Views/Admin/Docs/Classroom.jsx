@@ -19,7 +19,7 @@ const Classroom = () => {
 
     useEffect(() => {
         dispatch(handleGetAllClassrooms())
-    }, [])
+    }, [adminState?.staffForm])
 
     return (
         <>

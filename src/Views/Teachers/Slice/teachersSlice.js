@@ -5,6 +5,7 @@ const initialState = {
         classroom_id: null,
         subject_id: null,
         placeholder: false,
+        placeholder2: false,
         assignedTest: {
             jsonStudentsData: [],
             pagination: {
@@ -21,7 +22,8 @@ const initialState = {
                 show_entries: 10,
                 total_pages: null
             }
-    },
+        },
+        performance_modalData: []
     }
 }
 
@@ -97,6 +99,30 @@ const teachersSlice = createSlice({
         updateSelfTestTotalPageCount(state, action) {
             state.studentsPerformance.selfTest.pagination.total_pages = action.payload
         },
+
+        handlePerformanceModalData(state, action) {
+            const { type , data } = action.payload
+
+            switch(type){
+                case "request":
+                    state.studentsPerformance.performance_modalData = []
+                    state.studentsPerformance.placeholder2 = true;
+                    break;
+
+                case "response":
+                    state.studentsPerformance.performance_modalData = data || []
+                    state.studentsPerformance.placeholder2 = false;
+                    break;
+
+                case "failure":
+                    state.studentsPerformance.performance_modalData = []
+                    state.studentsPerformance.placeholder2 = false;
+                    break;
+                default:
+                    break;
+
+            }       
+        },
         
     }
 })
@@ -107,6 +133,7 @@ export const {
     handledAssignedStudentsTestData, updateAssignedTestPaginationPage, updateAssingnedTestTotalPageCount, 
     updateStudentClassAndSubject,
     handleSelfStudentsTestData, updateSelfTestPaginationPage, updateSelfTestTotalPageCount,
+    handlePerformanceModalData
     
 } = actions
 

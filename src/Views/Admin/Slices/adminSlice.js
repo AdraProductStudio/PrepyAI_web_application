@@ -11,6 +11,7 @@ let initialState = {
     teachersTableData: [],
     studentsTableData: [],
     placeholder: false,
+    placeholder2: false,
     classroom_name: "",
 
     file: null,
@@ -37,6 +38,11 @@ let initialState = {
         total_classrooms: null,
         total_tests: null
     },
+    dashboard_teachers_list: [],
+    edit_dashboard_teacher: {},
+
+    edit_classroom_teacher: {},
+    edit_classroom_student: {}
 
 }
 
@@ -82,9 +88,9 @@ const adminSlice = createSlice({
                     break;
 
                 case "response":
-                    state.classroom_overview.teachers = staffs
-                    state.classroom_overview.students = students
-                    state.classroom_overview.tests = tests
+                    state.classroom_overview.teachers  = staffs > 0 ? staffs : 0
+                    state.classroom_overview.students = students > 0 ? students : 0
+                    state.classroom_overview.tests = tests > 0 ? tests : 0
                     state.placeholder = false;
                     break;
 
@@ -160,13 +166,14 @@ const adminSlice = createSlice({
             state.file = null;
             state.errors = {};
         },
+        
         setLoading(state, action) {
             state.loading = action.payload;
         },
 
-        updateClassroomForm: (state, action) => {
-            state.classroomForm = { ...state.classroomForm, ...action.payload };
-        },
+        // updateClassroomForm: (state, action) => {
+        //     state.classroomForm = { ...state.classroomForm, ...action.payload };
+        // },
 
         updateDashboardOverviewData(state, action){
             const { type , data } = action.payload
@@ -178,10 +185,10 @@ const adminSlice = createSlice({
                     break;
 
                 case "response":
-                    state.dashboard_overview.total_teachers = total_teachers
-                    state.dashboard_overview.total_students = total_students
-                    state.dashboard_overview.total_classrooms = total_classrooms
-                    state.dashboard_overview.total_tests = total_tests
+                    state.dashboard_overview.total_teachers = total_teachers || ''
+                    state.dashboard_overview.total_students = total_students || ''
+                    state.dashboard_overview.total_classrooms = total_classrooms || ''
+                    state.dashboard_overview.total_tests = total_tests || ''
                     state.placeholder = false;
                     break;
 
@@ -205,14 +212,173 @@ const adminSlice = createSlice({
             state.errors = {};
         },
 
+        // clearFieldError: (state, action) => {
+        //     const fieldName = action.payload;
+        //     if (state.errors[fieldName]) {
+        //         const { [fieldName]: removed, ...rest } = state.errors;
+        //         state.errors = rest;
+        //     }
+        // },
+
+        // clearErrors: (state, action) => {
+        //     const fields = action.payload;
+        //     if (Array.isArray(fields)) {
+        //         fields.forEach(field => {
+        //             if (state.errors[field]) {
+        //                 delete state.errors[field];
+        //             }
+        //         });
+        //     }
+        // },
+
         clearFieldError: (state, action) => {
-            const fieldName = action.payload;
-            if (state.errors[fieldName]) {
-                const { [fieldName]: removed, ...rest } = state.errors;
-                state.errors = rest;
+            const fields = Array.isArray(action.payload) ? action.payload : [action.payload];
+            fields.forEach(fieldName => {
+                if (state.errors[fieldName]) {
+                    delete state.errors[fieldName];
+                }
+            });
+        },
+
+        updateDashboardTeachersList(state, action){
+            const { type , data } = action.payload
+            
+            switch(type){
+                case "request":
+                    state.placeholder = true;
+                    break;
+
+                case "response":
+                    state.dashboard_teachers_list = data || []
+                    state.placeholder = false;
+                    break;
+
+                case "failure":
+                    state.placeholder = false;
+                    break;
+                default:
+                    break;
+            }  
+        },
+        updateEditDashboardTeacher(state, action){
+            state.edit_dashboard_teacher = action.payload
+        },
+        onChangeEditDashboardTeacher(state, action){
+            const { field, data } = action.payload;
+            state.edit_dashboard_teacher[field] = data || ""
+        },
+
+        updateEditClassroomTeacher(state, action){
+            state.edit_classroom_teacher = action.payload
+        },
+        onChangeEditClassroomTeacher(state, action){
+            const { field, data } = action.payload;
+            state.edit_classroom_teacher[field] = data || ""
+        },
+
+        updateEditClassroomStudent(state, action){
+            state.edit_classroom_student = action.payload
+        },
+        onChangeEditClassroomStudent(state, action){
+            const { field, data } = action.payload;
+            state.edit_classroom_student[field] = data || ""
+        },
+
+        onChangeStaffForm(state, action){
+            const { field, data } = action.payload;
+            state.staffForm[field] = data || ""
+        },
+
+        onChangeClassroomForm: (state, action) => {
+            const { field , data } = action.payload;
+            state.classroomForm[field] = data || ""
+        },
+
+        editDashboardTeachersData(state, action){
+            const { type , data } = action.payload
+            switch(type){
+                case "request":
+                    state.placeholder2 = true;
+                    break;
+
+                case "response":
+                    state.dashboard_teachers_list = data || []
+                    state.placeholder2 = false;
+                    break;
+
+                case "failure":
+                    state.placeholder2 = false;
+                    break;
+                default:
+                    break;
+            }  
+        },
+
+        editClassroomTeachersData(state, action){
+            const { type, data } = action.payload
+            switch(type){
+                case "request" :
+                    state.placeholder2 = true;
+                    break;
+
+                case "response" :
+                    state.teachersTableData = data || []
+                    state.placeholder2 = false;
+                    break;
+
+                case "failure" : 
+                    state.placeholder2 = false
+                    break;
+
+                default:
+                    break;
             }
         },
+
+        editClassroomStudentsData(state, action){
+            const { type, data } = action.payload
+            switch(type){
+                case "request" : 
+                    state.placeholder2 = true;
+                    break;
+
+                case "response":
+                    state.studentsTableData = data || []
+                    state.placeholder2 = false
+                    break;
+
+                case "failure" :
+                    state.placeholder2 = false;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+    },
+    extraReducers(builder) {    
+        builder
+            .addCase("common_slice/updateModalShow", (state, action) => {
+                const { show } = action.payload
+                if (!show) {
+                    state.staffForm = {
+                        name: "",
+                        email_id: "",
+                        subject_name: "",
+                        institute_name: ""
+                    }
+                    state.errors = {}
+                    state.file = null
+                    state.classroomForm = {
+                        class_name: "",
+                        teachers: [],
+                        student_file: null
+                    }
+                }
+            })
     }
+
 })
 
 const { actions, reducer } = adminSlice;
@@ -231,7 +397,15 @@ export const {
     updateDashboardOverviewData,
     setClassroomErrors,
     clearClassroomForm,
-    clearFieldError
+    clearFieldError,
+    clearErrors,
+    updateDashboardTeachersList,
+    updateEditDashboardTeacher, onChangeEditDashboardTeacher,
+    updateEditClassroomTeacher, onChangeEditClassroomTeacher,
+    updateEditClassroomStudent, onChangeEditClassroomStudent,
+    onChangeStaffForm,
+    onChangeClassroomForm,
+    editDashboardTeachersData, editClassroomTeachersData, editClassroomStudentsData
 } = actions
 
 export default reducer

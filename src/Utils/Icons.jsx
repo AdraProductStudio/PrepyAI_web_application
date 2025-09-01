@@ -573,6 +573,34 @@ const logoutIcon = <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24
   <path d="M18.65 15.3516L22 12.0016L18.65 8.65156" stroke="#A3A3A3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 
+
+const uploadIcon = <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7.22728 2.83398L7.17538 2.84068L6.3885 2.94113L5.43252 3.06168C4.85001 3.1299 4.30934 3.39852 3.90311 3.82155C3.49688 4.24457 3.25037 4.79568 3.2058 5.38048C2.85848 10.2178 2.85848 15.0737 3.2058 19.911C3.24686 20.5002 3.49726 21.0552 3.91176 21.4758C4.32627 21.8965 4.87754 22.155 5.466 22.2047C9.94622 22.5798 14.0481 22.5798 18.5266 22.2047C19.1151 22.155 19.6663 21.8965 20.0808 21.4758C20.4953 21.0552 20.7457 20.5002 20.7868 19.911C21.1341 15.0737 21.1341 10.2178 20.7868 5.38048C20.7423 4.79593 20.496 4.24503 20.0901 3.82203C19.6842 3.39904 19.144 3.13026 18.5618 3.06168L17.6075 2.94113L16.8206 2.84068L16.767 2.83398H7.22728Z" fill="#F3E7EC"/>
+<path d="M7.81417 3.15166C7.81373 2.86322 7.87019 2.57752 7.98032 2.31093C8.09045 2.04434 8.25208 1.80209 8.45596 1.59805C8.65985 1.39401 8.90197 1.2322 9.16848 1.12187C9.43498 1.01154 9.72064 0.954858 10.0091 0.955079H13.987C14.5698 0.955079 15.1287 1.18659 15.5408 1.59869C15.9529 2.01078 16.1844 2.5697 16.1844 3.1525C16.1844 3.73529 15.9529 4.29421 15.5408 4.7063C15.1287 5.1184 14.5698 5.34991 13.987 5.34991H10.0108C9.72201 5.35013 9.43606 5.29342 9.16926 5.18303C8.90245 5.07263 8.66003 4.91072 8.45586 4.70655C8.25169 4.50238 8.08978 4.25996 7.97938 3.99315C7.86899 3.72635 7.81395 3.4404 7.81417 3.15166Z" fill="url(#paint0_linear_1135_17827)"/>
+<defs>
+<linearGradient id="paint0_linear_1135_17827" x1="7.8125" y1="3.15249" x2="16.1844" y2="3.15249" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EC008C"/>
+<stop offset="1" stop-color="#FC6767"/>
+</linearGradient>
+</defs>
+</svg>
+
+const delete_model_icon = <svg width="49" height="49" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.875 12.2103C36.0763 11.5365 29.2367 11.1895 22.4175 11.1895C18.375 11.1895 14.3325 11.3936 10.29 11.802L6.125 12.2103" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+<path opacity="0.34" d="M17.3535 10.1477L17.8027 7.47315C18.1293 5.53357 18.3743 4.08398 21.8248 4.08398H27.1739C30.6244 4.08398 30.8898 5.61523 31.196 7.49357L31.6452 10.1477" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M38.4865 18.6621L37.1594 39.2217C36.9348 42.4271 36.751 44.9179 31.0548 44.9179H17.9473C12.251 44.9179 12.0673 42.4271 11.8427 39.2217L10.5156 18.6621" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+<path opacity="0.34" d="M21.0898 33.6875H27.8886" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+<path opacity="0.34" d="M19.3965 25.5215H29.6048" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+
+const left_arrow = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M4.2097 11.3871L4.29289 11.2929L9.29289 6.29289C9.68342 5.90237 10.3166 5.90237 10.7071 6.29289C11.0676 6.65338 11.0953 7.22061 10.7903 7.6129L10.7071 7.70711L7.415 11H19C19.5523 11 20 11.4477 20 12C20 12.5128 19.614 12.9355 19.1166 12.9933L19 13H7.415L10.7071 16.2929C11.0676 16.6534 11.0953 17.2206 10.7903 17.6129L10.7071 17.7071C10.3466 18.0676 9.77939 18.0953 9.3871 17.7903L9.29289 17.7071L4.29289 12.7071C3.93241 12.3466 3.90468 11.7794 4.2097 11.3871Z" fill='#C9CCD1' />
+</svg>
+
+const right_arrow = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path fillRule="evenodd" clipRule="evenodd" d="M19.7903 11.3871L19.7071 11.2929L14.7071 6.29289C14.3166 5.90237 13.6834 5.90237 13.2929 6.29289C12.9324 6.65338 12.9047 7.22061 13.2097 7.6129L13.2929 7.70711L16.585 11H5C4.44772 11 4 11.4477 4 12C4 12.5128 4.38604 12.9355 4.88338 12.9933L5 13H16.585L13.2929 16.2929C12.9324 16.6534 12.9047 17.2206 13.2097 17.6129L13.2929 17.7071C13.6534 18.0676 14.2206 18.0953 14.6129 17.7903L14.7071 17.7071L19.7071 12.7071C20.0676 12.3466 20.0953 11.7794 19.7903 11.3871Z" fill="#C9CCD1" />
+</svg>
+
 const Icons = {
   menu_dot_icon, no_of_students, no_of_subjects, delete_icons,
   no_of_books, no_of_tests, pdfDeleteIcon, testScreenEditIcon,
@@ -596,7 +624,7 @@ const Icons = {
   DotSVG, subscriptionSVG, organisation, revenue,
   profile, settings, admins, teachers, billing, activeUsers,
   sidebar_pricing_active_icon, sidebar_pricing_icon, logoutIcon,
-  menuIcon
+  menuIcon, uploadIcon, delete_model_icon, left_arrow, right_arrow
 }
 
 export default Icons;

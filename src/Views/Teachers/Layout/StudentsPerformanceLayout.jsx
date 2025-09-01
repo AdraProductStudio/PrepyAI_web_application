@@ -1,14 +1,9 @@
 import { Outlet, useParams } from "react-router-dom";
-
 import Icons from "Utils/Icons";
 import JsonData from "Views/Teachers/Utils/JsonData";
-import SubjectOptionsCard from "Components/Card/SubjectOptionsCard";
 import LinkComponent from "Components/Router_components/LinkComponent";
-// import StudentsTableCard from "Views/Teachers/Docs/StudentsTableCard";
-import ReactPaginateComp from "Components/Pagination/ReactPaginateComp";
-import PerformanceTable from "Views/Teachers/Docs/PerformanceTable";
-import { useDispatch, useSelector } from "react-redux";
-import { handleJsonStudentsData, updateStudentClassAndSubject } from "Views/Teachers/Slice/teachersSlice";
+import { useDispatch} from "react-redux";
+import { updateStudentClassAndSubject } from "Views/Teachers/Slice/teachersSlice";
 import NavLinkComp from "Components/Router_components/NavLink";
 import { useEffect } from "react";
 

@@ -166,7 +166,7 @@ export function Inputfunctions(funBy) {
                                 keyDown={ipVal?.keyDown}
                                 label={ipVal?.name}
                                 ref={ipVal?.ref}
-                                labelClassName="text-secondary mb-0 fs-14"
+                                labelClassName={`text-secondary mb-0 fs-14 ${ipVal?.labelClassName}`}
                                 mandatory={ipVal?.isMandatory}
                                 inputError={ipVal?.Err}
                                 disabled={ipVal?.disabled}
