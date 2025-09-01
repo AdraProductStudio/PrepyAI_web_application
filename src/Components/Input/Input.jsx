@@ -20,7 +20,8 @@ const Input = ({
     eyeFunction,
     eyeIcon,
     accept,
-    ref
+    ref,
+    name
 }) => {
 
     return (
@@ -45,9 +46,10 @@ const Input = ({
                 value={value}
                 disabled={disabled}
                 max={max} min={min}
+                name={name}
             />
 
-            <span className='eye_button' onClick={eyeFunction}> {eyeIcon} </span>
+            <span className='eye_button text-secondary' onClick={eyeFunction}> {eyeIcon} </span>
             {inputError ? <p className='text-danger pt-2 ps-1 fs-15'> {inputError} </p> : null}
         </div>
     )

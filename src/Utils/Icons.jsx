@@ -224,6 +224,10 @@ const back_button_icon_blue = <svg xmlns="http://www.w3.org/2000/svg" width="24"
   <path d="M10.5999 12.7108C10.5061 12.6178 10.4317 12.5072 10.381 12.3854C10.3302 12.2635 10.3041 12.1328 10.3041 12.0008C10.3041 11.8688 10.3302 11.7381 10.381 11.6162C10.4317 11.4944 10.5061 11.3838 10.5999 11.2908L15.1899 6.71079C15.2836 6.61783 15.358 6.50723 15.4088 6.38537C15.4595 6.26351 15.4857 6.1328 15.4857 6.00079C15.4857 5.86878 15.4595 5.73808 15.4088 5.61622C15.358 5.49436 15.2836 5.38376 15.1899 5.29079C15.0025 5.10454 14.749 5 14.4849 5C14.2207 5 13.9672 5.10454 13.7799 5.29079L9.18986 9.88079C8.62806 10.4433 8.3125 11.2058 8.3125 12.0008C8.3125 12.7958 8.62806 13.5583 9.18986 14.1208L13.7799 18.7108C13.9661 18.8955 14.2175 18.9997 14.4799 19.0008C14.6115 19.0016 14.7419 18.9763 14.8638 18.9266C14.9856 18.8768 15.0964 18.8035 15.1899 18.7108C15.2836 18.6178 15.358 18.5072 15.4088 18.3854C15.4595 18.2635 15.4857 18.1328 15.4857 18.0008C15.4857 17.8688 15.4595 17.7381 15.4088 17.6162C15.358 17.4944 15.2836 17.3838 15.1899 17.2908L10.5999 12.7108Z" fill="#182988" />
 </svg>
 
+const back_icon= <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M10.5999 12.7108C10.5061 12.6178 10.4317 12.5072 10.381 12.3854C10.3302 12.2635 10.3041 12.1328 10.3041 12.0008C10.3041 11.8688 10.3302 11.7381 10.381 11.6162C10.4317 11.4944 10.5061 11.3838 10.5999 11.2908L15.1899 6.71079C15.2836 6.61783 15.358 6.50723 15.4088 6.38537C15.4595 6.26351 15.4857 6.1328 15.4857 6.00079C15.4857 5.86878 15.4595 5.73808 15.4088 5.61622C15.358 5.49436 15.2836 5.38376 15.1899 5.29079C15.0025 5.10454 14.749 5 14.4849 5C14.2207 5 13.9672 5.10454 13.7799 5.29079L9.18986 9.88079C8.62806 10.4433 8.3125 11.2058 8.3125 12.0008C8.3125 12.7958 8.62806 13.5583 9.18986 14.1208L13.7799 18.7108C13.9661 18.8955 14.2175 18.9997 14.4799 19.0008C14.6115 19.0016 14.7419 18.9763 14.8638 18.9266C14.9856 18.8768 15.0964 18.8035 15.1899 18.7108C15.2836 18.6178 15.358 18.5072 15.4088 18.3854C15.4595 18.2635 15.4857 18.1328 15.4857 18.0008C15.4857 17.8688 15.4595 17.7381 15.4088 17.6162C15.358 17.4944 15.2836 17.3838 15.1899 17.2908L10.5999 12.7108Z" fill="black" />
+</svg>
+
 const calender_icon = <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
   <rect x="5" y="5" width="22" height="22" rx="6" fill="#EDEDFB" />
   <path d="M5 11C5 7.68629 7.68629 5 11 5H21C24.3137 5 27 7.68629 27 11V12H5V11Z" fill="#353297" />
@@ -458,6 +462,24 @@ const arrowRightWhiteIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" h
 const arrowRightIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" fill="none">
   <path d="M16 8L14.57 9.393L20.15 15H8V17H20.15L14.57 22.573L16 24L24 16L16 8Z" fill="black" />
 </svg>
+const sortBy =   <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" 
+className="bi bi-filter" viewBox="0 0 16 16">
+<path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+</svg>
+
+const filterIcon =   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
+className="bi bi-chevron-down" viewBox="0 0 16 16">
+<path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 
+.708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+</svg>
+
+const deleteIcon = <svg width="49" height="49" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.875 12.2103C36.0763 11.5365 29.2367 11.1895 22.4175 11.1895C18.375 11.1895 14.3325 11.3936 10.29 11.802L6.125 12.2103" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path opacity="0.34" d="M17.3535 10.1477L17.8027 7.47315C18.1293 5.53357 18.3743 4.08398 21.8248 4.08398H27.1739C30.6244 4.08398 30.8898 5.61523 31.196 7.49357L31.6452 10.1477" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M38.4865 18.6621L37.1594 39.2217C36.9348 42.4271 36.751 44.9179 31.0548 44.9179H17.9473C12.251 44.9179 12.0673 42.4271 11.8427 39.2217L10.5156 18.6621" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path opacity="0.34" d="M21.0898 33.6875H27.8886" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path opacity="0.34" d="M19.3965 25.5215H29.6048" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
 
 const DotSVG = ({ fill }) => {
   return (
@@ -573,6 +595,141 @@ const logoutIcon = <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24
   <path d="M18.65 15.3516L22 12.0016L18.65 8.65156" stroke="#A3A3A3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 
+const studentUpload = <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
+  <path d="M13.0645 17.8737V12.457" stroke="url(#paint0_linear_2787_9452)" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M15.7077 15.168H10.291" stroke="url(#paint1_linear_2787_9452)" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M23.8327 11.918V18.418C23.8327 22.7513 22.7493 23.8346 18.416 23.8346H7.58268C3.24935 23.8346 2.16602 22.7513 2.16602 18.418V7.58464C2.16602 3.2513 3.24935 2.16797 7.58268 2.16797H9.20768C10.8327 2.16797 11.1902 2.64464 11.8077 3.46797L13.4327 5.63464C13.8443 6.1763 14.0827 6.5013 15.166 6.5013H18.416C22.7493 6.5013 23.8327 7.58464 23.8327 11.918Z" stroke="url(#paint2_linear_2787_9452)" stroke-width="1.5" stroke-miterlimit="10" />
+  <defs>
+    <linearGradient id="paint0_linear_2787_9452" x1="13.0645" y1="15.1654" x2="14.0645" y2="15.1654" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+    <linearGradient id="paint1_linear_2787_9452" x1="10.291" y1="15.668" x2="15.7077" y2="15.668" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+    <linearGradient id="paint2_linear_2787_9452" x1="2.16602" y1="13.0013" x2="23.8327" y2="13.0013" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+  </defs>
+</svg>
+
+const studentUploadLarge = <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 45 45" fill="none">
+  <path d="M22.6133 30.9375V21.5625" stroke="url(#paint0_linear_2787_12303)" stroke-width="2.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M27.1875 26.25H17.8125" stroke="url(#paint1_linear_2787_12303)" stroke-width="2.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M41.25 20.625V31.875C41.25 39.375 39.375 41.25 31.875 41.25H13.125C5.625 41.25 3.75 39.375 3.75 31.875V13.125C3.75 5.625 5.625 3.75 13.125 3.75H15.9375C18.75 3.75 19.3687 4.575 20.4375 6L23.25 9.75C23.9625 10.6875 24.375 11.25 26.25 11.25H31.875C39.375 11.25 41.25 13.125 41.25 20.625Z" stroke="url(#paint2_linear_2787_12303)" stroke-width="2.5" stroke-miterlimit="10" />
+  <defs>
+    <linearGradient id="paint0_linear_2787_12303" x1="22.6133" y1="26.25" x2="23.6133" y2="26.25" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+    <linearGradient id="paint1_linear_2787_12303" x1="17.8125" y1="26.75" x2="27.1875" y2="26.75" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+    <linearGradient id="paint2_linear_2787_12303" x1="3.75" y1="22.5" x2="41.25" y2="22.5" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+  </defs>
+</svg>
+
+const mcqIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M12.3711 8.87891H17.6211" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M6.37891 8.87891L7.12891 9.62891L9.37891 7.37891" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M12.3711 15.8789H17.6211" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M6.37891 15.8789L7.12891 16.6289L9.37891 14.3789" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+
+const longQueIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M8 12.1992H15" stroke="#909090" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M8 16.1992H12.38" stroke="#909090" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M10 6H14C16 6 16 5 16 4C16 2 15 2 14 2H10C9 2 8 2 8 4C8 6 9 6 10 6Z" stroke="#909090" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M16 4.01953C19.33 4.19953 21 5.42953 21 9.99953V15.9995C21 19.9995 20 21.9995 15 21.9995H9C4 21.9995 3 19.9995 3 15.9995V9.99953C3 5.43953 4.67 4.19953 8 4.01953" stroke="#909090" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+
+const mcqActiveIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M12.3711 8.87891H17.6211" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M6.37891 8.87891L7.12891 9.62891L9.37891 7.37891" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M12.3711 15.8789H17.6211" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M6.37891 15.8789L7.12891 16.6289L9.37891 14.3789" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+const longQueActiveIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M8 12.1992H15" stroke="#fff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M8 16.1992H12.38" stroke="#fff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M10 6H14C16 6 16 5 16 4C16 2 15 2 14 2H10C9 2 8 2 8 4C8 6 9 6 10 6Z" stroke="#fff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M16 4.01953C19.33 4.19953 21 5.42953 21 9.99953V15.9995C21 19.9995 20 21.9995 15 21.9995H9C4 21.9995 3 19.9995 3 15.9995V9.99953C3 5.43953 4.67 4.19953 8 4.01953" stroke="#fff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+
+const pauseIcon = <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 30 30" fill="none">
+  <path d="M14.9609 27.5C21.8645 27.5 27.4609 21.9036 27.4609 15C27.4609 8.09644 21.8645 2.5 14.9609 2.5C8.05738 2.5 2.46094 8.09644 2.46094 15C2.46094 21.9036 8.05738 27.5 14.9609 27.5Z" stroke="url(#paint0_linear_3097_2749)" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M13.4 18.1625V11.8375C13.4 11.2375 13.15 11 12.5125 11H10.8875C10.25 11 10 11.2375 10 11.8375V18.1625C10 18.7625 10.25 19 10.8875 19H12.5C13.15 19 13.4 18.7625 13.4 18.1625Z" stroke="url(#paint1_linear_3097_2749)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M20.0008 18.1625V11.8375C20.0008 11.2375 19.7508 11 19.1133 11H17.5008C16.8633 11 16.6133 11.2375 16.6133 11.8375V18.1625C16.6133 18.7625 16.8633 19 17.5008 19H19.1133C19.7508 19 20.0008 18.7625 20.0008 18.1625Z" stroke="url(#paint2_linear_3097_2749)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <defs>
+    <linearGradient id="paint0_linear_3097_2749" x1="2.46094" y1="15" x2="27.4609" y2="15" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+    <linearGradient id="paint1_linear_3097_2749" x1="10" y1="15" x2="13.4" y2="15" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+    <linearGradient id="paint2_linear_3097_2749" x1="16.6133" y1="15" x2="20.0008" y2="15" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+  </defs>
+</svg>
+
+const playIcon = <svg width="50" height="50" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M14.9629 27.5C21.8664 27.5 27.4629 21.9036 27.4629 15C27.4629 8.09644 21.8664 2.5 14.9629 2.5C8.05933 2.5 2.46289 8.09644 2.46289 15C2.46289 21.9036 8.05933 27.5 14.9629 27.5Z" stroke="url(#paint0_linear_3114_12351)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M10.9258 15.2863V13.1988C10.9258 10.5988 12.7633 9.53631 15.0133 10.8363L16.8258 11.8863L18.6383 12.9363C20.8883 14.2363 20.8883 16.3613 18.6383 17.6613L16.8258 18.7113L15.0133 19.7613C12.7633 21.0613 10.9258 19.9988 10.9258 17.3988V15.2863Z" stroke="url(#paint1_linear_3114_12351)" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <defs>
+    <linearGradient id="paint0_linear_3114_12351" x1="2.46289" y1="15" x2="27.4629" y2="15" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+    <linearGradient id="paint1_linear_3114_12351" x1="10.9258" y1="15.2988" x2="20.3258" y2="15.2988" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC008C" />
+      <stop offset="1" stop-color="#FC6767" />
+    </linearGradient>
+  </defs>
+</svg>
+
+const close_icon = <svg xmlns="http://www.w3.org/2000/svg" width="59" height="59" viewBox="0 0 59 59" fill="none">
+<path d="M21.918 22.4004L36.532 36.057" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M21.9211 36.057L36.5352 22.4004" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+
+const EyeOpen = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+</svg>
+
+const EyeClose = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye-slash" viewBox="0 0 16 16">
+<path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755q-.247.248-.517.486z"/>
+<path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829"/>
+<path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z"/>
+</svg>
+
+const fileUploadIcon =  <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7.22728 2.83398L7.17538 2.84068L6.3885 2.94113L5.43252 3.06168C4.85001 3.1299 4.30934 3.39852 3.90311 3.82155C3.49688 4.24457 3.25037 4.79568 3.2058 5.38048C2.85848 10.2178 2.85848 15.0737 3.2058 19.911C3.24686 20.5002 3.49726 21.0552 3.91176 21.4758C4.32627 21.8965 4.87754 22.155 5.466 22.2047C9.94622 22.5798 14.0481 22.5798 18.5266 22.2047C19.1151 22.155 19.6663 21.8965 20.0808 21.4758C20.4953 21.0552 20.7457 20.5002 20.7868 19.911C21.1341 15.0737 21.1341 10.2178 20.7868 5.38048C20.7423 4.79593 20.496 4.24503 20.0901 3.82203C19.6842 3.39904 19.144 3.13026 18.5618 3.06168L17.6075 2.94113L16.8206 2.84068L16.767 2.83398H7.22728Z" fill="#F3E7EC"/>
+<path d="M7.81417 3.15166C7.81373 2.86322 7.87019 2.57752 7.98032 2.31093C8.09045 2.04434 8.25208 1.80209 8.45596 1.59805C8.65985 1.39401 8.90197 1.2322 9.16848 1.12187C9.43498 1.01154 9.72064 0.954858 10.0091 0.955079H13.987C14.5698 0.955079 15.1287 1.18659 15.5408 1.59869C15.9529 2.01078 16.1844 2.5697 16.1844 3.1525C16.1844 3.73529 15.9529 4.29421 15.5408 4.7063C15.1287 5.1184 14.5698 5.34991 13.987 5.34991H10.0108C9.72201 5.35013 9.43606 5.29342 9.16926 5.18303C8.90245 5.07263 8.66003 4.91072 8.45586 4.70655C8.25169 4.50238 8.08978 4.25996 7.97938 3.99315C7.86899 3.72635 7.81395 3.4404 7.81417 3.15166Z" fill="url(#paint0_linear_1135_17827)"/>
+<defs>
+<linearGradient id="paint0_linear_1135_17827" x1="7.8125" y1="3.15249" x2="16.1844" y2="3.15249" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EC008C"/>
+<stop offset="1" stop-color="#FC6767"/>
+</linearGradient>
+</defs>
+</svg>
+
+
+
+
 const Icons = {
   menu_dot_icon, no_of_students, no_of_subjects, delete_icons,
   no_of_books, no_of_tests, pdfDeleteIcon, testScreenEditIcon,
@@ -596,7 +753,9 @@ const Icons = {
   DotSVG, subscriptionSVG, organisation, revenue,
   profile, settings, admins, teachers, billing, activeUsers,
   sidebar_pricing_active_icon, sidebar_pricing_icon, logoutIcon,
-  menuIcon
+  menuIcon,sortBy,filterIcon,deleteIcon,EyeClose,EyeOpen, studentUpload, studentUploadLarge,
+  mcqIcon, longQueIcon, mcqActiveIcon, longQueActiveIcon, playIcon, pauseIcon,
+  back_icon,close_icon, fileUploadIcon
 }
 
 export default Icons;

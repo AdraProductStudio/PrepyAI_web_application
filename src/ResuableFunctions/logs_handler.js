@@ -28,7 +28,6 @@ export function decrypt_app_data_logs() {
                 return logs['LEARNER'] || {}
 
             case 'superadmin_dashboard':
-                console.log(logs['SUPER_ADMIN'])
                 return logs['SUPER_ADMIN'] || {}
 
             case 'organisation_dashboard':

@@ -64,13 +64,13 @@ export const authVerification = (currenPath, navigate, endpoint) => async (dispa
   if (!endpoint) navigate("/");
 
   try {
-    const api = process.env.REACT_APP_API_URL + endpoint
-    const response = await axios.post(api);
+    // const api = process.env.REACT_APP_API_URL + endpoint
+    const response = await axios.post(endpoint);
     const { message, success } = response?.data;
 
     if (success) {
       switch (currenPath) {
-        case "organizationregister": {
+        case "organization_registration": {
           const { organization_name, code, email } = response?.data?.data;
           const defaultFields = [
             { organization_name },
@@ -80,7 +80,7 @@ export const authVerification = (currenPath, navigate, endpoint) => async (dispa
           return dispatch(update_organization_register(defaultFields));
         }
 
-        case "adminregister": {
+        case "admin_registration": {
           const { institute_name, code, email } = response?.data?.data;
           const defaultFields = [
             { institute_name },
@@ -90,7 +90,7 @@ export const authVerification = (currenPath, navigate, endpoint) => async (dispa
           return dispatch(update_admin_register(defaultFields));
         }
 
-        case "teacherregister": {
+        case "teacher_registration": {
           const { institute_name, code, email } = response?.data?.data;
           const defaultFields = [
             { institute_name },
@@ -99,7 +99,7 @@ export const authVerification = (currenPath, navigate, endpoint) => async (dispa
           ];
           return dispatch(update_teacher_register(defaultFields));
         }
-        case "studentregister": {
+        case "student_registration": {
           const { institute_name, code, email } = response?.data?.data;
           const defaultFields = [
             { institute_name },
@@ -130,7 +130,6 @@ export const handleOAuth = (navigate, endpoint) => async (dispatch) => {
     if (success) {
       window.location.href = data;
     }
-    console.log(response, "sadsad");
   } catch (error) { }
 };
 

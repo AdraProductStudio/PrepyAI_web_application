@@ -7,15 +7,27 @@ import ActivityCard from "Components/Card/ActivtyCard";
 import NotesDisplayCard from "Components/Card/NotesDisplayCard";
 import StudentsPerformanceChart from "Components/Charts/StudentsPerformanceChart";
 import GradeByClassroomChart from "Components/Charts/GradeByClassroomChart";
+import { useEffect, useState } from "react";
+import axiosInstance from "Services/axiosInstance";
+import JsonData from "../Utils/JsonData";
+import { handleTeacherDashboard } from "../Slice/teachersSlice";
+import { useDispatch } from "react-redux";
+import { useCommonState } from "Components/CustomHooks";
+import { getAllClassRooms, getGradeByClassroom, getTeacherDashboardDatas } from "../Actions/teacherAction";
+import SpinnerComponent from "Components/Spinner/Spinner";
+import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 
 
 
 const TeacherDashboard = () => {
-    const data = [
-        { icon: Icons.student_dashboard_to_no_stud_icon, count: 1000, description: "Total number of tests conducted" },
-        { icon: Icons.student_dashboard_to_no_cls_icon, count: 4, description: "Total number of classes" }
-    ]
+    const { teachersState } = useCommonState();
 
+    const dispatch = useDispatch();
+    const {jsonOnly} = JsonData()
+    const {glow} = teachersState?.teacher_DashboardData 
+    const { jsxJson } = JsonData();
+    const {data} = teachersState?.teacher_Current_Grade_Classroom
+    const gradeByClassroom = teachersState?.teacher_GradeByClassroom?.data
     const graphData = [
         {
             name: 'Page A',
@@ -59,10 +71,26 @@ const TeacherDashboard = () => {
         },
     ];
 
+    useEffect(()=>{
+        dispatch(getTeacherDashboardDatas());
+        dispatch(getAllClassRooms())
+        dispatch(getGradeByClassroom())
+    },[])
+
+    useEffect(()=>{
+        dispatch(getGradeByClassroom(data))
+    },[data])
+
     return (
-        <div className="d-flex flex-wrap pb-3 pe-3 overflowY h-100">
+        <>
+        {glow ? (
+            <div className="w-100 h-100 d-flex flex-column align-items-center justify-content-center py-4">
+              <SpinnerComponent />
+              <p className="py-3">Getting Records</p>
+            </div>
+          ) :<div className="d-flex flex-wrap pb-3 pe-3 overflowY h-100">
             <div className="col-5 d-flex flex-wrap">
-                {data.map((item, index) => (
+                {jsonOnly?.dashboard_count_details?.map((item, index) => (
                     <div className="col-6 px-2" key={index}>
                         <CountShowingCard data={item} className="border-1" />
                     </div>
@@ -93,8 +121,8 @@ const TeacherDashboard = () => {
                             <Card.Title className='fs-16'> Activities </Card.Title>
                         </Card.Header>
                         <Card.Body className="activity_card_body">
-                            {Array.from({ length: 4 }).map((_, index) => (
-                                <ActivityCard key={index} />
+                            {teachersState?.teacher_DashboardData?.data?.activites?.map((data, index) => (
+                                <ActivityCard key={index} data={data} />
                             ))}
                         </Card.Body>
                     </Card>
@@ -103,8 +131,9 @@ const TeacherDashboard = () => {
 
             <div className="col-7 mt-3 px-2">
                 <Card className='border-0 rounded-4 shadow-sm py-2 h-100'>
-                    <Card.Header className="border-bottom bg-transparent">
+                    <Card.Header className="border-bottom bg-transparent d-flex justify-content-between">
                         <Card.Title className='fs-16'> Grade by Classroom </Card.Title>
+                        <div>{Inputfunctions(jsxJson.selectGradeByClassRoom)}</div>
                     </Card.Header>
                     <Card.Body className="row">
                         <div className="col-4 px-2">
@@ -112,7 +141,7 @@ const TeacherDashboard = () => {
                                 <Card.Body>
                                     <div className="py-4 text-center">
                                         <h5 className="grade_by_classroom">Emergent</h5>
-                                        <h4>40%</h4>
+                                        <h4>{Number(gradeByClassroom[0]?.emergent || 0)}%</h4>
                                     </div>
                                     <GradeByClassroomChart color="#26B18D" graphData={graphData} />
                                 </Card.Body>
@@ -124,7 +153,7 @@ const TeacherDashboard = () => {
                                 <Card.Body>
                                     <div className="py-4 text-center">
                                         <h5 className="grade_by_classroom">Developing</h5>
-                                        <h4>40%</h4>
+                                        <h4>{Number(gradeByClassroom[0]?.developing || 0)}%</h4>
                                     </div>
                                     <GradeByClassroomChart color="#E44646" graphData={graphData} />
                                 </Card.Body>
@@ -136,7 +165,7 @@ const TeacherDashboard = () => {
                                 <Card.Body>
                                     <div className="py-4 text-center">
                                         <h5 className="grade_by_classroom">Exemplar</h5>
-                                        <h4>40%</h4>
+                                        <h4>{Number(gradeByClassroom[0]?.exemplar || 0)}%</h4>
                                     </div>
                                     <GradeByClassroomChart color="#26B18D" graphData={graphData} />
                                 </Card.Body>
@@ -152,13 +181,15 @@ const TeacherDashboard = () => {
                         <Card.Title className='fs-16'> Notes </Card.Title>
                     </Card.Header>
                     <Card.Body className="row">
+                            {teachersState?.teacher_DashboardData?.data?.notes?.map((data,index)=>(
                         <div className="col-6 p-2">
-                            <NotesDisplayCard className="border-0" style={{ background: '#FFAFAF' }} />
+                                <NotesDisplayCard className="border-0 overflow-hidden" style={{ background: '#FFAFAF' }} params={data} />
                         </div>
+                            ))}
                     </Card.Body>
                 </Card>
             </div>
-        </div>
+        </div>}</>
     );
 }
 

@@ -12,7 +12,7 @@ const StudentOverviewCard = ({
                     {Icons.calender_icon}
                 </div>
                 <div className="pt-3">
-                    <h6 className="fw-bold">{data?.title || ''}</h6>
+                    <h6 className="fw-bold">{data?.question_types || ''}</h6>
                     <div className="student_overview_content mt-3 row">
                         <div className="col border-end">
                             {Icons?.no_of_books}

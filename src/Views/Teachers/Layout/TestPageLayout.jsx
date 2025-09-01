@@ -7,7 +7,7 @@ import JsonData from "Views/Teachers/Utils/JsonData"
 
 const TestPageLayout = () => {
     const { class_id, subject_id } = useParams();
-    const { jsonOnly } = JsonData({ class_id, subject_id });
+    const { jsonOnly } = JsonData({ class_id, subject_id }); 
 
     return (
         <div className="h-100">

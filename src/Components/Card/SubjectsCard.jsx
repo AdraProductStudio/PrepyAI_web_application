@@ -11,11 +11,11 @@ export default function SubjectsCard({
     const items = [{ icons: Icons?.no_of_books, content: 'No of Books', count: data?.no_of_books || 0 }, { icons: Icons?.no_of_tests, content: 'No of Tests', count: data?.no_of_tests || 0 }]
 
     return (
-        <Card className={`shadow-sm border-0 ${cardClassName}`} onClick={onclickCard}>
+        <Card className={`shadow-sm border-0 ${cardClassName}`}>
             <Card.Title className={cardTitleClassName}>
                 <div className="w-100 d-flex align-items-center">
                     <div className="col-10">
-                        <h6>{data?.subject || ''}</h6>
+                        <h6>{data?.subject_name || ''}</h6>
                         <p className="text-secondary fs-13 mb-0">{data?.teacher_name || ''}</p>
                     </div>
                     <div className="col-2 text-end">
@@ -28,7 +28,7 @@ export default function SubjectsCard({
                     </div>
                 </div>
             </Card.Title>
-            <Card.Body className={cardBodyClassName}>
+            <Card.Body className={cardBodyClassName}  onClick={onclickCard}>
                 <div className="px-4 pb-4 pt-2">
                     {items?.map((item) => (
                         <div className="w-100 d-flex align-items-end py-2">
@@ -37,7 +37,7 @@ export default function SubjectsCard({
                                 {item.content}
                             </div>
                             <div className="col-2 fs-16 text-secondary">
-                                <span className="pe-3">:</span>
+                                <span className="pe-2">:</span>
                                 {item.count}
                             </div>
                         </div>

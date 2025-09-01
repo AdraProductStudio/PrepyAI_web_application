@@ -13,7 +13,8 @@ const ReactDropdownSelect = ({
     valueField,
     className,
     create,
-    disabled
+    disabled,
+    placeholder
 }) => {
 
     return (
@@ -33,8 +34,9 @@ const ReactDropdownSelect = ({
                 create={create}
                 values={value}
                 onChange={change}
-                className={className}
+                className={`${className} ${disabled ? "dropdown-disabled" : ""}`}
                 disabled={disabled}
+                placeholder={placeholder}
             />
         </Fragment>
     )

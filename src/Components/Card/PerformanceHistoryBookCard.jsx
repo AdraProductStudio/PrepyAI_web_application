@@ -14,20 +14,21 @@ const PerformanceHistoryBookCard = ({
                     <Img src={Image?.pdfImage || ''} width="70%" height="70%" alt="pdf-image" />
                 </div>
                 <div className="col-9">
-                    <p className="mb-1 fs-16">{data?.title || 'English Grammar Book term V1'}</p>
+                    <p className="mb-1 fs-16">{data?.test_name || 'English Grammar Book term V1'}</p>
                     <p className="mb-0 fs-14">
                         Chapters:
-                        <strong>{data?.chapters || 0}</strong>
+                        <strong>{data?.chapter_count || 0}</strong>
                     </p>
 
                     <div className="col-12 text-end fs-12 text-secondary">
-                        <span className="pe-2">16 Sep 2023 </span>
-                        <span>11:21 AM</span>
+                        <span>{data?.test_date || null}</span>
+                        <br/>
+                        <span>{data?.test_time || 0}</span>
                     </div>
                 </div>
 
                 <div className="performance_history_badge">
-                    Developing
+                   {data?.performance_status}
                 </div>
             </Card.Body>
         </Card>

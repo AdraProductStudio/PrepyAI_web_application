@@ -1,60 +1,40 @@
 import {
     Line, LineChart, ResponsiveContainer,
-    XAxis, ReferenceArea,
-} from "recharts";
+    XAxis, ReferenceArea, Tooltip
+} from "recharts"
 
-const TestPerformanceChartStudent = () => {
-    const sourceData = {
-        individual: {
-            label: "Individual",
-            performance: "emergent",
-            data: [
-                { name: "JAN", value: 10 },
-                { name: "FEB", value: 15 },
-                { name: "MAR", value: 20 },
-                { name: "APR", value: 40 },
-                { name: "MAY", value: 25 },
-                { name: "JUN", value: 30 },
-            ],
-        },
-        schedule_test: {
-            label: "Schedule Test",
-            performance: "exemplar",
-            data: [
-                { name: "JAN", value: 70 },
-                { name: "FEB", value: 72 },
-                { name: "MAR", value: 75 },
-                { name: "APR", value: 60 },
-                { name: "MAY", value: 68 },
-                { name: "JUN", value: 65 },
-            ],
-        },
-    };
-
+const TestPerformanceChartStudent = ({ data }) => {
     const performanceColor = {
-        emergent: "#4B3CFA",
-        developing: "#45D655",
-        exemplar: "#EC008C",
+        schedule_test: "#EC008C", // Exemplar (pink)
+        self_test: "#4B3CFA",     // Emergent (blue)
     };
 
-    const performanceList = Object.entries(sourceData).map(
-        ([key, { label, performance, data }]) => ({
-            key,
-            label,
-            performance,
-            dataKey: `${performance}_${key}`,
-            color: performanceColor[performance] || "#000",
-            data,
-        })
-    );
+    const scheduleTest = data?.schedule_test ?? []
+    const selfTest = data?.self_test ?? []
 
-    const mergedData = sourceData.individual.data.map((_, idx) => {
-        const point = { name: sourceData.individual.data[idx].name };
-        performanceList.forEach(({ dataKey, data }) => {
-            point[dataKey] = data[idx]?.value;
-        });
-        return point;
-    });
+    const allMonths = [
+        ...new Set([
+            ...scheduleTest.map(d => d.test_month),
+            ...selfTest.map(d => d.test_month),
+        ]),
+    ]
+
+    const mergedData = allMonths.map(month => {
+        const scheduleItem = scheduleTest.find(d => d.test_month === month);
+        const selfItem = selfTest.find(d => d.test_month === month);
+
+        return {
+            name: month,
+            schedule_test: scheduleItem?.avg_score || 0,
+            self_test: selfItem?.avg_score || 0,
+        }
+    })
+
+    const performanceList = [
+        { key: "schedule_test", label: "Schedule Test", color: performanceColor.schedule_test },
+        { key: "self_test", label: "Self Test", color: performanceColor.self_test },
+    ];
+
 
     const referenceBands = mergedData.map((_, i) =>
         i % 2 === 0 && i < mergedData.length - 1 ? (
@@ -72,19 +52,21 @@ const TestPerformanceChartStudent = () => {
         return (
             <div style={{ display: 'flex', alignItems: 'center', fontSize: 14 }}>
                 <div style={{
-                    width: 8, height: 8, borderRadius: '50%', backgroundColor: color, marginRight: 8,
+                    width: 8, height: 8, borderRadius: '50%',
+                    backgroundColor: color, marginRight: 8,
                 }} />
                 {value}
             </div>
-        );
-    };
+        )
+    }
 
     return (
         <div className="w-100 h-100">
+            {/* Legend */}
             <div className="d-flex justify-content-end gap-4 col">
-                <LegendPayload color="#4B3CFA" value="Emergent" />
-                <LegendPayload color="#45D655" value="Developing" />
-                <LegendPayload color="#EC008C" value="Exemplar" />
+                {performanceList.map(({ key, label, color }) => (
+                    <LegendPayload key={key} color={color} value={label} />
+                ))}
             </div>
 
             <div className="d-flex align-items-stretch w-100">
@@ -132,12 +114,25 @@ const TestPerformanceChartStudent = () => {
                             tickLine={false}
                         />
 
-                        {/* Lines */}
-                        {performanceList.map(({ dataKey, color }) => (
+                        <Tooltip
+                            contentStyle={{ backgroundColor: "#fff", borderRadius: 4, border: "1px solid #ccc"}}
+                            labelStyle={{ color: "#333", fontWeight: 500 }}
+                            cursor={{ stroke: "#8884d8", strokeWidth: 2, strokeDasharray: "3 3", pointerEvents: "none" }}
+                            formatter={(value, name) => {
+                                // Map the dataKey to a nicer label
+                                const nameMap = {
+                                    schedule_test: "Schedule test",
+                                    self_test: "Self test"
+                                }
+                                return [value, nameMap[name] || name]
+                            }}
+                        />
+
+                        {performanceList.map(({ key, color }) => (
                             <Line
-                                key={dataKey}
+                                key={key}
                                 type="basis"
-                                dataKey={dataKey}
+                                dataKey={key}
                                 stroke={color}
                                 strokeWidth={5}
                                 dot={false}
@@ -150,7 +145,7 @@ const TestPerformanceChartStudent = () => {
                 </ResponsiveContainer>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default TestPerformanceChartStudent;
+export default TestPerformanceChartStudent
