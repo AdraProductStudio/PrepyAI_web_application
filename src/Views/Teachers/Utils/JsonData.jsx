@@ -2,7 +2,7 @@ import { useCommonState, useCustomNavigate, useDispatch } from 'Components/Custo
 import { handlePostNote, update_app_data, update_note_data } from 'Views/Common/Slices/Common_slice';
 import Icons from 'Utils/Icons';
 import Image from 'Utils/Image';
-import { clear_form_fields, update_selected_books } from '../Slice/teachersSlice';
+import { clear_form_fields, update_perfomance_by_classroom, update_selected_books, update_student_perfomance_dashboard, update_Students_classroom } from '../Slice/teachersSlice';
 import { get_bookmarks } from '../Actions/TeacherActions';
 import { update_Create_student, update_Grade_by_classroom, updatePostClassroomsData, updatePostStudentData, updatePostSubjectsData } from '../Slice/teachersSlice';
 
@@ -549,7 +549,7 @@ const JsonData = (params) => {
         type: "text",
         category: "input",
         placeholder: "Student name",
-        value: teachersState?.teacher_PostStudents?.data?.student_name || "",
+        value: teachersState?.teacher_PostStudents?.data?.data?.student_name || "",
         change: (e) =>
           dispatch(updatePostStudentData({ student_name: e.target.value })),
         divClassName: "col-12 mb-4 mt-2",
@@ -562,7 +562,7 @@ const JsonData = (params) => {
         type: "text",
         category: "input",
         placeholder: "Contact Number",
-        value: teachersState?.teacher_PostStudents?.data?.contact_no || "",
+        value: teachersState?.teacher_PostStudents?.data?.data?.contact_no || "",
         change: (e) =>
           dispatch(updatePostStudentData({ contact_no: e.target.value })),
         divClassName: "col-12 mb-4",
@@ -575,7 +575,7 @@ const JsonData = (params) => {
         type: "text",
         category: "input",
         placeholder: "Email id",
-        value: teachersState?.teacher_PostStudents?.data?.student_email || "",
+        value: teachersState?.teacher_PostStudents?.data?.data?.student_email || "",
         change: (e) =>
           dispatch(updatePostStudentData({ student_email: e.target.value })),
         divClassName: "col-12 mb-4",
@@ -589,7 +589,7 @@ const JsonData = (params) => {
         type: "text",
         category: "input",
         placeholder: "Enter Your Register Number",
-        value: teachersState?.teacher_PostStudents?.data?.student_reg_no || "",
+        value: teachersState?.teacher_PostStudents?.data?.data?.student_reg_no || "",
         change: (e) =>
           dispatch(updatePostStudentData({ student_reg_no: e.target.value })),
         divClassName: "col-12 mb-4",
@@ -610,8 +610,8 @@ const JsonData = (params) => {
         divClassName: "col-6 mb-3",
         className: "modal-inputs",
         isMandatory: true,
-        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false
-        // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
+        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false,
+        Err: commonState?.app_data?.validated && !teachersState?.teacher_CreateStudents?.data?.name ? "Student name required" : null,
       },
       {
         name: "Enter a Contact Number",
@@ -624,8 +624,8 @@ const JsonData = (params) => {
         divClassName: "col-6 mb-3",
         className: "modal-inputs ms-1",
         isMandatory: true,
-        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false
-        // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
+        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false,
+        Err: commonState?.app_data?.validated && !teachersState?.teacher_CreateStudents?.data?.contact_no ? "Contact number required" : null,
       },
       {
         name: "Enter a Email id",
@@ -638,8 +638,8 @@ const JsonData = (params) => {
         divClassName: "col-12 mb-3",
         className: "modal-inputs pe-2",
         isMandatory: true,
-        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false
-        // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
+        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false,
+        Err: commonState?.app_data?.validated && !teachersState?.teacher_CreateStudents?.data?.email_id ? "Email id required" : null,
       },
       {
         name: "Enter a Register Number",
@@ -653,8 +653,8 @@ const JsonData = (params) => {
         divClassName: "col-6 mb-2",
         className: "modal-inputs",
         isMandatory: true,
-        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false
-        // Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
+        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false,
+        Err: commonState?.app_data?.validated && !teachersState?.teacher_CreateStudents?.data?.register_no ? "Register number required" : null,
       },
       {
         name: "Select Classroom",
@@ -685,9 +685,9 @@ const JsonData = (params) => {
             : selected?.value;
           dispatch(update_Create_student({ classroom_name: selectedValue }));
         },
-        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false
+        disabled:teachersState?.teacher_CreateStudents?.data?.student_file && teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0 ? true : false,
+        Err:commonState?.app_data?.validated && !teachersState?.teacher_CreateStudents?.data?.classroom_name ? "Teacher classroom required" : null,
       }
-      
     ],
     createMultiStudets:[
       {
@@ -742,7 +742,7 @@ const JsonData = (params) => {
           ),
       },
     ],
-    selectStudentsByClassRoom: [
+    selectClassRoomForPerfomance :[
       {
         category: "select",
         type: "react_dropdown_select",
@@ -754,15 +754,58 @@ const JsonData = (params) => {
           : [],
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
+        className: "custom-dropdown",
+        value: [],
+        change: (selectedOptions) =>
+          dispatch(
+            update_perfomance_by_classroom({
+              classroom_id: selectedOptions.map((opt) => opt.value),
+            })
+          ),
+      },
+    ],
+    selectStudentsByClassRoom: [
+      {
+        category: "select",
+        type: "react_dropdown_select",
+        options: Array.isArray(teachersState?.teacher_GetAllClassRooms?.data)
+          ? teachersState.teacher_GetAllClassRooms.data.map((classroom) => ({
+              label: classroom.classroom_name,
+              value: classroom.classroom_id,
+            }))
+          : [],
+        multi: false,
+        divClassName: "studentsSelectClasses",
         className: "grade-dashboard-teacher-input",
         value: [],
         change: (selectedOptions) =>
           dispatch(
-            update_Grade_by_classroom({
+            update_Students_classroom({
               classroom_id: selectedOptions.map((opt) => opt.value),
             })
           ),
-        // Err: commonState?.app_data?.validated ? "Please select Mode of Test" : "",
+      },
+    ],
+    selectStudentPerfomance: [
+      {
+        category: "select",
+        type: "react_dropdown_select",
+        options: Array.isArray(teachersState?.teacher_GetAllSubjects?.data[teachersState?.teacher_Current_perfomance_Classroom?.data?.classroom_id])
+          ? teachersState.teacher_GetAllSubjects.data[teachersState?.teacher_Current_perfomance_Classroom?.data?.classroom_id]?.map((subject) => ({
+              label: subject.subject_name,
+              value: subject.subject_id,
+            }))
+          : [],
+        multi: false,
+        divClassName: "grade-dashboard-teacher-input",
+        className: "custom-dropdown",
+        value: [],
+        change: (selectedOptions) =>
+          dispatch(
+            update_perfomance_by_classroom({
+              subject_id: selectedOptions.map((opt) => opt.value),
+            })
+          ),
       },
     ],
   };

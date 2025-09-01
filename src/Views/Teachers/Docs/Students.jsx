@@ -23,7 +23,7 @@ const Students = () => {
     dispatch(
       GetStudentsListByTeacher({
         subject_id,
-        classroom_id: "all_classrooms",
+        classroom_id: teachersState?.teacher_students_Classroom?.data?.classroom_id || "all_classrooms",
         search_query: "",
         show_entries: pagination?.siblingCount,
         page: pagination?.currentPage,
@@ -31,7 +31,7 @@ const Students = () => {
         sort_order: "asc",
       })
     );
-  }, [pagination]);
+  }, [pagination,teachersState?.teacher_students_Classroom?.data?.classroom_id]);
 
       useEffect(()=>{
           dispatch(getGradeByClassroom(data))
@@ -47,7 +47,7 @@ const Students = () => {
         <div className="col">
           <h5>All Student List</h5>
         </div>
-        <div className="col justify-content-end d-flex gap-1 ">
+        <div className="col justify-content-end align-items-center d-flex gap-1 ">
           <ButtonComponent
             type="button"
             className="btn btn-outline-dark border py-2 d-flex align-items-center gap-2"
@@ -66,7 +66,7 @@ const Students = () => {
             <span className="align-middle">Sort by</span>
           </ButtonComponent>
 
-           <div className="custom-select-wrapper">{Inputfunctions(jsxJson.selectGradeByClassRoom)}</div>
+           <div className="custom-select-wrapper">{Inputfunctions(jsxJson.selectStudentsByClassRoom)}</div>
 
           <ButtonComponent
             type="button"

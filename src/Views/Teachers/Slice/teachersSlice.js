@@ -79,6 +79,14 @@ const initialState = {
     glow: true,
     data: []
   },
+  teacher_GetStudencePerfomanceBySubject: {
+    glow:true,
+    data:[],
+  },
+  teacher_GetAllSubjects: {
+    glow:true,
+    data:[],
+  },
   teacher_GetStudentListByTeacher: {
     glow: true,
     data: [],
@@ -117,7 +125,13 @@ const initialState = {
   },
   teacher_Current_Grade_Classroom: {
     data: {}
-  }
+  },
+  teacher_Current_perfomance_Classroom: {
+    data: {}
+  },
+  teacher_students_Classroom: {
+    data: {}
+  },
 }
 
 const teachersSlice = createSlice({
@@ -404,6 +418,29 @@ const teachersSlice = createSlice({
           break;
       }
     },
+    handleSubjectsByClassroom(state, action) {
+      const { type, data } = action.payload;
+
+      switch (type) {
+        case "request":
+          state.teacher_GradeByClassroom["glow"] = true;
+          state.teacher_GradeByClassroom["data"] = [];
+          break;
+
+        case "response":
+          state.teacher_GradeByClassroom["glow"] = false;
+          state.teacher_GradeByClassroom["data"] = data;
+          break;
+
+        case "failure":
+          state.teacher_GradeByClassroom["glow"] = false;
+          state.teacher_GradeByClassroom["data"] = [];
+          break;
+
+        default:
+          break;
+      }
+    },
     handleGetStudentsListBySubject(state, action) {
       const { type, data } = action.payload;
 
@@ -588,6 +625,53 @@ const teachersSlice = createSlice({
           break;
       }
     },
+    handldeGetPerfomanceBySubject(state,action){
+      const { type, data } = action.payload;
+
+      switch (type) {
+        case "request":
+          state.teacher_GetStudencePerfomanceBySubject["glow"] = true;
+          state.teacher_GetStudencePerfomanceBySubject["data"] = [];
+          break;
+
+        case "response":
+          state.teacher_GetStudencePerfomanceBySubject["glow"] = false;
+          state.teacher_GetStudencePerfomanceBySubject["data"] = data;
+          break;
+
+        case "failure":
+          state.teacher_GetStudencePerfomanceBySubject["glow"] = false;
+          state.teacher_GetStudencePerfomanceBySubject["data"] = [];
+          break;
+
+        default:
+          break;
+      }
+    },
+    
+    handldeGetAllSubjects(state,action){
+      const { type, data } = action.payload;
+
+      switch (type) {
+        case "request":
+          state.teacher_GetAllSubjects["glow"] = true;
+          state.teacher_GetAllSubjects["data"] = [];
+          break;
+
+        case "response":
+          state.teacher_GetAllSubjects["glow"] = false;
+          state.teacher_GetAllSubjects["data"] = data;
+          break;
+
+        case "failure":
+          state.teacher_GetAllSubjects["glow"] = false;
+          state.teacher_GetAllSubjects["data"] = [];
+          break;
+
+        default:
+          break;
+      }
+    },
 
     // post
     updatePostClassroomsData(state, action) {
@@ -600,11 +684,11 @@ const teachersSlice = createSlice({
     },
     updatePostStudentData(state, action) {
       const [key, value] = Object.entries(action.payload)[0] || [];
-      state.teacher_PostStudents.data[key] = value || "";
+      state.teacher_PostStudents.data.data[key] = value || "";
     },
     update_edit_student(state, action) {
-      const { data } = action.payload;
-      state.teacher_PostStudents.data = data;
+      const { data,getdata } = action.payload;
+      state.teacher_PostStudents.data = {data,getdata};
     },
     update_edit_classroom(state, action) {
       const { data } = action.payload;
@@ -617,6 +701,14 @@ const teachersSlice = createSlice({
     update_Grade_by_classroom(state, action) {
       const [key, value] = Object.entries(action.payload)[0] || [];
       state.teacher_Current_Grade_Classroom.data[key] = value || "";
+    },
+    update_Students_classroom(state, action) {
+      const [key, value] = Object.entries(action.payload)[0] || [];
+      state.teacher_students_Classroom.data[key] = value || "";
+    },
+    update_perfomance_by_classroom(state,action){
+      const [key, value] = Object.entries(action.payload)[0] || [];
+      state.teacher_Current_perfomance_Classroom.data[key] = value || "";
     },
     clear_form_fields(state,action){
       state.teacher_CreateStudents.data={}
@@ -656,7 +748,7 @@ export const {
   handledAssignedStudentsTestData, updateAssignedTestPaginationPage, updateAssingnedTestTotalPageCount,
   updateStudentClassAndSubject,
   handleSelfStudentsTestData, updateSelfTestPaginationPage, updateSelfTestTotalPageCount,
-
+  handldeGetPerfomanceBySubject,
   handleGetStudentsListBySubject,
   update_edit_student,
   handleGetStudentOverviewPerfomance,
@@ -674,7 +766,12 @@ export const {
   update_Create_student,
   update_Grade_by_classroom,
   handleGradeByClassroom,
-  clear_form_fields
+  clear_form_fields,
+  handldeGetAllSubjects,
+  update_perfomance_by_classroom,
+  handleSubjectsByClassroom,
+  update_student_perfomance_dashboard,
+  update_Students_classroom
 } = actions
 
 export default reducer

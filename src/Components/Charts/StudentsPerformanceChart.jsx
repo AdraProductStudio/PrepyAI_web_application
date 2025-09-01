@@ -7,20 +7,6 @@ import {
     CartesianGrid, 
 } from 'recharts';
 
-const chartData = [
-    { name: 'JAN', emergent: 10, developing: 70, exemplar: 80 },
-    { name: 'FEB', emergent: 65, developing: 72, exemplar: 90 },
-    { name: 'MAR', emergent: 68, developing: 75, exemplar: 10 },
-    { name: 'APR', emergent: 62, developing: 73, exemplar: 95 },
-    { name: 'MAY', emergent: 70, developing: 80, exemplar: 50 },
-    { name: 'JUN', emergent: 75, developing: 85, exemplar: 10 },
-    { name: 'JUL', emergent: 80, developing: 88, exemplar: 55 },
-    { name: 'AUG', emergent: 65, developing: 76, exemplar: 50 },
-    { name: 'SEP', emergent: 10, developing: 72, exemplar: 55 },
-    { name: 'OCT', emergent: 67, developing: 90, exemplar: 58 },
-    { name: 'NOV', emergent: 72, developing: 78, exemplar: 60 },
-    { name: 'DEC', emergent: 75, developing: 85, exemplar: 63 },
-];
 
 // Custom Tooltip with rounded bubble like the screenshot
 const CustomTooltip = ({ active, payload, label }) => {
@@ -53,7 +39,7 @@ function LegendPayload({ color, value }) {
     );
 }
 
-const StudentsPerformanceChart = () => {
+const StudentsPerformanceChart = ({data}) => {
 
     return (
         <div className="d-flex flex-column h-100 justify-content-between">
@@ -67,7 +53,7 @@ const StudentsPerformanceChart = () => {
             {/* Chart */}
             <div className="col">
                 <ResponsiveContainer width="100%" height={300}>
-                    <LineChart data={chartData}>
+                    <LineChart data={data}>
                         {/* Grid */}
                         <CartesianGrid vertical={false} strokeDasharray="3 3" />
 
@@ -80,7 +66,7 @@ const StudentsPerformanceChart = () => {
                         /> */}
 
                         <XAxis
-                            dataKey="name"
+                            dataKey="month"
                             padding={{ left: 10, right: 10 }}
                             tick={{ fontSize: 12, fill: '#000' }}
                             tickMargin={12}

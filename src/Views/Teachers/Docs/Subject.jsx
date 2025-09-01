@@ -142,7 +142,7 @@ const Subject = () => {
                     cardBodyClassName={"pointer"}
                     onclickCard={() =>
                       navigate(
-                        `/teachers_dashboard/classrooms/${class_id}/${index}`
+                        `/teachers_dashboard/classrooms/${class_id}/${val?.subject_id}`
                       )
                     }
                     onclickDelete={() => {
@@ -152,7 +152,7 @@ const Subject = () => {
                           close_btn: true,
                           modal_from: "techaersdeletemodal",
                           modal_type: "techaersdeletemodal",
-                          data:()=>dispatch(deleteSubjects(class_id)),
+                          data:()=>dispatch(deleteSubjects(val?.subject_id)),
                         })
                       );
                     }}

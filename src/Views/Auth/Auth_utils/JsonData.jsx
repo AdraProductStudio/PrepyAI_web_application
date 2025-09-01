@@ -69,7 +69,7 @@ const JsonData = () => {
         divClassName: "mb-3",
         className: "login-input",
         isMandatory: true,
-        Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.firstName ? "firstName required" : null,
+        Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.first_name ? "firstName required" : null,
       },
       {
         name: "Last Name",
@@ -110,7 +110,7 @@ const JsonData = () => {
           : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
-        Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.shownewPassword ? "password required" : null,
+        Err: commonState?.app_data?.validated && !authState?.learnersregisterdata?.new_password ? "password required" : null,
       },
       {
         name: "Confirm Password",
@@ -131,7 +131,7 @@ const JsonData = () => {
           : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
-        Err: commonState?.app_data?.validated && !authState?.learnersRegister?.showConfirmPassword ? "confirmPassword required" : null,
+        Err: commonState?.app_data?.validated && !authState?.learnersRegister?.confirm_password ? "confirmPassword required" : null,
       },
     ],
     organizationRegister: [
@@ -243,7 +243,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !authState?.organizationRegister?.location
+            !authState?.organizationRegisterdata?.location
             ? "location required"
             : null,
       },
@@ -271,7 +271,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !authState?.organizationRegister?.new_password
+            !authState?.organizationRegisterdata?.new_password
             ? "password required"
             : null,
       },
@@ -299,7 +299,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !authState?.organizationRegister?.confirmPassword
+            !authState?.organizationRegisterdata?.confirm_password
             ? "confirmPassword required"
             : null,
       },
@@ -321,7 +321,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.adminRegister?.firstName
+            !authState?.adminRegisterdata?.first_name
             ? "firstName required"
             : null,
       },
@@ -338,7 +338,7 @@ const JsonData = () => {
         isMandatory: false,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.adminRegister?.lastName
+            !authState?.adminRegisterdata?.last_name
             ? "lastName required"
             : null,
       },
@@ -356,7 +356,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.adminRegister?.instituteName
+            !authState?.adminRegisterdata?.institute_name
             ? "Institute Name required"
             : null,
       },
@@ -373,7 +373,7 @@ const JsonData = () => {
         className: "pe-5 login-input",
         isMandatory: true,
         Err:
-          commonState?.app_data?.validated && !commonState?.adminRegister?.email
+          commonState?.app_data?.validated && !authState?.adminRegisterdata?.email_id
             ? "email required"
             : null,
       },
@@ -390,7 +390,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.adminRegister?.phoneNumber
+            !authState?.adminRegisterdata?.phone_number
             ? "Phone Number required"
             : null,
       },
@@ -407,7 +407,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.adminRegister?.location
+            !authState?.adminRegisterdata?.location
             ? "location required"
             : null,
       },
@@ -433,7 +433,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.adminRegister?.password
+            !authState?.adminRegisterdata?.new_password
             ? "password required"
             : null,
       },
@@ -459,7 +459,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.adminRegister?.confirmPassword
+            !authState?.adminRegisterdata?.confirm_password
             ? "confirmPassword required"
             : null,
       },
@@ -481,7 +481,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.teacherRegister?.firstName
+            !authState?.teacherRegisterdata?.first_name
             ? "firstName required"
             : null,
       },
@@ -498,7 +498,7 @@ const JsonData = () => {
         isMandatory: false,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.teacherRegister?.firstName
+            !authState?.teacherRegisterdata?.last_name
             ? "lastName required"
             : null,
       },
@@ -516,7 +516,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.teacherRegister?.instituteName
+            !authState?.teacherRegisterdata?.institute_name
             ? "Institute Name required"
             : null,
       },
@@ -534,7 +534,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.teacherRegister?.email
+            !authState?.teacherRegisterdata?.email_id
             ? "email required"
             : null,
       },
@@ -551,7 +551,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.teacherRegister?.phoneNumber
+            !authState?.teacherRegisterdata?.phone_number
             ? "Phone Number required"
             : null,
       },
@@ -577,7 +577,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.teacherRegister?.password
+            !authState?.teacherRegisterdata?.new_password
             ? "password required"
             : null,
       },
@@ -605,7 +605,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.teacherRegister?.confirmPassword
+            !authState?.teacherRegisterdata?.confirm_password
             ? "confirmPassword required"
             : null,
       },
@@ -627,7 +627,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.studentRegister?.firstName
+            !authState?.studentRegisterdata?.first_name
             ? "firstName required"
             : null,
       },
@@ -644,7 +644,7 @@ const JsonData = () => {
         isMandatory: false,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.studentRegister?.firstName
+            !authState?.studentRegisterdata?.last_name
             ? "lastName required"
             : null,
       },
@@ -662,7 +662,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.studentRegister?.instituteName
+            !authState?.studentRegisterdata?.institute_name
             ? "Institute Name required"
             : null,
       },
@@ -681,7 +681,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.studentRegister?.email
+            !authState?.studentRegisterdata?.email_id
             ? "email required"
             : null,
       },
@@ -698,7 +698,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.studentRegister?.phoneNumber
+            !authState?.studentRegisterdata?.phone_number
             ? "Phone Number required"
             : null,
       },
@@ -724,7 +724,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.studentRegister?.password
+            !authState?.studentRegisterdata?.new_password
             ? "password required"
             : null,
       },
@@ -752,7 +752,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.studentRegister?.confirmPassword
+            !authState?.studentRegisterdata?.confirm_password
             ? "confirmPassword required"
             : null,
       },
@@ -773,7 +773,7 @@ const JsonData = () => {
         className: "login-input",
         isMandatory: false,
         Err:
-          commonState?.app_data?.validated && !commonState?.login_data?.username
+          commonState?.app_data?.validated && ! authState?.forgotPassworddata?.email_id
             ? "email required"
             : null,
       },
@@ -803,7 +803,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.learnersRegister?.password
+            !authState?.learnersRegister?.new_password
             ? "password required"
             : null,
       },
@@ -828,7 +828,7 @@ const JsonData = () => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated &&
-            !commonState?.learnersRegister?.confirmPassword
+            !authState?.learnersRegister?.confirm_password
             ? "confirmPassword required"
             : null,
       },

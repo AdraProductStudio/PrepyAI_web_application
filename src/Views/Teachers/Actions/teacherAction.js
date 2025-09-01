@@ -1,5 +1,7 @@
 import axiosInstance from "Services/axiosInstance";
 import {
+  handldeGetAllSubjects,
+  handldeGetPerfomanceBySubject,
   handleAllClassRooms,
   handleGetClassrooms,
   handleGetClassroomTeachers,
@@ -13,6 +15,7 @@ import {
   handleGetSubjects,
   handleGetTeachers,
   handleGradeByClassroom,
+  handleSubjectsByClassroom,
   handleTeacherDashboard
 } from "../Slice/teachersSlice";
 import { update_app_data, update_error, updateModalShow } from "Views/Common/Slices/Common_slice";
@@ -98,6 +101,29 @@ export const getGradeByClassroom = (params) => async (dispatch) => {
   } catch (err) {
     dispatch(
       handleGradeByClassroom({ type: "failure", message: err?.message || "" })
+    );
+  }
+};
+
+export const getSubjectByClassroom = (params) => async (dispatch) => {
+  try {
+    dispatch(handleSubjectsByClassroom({ type: "request" }));
+    const { data } = await axiosInstance.post("/teachers/classroom_performance", { classroom_id: params?.classroom_id[0] });
+    if (data?.error_code === 0) {
+      dispatch(
+        handleSubjectsByClassroom({ type: "response", data: data?.data || [] })
+      );
+    } else {
+      dispatch(
+        handleSubjectsByClassroom({
+          type: "failure",
+          message: data?.message || "",
+        })
+      );
+    }
+  } catch (err) {
+    dispatch(
+      handleSubjectsByClassroom({ type: "failure", message: err?.message || "" })
     );
   }
 };
@@ -294,6 +320,46 @@ export const GetStudentsList = (params) => async (dispatch) => {
   }
 };
 
+export const GetPerformanceBysubject = (params) => async (dispatch) => {
+  try {
+    dispatch(handldeGetPerfomanceBySubject({ type: "request" }));
+    const { data } = await axiosInstance.post("/teachers/get_student_performance_by_subject",{classroom_id:params?.classroom_id[0],subject_id:params?.subject_id[0]});
+    if (data?.error_code === 0) {
+      dispatch(
+        handldeGetPerfomanceBySubject({ type: "response", data: data?.data || [] })
+      );
+    } else {
+      dispatch(
+        handldeGetPerfomanceBySubject({ type: "failure", message: data?.message || "" })
+      );
+    }
+  } catch (err) {
+    dispatch(
+      handldeGetPerfomanceBySubject({ type: "failure", message: err?.message || "" })
+    );
+  }
+}
+
+export const GetAllsubjects = (params) => async (dispatch) => {
+  try {
+    dispatch(handldeGetAllSubjects({ type: "request" }));
+    const { data } = await axiosInstance.get("/teachers/get_all_subjects",{});
+    if (data?.error_code === 0) {
+      dispatch(
+        handldeGetAllSubjects({ type: "response", data: data?.data || [] })
+      );
+    } else {
+      dispatch(
+        handldeGetAllSubjects({ type: "failure", message: data?.message || "" })
+      );
+    }
+  } catch (err) {
+    dispatch(
+      handldeGetAllSubjects({ type: "failure", message: err?.message || "" })
+    );
+  }
+}
+
 // POST
 
 export const postClassrooms = (form_data) => async (dispatch) => {
@@ -360,7 +426,7 @@ export const postSubjects = (form_data) => async (dispatch) => {
 
 export const postStudents = (form_data) => async (dispatch) => {
 
-  const { student_name, contact_no, student_email, student_reg_no, } = form_data;
+  const { student_name, contact_no, student_email, student_reg_no, } = form_data?.data;
   const id = form_data?.getdata?.id;
   const id_from = form_data?.getdata?.from;
   const pagination = form_data?.getdata?.pagination;
@@ -371,7 +437,7 @@ export const postStudents = (form_data) => async (dispatch) => {
   }
 
   try {
-    const response = await axiosInstance.post("/teachers/edit_student", form_data);
+    const response = await axiosInstance.post("/teachers/edit_student", form_data?.data);
 
     const { message, success } = response?.data;
 
@@ -526,10 +592,18 @@ export const deleteSubjects = (id) => async (dispatch) => {
   }
 
   try {
-
-
+    const response = await axiosInstance.delete(`/teachers/delete_subject?subject_id=${id}`);
+    const {message,success} = response?.data;
+    if (!success) {
+      dispatch(update_error({ Err: message, Toast_Type: "error" }));
+    }
+    if (success) {
+      dispatch(update_error({ Err: message, Toast_Type: "success" }));
+      dispatch(getSubjects())
+      dispatch(updateModalShow({ show: false }));
+    }
   } catch (error) {
-    console.warn(error, "error from post subject");
+    console.warn(error, "error from delete subject");
   }
 }
 
@@ -539,9 +613,17 @@ export const deleteClassrooms = (id) => async (dispatch) => {
   }
 
   try {
-
-
+    const response = await axiosInstance.delete(`/teachers/delete_classroom?classroom_id=${id}`);
+    const {message,success} = response?.data;
+    if (!success) {
+      dispatch(update_error({ Err: message, Toast_Type: "error" }));
+    }
+    if (success) {
+      dispatch(update_error({ Err: message, Toast_Type: "success" }));
+      dispatch(getClassrooms())
+      dispatch(updateModalShow({ show: false }));
+    }
   } catch (error) {
-    console.log(error, "error from post subject");
+    console.log(error, "error from delete subject");
   }
 }

@@ -37,8 +37,29 @@ export const handleLogin = (formdata, navigate) => async (dispatch) => {
 };
 
 export const handleRegister = (login_data, navigate, endpoint) => async (dispatch) => {
-  const { first_name, last_name, email_id, new_password, confirm_password } = login_data;
-  if (!first_name || !last_name || !email_id || !new_password || !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
+  const { first_name,organization_name, institute_name,last_name, email_id,phone_number,location, new_password, confirm_password } = login_data;
+  switch(endpoint){
+    case "/register/learner" :{
+      if (!first_name || !last_name || !email_id || !new_password || !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
+      break;
+    }
+    case "/register/organization":{
+      if (!first_name ||!organization_name|| !last_name || !email_id || !new_password ||!phone_number ||!location|| !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
+      break;
+    }
+      case "/register/teacher":{
+      if (!first_name ||!institute_name|| !last_name || !email_id || !new_password ||!phone_number|| !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
+      break;
+    }
+    case "/register/student":{
+      if (!first_name ||!institute_name|| !last_name || !email_id || !new_password ||!phone_number|| !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
+      break;
+    }
+    case "/register/admin":{
+      if (!first_name ||!institute_name|| !last_name || !email_id || !new_password ||!phone_number||!location|| !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
+      break;
+    }
+  }
 
   try {
     dispatch(update_spinner_loadning({ status: true }));
@@ -134,6 +155,9 @@ export const handleOAuth = (navigate, endpoint) => async (dispatch) => {
 };
 
 export const handleForgetPass = (forget_data, navigate, endpoint) => async (dispatch) => {
+  const {email_id} = forget_data
+  if (!email_id ) return dispatch(update_app_data({ type: "validation", data: true }));
+
   try {
     dispatch(update_spinner_loadning({ status: true }))
 
@@ -182,6 +206,8 @@ export const handleOtpVerification = (forget_data, routeState, navigate, endpoin
 };
 
 export const handleCreatePassword = (forget_data, routeState, navigate, endpoint) => async (dispatch) => {
+  const {new_password,confirm_password} = forget_data;
+  if (!new_password || !confirm_password ) return dispatch(update_app_data({ type: "validation", data: true }));
   try {
     dispatch(update_spinner_loadning({ status: true }))
     const filterData = { ...forget_data, ...routeState };
