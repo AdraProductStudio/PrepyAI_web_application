@@ -4,6 +4,7 @@ import {
     get_student_details_slice,
     getSubjectAttachments,
     handleGetTestRecords,
+    handleUploadAttachment,
     save_schedule_failure,
     save_schedule_request,
     save_schedule_success
@@ -32,7 +33,7 @@ export const get_bookmarks = (params) => async (dispatch) => {
         dispatch(create_test_onchange({ type: "request" }))
         const { data } = await axiosInstance.post("/teachers/get_bookmarks", params || {})
         if (data?.error_code === 0) {
-            dispatch(handleGetTestRecords({ type: "response", data: data?.data?.bookmarks?.[0] || [] }))
+            dispatch(handleGetTestRecords({ type: "response", data: data?.data?.bookmarks || [] }))
         }
         else {
             dispatch(handleGetTestRecords({ type: "failure", message: data?.message || '' }))
@@ -59,20 +60,6 @@ export const get_student_details = (classroom_id) => async (dispatch) => {
 
 }
 
-// export const saveSchedule = (payload) => async (dispatch) => {
-//     try {
-//         dispatch(save_schedule_request());
-//         const response = await axiosInstance.post("/teachers/save_schedule", payload);
-//         if (response.data?.error_code === 0) {
-//             dispatch(save_schedule_success(response.data?.data));
-//         } else {
-//             dispatch(save_schedule_failure(response.data?.message || "Unknown error"));
-//         }
-//     } catch (error) {
-//         dispatch(save_schedule_failure(error.message));
-//     }
-// };
-
 export const saveSchedule = (payload, navigate) => async (dispatch) => {
     try {
         dispatch(save_schedule_request());
@@ -80,8 +67,7 @@ export const saveSchedule = (payload, navigate) => async (dispatch) => {
 
         if (response.data?.error_code === 0) {
             dispatch(save_schedule_success(response.data?.data));
-            // navigate("/teachers_dashboard/classrooms/0/0/preview_test");
-            navigate("/teachers_dashboard/classrooms/0/0/preview_test", { state: { payload } });
+            navigate(`/teachers_dashboard/classrooms/${payload.classroom_id}/${payload.subject_id}/preview_test`);
 
         } else {
             dispatch(save_schedule_failure(response.data?.message || "Unknown error"));
@@ -93,10 +79,8 @@ export const saveSchedule = (payload, navigate) => async (dispatch) => {
 
 export const handleGetSubjectAttachments = (subject_id) => async (dispatch) => {
     try {
-        const { data } = await axiosInstance.get(
-            "/teachers/get_classroom_attachments",
-            { params: { subject_id } }
-        );
+        dispatch(getSubjectAttachments({ type: "request" }));
+        const { data } = await axiosInstance.post("/teachers/get_classroom_attachments", subject_id);
 
         if (data?.error_code === 0) {
             dispatch(getSubjectAttachments({ type: "response", data: data?.data }));
@@ -105,6 +89,33 @@ export const handleGetSubjectAttachments = (subject_id) => async (dispatch) => {
         }
     } catch (error) {
         dispatch(getSubjectAttachments({ type: "failure", message: error?.message }));
+    }
+};
+
+
+
+export const handleUploadBook = (params_data, file) => async (dispatch) => {
+    try {
+        dispatch(handleUploadAttachment({ type: "request" }));
+
+        const formData = new FormData();
+        formData.append("attachment", file);
+        formData.append("attachment_name", file.name);
+
+        const { data } = await axiosInstance.post(
+            `/teachers/upload_attachment?classroom_id=${params_data?.class_id}&subject_id=${params_data?.subject_id}`,
+            formData,
+            { headers: { "Content-Type": "multipart/form-data" } }
+        );
+
+        if (data?.error_code === 0) {
+            dispatch(handleUploadAttachment({ type: "response", data: data?.data }));
+            dispatch(handleGetSubjectAttachments({ subject_id: params_data?.subject_id }))
+        } else {
+            dispatch(handleUploadAttachment({ type: "failure", message: data?.message }));
+        }
+    } catch (error) {
+        dispatch(handleUploadAttachment({ type: "failure", message: error?.message }));
     }
 };
 

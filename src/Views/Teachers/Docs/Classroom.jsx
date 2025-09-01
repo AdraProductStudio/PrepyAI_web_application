@@ -104,7 +104,6 @@ const Classroom = () => {
           }
         </div>
       </div>
-      <OverallModel />
     </div>
   )
 }

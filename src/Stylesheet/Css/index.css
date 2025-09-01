@@ -281,6 +281,7 @@
 .display_notes {
   height: 15rem;
 }
+
 .dropdown-toggle::after {
   display: none !important;
 }
@@ -531,11 +532,6 @@ td {
   height: calc(var(--root-height) - (var(--header-height) + 4rem));
 }
 
-.attachment_canvas {
-  width: 40vw !important;
-  border-radius: 12px 0 0 12px !important;
-}
-
 .attachment_books,
 .student_attachment {
   background-color: #F6F6F6 !important;
@@ -688,7 +684,7 @@ td {
 
 .question_number_btn:hover {
   /* border-color: #FF6C95 !important; */
-  background: #555  !important;
+  background: #555 !important;
   color: white !important;
 }
 
@@ -707,6 +703,7 @@ td {
   background: #555 !important;
   color: white !important;
 }
+
 .questions_unanswered {
   color: black;
 }
@@ -717,7 +714,8 @@ td {
 }
 
 .test_radio_box:hover {
-  background: rgba(255, 108, 149, 0.15) !important; /* light pink */
+  background: rgba(255, 108, 149, 0.15) !important;
+  /* light pink */
   border: 1px solid #FF6C95 !important;
   cursor: pointer;
 }
@@ -744,7 +742,7 @@ td {
 .correct_answer_active input[type="radio"]:checked,
 .correct_answer_active input[type="checkbox"]:checked,
 .correct_answer_active .form-check-input:checked {
-  accent-color: #28a745 !important; 
+  accent-color: #28a745 !important;
   background-color: #28a745 !important;
   border-color: #28a745 !important;
 }
@@ -753,7 +751,7 @@ td {
 .wrong_answer_active input[type="radio"]:checked,
 .wrong_answer_active input[type="checkbox"]:checked,
 .wrong_answer_active .form-check-input:checked {
-  accent-color: #dc3545 !important; 
+  accent-color: #dc3545 !important;
   background-color: #dc3545 !important;
   border-color: #dc3545 !important;
 }
@@ -763,14 +761,22 @@ td {
   color: white;
 }
 
-.nxt_btn:hover{
+.nxt_btn:hover {
   background-color: white;
   color: black;
 }
 
-.arrow-black { display: none; }
-.nxt_btn:hover .arrow-black { display: inline; }
-.nxt_btn:hover .arrow-white { display: none; }
+.arrow-black {
+  display: none;
+}
+
+.nxt_btn:hover .arrow-black {
+  display: inline;
+}
+
+.nxt_btn:hover .arrow-white {
+  display: none;
+}
 
 .prev_btn {
   background-color: white;
@@ -926,7 +932,8 @@ td {
   box-shadow: none !important;
   border-radius: 8px !important;
 }
-.accordion-button:hover{
+
+.accordion-button:hover {
   background: linear-gradient(90deg, #EC008C 0%, #FC6767 100%) !important;
   color: #fff !important;
 }
@@ -1044,6 +1051,7 @@ td {
   box-shadow: none !important;
   border-color: transparent !important;
 }
+
 .custom-dropdown input::placeholder {
   font-size: 14px !important;
   font-weight: 500 !important;
@@ -1132,7 +1140,7 @@ td {
 }
 
 input::placeholder {
-  color: #c7c1c1 !important; 
+  color: #c7c1c1 !important;
   font-weight: 400;
   line-height: normal;
 }
@@ -1168,7 +1176,7 @@ input::placeholder {
   }
 }
 
-.modal-inputs{
+.modal-inputs {
   padding: 14px !important;
   border-radius: 4px !important;
   border: 1px solid #ddd !important;
@@ -1177,24 +1185,27 @@ input::placeholder {
 }
 
 .modal-inputs::placeholder {
-  color: #b0b0b0;  
-  opacity: 1;      
+  color: #b0b0b0;
+  opacity: 1;
 }
-.file-inputs{
+
+.file-inputs {
   padding: 40px !important;
-  border: none !important;             
+  border: none !important;
   border: 2px dashed #ec008c !important;
   border-radius: 1 !important;
-  outline: none !important;  
+  outline: none !important;
   opacity: 0.6;
 }
-.file-inputs{
+
+.file-inputs {
   color: #0A1629;
 }
-.grade-dashboard-teacher-input:focus{
-outline: none !important;
-box-shadow: none !important;
-border-color: inherit !important;
+
+.grade-dashboard-teacher-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: inherit !important;
 }
 
 /* Wrapper */
@@ -1234,21 +1245,23 @@ border-color: inherit !important;
 .icon_text {
   font-size: 0.8rem;
 }
+
 .border-dashed {
   border-style: dashed !important;
 }
 
 .dropdown-disabled {
   background-color: #e9ecef !important;
-  border: 1px solid #ced4da !important; 
-  color: #6c757d !important;           
-  opacity: 1 !important;           
+  border: 1px solid #ced4da !important;
+  color: #6c757d !important;
+  opacity: 1 !important;
   cursor: not-allowed !important;
 }
 
 .dropdown-disabled .react-dropdown-select-placeholder {
-  color: #6c757d !important; 
+  color: #6c757d !important;
 }
+
 .btn-clear {
   border: none !important;
   background: transparent !important;
@@ -1258,11 +1271,25 @@ border-color: inherit !important;
 }
 
 .btn-clear:hover {
-  text-decoration: underline; 
+  text-decoration: underline;
 }
 
 .btn-clear:focus,
 .btn-clear:active {
   outline: none !important;
   box-shadow: none !important;
+}
+
+
+.attachment_canvas {
+  width: calc(100vw - 10vw) !important;
+  border-radius: 12px 0 0 12px !important;
+}
+
+
+@media (min-width:992px) {
+  .attachment_canvas {
+    width: calc(100vw - 50vw) !important;
+    border-radius: 12px 0 0 12px !important;
+  }
 }

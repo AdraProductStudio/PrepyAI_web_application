@@ -121,9 +121,9 @@ const TeacherDashboard = () => {
                             <Card.Title className='fs-16'> Activities </Card.Title>
                         </Card.Header>
                         <Card.Body className="activity_card_body">
-                            {teachersState?.teacher_DashboardData?.data?.activites?.map((data, index) => (
+                            {/* {teachersState?.teacher_DashboardData?.data?.activites?.map((data, index) => (
                                 <ActivityCard key={index} data={data} />
-                            ))}
+                            ))} */}
                         </Card.Body>
                     </Card>
                 </div>

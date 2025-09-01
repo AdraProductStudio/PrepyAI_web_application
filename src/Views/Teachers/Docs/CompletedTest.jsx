@@ -14,7 +14,7 @@ const CompletedTest = () => {
 
     useEffect(() => {
         if(class_id){
-            dispatch(getTestRecords({ classroom_id: class_id, type: "completed" }));
+            dispatch(getTestRecords({ classroom_id: 19, type: "cancelled" }));
         }
     }, [class_id]);
 
@@ -25,15 +25,14 @@ const CompletedTest = () => {
                 <div className="w-100 h-100 row align-items-center justify-content-center">
                     <div className="col-6 text-center">
                         <SpinnerComponent />
-                        <p className="py-3">Geeting Completed Test Records</p>
+                        <p className="py-3">Getting Completed Test Records</p>
                     </div>
                 </div>
                 :
                 teachersState?.test_records?.data?.length ?
                     teachersState?.test_records?.data?.map((testdata, testindex) => (
                         <div className="col-md-6 col-lg-4 p-2" key={testindex}>
-                            <TestDisplayCard data={
-                                testdata} />
+                            <TestDisplayCard data={testdata} />
                         </div>
                     ))
                     :

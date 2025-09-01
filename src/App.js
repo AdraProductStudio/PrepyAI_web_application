@@ -92,6 +92,9 @@ import SuperAdminDashboard from "Views/Superadmin/Docs/SuperAdminDashboard";
 import AdminAuth from "Views/Admin/Docs/AdminAuth";
 import SuperadminAuth from "Views/Superadmin/Docs/SuperadminAuth";
 import OrganisationAuth from "Views/Organisation/Docs/OrganisationAuth";
+import TestHistory from "Views/Teachers/Docs/TestHistory";
+import { UpdateDynamic_Class_Subject_id } from "Views/Teachers/Docs/UpdateDynamic_Class_Subject_id";
+
 
 function App() {
   return (
@@ -132,19 +135,22 @@ function App() {
               <Route path="classrooms" >
                 <Route index element={<StudentClassroom />} />
                 <Route path=":class_id" element={<Subject />} />
-                <Route path=":class_id/:subject_id">
+                <Route path=":class_id/:subject_id" element={<UpdateDynamic_Class_Subject_id/>}>
                   <Route index element={<SubjectDetails />} />
                   <Route path=":student_id/overview" element={<StudentOverview />} />
                   <Route element={<ScheduleTestLayout />} >
                     <Route path="create_test" element={<CreateTest />} />
                     <Route path="preview_test" element={<PreviewTest />} />
                   </Route>
-                  <Route path="test" element={<TestPageLayout />}>
+  
+                <Route path="test" element={<TestPageLayout />}>
                     <Route index element={<UpcomingTest />} />
                     <Route path="ongoing_test" element={<OngoingTest />} />
                     <Route path="completed_test" element={<CompletedTest />} />
                   </Route>
-                  <Route element={<StudentsPerformanceLayout />} >
+                  <Route path="test_history" element={<TestHistory />} />
+
+                <Route element={<StudentsPerformanceLayout />} >
                     <Route path="teachers_assigned" element={<TeachersAssigned />} />
                     <Route path="self_taking_test" element={<SelfTakingTest />} />
                   </Route>

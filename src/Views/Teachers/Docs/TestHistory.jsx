@@ -5,8 +5,10 @@ import { Table, Card } from "react-bootstrap";
 import { FaEye } from "react-icons/fa";
 import Icons from 'Utils/Icons';
 import JsonData from '../Utils/JsonData';
+import { useParams } from 'react-router-dom';
 
 const TestHistory = () => {
+    const { class_id, subject_id } = useParams();
 
     const { jsonOnly } = JsonData();
 
@@ -15,7 +17,7 @@ const TestHistory = () => {
             <div className='container-fluid'>
                 <div className="w-100 row justify-content-between align-items-center border-bottom pb-3">
                     <div className="col">
-                        <LinkComponent to={`/teachers_dashboard/classrooms/0/0/test/ongoing_test`} className="brand-link-color">
+                        <LinkComponent to={`/teachers_dashboard/classrooms/${class_id}/${subject_id}/test/ongoing_test`} className="brand-link-color">
                             <span>{Icons.back_button_icon_blue}</span>
                             <span className="align-middle">Back to Subjects</span>
                         </LinkComponent>

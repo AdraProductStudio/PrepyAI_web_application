@@ -28,7 +28,7 @@ const OngoingTest = () => {
                 <div className="w-100 h-100 row align-items-center justify-content-center">
                     <div className="col-6 text-center">
                         <SpinnerComponent />
-                        <p className="py-3">Geeting Completed Test Records</p>
+                        <p className="py-3">Getting Completed Test Records</p>
                     </div>
                 </div>
                 :

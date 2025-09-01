@@ -64,8 +64,8 @@ const LoginScreen = ({
               <path opacity="0.4" d="M83.4999 167C129.616 167 167 129.616 167 83.5C167 37.3842 129.616 0 83.4999 0C37.3842 0 0 37.3842 0 83.5C0 129.616 37.3842 167 83.4999 167Z" fill="url(#paint0_linear_1_15158)" />
               <defs>
                 <linearGradient id="paint0_linear_1_15158" x1="160.074" y1="116.862" x2="6.88778" y2="50.177" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#860752" />
-                  <stop offset="1" stop-color="#FFD9A8" />
+                  <stop stopColor="#860752" />
+                  <stop offset="1" stopColor="#FFD9A8" />
                 </linearGradient>
               </defs>
             </svg>

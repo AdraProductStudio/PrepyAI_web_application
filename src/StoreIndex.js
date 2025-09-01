@@ -7,6 +7,7 @@ import organisationReducer from 'Views/Organisation/Slices/Organisation_slice';
 import superadminReducer from 'Views/Superadmin/Slices/SuperAdmin_slice'
 import adminReducer from 'Views/Admin/Slices/adminSlice';
 
+
 const reducers = combineReducers({
     commonState: commonReducer,
     studentState: StudentReducer,
@@ -14,7 +15,9 @@ const reducers = combineReducers({
     teachersState: teachersReducer,
     organisationState: organisationReducer,
     superadminState:superadminReducer,
-    adminState: adminReducer
+    adminState: adminReducer,
+    attachment: teachersReducer
+     
 })
 
 const store = configureStore({
@@ -30,6 +33,7 @@ const store = configureStore({
         shouldCatchErrors: true,
         actionsDenylist: ['very/frequent/action'],
     },
+
 })
 
 export default store;

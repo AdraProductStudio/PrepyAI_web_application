@@ -11,7 +11,6 @@ import Image from "Utils/Image";
 import { deleteSubjects, getClassroomTeachers, getSubjects } from "../Actions/teacherAction";
 import SpinnerComponent from "Components/Spinner/Spinner";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
-import { OverallModel } from "../Utils/OverallModal";
 
 const Subject = () => {
     const { class_id } = useParams();
@@ -24,16 +23,6 @@ const Subject = () => {
             dispatch(getClassroomTeachers({classroom_id:class_id}))
         }
     },[])
-    // const handleDelete = (class_id)=>{
-    //     dispatch(
-    //         updateModalShow({
-    //           show: true,
-    //           close_btn: true,
-    //           modal_from: "techaersdeletemodal",
-    //           modal_type: "techaersdeletemodal",
-    //         })
-    //       );
-    // }
 
     const {teachersState} = useCommonState();
     const {data,glow} = teachersState?.teacher_GetSubjects; 
@@ -142,7 +131,7 @@ const Subject = () => {
                     cardBodyClassName={"pointer"}
                     onclickCard={() =>
                       navigate(
-                        `/teachers_dashboard/classrooms/${class_id}/${index}`
+                        `/teachers_dashboard/classrooms/${class_id}/${val.subject_id}`
                       )
                     }
                     onclickDelete={() => {
@@ -162,7 +151,6 @@ const Subject = () => {
             )}
           </div>
         </div>
-        <OverallModel />
       </div>
     );
 }

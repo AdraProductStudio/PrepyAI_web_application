@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import { decrypt_app_data_logs, decryption, encryption, view_logout } from "ResuableFunctions/logs_handler";
 
+
 let initialState = {
     login_data: {},
     modal: {
@@ -72,7 +73,7 @@ let initialState = {
         data: [],
         error: null
     },
-    
+
 }
 
 const commonSlice = createSlice({
@@ -265,7 +266,7 @@ const commonSlice = createSlice({
             state.modal.type = modal_type || null
             state.modal.close_btn = close_btn || false
         },
-      
+
     },
     extraReducers: (builder) => {
         builder
@@ -310,6 +311,23 @@ const commonSlice = createSlice({
                 }
             })
 
+            .addMatcher(
+                (action) => [
+                    "teachersSlice/handleUploadAttachment"
+                ].includes(action.type),
+
+                (state, action) => {
+                    const { type } = action.payload || {};
+                    if (type === "response") {
+                        state.modal.show = false
+                        state.modal.size = "md"
+                        state.modal.from = null
+                        state.modal.type = null
+                        state.modal.close_btn = false
+                    }
+                }
+            )
+
             //For handling response error [setting toast error message]
             .addMatcher(
                 (action) => [
@@ -344,7 +362,7 @@ const commonSlice = createSlice({
 })
 
 function setToastState(state, action) {
-    let error_message = typeof action.payload === 'object'? action.payload?.message: action.payload;
+    let error_message = typeof action.payload === 'object' ? action.payload?.message : action.payload;
     state.error.Err = error_message;
     state.error.Toast_Type = action.payload?.toast_type || "error";
 }
@@ -353,8 +371,8 @@ const { actions, reducer } = commonSlice;
 
 export const {
     update_app_data, update_error, updateModalShow, update_search,
-    logout,  handleTeacherNotesData, handlePostNote, handleDeleteNote,
-    update_note_data, handleGetBooks,, edit_note_data
+    logout, handleTeacherNotesData, handlePostNote, handleDeleteNote,
+    update_note_data, handleGetBooks, edit_note_data
 } = actions;
 
 export default reducer
