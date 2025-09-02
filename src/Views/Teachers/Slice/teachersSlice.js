@@ -760,8 +760,8 @@ const teachersSlice = createSlice({
       state.teacher_PostStudents.data[key] = value || "";
     },
     update_edit_student(state, action) {
-      const { data } = action.payload;
-      state.teacher_PostStudents.data = data;
+      const { data, getdata } = action.payload;
+      state.teacher_PostStudents.data = { data, getdata };
     },
     update_edit_classroom(state, action) {
       const { data } = action.payload;
@@ -923,43 +923,43 @@ const teachersSlice = createSlice({
 const { actions, reducer } = teachersSlice
 
 export const {
-    handleStudentsPerformance,
-    handleJsonStudentsData,
-    handleGetClassrooms,
-    handleGetSubjects,
-    handleGetStudentsList,
-    handelGetCreate,
-    update_selected_books,
-    handledAssignedStudentsTestData, updateAssignedTestPaginationPage, updateAssingnedTestTotalPageCount,
-    updateStudentClassAndSubject,
-    handleSelfStudentsTestData, updateSelfTestPaginationPage, updateSelfTestTotalPageCount,
-    handleGetTestRecords, create_test_onchange, get_student_details_slice, save_schedule_request,
-    save_schedule_success, save_schedule_failure, getSubjectAttachments, handleUploadAttachment,
-    handlePerformanceModalData, handleGetTeachers, handleTeacherDashboard, handleAllClassRooms,
-    handleGradeByClassroom, handleSubjectsByClassroom,
-    handldeGetPerfomanceBySubject,
-    handleGetStudentsListBySubject,
-    update_edit_student,
-    handleGetStudentOverviewPerfomance,
-    handleGetStudentOverviewOverallPerfomance,
-    handleGetStudentOverviewTestCount,
-    handleGetStudentOverviewSpendingHours,
-    updatePostClassroomsData,
-    updatePostSubjectsData,
-    handleGetStudentsListByTeacher,
-    handleGetClassroomTeachers,
-    updatePostStudentData,
-    update_edit_classroom,
-    update_Create_student,
-    update_Grade_by_classroom,
-    clear_form_fields,
-    handldeGetAllSubjects,
-    update_perfomance_by_classroom,
-    update_student_perfomance_dashboard,
-    update_Students_classroom,
-    get_students_by_test_slice,
-    updateParams, handle_attachment_books_upload, handleTestHistoryGet, handleGetBooks,
-    get_test_questions_failure, get_test_questions_success, get_test_questions_request
+  handleStudentsPerformance,
+  handleJsonStudentsData,
+  handleGetClassrooms,
+  handleGetSubjects,
+  handleGetStudentsList,
+  handelGetCreate,
+  update_selected_books,
+  handledAssignedStudentsTestData, updateAssignedTestPaginationPage, updateAssingnedTestTotalPageCount,
+  updateStudentClassAndSubject,
+  handleSelfStudentsTestData, updateSelfTestPaginationPage, updateSelfTestTotalPageCount,
+  handleGetTestRecords, create_test_onchange, get_student_details_slice, save_schedule_request,
+  save_schedule_success, save_schedule_failure, getSubjectAttachments, handleUploadAttachment,
+  handlePerformanceModalData, handleGetTeachers, handleTeacherDashboard, handleAllClassRooms,
+  handleGradeByClassroom, handleSubjectsByClassroom,
+  handldeGetPerfomanceBySubject,
+  handleGetStudentsListBySubject,
+  update_edit_student,
+  handleGetStudentOverviewPerfomance,
+  handleGetStudentOverviewOverallPerfomance,
+  handleGetStudentOverviewTestCount,
+  handleGetStudentOverviewSpendingHours,
+  updatePostClassroomsData,
+  updatePostSubjectsData,
+  handleGetStudentsListByTeacher,
+  handleGetClassroomTeachers,
+  updatePostStudentData,
+  update_edit_classroom,
+  update_Create_student,
+  update_Grade_by_classroom,
+  clear_form_fields,
+  handldeGetAllSubjects,
+  update_perfomance_by_classroom,
+  update_student_perfomance_dashboard,
+  update_Students_classroom,
+  get_students_by_test_slice,
+  updateParams, handle_attachment_books_upload, handleTestHistoryGet, handleGetBooks,
+  get_test_questions_failure, get_test_questions_success, get_test_questions_request
 
 } = actions
 
