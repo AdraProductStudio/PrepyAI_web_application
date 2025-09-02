@@ -2,7 +2,11 @@ import axiosInstance from "Services/axiosInstance"
 import {
     create_test_onchange,
     get_student_details_slice,
+    get_test_questions_failure,
+    get_test_questions_request,
+    get_test_questions_success,
     getSubjectAttachments,
+    handleGetBooks,
     handleGetTestRecords,
     handleUploadAttachment,
     save_schedule_failure,
@@ -45,6 +49,7 @@ export const get_bookmarks = (params) => async (dispatch) => {
 
 export const get_student_details = (classroom_id) => async (dispatch) => {
     try {
+        dispatch(get_student_details_slice({ type: "request" }))
         const { data } = await axiosInstance.post("/teachers/get_students_for_test", classroom_id || {})
         if (data?.error_code === 0) {
             dispatch(get_student_details_slice({ type: "response", data: data?.data?.bookmarks?.[0] || [] }))
@@ -60,20 +65,57 @@ export const get_student_details = (classroom_id) => async (dispatch) => {
 
 }
 
+// export const saveSchedule = (payload, navigate) => async (dispatch) => {
+//     try {
+//         dispatch(save_schedule_request());
+//         const response = await axiosInstance.post("/teachers/save_schedule", payload);
+
+//         if (response.data?.error_code === 0) {
+//             dispatch(save_schedule_success(response.data?.data));
+
+//             navigate(`/teachers_dashboard/classrooms/${payload.classroom_id}/${payload.subject_id}/preview_test`);
+
+//         } else {
+//             dispatch(save_schedule_failure(response.data?.message || "Unknown error"));
+//         }
+//     } catch (error) {
+//         dispatch(save_schedule_failure(error.message));
+//     }
+// };
 export const saveSchedule = (payload, navigate) => async (dispatch) => {
     try {
         dispatch(save_schedule_request());
         const response = await axiosInstance.post("/teachers/save_schedule", payload);
 
         if (response.data?.error_code === 0) {
-            dispatch(save_schedule_success(response.data?.data));
-            navigate(`/teachers_dashboard/classrooms/${payload.classroom_id}/${payload.subject_id}/preview_test`);
+            const { test_id, ...rest } = response.data?.data;
 
+            dispatch(save_schedule_success({ test_id, ...rest }));
+
+            navigate(
+                `/teachers_dashboard/classrooms/${payload.classroom_id}/${payload.subject_id}/preview_test`
+            );
         } else {
             dispatch(save_schedule_failure(response.data?.message || "Unknown error"));
         }
     } catch (error) {
         dispatch(save_schedule_failure(error.message));
+    }
+};
+// preview
+export const get_test_questions = (test_id) => async (dispatch) => {
+    try {
+        dispatch(get_test_questions_request({ type: "request" }));
+console.log("test_id :", test_id)
+        const response = await axiosInstance.post("/teachers/get_test_questions", test_id);
+
+        if (response.data?.error_code === 0) {
+            dispatch(get_test_questions_success(response.data?.data));
+        } else {
+            dispatch(get_test_questions_failure(response.data?.message || "Unknown error"));
+        }
+    } catch (error) {
+        dispatch(get_test_questions_failure(error.message));
     }
 };
 
@@ -120,3 +162,23 @@ export const handleUploadBook = (params_data, file) => async (dispatch) => {
 };
 
 
+// books api
+export const getBooks = (params) => async (dispatch) => {
+    try {
+
+        dispatch(handleGetBooks({ type: "request" }));
+        const { data } = await axiosInstance.post("/teachers/get_books", params || {});
+
+        if (data?.error_code === 0) {
+            dispatch(handleGetBooks({ type: "response", data: data?.data?.books || [] }));
+        } else {
+            dispatch(handleGetBooks({ type: "failure", message: data?.message || "Failed to load books" }));
+        }
+    } catch (err) {
+
+        dispatch(handleGetBooks({
+            type: "failure",
+            message: err?.message || "Network Error"
+        }));
+    }
+};
