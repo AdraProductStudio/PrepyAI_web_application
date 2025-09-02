@@ -8,6 +8,7 @@ import { useCommonState, useDispatch } from "Components/CustomHooks";
 import SpinnerComponent from "Components/Spinner/Spinner";
 import Img from "Components/Img/Img";
 import Image from "Utils/Image";
+import { updateModalShow } from "../Slices/Common_slice";
 
 
 const Books = () => {
@@ -53,7 +54,7 @@ const Books = () => {
                                 <div className="row">
                                     {commonState.books.data.map((book, index) => (
                                         <div className="col-3 p-2" key={book.id || index}>
-                                            <BookCard data={book} />
+                                            <BookCard data={book} onClickDelete={() => dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "books", modal_type: "delete_book" }))} />
                                         </div>
                                     ))}
                                 </div>

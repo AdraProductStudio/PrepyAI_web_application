@@ -149,6 +149,7 @@ const initialState = {
   teacher_students_Classroom: {
     data: {}
   },
+  test_history: {}
 }
 
 const teachersSlice = createSlice({
@@ -809,6 +810,28 @@ const teachersSlice = createSlice({
 
       }
     },
+    handleTestHistoryGet(state, action) {
+      const { type, data } = action.payload;
+
+      switch (type) {
+        case "request":
+          state.test_history.glow = true;
+          state.test_history.data = [];
+          break;
+
+        case "response":
+          state.test_history.glow = false;
+          state.test_history.data = data || [];
+          break;
+
+        case "failure":
+          state.test_history.glow = false;
+          break;
+
+        default:
+          break;
+      }
+    }
   },
 
   extraReducers(builder) {
@@ -862,7 +885,7 @@ export const {
   update_student_perfomance_dashboard,
   update_Students_classroom,
   get_students_by_test_slice,
-  updateParams, handle_attachment_books_upload
+  updateParams, handle_attachment_books_upload, handleTestHistoryGet
 
 } = actions
 

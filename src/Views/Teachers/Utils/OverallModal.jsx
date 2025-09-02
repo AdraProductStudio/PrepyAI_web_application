@@ -15,7 +15,7 @@ import { useParams } from "react-router-dom";
 import Icons from "Utils/Icons";
 import { Form, Button } from "react-bootstrap";
 import { clear_form_fields, handle_attachment_books_upload } from "../Slice/teachersSlice";
-import { handleUploadBook } from "../Actions/TeacherActions"; 
+import { handleUploadBook } from "../Actions/TeacherActions";
 import SpinnerComponent from "Components/Spinner/Spinner";
 
 
@@ -93,6 +93,16 @@ export function OverallModel() {
             break;
         }
 
+      case "books":
+        switch (commonState?.modal?.type) {
+          case "delete_book":
+            return <h5 className="ms-3">Delete Book</h5>
+
+          default:
+            break;
+        }
+        break;
+
       default:
         break;
     }
@@ -137,9 +147,6 @@ export function OverallModel() {
 
                   {teachersState?.attachment_books_upload?.filename && <p className="small text-success mt-2">📘 {teachersState?.attachment_books_upload?.filename}</p>}
                 </div>
-
-
-
               </div>
             );
 
@@ -358,6 +365,41 @@ export function OverallModel() {
         }
         break;
 
+      case "books":
+        switch (commonState?.modal?.type) {
+          case "delete_book":
+            return <div className="text-center w-100 p-4">
+              <div
+                style={{ fontSize: "40px", color: "#ff4d6d" }}
+                className="mb-3"
+              >
+                {Icons.deleteIcon}
+              </div>
+              <p className="fs-5 d-flex justify-content-center fw-semibold">
+                Are you sure you want to delete?
+              </p>
+
+              <div className="d-flex justify-content-center gap-3 mt-4 w-100">
+                <ButtonComponent
+                  className="btn-md btn-light w-50"
+                  buttonName={"No"}
+                  clickFunction={() =>
+                    dispatch(updateModalShow({ show: false }))
+                  }
+                />
+
+                <ButtonComponent
+                  className="btn-md w-50 text-white btn-brand-color"
+                  buttonName={"Yes"}
+                  clickFunction={commonState?.modal?.modal_data}
+                />
+              </div>
+            </div>
+
+          default:
+            break;
+        }
+        break;
       default:
         break;
 
@@ -398,7 +440,7 @@ export function OverallModel() {
       case "subjects":
         switch (commonState?.modal?.type) {
           case "subjects":
-            return 
+            return
 
           default:
             break;
@@ -408,7 +450,7 @@ export function OverallModel() {
       case "subjects":
         switch (commonState?.modal?.type) {
           case "subjects":
-            return; 
+            return;
 
           default:
             break;

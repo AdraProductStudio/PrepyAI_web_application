@@ -81,7 +81,7 @@ const TeacherSlice = createSlice({
             confirm_password: "",
         },
         recording: "",
-        offCanvasShow:false,
+        offCanvasShow: false,
         generate_question: {
             test_language: "",
             level_of_test: "",
@@ -292,23 +292,24 @@ const TeacherSlice = createSlice({
             }
         },
         getOfflineTests(state, action) {
-            const { type, data, offline_tests_loading } = action.payload
+            state.offline_tests = (Array.isArray(action.payload) || (typeof action.payload !== "object")) ? action.payload : [];
+            // const { type, data, offline_tests_loading } = action.payload
 
-            switch (type) {
-                case "request":
-                    state.offline_tests = offline_tests_loading
-                case "response":
-                    state.offline_tests = (Array.isArray(data) || (typeof data !== "object")) ? data : [];
-                    state.offline_tests_loading = false
-                    break;
+            // switch (type) {
+            //     case "request":
+            //         state.offline_tests = offline_tests_loading
+            //     case "response":
+            //         state.offline_tests = (Array.isArray(data) || (typeof data !== "object")) ? data : [];
+            //         state.offline_tests_loading = false
+            //         break;
 
-                case "failure":
-                    state.offline_tests_loading = false
-                    break;
+            //     case "failure":
+            //         state.offline_tests_loading = false
+            //         break;
 
-                default:
-                    break;
-            }
+            //     default:
+            //         break;
+            // }
         },
         setUploadLearnerBook(state, action) {
             const { type, data, book_file, book_name, loading } = action.payload;
@@ -505,7 +506,7 @@ const TeacherSlice = createSlice({
         updateProfileEditing: (state, action) => {
             state.isProfileEditing = !state.isProfileEditing
         },
-        updateGenerateQuestionCanvas:(state,action)=>{
+        updateGenerateQuestionCanvas: (state, action) => {
             state.offCanvasShow = action.payload
 
         }
@@ -550,7 +551,7 @@ export const {
     setUploadLearnerBook, setClassroomCode, setUploadTestPaper, updateAudioRecording, updateQuestionType,
     updatePersonalInfoInputs, updateSettingsInputs, resetSettingsInputs, editProfileInputs, updateProfileEditing,
     updateGenerateQuestionFields, updateGenerateMcqQuestions, updateGenerateLongQuestions,
-    updateMcqQuestionAnswer, updateLongQuestionAnswerValue, updateLongQuestionAnswer,updateGenerateQuestionCanvas
+    updateMcqQuestionAnswer, updateLongQuestionAnswerValue, updateLongQuestionAnswer, updateGenerateQuestionCanvas
 
 } = actions;
 

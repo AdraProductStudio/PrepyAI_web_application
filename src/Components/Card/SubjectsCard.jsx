@@ -3,10 +3,10 @@ import { Card } from "react-bootstrap";
 import Icons from "Utils/Icons";
 
 export default function SubjectsCard({
-    cardClassName,
+    cardClassName, onclickDelete,
     cardBodyClassName = "p-0 ",
     cardTitleClassName = "p-4 pb-3 border-bottom",
-    onclickCard, onclickDelete, data
+    onclickCard, data
 }) {
     const items = [{ icons: Icons?.no_of_books, content: 'No of Books', count: data?.no_of_books || 0 }, { icons: Icons?.no_of_tests, content: 'No of Tests', count: data?.no_of_tests || 0 }]
 
@@ -18,17 +18,18 @@ export default function SubjectsCard({
                         <h6>{data?.subject_name || ''}</h6>
                         <p className="text-secondary fs-13 mb-0">{data?.teacher_name || ''}</p>
                     </div>
-                    <div className="col-2 text-end">
-                        <ButtonComponent
-                            type="button"
-                            className="btn"
-                            buttonName={Icons?.delete_icons}
-                            clickFunction={onclickDelete}
-                        />
-                    </div>
+                    {/teachers_dashboard/.test(window.location.pathname) &&
+                        <div className="col-2 text-end">
+                            <ButtonComponent
+                                type="button"
+                                className="btn"
+                                buttonName={Icons?.delete_icons}
+                                clickFunction={onclickDelete}
+                            />
+                        </div>}
                 </div>
             </Card.Title>
-            <Card.Body className={cardBodyClassName}  onClick={onclickCard}>
+            <Card.Body className={cardBodyClassName} onClick={onclickCard}>
                 <div className="px-4 pb-4 pt-2">
                     {items?.map((item) => (
                         <div className="w-100 d-flex align-items-end py-2">

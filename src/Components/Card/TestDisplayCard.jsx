@@ -1,6 +1,7 @@
 import ButtonComponent from "Components/Button/Button";
 import { Card } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
+import { encryptData } from "Security/Crypto/Crypto";
 import Icons from "Utils/Icons";
 
 const TestDisplayCard = ({
@@ -13,7 +14,7 @@ const TestDisplayCard = ({
     function handleShowTable(status) {
         switch (status) {
             case "Completed":
-                return navigate(`/teachers_dashboard/classrooms/${class_id}/${subject_id}/test_history`);
+                return navigate(`/teachers_dashboard/classrooms/${class_id}/${subject_id}/test_history?data=${encryptData({ test_id: data?.test_id, mode: data?.mode })}`);
 
             case "Not Completed":
                 return navigate(`/test/details?status=NotCompleted`);

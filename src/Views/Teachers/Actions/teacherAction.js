@@ -16,7 +16,7 @@ import {
   handleGetTeachers,
   handleGradeByClassroom,
   handleSubjectsByClassroom,
-  handleTeacherDashboard
+  handleTeacherDashboard, handleTestHistoryGet
 } from "../Slice/teachersSlice";
 import { update_app_data, update_error, updateModalShow } from "Views/Common/Slices/Common_slice";
 
@@ -323,7 +323,7 @@ export const GetStudentsList = (params) => async (dispatch) => {
 export const GetPerformanceBysubject = (params) => async (dispatch) => {
   try {
     dispatch(handldeGetPerfomanceBySubject({ type: "request" }));
-    const { data } = await axiosInstance.post("/teachers/get_student_performance_by_subject",{classroom_id:params?.classroom_id[0],subject_id:params?.subject_id[0]});
+    const { data } = await axiosInstance.post("/teachers/get_student_performance_by_subject", { classroom_id: params?.classroom_id[0], subject_id: params?.subject_id[0] });
     if (data?.error_code === 0) {
       dispatch(
         handldeGetPerfomanceBySubject({ type: "response", data: data?.data || [] })
@@ -343,7 +343,7 @@ export const GetPerformanceBysubject = (params) => async (dispatch) => {
 export const GetAllsubjects = (params) => async (dispatch) => {
   try {
     dispatch(handldeGetAllSubjects({ type: "request" }));
-    const { data } = await axiosInstance.get("/teachers/get_all_subjects",{});
+    const { data } = await axiosInstance.get("/teachers/get_all_subjects", {});
     if (data?.error_code === 0) {
       dispatch(
         handldeGetAllSubjects({ type: "response", data: data?.data || [] })
@@ -415,7 +415,7 @@ export const postSubjects = (form_data) => async (dispatch) => {
     }
     if (success) {
       dispatch(update_error({ Err: message, Toast_Type: "success" }));
-      dispatch(getSubjects({classroom_id}))
+      dispatch(getSubjects({ classroom_id }))
       dispatch(updateModalShow({ show: false }))
     }
 
@@ -477,7 +477,7 @@ export const postStudents = (form_data) => async (dispatch) => {
   }
 };
 
-export const postCreateStudent = (form_data) => async(dispatch) => {
+export const postCreateStudent = (form_data) => async (dispatch) => {
   const { name, contact_no, email_id, register_no, classroom_name } = form_data;
 
   let response;
@@ -593,7 +593,7 @@ export const deleteSubjects = (id) => async (dispatch) => {
 
   try {
     const response = await axiosInstance.delete(`/teachers/delete_subject?subject_id=${id}`);
-    const {message,success} = response?.data;
+    const { message, success } = response?.data;
     if (!success) {
       dispatch(update_error({ Err: message, Toast_Type: "error" }));
     }
@@ -614,7 +614,7 @@ export const deleteClassrooms = (id) => async (dispatch) => {
 
   try {
     const response = await axiosInstance.delete(`/teachers/delete_classroom?classroom_id=${id}`);
-    const {message,success} = response?.data;
+    const { message, success } = response?.data;
     if (!success) {
       dispatch(update_error({ Err: message, Toast_Type: "error" }));
     }
@@ -625,5 +625,18 @@ export const deleteClassrooms = (id) => async (dispatch) => {
     }
   } catch (error) {
     console.log(error, "error from delete subject");
+  }
+};
+
+export const getTestHistory = (params) => async (dispatch) => {
+  try {
+    dispatch(handleTestHistoryGet({ type: "request" }))
+    const { data } = await axiosInstance.post("/teachers/get_students_by_test", params);
+
+    if (data?.error_code === 0) dispatch(handleTestHistoryGet({ type: "response", data: data?.data || [] }));
+    else dispatch(handleTestHistoryGet({ type: "failure", message: data?.message || "" }));
+  }
+  catch (err) {
+    dispatch(handleTestHistoryGet({ type: "failure", message: err?.message || "" }));
   }
 }
