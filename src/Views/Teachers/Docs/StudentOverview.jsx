@@ -41,10 +41,10 @@ const StudentOverview = () => {
     }
 
     useEffect(() => {
-        dispatch(GetStudentOverviewPerfomance({ classroom_id: class_id, student_id }))
-        dispatch(GetStudentOverviewOverallPerfomance({ classroom_id: class_id, student_id }))
-        dispatch(GetStudentOverviewTestCount({ classroom_id: class_id, student_id }))
-        dispatch(GetStudentOverviewSpendingHours({ classroom_id: class_id, student_id }))
+        dispatch(GetStudentOverviewPerfomance({ subject_id: subject_id, student_id }))
+        dispatch(GetStudentOverviewOverallPerfomance({ subject_id: subject_id, student_id }))
+        dispatch(GetStudentOverviewTestCount({ subject_id: subject_id, student_id }))
+        dispatch(GetStudentOverviewSpendingHours({ subject_id: subject_id, student_id }))
     }, [])
 
     return (

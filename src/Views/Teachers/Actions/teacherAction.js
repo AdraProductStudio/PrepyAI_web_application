@@ -390,7 +390,7 @@ export const postClassrooms = (form_data) => async (dispatch) => {
     }
     if (success) {
       dispatch(update_error({ Err: message, Toast_Type: "success" }));
-      dispatch(getClassroomTeachers());
+      dispatch(getClassrooms());
       dispatch(getTeachers());
       dispatch(updateModalShow({ show: false }))
     }
