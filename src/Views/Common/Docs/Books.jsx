@@ -3,12 +3,12 @@ import { useParams } from "react-router-dom";
 import Icons from "Utils/Icons";
 import LinkComponent from "Components/Router_components/LinkComponent";
 import BookCard from "Components/Card/BookCard";
-import { getBooks } from "../Actions/Common_action";
 import { useCommonState, useDispatch } from "Components/CustomHooks";
 import SpinnerComponent from "Components/Spinner/Spinner";
 import Img from "Components/Img/Img";
 import Image from "Utils/Image";
 import { updateModalShow } from "../Slices/Common_slice";
+import { getBooks } from "Views/Teachers/Actions/TeacherActions";
 
 
 const Books = () => {

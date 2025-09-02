@@ -247,12 +247,12 @@ const JsonData = (params) => {
         name: "Books",
         category: "select",
         type: "normal_select",
-        options: commonState?.books?.data?.map((book) => book.book_name),
+        options: teachersState?.books?.data?.map((book) => book.book_name),
         placeholder: "Select Book",
         isMandatory: true,
         value: teachersState?.create_test?.selected_books?.book_name || "",
         change: (e) => {
-          const book = commonState?.books?.data?.find(
+          const book = teachersState?.books?.data?.find(
             (book) => book.book_name === e.target.value
           );
           dispatch(

@@ -68,12 +68,6 @@ let initialState = {
         glow: true,
         data: []
     },
-    books: {
-        loading: false,
-        data: [],
-        error: null
-    },
-
 }
 
 const commonSlice = createSlice({
@@ -231,25 +225,6 @@ const commonSlice = createSlice({
             state.canvas.close_btn = false;
             state.canvas.sidebar_data = [];
         },
-        handleGetBooks: (state, action) => {
-            const { type, data } = action.payload || {};
-
-            switch (type) {
-                case "request":
-                    state.books.loading = true;
-                    state.books.data = [];
-                    break;
-                case "response":
-                    state.books.loading = false;
-                    state.books.data = data || [];
-                    break;
-                case "failure":
-                    state.books.loading = false;
-                    break;
-                default:
-                    return;
-            }
-        },
         update_note_data(state, action) {
             const { type, data } = action.payload;
             state.notesdata[type] = data || "";
@@ -372,7 +347,7 @@ const { actions, reducer } = commonSlice;
 export const {
     update_app_data, update_error, updateModalShow, update_search,
     logout, handleTeacherNotesData, handlePostNote, handleDeleteNote,
-    update_note_data, handleGetBooks, edit_note_data
+    update_note_data, edit_note_data
 } = actions;
 
 export default reducer
