@@ -157,7 +157,11 @@ const initialState = {
   test_questions: [],
   get_test_questions_status: "idle",
   get_test_questions_error: null,
-  test_id: null
+  test_id: null,
+  delete_attachment_status: "idle",
+  delete_attachment_error: null,
+
+  delete_attachment_id: null
 }
 
 const teachersSlice = createSlice({
@@ -763,10 +767,6 @@ const teachersSlice = createSlice({
       const { data, getdata } = action.payload;
       state.teacher_PostStudents.data = { data, getdata };
     },
-    update_edit_classroom(state, action) {
-      const { data } = action.payload;
-      state.teacher_PostClassrooms.data = data;
-    },
     update_Create_student(state, action) {
       const [key, value] = Object.entries(action.payload)[0] || [];
       state.teacher_CreateStudents.data[key] = value || "";
@@ -905,6 +905,21 @@ const teachersSlice = createSlice({
           return;
       }
     },
+
+    delete_attachment_request(state) {
+      state.delete_attachment_status = "loading";
+      state.delete_attachment_error = null;
+    },
+    delete_attachment_success(state) {
+      state.delete_attachment_status = "succeeded";
+    },
+    delete_attachment_failure(state, action) {
+      state.delete_attachment_status = "failed";
+      state.delete_attachment_error = action.payload;
+    },
+    updateDeleteAttachment(state, action) {
+      state.delete_attachment_id = action.payload
+    }
   },
 
   extraReducers(builder) {
