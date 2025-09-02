@@ -14,7 +14,7 @@ import { getBooks } from "Views/Teachers/Actions/TeacherActions";
 const Books = () => {
     const { class_id, subject_id } = useParams();
     const dispatch = useDispatch();
-    const { commonState } = useCommonState();
+    const { commonState, teachersState } = useCommonState();
 
     useEffect(() => {
         dispatch(getBooks({ classroom_id: class_id, subject_id: subject_id }));
@@ -42,7 +42,7 @@ const Books = () => {
 
                 <div className="books_layout py-3">
                     <div className="h-100 w-100 overflowY">
-                        {commonState?.books?.loading ?
+                        {teachersState?.books?.loading ?
                             <div className="w-100 h-100 row align-items-center justify-content-center">
                                 <div className="col-6 text-center">
                                     <SpinnerComponent />
@@ -50,9 +50,9 @@ const Books = () => {
                                 </div>
                             </div>
                             :
-                            commonState?.books?.data?.length > 0 ?
+                            teachersState.books.data.length > 0 ?
                                 <div className="row">
-                                    {commonState.books.data.map((book, index) => (
+                                    {teachersState?.books?.data.map((book, index) => (
                                         <div className="col-3 p-2" key={book.id || index}>
                                             <BookCard data={book} onClickDelete={() => dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "books", modal_type: "delete_book" }))} />
                                         </div>

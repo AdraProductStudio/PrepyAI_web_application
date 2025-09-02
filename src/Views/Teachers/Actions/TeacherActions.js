@@ -1,6 +1,9 @@
 import axiosInstance from "Services/axiosInstance"
 import {
     create_test_onchange,
+    delete_attachment_failure,
+    delete_attachment_request,
+    delete_attachment_success,
     get_student_details_slice,
     get_test_questions_failure,
     get_test_questions_request,
@@ -106,7 +109,7 @@ export const saveSchedule = (payload, navigate) => async (dispatch) => {
 export const get_test_questions = (test_id) => async (dispatch) => {
     try {
         dispatch(get_test_questions_request({ type: "request" }));
-console.log("test_id :", test_id)
+        console.log("test_id :", test_id)
         const response = await axiosInstance.post("/teachers/get_test_questions", test_id);
 
         if (response.data?.error_code === 0) {
@@ -118,6 +121,28 @@ console.log("test_id :", test_id)
         dispatch(get_test_questions_failure(error.message));
     }
 };
+
+//delete attachments
+
+export const deleteAttachment = (attachment_id) => async (dispatch) => {
+    try {
+        dispatch(delete_attachment_request({type:"reques"}));
+
+        const response = await axiosInstance.delete( `/teachers/delete_attachment?attachment_id=${attachment_id}`);
+
+        if (response.data?.error_code === 0) {
+            dispatch(delete_attachment_success());
+        } else {
+            dispatch(
+                delete_attachment_failure(response.data?.message || "Delete failed")
+            );
+        }
+    } catch (error) {
+        dispatch(delete_attachment_failure(error.message));
+    }
+};
+
+
 
 export const handleGetSubjectAttachments = (subject_id) => async (dispatch) => {
     try {

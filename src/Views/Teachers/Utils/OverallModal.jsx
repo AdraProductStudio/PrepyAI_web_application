@@ -15,8 +15,10 @@ import { useParams } from "react-router-dom";
 import Icons from "Utils/Icons";
 import { Form, Button } from "react-bootstrap";
 import { clear_form_fields, handle_attachment_books_upload } from "../Slice/teachersSlice";
-import { handleUploadBook } from "../Actions/TeacherActions";
+import { deleteAttachment, handleUploadBook } from "../Actions/TeacherActions";
 import SpinnerComponent from "Components/Spinner/Spinner";
+import { handleDeleteDashboardTeacher } from "Views/Admin/Actions/Admin_action";
+import { useSelector } from "react-redux";
 
 
 export function OverallModel() {
@@ -37,6 +39,10 @@ export function OverallModel() {
 
     dispatch(handleUploadBook(teachersState?.params_data, teachersState?.attachment_books_upload));
   };
+  const handleDelete = () => { dispatch(deleteAttachment(teachersState?.delete_attachment_id))};
+ 
+ 
+
 
   function modalHeaderFun() {
     switch (commonState?.modal?.from) {
@@ -44,7 +50,8 @@ export function OverallModel() {
         switch (commonState?.modal?.type) {
           case "attachments":
             return <h5>Upload Book</h5>
-
+          case "delete_attachments":
+            return <h5 className="fw-bold">Delete</h5>;
           case "performance":
             return <h5 className="fw-bold">Student Score</h5>;
 
@@ -149,6 +156,39 @@ export function OverallModel() {
                 </div>
               </div>
             );
+          case "delete_attachments":
+            return (<div className="w-100">
+              <div className="text-center mb-4">
+                {Icons.delete_model_icon}
+              </div>
+              <h5 className="text-center">Are you want to Delete the Teacher </h5>
+              {Inputfunctions(jsxJson?.delete_dashboard_teacher_model)}
+              <div className="d-flex align-items-center justify-content-center gap-3">
+                <ButtonComponent
+                  type={"button"}
+                  className={"btn-outline-secondary px-5"}
+                  children={"No"}
+                  clickFunction={() => dispatch(updateModalShow({ show: false, close_btn: true, modal_from: "admin", modal_type: "delete_dashboard_teacher" }))}
+                />
+                <ButtonComponent
+                  type={"button"}
+                  className={"btn-danger brand_color px-5 border-0"}
+                  // clickFunction={() => dispatch(handleDeleteDashboardTeacher(adminState?.edit_dashboard_teacher.s_no, adminState?.dashboard_teachers_list))}
+                  btnDisable={teachersState?.delete_attachment_status === "loading"}
+                  children={
+                    teachersState?.delete_attachment_status === "loading" ? (
+                      <span className="d-flex align-items-center justify-content-center gap-2">
+                        <SpinnerComponent />
+                      </span>
+                    )
+                      :
+                      ("Yes")
+                  }
+                  clickFunction={handleDelete}
+                  
+                />
+              </div>
+            </div>)
 
           case "performance":
             return (
@@ -421,7 +461,6 @@ export function OverallModel() {
                 </Button>
               </div>
             </div>
-
           default:
             break;
         }

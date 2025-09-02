@@ -87,7 +87,7 @@ export function OverallCanvas() {
                                                 <div className="col-12 attachment_title">
                                                     <p>{key}</p>
                                                 </div>
-                                                {value.map((item, index) => (
+                                                {value?.map((item, index) => (
                                                     <div className="col-12 col-md-6 col-xl-4 col-xxl-3 mt-4 p-1" key={index}>
                                                         <AttachmentCard className="attachment_books" data={item} delete_function={() => console.log("Delete function called")} />
                                                     </div>
