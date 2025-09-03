@@ -49,7 +49,7 @@ const StudentOverview = () => {
 
     return (
         <section>
-            <div className="border-bottom pb-3">
+            <div className="border-bottom pb-3 mt-3">
                 <Link to={dynamicBackto()} className="brand-link-color">
                     {Icons.back_button_icon_blue}
                     <span className="align-middle"> Student Overview</span>

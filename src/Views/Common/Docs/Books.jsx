@@ -14,7 +14,7 @@ import { getBooks } from "Views/Teachers/Actions/TeacherActions";
 const Books = () => {
     const { class_id, subject_id } = useParams();
     const dispatch = useDispatch();
-    const { commonState, teachersState } = useCommonState();
+    const { teachersState } = useCommonState();
 
     useEffect(() => {
         dispatch(getBooks({ classroom_id: class_id, subject_id: subject_id }));
@@ -33,7 +33,7 @@ const Books = () => {
     return (
         <div className="h-100">
             <div className="container-fluid">
-                <div className="w-100 border-bottom pb-3">
+                <div className="w-100 border-bottom pb-3 mt-3">
                     <LinkComponent to={dynamicBackRoute()} className="brand-link-color">
                         <span>{Icons.back_button_icon_blue}</span>
                         <span className="align-middle">Back to classroom</span>
@@ -54,7 +54,7 @@ const Books = () => {
                                 <div className="row">
                                     {teachersState?.books?.data.map((book, index) => (
                                         <div className="col-3 p-2" key={book.id || index}>
-                                            <BookCard data={book} onClickDelete={() => dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "books", modal_type: "delete_book" }))} />
+                                            <BookCard data={book} onClickDelete={() => dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "books", modal_type: "delete_book", data: { book_id: book.book_id } }))} />
                                         </div>
                                     ))}
                                 </div>

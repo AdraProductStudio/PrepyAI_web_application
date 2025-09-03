@@ -4,6 +4,7 @@ import {
     delete_attachment_failure,
     delete_attachment_request,
     delete_attachment_success,
+    deleteBook,
     get_student_details_slice,
     get_test_questions_failure,
     get_test_questions_request,
@@ -126,9 +127,9 @@ export const get_test_questions = (test_id) => async (dispatch) => {
 
 export const deleteAttachment = (attachment_id) => async (dispatch) => {
     try {
-        dispatch(delete_attachment_request({type:"reques"}));
+        dispatch(delete_attachment_request({ type: "reques" }));
 
-        const response = await axiosInstance.delete( `/teachers/delete_attachment?attachment_id=${attachment_id}`);
+        const response = await axiosInstance.delete(`/teachers/delete_attachment?attachment_id=${attachment_id}`);
 
         if (response.data?.error_code === 0) {
             dispatch(delete_attachment_success());
@@ -202,6 +203,29 @@ export const getBooks = (params) => async (dispatch) => {
     } catch (err) {
 
         dispatch(handleGetBooks({
+            type: "failure",
+            message: err?.message || "Network Error"
+        }));
+    }
+};
+
+// books api
+export const handleDeleteBook = (params) => async (dispatch) => {
+    if (!params?.book_id) dispatch(deleteBook({ type: "failure", message: "book id missing" }));
+
+    try {
+
+        dispatch(deleteBook({ type: "request" }));
+        const { data } = await axiosInstance.delete(`/teachers/delete_book?book_id=${params?.book_id}`);
+
+        if (data?.error_code === 0) {
+            dispatch(deleteBook({ type: "response", data: params }));
+        } else {
+            dispatch(deleteBook({ type: "failure", message: data?.message || "Failed to delete books" }));
+        }
+    } catch (err) {
+
+        dispatch(deleteBook({
             type: "failure",
             message: err?.message || "Network Error"
         }));

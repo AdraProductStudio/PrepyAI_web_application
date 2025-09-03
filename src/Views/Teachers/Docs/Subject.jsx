@@ -31,7 +31,7 @@ const Subject = () => {
     return (
       <div className="h-100">
         <div className="container-fluid">
-          <div className="w-100 row justify-content-between align-items-center border-bottom pb-3">
+          <div className="w-100 row justify-content-between align-items-center border-bottom pb-3 mt-3">
             <div className="col">
               <Link
                 to="/teachers_dashboard/classrooms"

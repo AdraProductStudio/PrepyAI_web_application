@@ -12,7 +12,7 @@ const ScheduleTestLayout = () => {
     return (
         <div className="h-100">
             <div className="container-fluid">
-                <div className="w-100 border-bottom pb-3">
+                <div className="w-100 border-bottom pb-3 mt-3">
                     <LinkComponent to={`/teachers_dashboard/classrooms/${class_id}/${subject_id}`} className="brand-link-color">
                         <span>{Icons.back_button_icon_blue}</span>
                         <span className="align-middle">12th - A Section</span>

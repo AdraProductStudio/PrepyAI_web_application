@@ -919,6 +919,24 @@ const teachersSlice = createSlice({
     },
     updateDeleteAttachment(state, action) {
       state.delete_attachment_id = action.payload
+    },
+    deleteBook(state, action) {
+      const { type, data } = action.payload;
+
+      switch (type) {
+        case "request":
+          state.delete_book_spinner = true;
+          break;
+        case "response":
+          state.books.data = state.books?.data?.filter(book => book.book_id !== data.book_id) || [];
+          state.delete_book_spinner = false;
+          break;
+        case "failure":
+          state.delete_book_spinner = false;
+          break;
+        default:
+          break;
+      }
     }
   },
 
@@ -974,8 +992,9 @@ export const {
   update_Students_classroom,
   get_students_by_test_slice,
   updateParams, handle_attachment_books_upload, handleTestHistoryGet, handleGetBooks,
-  get_test_questions_failure, get_test_questions_success, get_test_questions_request
-
+  get_test_questions_failure, get_test_questions_success, get_test_questions_request,
+  delete_attachment_request, delete_attachment_success, delete_attachment_failure, updateDeleteAttachment,
+  deleteBook
 } = actions
 
 export default reducer

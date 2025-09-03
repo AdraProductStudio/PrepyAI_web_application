@@ -33,7 +33,7 @@ const SubjectDetails = () => {
 
     return (
         <div>
-            <div className="w-100 border-bottom pb-3">
+            <div className="w-100 border-bottom pb-3 mt-3">
                 <div className="col">
                     <LinkComponent to={`/teachers_dashboard/classrooms/${class_id}`} className="brand-link-color">
                         <span>{Icons.back_button_icon_blue}</span>

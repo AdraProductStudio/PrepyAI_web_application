@@ -39,7 +39,7 @@ const Classroom = () => {
   return (
     <div className="h-100">
       <div className="container-fluid">
-        <div className="w-100 row justify-content-between align-items-center border-bottom pb-3">
+        <div className="w-100 row justify-content-between align-items-center border-bottom pb-3 mt-3">
           <div className="col">
             <h5 className="mb-0">Classrooms</h5>
           </div>

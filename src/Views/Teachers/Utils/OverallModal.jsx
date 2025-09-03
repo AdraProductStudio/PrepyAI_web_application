@@ -15,10 +15,11 @@ import { useParams } from "react-router-dom";
 import Icons from "Utils/Icons";
 import { Form, Button } from "react-bootstrap";
 import { clear_form_fields, handle_attachment_books_upload } from "../Slice/teachersSlice";
-import { deleteAttachment, handleUploadBook } from "../Actions/TeacherActions";
+import { deleteAttachment, handleDeleteBook, handleUploadBook } from "../Actions/TeacherActions";
 import SpinnerComponent from "Components/Spinner/Spinner";
 import { handleDeleteDashboardTeacher } from "Views/Admin/Actions/Admin_action";
 import { useSelector } from "react-redux";
+import ButtonSpinner from "Components/Spinner/ButtonSpinner";
 
 
 export function OverallModel() {
@@ -428,10 +429,11 @@ export function OverallModel() {
                   }
                 />
 
-                <ButtonComponent
+                <ButtonSpinner
                   className="btn-md w-50 text-white btn-brand-color"
-                  buttonName={"Yes"}
-                  clickFunction={commonState?.modal?.modal_data}
+                  title={teachersState?.delete_book_spinner ? "Deleting..." : "Yes"}
+                  is_spinner={teachersState?.delete_book_spinner}
+                  clickFunction={()=>dispatch(handleDeleteBook(commonState?.modal?.modal_data || {}))}
                 />
               </div>
             </div>

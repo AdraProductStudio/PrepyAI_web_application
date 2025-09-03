@@ -27,24 +27,24 @@ const TestHistory = () => {
 
     return (
         <div className='h-100'>
-            {teachersState?.test_history?.glow ?
-                <div className="h-100 row align-items-center justify-content-center">
-                    <div className="col-10 col-lg-6 text-center">
-                        <Spinner />
-                        <p>Getting Test Results...</p>
+            <div className='container-fluid h-100'>
+                <div className="w-100 row justify-content-between align-items-center border-bottom pb-3 mt-3">
+                    <div className="col">
+                        <LinkComponent to={`/teachers_dashboard/classrooms/${class_id}/${subject_id}/test/ongoing_test`} className="brand-link-color">
+                            <span>{Icons.back_button_icon_blue}</span>
+                            <span className="align-middle">Back</span>
+                        </LinkComponent>
                     </div>
                 </div>
-                :
-                teachersState?.test_history?.data?.length ?
-                    <div className='container-fluid h-100'>
-                        <div className="w-100 row justify-content-between align-items-center border-bottom pb-3">
-                            <div className="col">
-                                <LinkComponent to={`/teachers_dashboard/classrooms/${class_id}/${subject_id}/test/ongoing_test`} className="brand-link-color">
-                                    <span>{Icons.back_button_icon_blue}</span>
-                                    <span className="align-middle">Back to Subjects</span>
-                                </LinkComponent>
-                            </div>
+                {teachersState?.test_history?.glow ?
+                    <div className="h-100 row align-items-center justify-content-center">
+                        <div className="col-10 col-lg-6 text-center">
+                            <Spinner />
+                            <p>Getting Test Results...</p>
                         </div>
+                    </div>
+                    :
+                    teachersState?.test_history?.data?.length ?
                         <Card className="shadow-sm border-0 rounded-4 p-3 mt-4" style={{ height: '85%' }} >
                             {/* Header */}
                             <h5 className="fw-semibold mb-1">Students Score</h5>
@@ -86,18 +86,18 @@ const TestHistory = () => {
                                 </Table>
                             </div>
                         </Card>
-
-                        {/* <div className="mt-3">
+                        :
+                        <div className="h-100 row align-items-center justify-content-center">
+                            <div className="col-10 col-lg-6 text-center">
+                                <p>No Data Found...</p>
+                            </div>
+                        </div>
+                }
+                {/* <div className="mt-3">
                     <ReactPaginateComp />
                 </div> */}
-                    </div>
-                    :
-                    <div className="h-100 row align-items-center justify-content-center">
-                        <div className="col-10 col-lg-6 text-center">
-                            <p>No Data Found...</p>
-                        </div>
-                    </div>
-            }
+            </div>
+
         </div>
     )
 }
