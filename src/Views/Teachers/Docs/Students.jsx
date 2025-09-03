@@ -10,6 +10,7 @@ import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import Icons from "Utils/Icons";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import JsonData from "../Utils/JsonData";
+import { update_Students_classroom } from "../Slice/teachersSlice";
 
 const Students = () => {
   const { jsxJson } = JsonData();
@@ -39,6 +40,11 @@ const Students = () => {
 
       useEffect(()=>{
           dispatch(getAllClassRooms())
+          dispatch(
+            update_Students_classroom({
+              classroom_id: ["all_classrooms"],
+            })
+          );
       },[])
       
   return (

@@ -725,7 +725,6 @@ const teachersSlice = createSlice({
           break;
       }
     },
-
     handldeGetAllSubjects(state, action) {
       const { type, data } = action.payload;
 
@@ -761,7 +760,7 @@ const teachersSlice = createSlice({
     },
     updatePostStudentData(state, action) {
       const [key, value] = Object.entries(action.payload)[0] || [];
-      state.teacher_PostStudents.data[key] = value || "";
+      state.teacher_PostStudents.data.data[key] = value || "";
     },
     update_edit_student(state, action) {
       const { data, getdata } = action.payload;

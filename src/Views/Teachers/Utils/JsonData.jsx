@@ -792,7 +792,7 @@ const JsonData = (params) => {
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
         className: "custom-dropdown",
-        value: [],
+        value: [{ label: "All Classrooms", value: "all_classrooms"}],
         change: (selectedOptions) =>
           dispatch(
             update_Grade_by_classroom({
@@ -814,7 +814,7 @@ const JsonData = (params) => {
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
         className: "custom-dropdown",
-        value: [],
+        value: [{ label: "All Classrooms", value: "all_classrooms" }],
         change: (selectedOptions) =>
           dispatch(
             update_perfomance_by_classroom({
@@ -835,8 +835,8 @@ const JsonData = (params) => {
           : [],
         multi: false,
         divClassName: "studentsSelectClasses",
-        className: "grade-dashboard-teacher-input",
-        value: [],
+        className: "",
+        value:[{ label: "All Classrooms", value: "all_classrooms" }],
         change: (selectedOptions) =>
           dispatch(
             update_Students_classroom({
@@ -858,7 +858,7 @@ const JsonData = (params) => {
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
         className: "custom-dropdown",
-        value: [],
+        value:[{ label: "All Subjects", value: "all_subjects" }],
         change: (selectedOptions) =>
           dispatch(
             update_perfomance_by_classroom({

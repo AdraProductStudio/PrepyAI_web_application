@@ -435,7 +435,7 @@ export const postStudents = (form_data) => async (dispatch) => {
   if (!student_name || !contact_no || !student_email || !student_reg_no) {
     return dispatch(update_app_data({ type: "validation", data: true }));
   }
-
+  
   try {
     const response = await axiosInstance.post("/teachers/edit_student", form_data?.data);
 
@@ -449,7 +449,7 @@ export const postStudents = (form_data) => async (dispatch) => {
       if (id_from === "classroom") {
         dispatch(
           GetStudentsListByTeacher({
-            classroom_id: "all_classrooms",
+            classroom_id: ["all_classrooms"],
             search_query: pagination?.search_query,
             show_entries: pagination?.show_entries,
             page: pagination?.page,
@@ -558,7 +558,7 @@ export const deleteStudents = (data) => async (dispatch) => {
     if (id_from === "classroom") {
       dispatch(
         GetStudentsListByTeacher({
-          classroom_id: "all_classrooms",
+          classroom_id: ["all_classrooms"],
           search_query: pagination?.search_query,
           show_entries: pagination?.show_entries,
           page: pagination?.page,
@@ -600,6 +600,7 @@ export const deleteSubjects = (id) => async (dispatch) => {
     if (success) {
       dispatch(update_error({ Err: message, Toast_Type: "success" }));
       dispatch(getSubjects())
+      dispatch(getAllClassRooms())
       dispatch(updateModalShow({ show: false }));
     }
   } catch (error) {
