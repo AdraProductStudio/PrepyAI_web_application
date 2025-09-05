@@ -14,7 +14,7 @@ const CompletedTest = () => {
 
     useEffect(() => {
         if(class_id){
-            dispatch(getTestRecords({ classroom_id: 19, type: "cancelled" }));
+            dispatch(getTestRecords({ classroom_id: class_id, type: "cancelled" }));
         }
     }, [class_id]);
 

@@ -13,17 +13,15 @@ import {
 } from "../Actions/teacherAction";
 import { useParams } from "react-router-dom";
 import Icons from "Utils/Icons";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Spinner } from "react-bootstrap";
 import { clear_form_fields, handle_attachment_books_upload } from "../Slice/teachersSlice";
-import { deleteAttachment, handleDeleteBook, handleUploadBook } from "../Actions/TeacherActions";
+import { deleteAttachment, handleDeleteBook, handleUploadBook, uploadBooks } from "../Actions/TeacherActions";
 import SpinnerComponent from "Components/Spinner/Spinner";
-import { handleDeleteDashboardTeacher } from "Views/Admin/Actions/Admin_action";
-import { useSelector } from "react-redux";
 import ButtonSpinner from "Components/Spinner/ButtonSpinner";
 
 
 export function OverallModel() {
-  const { class_id } = useParams();
+  const { class_id, subject_id, book_id } = useParams();
   const { jsxJson } = JsonData();
   const dispatch = useDispatch();
   const { teachersState, commonState, } = useCommonState();
@@ -35,15 +33,14 @@ export function OverallModel() {
     }
   };
 
+
   const handleSubmit = () => {
     if (!teachersState?.attachment_books_upload) return alert("Please select a file before uploading");
-
     dispatch(handleUploadBook(teachersState?.params_data, teachersState?.attachment_books_upload));
   };
-  const handleDelete = () => { dispatch(deleteAttachment(teachersState?.delete_attachment_id))};
- 
- 
 
+
+  const handleDelete = () => { dispatch(deleteAttachment(teachersState?.delete_attachment_id)) };
 
   function modalHeaderFun() {
     switch (commonState?.modal?.from) {
@@ -55,6 +52,8 @@ export function OverallModel() {
             return <h5 className="fw-bold">Delete</h5>;
           case "performance":
             return <h5 className="fw-bold">Student Score</h5>;
+          case "upload_books":
+            return <h5>Upload Books</h5>
 
           default:
             break;
@@ -121,44 +120,29 @@ export function OverallModel() {
       case "teacher":
         switch (commonState?.modal?.type) {
           case "attachments":
-            return (
-              <div className="p-4 shadow-lg rounded-3" style={{ maxWidth: "500px", margin: "auto" }}>
-                {/* Dropdown */}
-                {/* <Form.Group className="mb-3">
-                                    <Form.Label className="fw-semibold text-primary">Classes</Form.Label>
-                                    <Form.Select
-                                        value={selectedClass}
-                                        onChange={(e) => setSelectedClass(e.target.value)}
-                                    >
-                                        <option>12th A section</option>
-                                        <option>12th B section</option>
-                                        <option>11th A section</option>
-                                    </Form.Select>
-                                </Form.Group> */}
+            return <div className="p-4 shadow-lg rounded-3" style={{ maxWidth: "500px", margin: "auto" }}>
+              <div
+                className="border border-2 border-danger rounded p-4 text-center mb-3"
+                style={{ borderStyle: "dashed" }}
+              >
+                <Form.Label className="fw-medium text-danger">
+                  Drag & drop Your book File or <span className="text-primary">Browse</span>
+                </Form.Label>
+                <p className="small text-muted">
+                  Format: pdf, docx, doc | Max size: 1 GB
+                </p>
+                <Form.Control
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleFileChange}
+                />
 
-                {/* Drag & Drop Style File Upload */}
-                <div
-                  className="border border-2 border-danger rounded p-4 text-center mb-3"
-                  style={{ borderStyle: "dashed" }}
-                >
-                  <Form.Label className="fw-medium text-danger">
-                    Drag & drop Your book File or <span className="text-primary">Browse</span>
-                  </Form.Label>
-                  <p className="small text-muted">
-                    Format: pdf, docx, doc | Max size: 1 GB
-                  </p>
-                  <Form.Control
-                    type="file"
-                    accept=".pdf,.doc,.docx"
-                    onChange={handleFileChange}
-                  />
-
-                  {teachersState?.attachment_books_upload?.filename && <p className="small text-success mt-2">📘 {teachersState?.attachment_books_upload?.filename}</p>}
-                </div>
+                {teachersState?.attachment_books_upload?.filename && <p className="small text-success mt-2">📘 {teachersState?.attachment_books_upload?.filename}</p>}
               </div>
-            );
+            </div>
+
           case "delete_attachments":
-            return (<div className="w-100">
+            return <div className="w-100">
               <div className="text-center mb-4">
                 {Icons.delete_model_icon}
               </div>
@@ -186,53 +170,73 @@ export function OverallModel() {
                       ("Yes")
                   }
                   clickFunction={handleDelete}
-                  
+
                 />
               </div>
-            </div>)
+            </div>
 
           case "performance":
-            return (
-              <div className="modal-body p-0 m-0 ">
-                <div className="table-responsive">
-                  <table className="table table-bordered text-center align-middle mb-0">
-                    <thead>
+            return <div className="modal-body p-0 m-0 ">
+              <div className="table-responsive">
+                <table className="table table-bordered text-center align-middle mb-0">
+                  <thead>
+                    <tr>
+                      {jsxJson?.student_performance_modal.map((item, idx) => (
+                        <th className={item.divClassName} key={idx}>
+                          {item.title}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {teachersState?.studentsPerformance.placeholder2 ?
                       <tr>
-                        {jsxJson?.student_performance_modal.map((item, idx) => (
-                          <th className={item.divClassName} key={idx}>
-                            {item.title}
-                          </th>
-                        ))}
+                        <td colSpan={5}>
+                          <SpinnerComponent />
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {teachersState?.studentsPerformance.placeholder2 ?
-                        <tr>
-                          <td colSpan={5}>
-                            <SpinnerComponent />
-                          </td>
-                        </tr>
-                        :
-                        teachersState?.studentsPerformance.performance_modalData.length > 0 ? (
-                          teachersState?.studentsPerformance.performance_modalData.map((data, idx) => (
-                            <tr key={idx} >
-                              <td>{data.first_name}</td>
-                              <td>{data.overall}</td>
-                              <td>{data.score}</td>
-                              <td>{data.performance_status}</td>
-                              <td>{data.time_submitted}</td>
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td colSpan={5} className="text-center py-4">No Data Found</td>
+                      :
+                      teachersState?.studentsPerformance.performance_modalData.length > 0 ? (
+                        teachersState?.studentsPerformance.performance_modalData.map((data, idx) => (
+                          <tr key={idx} >
+                            <td>{data.first_name}</td>
+                            <td>{data.overall}</td>
+                            <td>{data.score}</td>
+                            <td>{data.performance_status}</td>
+                            <td>{data.time_submitted}</td>
                           </tr>
-                        )}
-                    </tbody>
-                  </table>
-                </div>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={5} className="text-center py-4">No Data Found</td>
+                        </tr>
+                      )}
+                  </tbody>
+                </table>
               </div>
-            )
+            </div>
+
+          case "upload_books":
+            return <div className="col-12">
+              <div
+                className="border border-2 border-danger rounded p-4 text-center mt-4"
+                style={{ borderStyle: "dashed" }}
+              >
+                <Form.Label className="fw-medium text-danger">
+                  Drag & drop Your book File or <span className="text-primary">Browse</span>
+                </Form.Label>
+                <p className="small text-muted">
+                  Format: pdf, docx, doc | Max size: 1 GB
+                </p>
+                <Form.Control
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleFileChange}
+                />
+
+                {teachersState?.uploadBooks?.filename && <p className="small text-success mt-2">📘 {teachersState?.uploadBooks?.filename}</p>}
+              </div>
+            </div>
 
           default:
             break;
@@ -433,7 +437,7 @@ export function OverallModel() {
                   className="btn-md w-50 text-white btn-brand-color"
                   title={teachersState?.delete_book_spinner ? "Deleting..." : "Yes"}
                   is_spinner={teachersState?.delete_book_spinner}
-                  clickFunction={()=>dispatch(handleDeleteBook(commonState?.modal?.modal_data || {}))}
+                  clickFunction={() => dispatch(handleDeleteBook(commonState?.modal?.modal_data || {}))}
                 />
               </div>
             </div>
@@ -442,6 +446,8 @@ export function OverallModel() {
             break;
         }
         break;
+
+
       default:
         break;
 
@@ -453,16 +459,55 @@ export function OverallModel() {
       case "teacher":
         switch (commonState?.modal?.type) {
           case "attachments":
-            return <div>
-              <div className="d-flex justify-content-between gap-2">
-                <Button variant="outline-secondary" onClick={() => dispatch(updateModalShow({ show: false, close_btn: false, modal_from: "", modal_type: "" }))}>
+            return <div className="w-100 row">
+              <div className="col p-1">
+                <Button variant="outline-secondary w-100" onClick={() => dispatch(updateModalShow({ show: false, close_btn: false, modal_from: "", modal_type: "" }))}>
                   Cancel
                 </Button>
-                <Button variant="danger" onClick={handleSubmit} >
-                  {"Upload Book"}
-                </Button>
+              </div>
+              <div className="col p-1">
+                <ButtonSpinner
+                  className="btn-danger brand_color border-0 w-100"
+                  title={teachersState?.upload_attachment?.glow ? "Uploading..." : "Upload Book"}
+                  is_spinner={teachersState?.upload_attachment?.glow}
+                  clickFunction={handleSubmit}
+                />
               </div>
             </div>
+
+          case "upload_books":
+            return (<div className="w-100 row">
+              {Inputfunctions(jsxJson.book_upload_modal)}
+              <div className="w-100 d-flex justify-content-between mt-5">
+                <div className="col p-1 ">
+                  <ButtonComponent
+                    className="btn border px-5 w-100"
+                    type="button"
+                    buttonName="Cancel"
+                     />
+                </div>
+                <div className="col p-1">
+                  <ButtonSpinner
+                    className="btn-brand-color  w-100 border-0 "
+                    type="button"
+                    buttonName="Upload Book"
+                    title={teachersState?.upload_books?.glow ? "Uploading..." : "Upload Book"}
+                    is_spinner={teachersState?.upload_books?.glow}
+                    clickFunction={() =>
+                      dispatch(uploadBooks({
+                        file: teachersState?.attachment_books_upload,
+                        subject_id: subject_id,
+                        classroom_id: class_id,
+                      }))
+                    }
+                  />
+                </div>
+
+              </div>
+            </div>
+
+            )
+
           default:
             break;
         }

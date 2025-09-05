@@ -9,6 +9,7 @@ import Img from "Components/Img/Img";
 import Image from "Utils/Image";
 import { updateModalShow } from "../Slices/Common_slice";
 import { getBooks } from "Views/Teachers/Actions/TeacherActions";
+import ButtonComponent from "Components/Button/Button";
 
 
 const Books = () => {
@@ -33,11 +34,29 @@ const Books = () => {
     return (
         <div className="h-100">
             <div className="container-fluid">
-                <div className="w-100 border-bottom pb-3 mt-3">
+                <div className="w-100 border-bottom pb-3 mt-3 d-flex justify-content-between ">
                     <LinkComponent to={dynamicBackRoute()} className="brand-link-color">
                         <span>{Icons.back_button_icon_blue}</span>
                         <span className="align-middle">Back to classroom</span>
                     </LinkComponent>
+                    <ButtonComponent
+                        className="btn-brand-color px-4"
+                        type="button"
+                        buttonName={<div>
+                            {Icons.add_icon}
+                            Upload Books
+                        </div> }
+                            
+                        
+                        clickFunction={() => dispatch(
+                            updateModalShow({
+                                show: true,
+                                close_btn: true,
+                                modal_from: "teacher",
+                                modal_type: "upload_books",
+                            })
+                        )}
+                    />
                 </div>
 
                 <div className="books_layout py-3">

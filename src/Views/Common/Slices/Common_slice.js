@@ -148,7 +148,7 @@ const commonSlice = createSlice({
         updateModalShow(state, actions) {
             const { show, size, modal_from, modal_type, close_btn, data } = actions.payload;
             if (modal_from === "notes") state.notesdata = {}
-console.log(data)
+
             state.modal.show = show
             state.modal.size = size || "md"
             state.modal.from = modal_from || null
@@ -289,7 +289,11 @@ console.log(data)
             .addMatcher(
                 (action) => [
                     "teachersSlice/handleUploadAttachment",
-                    "teachersSlice/deleteBook"
+                    "teachersSlice/deleteBook",
+                    "teachersSlice/handleUploadAttachment",
+                    "teachersSlice/handleUploadBooks",
+                    "teachersSlice/handleScheduleTest",
+                    "teachersSlice/save_schedule_status",
                 ].includes(action.type),
 
                 (state, action) => {
@@ -307,7 +311,15 @@ console.log(data)
             //For handling response error [setting toast error message]
             .addMatcher(
                 (action) => [
-                    "teachersSlice/handleGetTestRecords"
+                    "teachersSlice/handleGetTestRecords",
+                    "teachersSlice/handleUploadAttachment",
+                    "teachersSlice/handleGetBooks",
+                    "teachersSlice/deleteBook",
+                    "teachersSlice/getSubjectAttachments",
+                    "teachersSlice/handleUploadBooks",
+                    "teachersSlice/handleScheduleTest",
+                    "teachersSlice/save_schedule_status",
+
                 ].includes(action.type),
 
                 (state, action) => {
@@ -327,7 +339,9 @@ console.log(data)
                     "authState/update_student_register",
                     "authState/update_forgot_password",
                     "authState/update_otp_verification",
-                    "authState/update_create_password"
+                    "authState/update_create_password",
+                    "teachersSlice/handleScheduleTest",
+                    "teachersSlice/save_schedule_status",
                 ].includes(action.type),
 
                 (state) => {

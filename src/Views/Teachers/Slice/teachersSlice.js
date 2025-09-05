@@ -35,6 +35,8 @@ const initialState = {
     selected_chapter: "",
 
   },
+
+  scheduleTest_values:{},
   student_details: {},
   save_schedule_status: {},
   save_schedule_error: {},
@@ -47,7 +49,7 @@ const initialState = {
     placeholder: false,
     placeholder2: false,
     assignedTest: {
-      jsonStudentsData: [],
+      jsonStudentsData: [ { student_name: "All", student_id: "all" }],
       pagination: {
         page: 1,
         show_entries: 10,
@@ -134,7 +136,7 @@ const initialState = {
   },
 
   upload_attachment: {
-    glow: true,
+    glow: false,
     data: [],
     message: null,
   },
@@ -150,6 +152,7 @@ const initialState = {
     data: {}
   },
   test_history: {},
+
   books: {
     loading: false,
     data: [],
@@ -161,7 +164,20 @@ const initialState = {
   delete_attachment_status: "idle",
   delete_attachment_error: null,
 
-  delete_attachment_id: null
+  delete_attachment_id: null,
+
+  upload_books: {
+    loading: false,
+    data: [],
+    error: null,
+  },
+  schedule_test: {
+    loading: false,
+    data: null,
+    error: null,
+    glow: false,
+  },
+
 }
 
 const teachersSlice = createSlice({
@@ -315,15 +331,19 @@ const teachersSlice = createSlice({
         state.test_create.input_data[key] = value
       ))
     },
+    selected_students_in_schedule(state, action) {
+      const [[key, value]] = Object.entries(action.payload);
+      state.scheduleTest_values[key] = value;
+         },
     update_selected_books(state, action) {
       const { key, value } = action.payload
-      if (key === "selected_books") state.create_test["selected_chapter"] = ""
+      if (key === "selected_books") state.create_test["chapters"] = ""
       state.create_test[key] = value
 
     },
     get_student_details_slice(state, action) {
-      const { key, value } = action.payload
-      state.student_details[key] = value
+      // const { key, value } = action.payload
+      // state.student_details[key] = value
 
       const { type, data } = action.payload
       switch (type) {
@@ -937,7 +957,76 @@ const teachersSlice = createSlice({
         default:
           break;
       }
-    }
+    },
+    resetStudentState(state){
+    state.studentsPerformance.assignedTest.jsonStudentsData= [{student_id:"all",student_name:"All"}]   },
+
+        resetStudentJsonDataState(state){
+    state.studentsPerformance.assignedTest.jsonStudentsData= [{student_id:"all",student_name:"All"}]   },
+
+    handleUploadBooks(state, action) {
+      const { type, data, message } = action.payload || {};
+
+      switch (type) {
+        case "request":
+          state.upload_books.loading = true;
+          state.upload_books.data = [];
+          state.upload_books.error = null;
+          state.upload_books.glow = true;
+          break;
+
+        case "response":
+          state.upload_books.loading = false;
+          state.upload_books.data = data || [];
+          state.upload_books.error = null;
+          state.upload_books.glow = false;
+          break;
+
+        case "failure":
+          state.upload_books.loading = false;
+          state.upload_books.error = message || "Something went wrong";
+          state.upload_books.glow = false;
+          break;
+
+        default:
+          return;
+      }
+    },
+    handleScheduleTest(state, action) {
+      const { type, data, message } = action.payload || {};
+
+      switch (type) {
+        case "request":
+          state.schedule_test = {
+            loading: true,
+            data: null,
+            error: null,
+            glow: true,
+          };
+          break;
+
+        case "response":
+          state.schedule_test = {
+            loading: false,
+            data: data || null,
+            error: null,
+            glow: false,
+          };
+          break;
+
+        case "failure":
+          state.schedule_test = {
+            loading: false,
+            data: null,
+            error: message || "Something went wrong",
+            glow: false,
+          };
+          break;
+
+        default:
+          return;
+      }
+    },
   },
 
   extraReducers(builder) {
@@ -994,7 +1083,10 @@ export const {
   updateParams, handle_attachment_books_upload, handleTestHistoryGet, handleGetBooks,
   get_test_questions_failure, get_test_questions_success, get_test_questions_request,
   delete_attachment_request, delete_attachment_success, delete_attachment_failure, updateDeleteAttachment,
-  deleteBook
+  deleteBook, handleUploadBooks,
+  handleScheduleTest,
+  resetStudentState,
+  selected_students_in_schedule
 } = actions
 
 export default reducer

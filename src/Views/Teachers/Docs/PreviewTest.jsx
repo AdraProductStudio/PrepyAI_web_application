@@ -5,8 +5,9 @@ import { saveAs } from "file-saver";
 import ButtonComponent from "Components/Button/Button";
 import QuestionPaperCard from "Components/Card/QuestionPaperCard";
 import Icons from "Utils/Icons";
-import { get_test_questions } from "../Actions/TeacherActions";
+import { get_test_questions, scheduleTest } from "../Actions/TeacherActions";
 import { useCommonState } from "Components/CustomHooks";
+import ButtonSpinner from "Components/Spinner/ButtonSpinner";
 
 const PreviewTest = ({ test_id }) => {
     const location = useLocation();
@@ -24,7 +25,7 @@ const PreviewTest = ({ test_id }) => {
 
     // --- Download with answers ---
     const handleDownload = async () => {
-        dispatch(get_test_questions({ test_id : teachersState?.test_id}));
+        dispatch(get_test_questions({ test_id: teachersState?.test_id }));
         const questions = test_questions?.question_with_answer?.Set_1 || [];
 
         if (!questions.length) {
@@ -111,10 +112,12 @@ const PreviewTest = ({ test_id }) => {
                         />
                     </div>
                     <div className="col p-2">
-                        <ButtonComponent
+                        <ButtonSpinner
                             type="button"
                             className="w-100 btn-brand-color py-2"
-                            onClick={() => console.log("Schedule Test")}
+                            title={teachersState?.schedule_test?.glow ? "Scheduleing Test " : " Schedule Test in Online"}
+                            is_spinner={teachersState?.schedule_test?.glow}
+                            clickFunction={() => dispatch(scheduleTest({ test_id: teachersState?.test_id }))}
                             buttonName="Schedule Test in Online"
                         />
                     </div>

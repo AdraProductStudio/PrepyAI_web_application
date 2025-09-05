@@ -2,14 +2,16 @@ import { useCommonState, useCustomNavigate, useDispatch } from 'Components/Custo
 import { handlePostNote, update_app_data, update_note_data } from 'Views/Common/Slices/Common_slice';
 import Icons from 'Utils/Icons';
 import Image from 'Utils/Image';
-import { clear_form_fields, update_perfomance_by_classroom, update_selected_books, update_student_perfomance_dashboard, update_Students_classroom } from '../Slice/teachersSlice';
-import { get_bookmarks, handleGetSubjectAttachments } from '../Actions/TeacherActions';
+import { clear_form_fields, resetStudentState, selected_students_in_schedule, update_perfomance_by_classroom, update_selected_books, update_student_perfomance_dashboard, update_Students_classroom } from '../Slice/teachersSlice';
+import { get_bookmarks, get_student_details, handleGetSubjectAttachments } from '../Actions/TeacherActions';
 import { update_Create_student, update_Grade_by_classroom, updatePostClassroomsData, updatePostStudentData, updatePostSubjectsData } from '../Slice/teachersSlice';
+import { useParams } from 'react-router-dom';
 
 const JsonData = (params) => {
   const dispatch = useDispatch();
   const navigate = useCustomNavigate();
   const { commonState, teachersState } = useCommonState();
+  const {class_id} = useParams();
   const jsonOnly = {
     dashboard_count_details: [
       {
@@ -240,47 +242,89 @@ const JsonData = (params) => {
       },
     ]
   }
-
   const jsxJson = {
     create_test: [
       {
+        name: "Test Name",
+        category: "input",
+        type: "text",
+        placeholder: "Type Book Name",
+        isMandatory: true,
+        value: teachersState?.scheduleTest_values?.test_name || "",
+        className:"modal-inputs",
+        change: (e) => {
+          dispatch(
+            selected_students_in_schedule({test_name:e.target.value})
+          );
+        },
+        divClassName: "col-12 com-sm-6 col-xl-4 p-2",
+        // Err: commonState?.app_data?.validated ? "Please enter a book name" : "",
+      },
+      {
         name: "Books",
         category: "select",
-        type: "normal_select",
-        options: teachersState?.books?.data?.map((book) => book.book_name),
+        type: "react_dropdown_select",
+        className:"modal-inputs",
+        multi: false,
+        options: Array.isArray(teachersState?.books?.data)
+          ? teachersState?.books?.data?.map((book) => ({
+            label: book.book_name,
+            value: book.book_id,
+          }))
+          : [],
         placeholder: "Select Book",
         isMandatory: true,
-        value: teachersState?.create_test?.selected_books?.book_name || "",
-        change: (e) => {
-          const book = teachersState?.books?.data?.find(
-            (book) => book.book_name === e.target.value
-          );
-          dispatch(
-            update_selected_books({ key: "selected_books", value: book })
-          );
-          dispatch(get_bookmarks({ book_id: book?.book_id }));
+        value: teachersState?.scheduleTest_values?.book_id
+          ? [
+            {
+              label:
+                teachersState?.books?.data?.find(
+                  (b) =>
+                    b.book_id ===
+                    teachersState?.scheduleTest_values?.book_id
+                )?.book_name || "",
+              value: teachersState?.scheduleTest_values?.book_id,
+            },
+          ]
+          : [],
+        change: (selected) => {
+          const selectedValue = Array.isArray(selected) ? selected[0]?.value : selected?.value;
+          dispatch(selected_students_in_schedule({ book_id: selectedValue }));
+          dispatch(get_bookmarks({ book_id: selectedValue }));
         },
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated ? "Please select a book" : "",
-      },
+      }
+      ,
       {
         name: "Chapter",
         category: "select",
-        type: "normal_select",
-        options: teachersState?.test_records?.data?.map(
-          (chapter) => chapter.title
-        ),
+        type: "react_dropdown_select",
+        options: Array.isArray(teachersState?.test_records?.data) ? teachersState?.test_records?.data?.map(
+          (chapter) => ({
+            label: chapter.title,
+            value: chapter.title,
+          }))
+          : [],
         placeholder: "Select Chapter",
         isMandatory: true,
-        value: teachersState?.create_test?.selected_chapter || "",
-        change: (e) =>
-          dispatch(
-            update_selected_books({
-              key: "selected_chapter",
-              value: e.target.value,
-            })
-          ),
+        value:  teachersState?.scheduleTest_values?.chapters ? [
+            {
+              label:
+                 teachersState?.test_records?.data?.find(
+                  (b) =>
+                    b.title ===
+                   teachersState?.scheduleTest_values?.selected_chapter
+                )?.title || "",
+              value: teachersState?.scheduleTest_values?.selected_chapter,
+            },
+          ] : [],
+           change: (selected) => {
+          const selectedValue = Array.isArray(selected) ? selected[0]?.value : selected?.value;
+          dispatch(selected_students_in_schedule({ chapters: [selectedValue] }));
+        },
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
+        className:"modal-inputs",
         Err: commonState?.app_data?.validated ? "Please select a chapter" : "",
       },
       // {
@@ -302,15 +346,13 @@ const JsonData = (params) => {
         options: ["MCQ Questions", "Long Questions"],
         placeholder: "Select Type of Questions",
         isMandatory: true,
-        value: teachersState?.create_test?.question_type || "",
+        value:teachersState?.scheduleTest_values?.type_of_questions || "",
         change: (e) =>
           dispatch(
-            update_selected_books({
-              key: "question_type",
-              value: e.target.value,
-            })
+            selected_students_in_schedule({type_of_questions:e.target.value})
           ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
+        className:"modal-inputs",
         Err: commonState?.app_data?.validated
           ? "Please select type of questions"
           : "",
@@ -322,12 +364,12 @@ const JsonData = (params) => {
         options: [5, 10, 15],
         placeholder: "Select Number of Questions",
         isMandatory: true,
-        value: teachersState?.create_test?.question_quantity || "",
+        className:"modal-inputs",
+        value: teachersState?.scheduleTest_values?.no_of_questions || "",
         change: (e) =>
           dispatch(
-            update_selected_books({
-              key: "question_quantity",
-              value: e.target.value,
+            selected_students_in_schedule({
+             no_of_questions:e.target.value,
             })
           ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
@@ -335,36 +377,112 @@ const JsonData = (params) => {
           ? "Please enter number of questions"
           : "",
       },
+      // {
+      //   name: "Students",
+      //   category: "select",
+      //   type: "normal_select",
+      //   options: ["All"],
+      //   placeholder: "Select Students",
+      //   isMandatory: true,
+      //   value: teachersState?.create_test?.student_all || "",
+      //   change: (e) =>
+      //     dispatch(
+      //       update_selected_books({ key: "student_all", value: e.target.value })
+      //     ),
+      //   divClassName: "col-12 com-sm-6 col-xl-4 p-2",
+      //   Err: commonState?.app_data?.validated
+      //     ? "Please enter number of students"
+      //     : "",
+      // },
       {
         name: "Students",
         category: "select",
-        type: "normal_select",
-        options: ["All"],
+        type: "react_dropdown_select",
+        multi: true,
+        className:"modal-inputs",
+        options: (() => {
+          const selected = teachersState?.scheduleTest_values?.students || [];
+
+          if (selected.includes("all")) {
+
+            return [{ label: "All", value: "all" }];
+          } else if (selected.length > 0) {
+
+            return Array.isArray(
+              teachersState?.studentsPerformance?.assignedTest?.jsonStudentsData
+            )
+              ? teachersState?.studentsPerformance?.assignedTest?.jsonStudentsData.map(
+                (student) => ({
+                  label: student.student_name,
+                  value: student.student_id,
+                })
+              )
+              : [];
+          } else {
+
+            return [
+              { label: "All", value: "all" },
+              ...(Array.isArray(
+                teachersState?.studentsPerformance?.assignedTest?.jsonStudentsData
+              )
+                ? teachersState?.studentsPerformance?.assignedTest?.jsonStudentsData.map(
+                  (student) => ({
+                    label: student.student_name,
+                    value: student.student_id,
+                  })
+                )
+                : []),
+            ];
+          }
+        })(),
         placeholder: "Select Students",
         isMandatory: true,
-        value: teachersState?.create_test?.student_all || "",
-        change: (e) =>
+        className:"modal-inputs",
+        value:
+          teachersState?.scheduleTest_values?.students?.map((id) => {
+            if (id === "all") return { label: "All", value: "all" };
+            const student =
+              teachersState?.studentsPerformance?.assignedTest?.jsonStudentsData?.find(
+                (s) => s.student_id === id
+              );
+            return student
+              ? { label: student.student_name, value: student.student_id }
+              : null;
+          }).filter(Boolean) || [],
+        change: (selectedOptions) => {
+          let finalSelection = [];
+
+          if (selectedOptions.some((opt) => opt.value === "all")) {
+
+            finalSelection = ["all"];
+          } else {
+
+            finalSelection = selectedOptions.map((opt) => opt.value);
+          }
+
           dispatch(
-            update_selected_books({ key: "student_all", value: e.target.value })
-          ),
-        divClassName: "col-12 com-sm-6 col-xl-4 p-2",
+            selected_students_in_schedule({
+              students: finalSelection,
+            })
+          );
+        },
+        divClassName: "col-12 col-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated
-          ? "Please enter number of students"
+          ? "Please select at least one student"
           : "",
       },
       {
         name: "Date",
         category: "input",
         type: "date",
-        options: [],
         placeholder: "Select Date",
+        className:"modal-inputs",
         isMandatory: true,
-        value: teachersState?.create_test?.selected_date || "",
+        value: teachersState?.scheduleTest_values?.start_date || "",
         change: (e) =>
           dispatch(
-            update_selected_books({
-              key: "selected_date",
-              value: e.target.value,
+            selected_students_in_schedule({
+              start_date: e.target.value,
             })
           ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
@@ -376,14 +494,12 @@ const JsonData = (params) => {
         type: "time",
         options: [],
         placeholder: "Select Date",
+        className:"modal-inputs",
         isMandatory: true,
-        value: teachersState?.create_test?.selected_time || "",
+        value: teachersState?.scheduleTest_values?.start_time || "",
         change: (e) =>
           dispatch(
-            update_selected_books({
-              key: "selected_time",
-              value: e.target.value,
-            })
+            selected_students_in_schedule({start_time: e.target.value})
           ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated ? "Please select a date" : "",
@@ -394,14 +510,12 @@ const JsonData = (params) => {
         type: "normal_select",
         options: [30, 45, 60, 75, 90],
         placeholder: "Select Test Duration",
+        className:"modal-inputs",
         isMandatory: true,
-        value: teachersState?.create_test?.time_duration || "",
+        value: teachersState?.scheduleTest_values?.total_duration || "",
         change: (e) =>
           dispatch(
-            update_selected_books({
-              key: "time_duration",
-              value: e.target.value,
-            })
+            selected_students_in_schedule({total_duration: e.target.value})
           ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated
@@ -413,15 +527,13 @@ const JsonData = (params) => {
         category: "select",
         type: "normal_select",
         options: [1, 2, 3, 4],
+        className:"modal-inputs",
         placeholder: "Select Set Questions",
         isMandatory: true,
-        value: teachersState?.create_test?.question_set || "",
+        value: teachersState?.scheduleTest_values?.set_questions || "",
         change: (e) =>
           dispatch(
-            update_selected_books({
-              key: "question_set",
-              value: e.target.value,
-            })
+            selected_students_in_schedule({set_questions: e.target.value})
           ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated
@@ -435,10 +547,11 @@ const JsonData = (params) => {
         options: ["Online", "Offline"],
         placeholder: "Select Mode of Test",
         isMandatory: true,
-        value: teachersState?.create_test?.test_mode || "",
+        className:"modal-inputs",
+        value: teachersState?.scheduleTest_values?.mode_of_test || "",
         change: (e) =>
           dispatch(
-            update_selected_books({ key: "test_mode", value: e.target.value })
+            selected_students_in_schedule({ mode_of_test: e.target.value })
           ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated
