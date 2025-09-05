@@ -71,7 +71,6 @@ const CustomTooltip = ({ active, payload, originalData }) => {
 
 
 export default function SpendingHoursChart({ data }) {
-    console.log(data)
     // Convert times for chart plotting
     const processedData = data?.map(item => ({
         chapter_name: item.chapter_name,

@@ -4,15 +4,15 @@ const initialState = {
   selected_books: {},
   teacher_DashboardData: {
     glow: true,
-    data: []
+    data: [],
   },
   teacher_GetClassrooms: {
     glow: true,
-    data: []
+    data: [],
   },
   teacher_GetSubjects: {
     glow: true,
-    data: []
+    data: [],
   },
   teacher_GetStudentList: {
     glow: true,
@@ -20,20 +20,19 @@ const initialState = {
   },
   test_records: {
     glow: true,
-    data: []
+    data: [],
   },
   test_dropDown_data: {
-    data: []
+    data: [],
   },
   test_create: {
     glow: true,
     data: [],
-    input_data: {}
+    input_data: {},
   },
   create_test: {
     selected_books: {},
     selected_chapter: "",
-
   },
   student_details: {},
   save_schedule_status: {},
@@ -51,35 +50,35 @@ const initialState = {
       pagination: {
         page: 1,
         show_entries: 10,
-        total_pages: null
-      }
+        total_pages: null,
+      },
     },
     selfTest: {
       jsonStudentsData: [],
       pagination: {
         page: 1,
         show_entries: 10,
-        total_pages: null
-      }
+        total_pages: null,
+      },
     },
-    performance_modalData: []
+    performance_modalData: [],
   },
 
   teacher_GetAllClassRooms: {
     glow: true,
-    data: []
+    data: [],
   },
   teacher_GradeByClassroom: {
     gloe: true,
-    data: []
+    data: [],
   },
   teacher_GetTeachers: {
     glow: true,
-    data: []
+    data: [],
   },
   teacher_GetClassroomTeachers: {
     glow: true,
-    data: []
+    data: [],
   },
   teacher_GetStudencePerfomanceBySubject: {
     glow: true,
@@ -99,38 +98,38 @@ const initialState = {
   },
   teacher_GetStudentOverviewPerfomance: {
     glow: true,
-    data: []
+    data: [],
   },
   teacher_GetStudentOverviewOverallPerfomance: {
     glow: true,
-    data: []
+    data: [],
   },
   teacher_GetStudentOverviewTestCount: {
     glow: true,
-    data: []
+    data: [],
   },
   teacher_GetStudentOverviewSpendingHours: {
     glow: true,
-    data: []
+    data: [],
   },
   teacher_PostClassrooms: {
-    data: {}
+    data: {},
   },
   teacher_PostSubjects: {
-    data: {}
+    data: {},
   },
   teacher_PostStudents: {
-    data: {}
+    data: {},
   },
   teacher_CreateStudents: {
-    data: {}
+    data: {},
   },
   teacher_Current_Grade_Classroom: {
-    data: {}
+    data: {},
   },
   subject_attachments: {
     glow: false,
-    data: {}
+    data: {},
   },
 
   upload_attachment: {
@@ -141,13 +140,19 @@ const initialState = {
   params_data: {},
   attachment_books_upload: {
     glow: false,
-    data: {}
+    data: {},
   },
   teacher_Current_perfomance_Classroom: {
-    data: {}
+    data: {},
+  },
+  teacher_Current_perfomance_history_subject: {
+    data: {},
+  },
+  teacher_overview_perfomance_date: {
+    data: {},
   },
   teacher_students_Classroom: {
-    data: {}
+    data: {},
   },
   test_history: {},
   books: {
@@ -161,15 +166,15 @@ const initialState = {
   delete_attachment_status: "idle",
   delete_attachment_error: null,
 
-  delete_attachment_id: null
-}
+  delete_attachment_id: null,
+};
 
 const teachersSlice = createSlice({
   name: "teachersSlice",
   initialState: initialState,
   reducers: {
-    handleStudentsPerformance(state, action) { },
-    handleJsonStudentsData(state, action) { },
+    handleStudentsPerformance(state, action) {},
+    handleJsonStudentsData(state, action) {},
     handleTeacherDashboard(state, action) {
       const { type, data } = action.payload;
 
@@ -250,7 +255,9 @@ const teachersSlice = createSlice({
 
         case "response":
           state.teacher_GetStudentList["glow"] = false;
-          state.teacher_GetStudentList["data"] = Array.isArray(data) ? data : [];
+          state.teacher_GetStudentList["data"] = Array.isArray(data)
+            ? data
+            : [];
           break;
 
         case "failure":
@@ -269,18 +276,18 @@ const teachersSlice = createSlice({
       const { type, data } = action.payload;
       switch (type) {
         case "request":
-          state.test_records['glow'] = true;
-          state.test_records['data'] = [];
+          state.test_records["glow"] = true;
+          state.test_records["data"] = [];
           break;
 
         case "response":
-          state.test_records['glow'] = false;
+          state.test_records["glow"] = false;
           state.test_records.data = Array.isArray(data) ? data : [];
           break;
 
         case "failure":
-          state.test_records['glow'] = false;
-          state.test_records['data'] = [];
+          state.test_records["glow"] = false;
+          state.test_records["data"] = [];
           break;
 
         default:
@@ -292,18 +299,18 @@ const teachersSlice = createSlice({
 
       switch (type) {
         case "request":
-          state.test_create['glow'] = true;
-          state.test_create['data'] = [];
+          state.test_create["glow"] = true;
+          state.test_create["data"] = [];
           break;
 
         case "response":
-          state.test_create['glow'] = false;
-          state.test_create['data'] = Array.isArray(data) ? data : [];
+          state.test_create["glow"] = false;
+          state.test_create["data"] = Array.isArray(data) ? data : [];
           break;
 
         case "failure":
-          state.test_create['glow'] = false;
-          state.test_create['data'] = [];
+          state.test_create["glow"] = false;
+          state.test_create["data"] = [];
           break;
 
         default:
@@ -311,39 +318,38 @@ const teachersSlice = createSlice({
       }
     },
     create_test_onchange(state, action) {
-      Object.entries(action.payload)?.forEach(([key, value]) => (
-        state.test_create.input_data[key] = value
-      ))
+      Object.entries(action.payload)?.forEach(
+        ([key, value]) => (state.test_create.input_data[key] = value)
+      );
     },
     update_selected_books(state, action) {
-      const { key, value } = action.payload
-      if (key === "selected_books") state.create_test["selected_chapter"] = ""
-      state.create_test[key] = value
-
+      const { key, value } = action.payload;
+      if (key === "selected_books") state.create_test["selected_chapter"] = "";
+      state.create_test[key] = value;
     },
     get_student_details_slice(state, action) {
-      const { key, value } = action.payload
-      state.student_details[key] = value
+      const { key, value } = action.payload;
+      state.student_details[key] = value;
 
-      const { type, data } = action.payload
+      const { type, data } = action.payload;
       switch (type) {
         case "request":
-          state.studentsPerformance.assignedTest.jsonStudentsData = []
+          state.studentsPerformance.assignedTest.jsonStudentsData = [];
           state.studentsPerformance.placeholder = true;
           break;
 
         case "response":
-          state.studentsPerformance.assignedTest.jsonStudentsData = Array.isArray(data) ? data : [];
+          state.studentsPerformance.assignedTest.jsonStudentsData =
+            Array.isArray(data) ? data : [];
           state.studentsPerformance.placeholder = false;
           break;
 
         case "failure":
-          state.studentsPerformance.assignedTest.jsonStudentsData = []
+          state.studentsPerformance.assignedTest.jsonStudentsData = [];
           state.studentsPerformance.placeholder = false;
           break;
         default:
           break;
-
       }
     },
     save_schedule_request(state) {
@@ -362,7 +368,7 @@ const teachersSlice = createSlice({
       state.save_schedule_status = "succeeded";
       state.student_details = {
         ...state.student_details,
-        schedule: action.payload
+        schedule: action.payload,
       };
       state.test_id = action.payload.test_id;
       state.create_test = {};
@@ -386,21 +392,22 @@ const teachersSlice = createSlice({
     },
 
     handledAssignedStudentsTestData(state, action) {
-      const { type, data } = action.payload
+      const { type, data } = action.payload;
 
       switch (type) {
         case "request":
-          state.studentsPerformance.assignedTest.jsonStudentsData = []
+          state.studentsPerformance.assignedTest.jsonStudentsData = [];
           state.studentsPerformance.placeholder = true;
           break;
 
         case "response":
-          state.studentsPerformance.assignedTest.jsonStudentsData = Array.isArray(data) ? data : [];
+          state.studentsPerformance.assignedTest.jsonStudentsData =
+            Array.isArray(data) ? data : [];
           state.studentsPerformance.placeholder = false;
           break;
 
         case "failure":
-          state.studentsPerformance.assignedTest.jsonStudentsData = []
+          state.studentsPerformance.assignedTest.jsonStudentsData = [];
           state.studentsPerformance.placeholder = false;
           break;
         default:
@@ -411,34 +418,38 @@ const teachersSlice = createSlice({
       state.studentsPerformance.assignedTest.pagination.page = action.payload;
     },
     updateAssingnedTestTotalPageCount(state, action) {
-      state.studentsPerformance.assignedTest.pagination.total_pages = action.payload
+      state.studentsPerformance.assignedTest.pagination.total_pages =
+        action.payload;
     },
     updateStudentClassAndSubject(state, action) {
-      const { class_id, subject_id } = action.payload
-      state.studentsPerformance.classroom_id = class_id
-      state.studentsPerformance.subject_id = subject_id
+      const { class_id, subject_id } = action.payload;
+      state.studentsPerformance.classroom_id = class_id;
+      state.studentsPerformance.subject_id = subject_id;
     },
     handleSelfStudentsTestData(state, action) {
-      const { type, data } = action.payload
+      const { type, data } = action.payload;
 
       switch (type) {
         case "request":
-          state.studentsPerformance.selfTest.jsonStudentsData = []
+          state.studentsPerformance.selfTest.jsonStudentsData = [];
           state.studentsPerformance.placeholder = true;
           break;
 
         case "response":
-          state.studentsPerformance.selfTest.jsonStudentsData = Array.isArray(data) ? data : [];
+          state.studentsPerformance.selfTest.jsonStudentsData = Array.isArray(
+            data
+          )
+            ? data
+            : [];
           state.studentsPerformance.placeholder = false;
           break;
 
         case "failure":
-          state.studentsPerformance.selfTest.jsonStudentsData = []
+          state.studentsPerformance.selfTest.jsonStudentsData = [];
           state.studentsPerformance.placeholder = false;
           break;
         default:
           break;
-
       }
     },
 
@@ -446,7 +457,8 @@ const teachersSlice = createSlice({
       state.studentsPerformance.selfTest.pagination.page = action.payload;
     },
     updateSelfTestTotalPageCount(state, action) {
-      state.studentsPerformance.selfTest.pagination.total_pages = action.payload
+      state.studentsPerformance.selfTest.pagination.total_pages =
+        action.payload;
     },
 
     handleAllClassRooms(state, action) {
@@ -782,25 +794,29 @@ const teachersSlice = createSlice({
       const [key, value] = Object.entries(action.payload)[0] || [];
       state.teacher_Current_perfomance_Classroom.data[key] = value || "";
     },
+    update_perfomance_history_by_subject(state, action) {
+      const [key, value] = Object.entries(action.payload)[0] || [];
+      state.teacher_Current_perfomance_history_subject.data[key] = value || "";
+    },
     clear_form_fields(state, action) {
-      state.teacher_CreateStudents.data = {}
+      state.teacher_CreateStudents.data = {};
     },
     getSubjectAttachments(state, action) {
-      const { type, data } = action.payload
+      const { type, data } = action.payload;
 
       switch (type) {
         case "request":
-          state.subject_attachments.glow = true
-          state.subject_attachments.data = {}
+          state.subject_attachments.glow = true;
+          state.subject_attachments.data = {};
           break;
 
         case "response":
-          state.subject_attachments.glow = false
-          state.subject_attachments.data = data || {}
+          state.subject_attachments.glow = false;
+          state.subject_attachments.data = data || {};
           break;
 
         case "failure":
-          state.subject_attachments.glow = false
+          state.subject_attachments.glow = false;
           break;
 
         default:
@@ -837,29 +853,28 @@ const teachersSlice = createSlice({
       state.params_data = action.payload;
     },
     handle_attachment_books_upload(state, action) {
-      state.attachment_books_upload = action.payload
+      state.attachment_books_upload = action.payload;
     },
     handlePerformanceModalData(state, action) {
-      const { type, data } = action.payload
+      const { type, data } = action.payload;
 
       switch (type) {
         case "request":
-          state.studentsPerformance.performance_modalData = []
+          state.studentsPerformance.performance_modalData = [];
           state.studentsPerformance.placeholder2 = true;
           break;
 
         case "response":
-          state.studentsPerformance.performance_modalData = data || []
+          state.studentsPerformance.performance_modalData = data || [];
           state.studentsPerformance.placeholder2 = false;
           break;
 
         case "failure":
-          state.studentsPerformance.performance_modalData = []
+          state.studentsPerformance.performance_modalData = [];
           state.studentsPerformance.placeholder2 = false;
           break;
         default:
           break;
-
       }
     },
     handleTestHistoryGet(state, action) {
@@ -890,7 +905,7 @@ const teachersSlice = createSlice({
       switch (type) {
         case "request":
           state.books.loading = true;
-          state.create_test = {}
+          state.create_test = {};
           state.books.data = [];
           break;
         case "response":
@@ -917,7 +932,7 @@ const teachersSlice = createSlice({
       state.delete_attachment_error = action.payload;
     },
     updateDeleteAttachment(state, action) {
-      state.delete_attachment_id = action.payload
+      state.delete_attachment_id = action.payload;
     },
     deleteBook(state, action) {
       const { type, data } = action.payload;
@@ -927,7 +942,10 @@ const teachersSlice = createSlice({
           state.delete_book_spinner = true;
           break;
         case "response":
-          state.books.data = state.books?.data?.filter(book => book.book_id !== data.book_id) || [];
+          state.books.data =
+            state.books?.data?.filter(
+              (book) => book.book_id !== data.book_id
+            ) || [];
           state.delete_book_spinner = false;
           break;
         case "failure":
@@ -936,23 +954,53 @@ const teachersSlice = createSlice({
         default:
           break;
       }
+    },
+    update_overview_month_for_perfomance(state,action){
+      const [key, value] = Object.entries(action.payload)[0] || [];
+      state.teacher_overview_perfomance_date.data[key] = value || "";
     }
   },
 
   extraReducers(builder) {
-    builder.addCase("common_slice/updateModalShow", (state, action) => {
-      const { show } = action.payload;
-      if (!show) {
-        state.teacher_PostClassrooms.data = {};
-        state.teacher_PostSubjects.data = {};
-        state.teacher_PostStudents.data = {};
-        state.teacher_CreateStudents.data = {};
-      }
-    });
-  }
-})
+    builder
+      .addCase("common_slice/updateModalShow", (state, action) => {
+        const { show } = action.payload;
+        if (!show) {
+          state.teacher_PostClassrooms.data = {};
+          state.teacher_PostSubjects.data = {};
+          state.teacher_PostStudents.data = {};
+          state.teacher_CreateStudents.data = {};
+        }
+      })
 
-const { actions, reducer } = teachersSlice
+      .addCase("common_slice/update_app_data", (state, action) => {
+        const { type } = action.payload;
+
+        if (type === "menu_name") {
+          state.teacher_Current_perfomance_history_subject = {
+            data: {},
+          };
+          state.teacher_Current_perfomance_Classroom = {
+            data: {}
+          };
+          state.teacher_Current_Grade_Classroom= {
+            data: {}
+          };
+          state.teacher_students_Classroom = {
+            data: {},
+          };
+          state.teacher_overview_perfomance_date = {
+            data: {},
+          };
+          state.teacher_GetStudentOverviewTestCount = {
+            data:{},
+          }
+        }
+      });
+  },
+});
+
+const { actions, reducer } = teachersSlice;
 
 export const {
   handleStudentsPerformance,
@@ -962,13 +1010,27 @@ export const {
   handleGetStudentsList,
   handelGetCreate,
   update_selected_books,
-  handledAssignedStudentsTestData, updateAssignedTestPaginationPage, updateAssingnedTestTotalPageCount,
+  handledAssignedStudentsTestData,
+  updateAssignedTestPaginationPage,
+  updateAssingnedTestTotalPageCount,
   updateStudentClassAndSubject,
-  handleSelfStudentsTestData, updateSelfTestPaginationPage, updateSelfTestTotalPageCount,
-  handleGetTestRecords, create_test_onchange, get_student_details_slice, save_schedule_request,
-  save_schedule_success, save_schedule_failure, getSubjectAttachments, handleUploadAttachment,
-  handlePerformanceModalData, handleGetTeachers, handleTeacherDashboard, handleAllClassRooms,
-  handleGradeByClassroom, handleSubjectsByClassroom,
+  handleSelfStudentsTestData,
+  updateSelfTestPaginationPage,
+  updateSelfTestTotalPageCount,
+  handleGetTestRecords,
+  create_test_onchange,
+  get_student_details_slice,
+  save_schedule_request,
+  save_schedule_success,
+  save_schedule_failure,
+  getSubjectAttachments,
+  handleUploadAttachment,
+  handlePerformanceModalData,
+  handleGetTeachers,
+  handleTeacherDashboard,
+  handleAllClassRooms,
+  handleGradeByClassroom,
+  handleSubjectsByClassroom,
   handldeGetPerfomanceBySubject,
   handleGetStudentsListBySubject,
   update_edit_student,
@@ -987,13 +1049,23 @@ export const {
   clear_form_fields,
   handldeGetAllSubjects,
   update_perfomance_by_classroom,
+  update_perfomance_history_by_subject,
   update_student_perfomance_dashboard,
   update_Students_classroom,
   get_students_by_test_slice,
-  updateParams, handle_attachment_books_upload, handleTestHistoryGet, handleGetBooks,
-  get_test_questions_failure, get_test_questions_success, get_test_questions_request,
-  delete_attachment_request, delete_attachment_success, delete_attachment_failure, updateDeleteAttachment,
-  deleteBook
-} = actions
+  updateParams,
+  handle_attachment_books_upload,
+  handleTestHistoryGet,
+  handleGetBooks,
+  get_test_questions_failure,
+  get_test_questions_success,
+  get_test_questions_request,
+  delete_attachment_request,
+  delete_attachment_success,
+  delete_attachment_failure,
+  updateDeleteAttachment,
+  deleteBook,
+  update_overview_month_for_perfomance
+} = actions;
 
-export default reducer
+export default reducer;

@@ -154,7 +154,7 @@ const StudentsTableCard = ({ className, navigate_to, data, glow }) => {
                         className="btn-transparent"
                         buttonName={Icons?.extend_icon}
                         clickFunction={() =>
-                          navigate(`${student.student_id}/${navigate_to}`)
+                          navigate(`${student.student_id}/${navigate_to}`,{state:{classroom_id:student?.classroom_id}})
                         }
                       />
                     </td>

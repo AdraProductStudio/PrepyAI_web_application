@@ -148,7 +148,6 @@ const commonSlice = createSlice({
         updateModalShow(state, actions) {
             const { show, size, modal_from, modal_type, close_btn, data } = actions.payload;
             if (modal_from === "notes") state.notesdata = {}
-console.log(data)
             state.modal.show = show
             state.modal.size = size || "md"
             state.modal.from = modal_from || null

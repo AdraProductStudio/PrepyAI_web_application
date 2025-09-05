@@ -1438,3 +1438,25 @@ input::placeholder {
     border-radius: 12px 0 0 12px !important;
   }
 }
+.performance-month-picker-input {
+  border: none;
+  outline: none;
+  background-color: #f5f7fa;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  width: auto; 
+}
+
+.performance-month-picker-input:hover {
+  background-color: #eef1f5;
+}
+
+.performance-month-picker-input:focus {
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+}

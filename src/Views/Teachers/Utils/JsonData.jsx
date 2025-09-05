@@ -2,13 +2,16 @@ import { useCommonState, useCustomNavigate, useDispatch } from 'Components/Custo
 import { handlePostNote, update_app_data, update_note_data } from 'Views/Common/Slices/Common_slice';
 import Icons from 'Utils/Icons';
 import Image from 'Utils/Image';
-import { clear_form_fields, update_perfomance_by_classroom, update_selected_books, update_student_perfomance_dashboard, update_Students_classroom } from '../Slice/teachersSlice';
+import { clear_form_fields, update_overview_month_for_perfomance, update_perfomance_by_classroom, update_perfomance_history_by_subject, update_selected_books, update_student_perfomance_dashboard, update_Students_classroom } from '../Slice/teachersSlice';
 import { get_bookmarks, handleGetSubjectAttachments } from '../Actions/TeacherActions';
 import { update_Create_student, update_Grade_by_classroom, updatePostClassroomsData, updatePostStudentData, updatePostSubjectsData } from '../Slice/teachersSlice';
+import { useLocation, useParams } from 'react-router-dom';
 
 const JsonData = (params) => {
   const dispatch = useDispatch();
   const navigate = useCustomNavigate();
+  const location = useLocation();
+  const routeState = location?.state;
   const { commonState, teachersState } = useCommonState();
   const jsonOnly = {
     dashboard_count_details: [
@@ -533,7 +536,7 @@ const JsonData = (params) => {
         type: "file",
         placeholder: "Choose a file",
         divClassName: "col-12 mb-3",
-        accept: ".csv",
+        accept: ".xlsx",
         fileLength: 1,
         className: "file-inputs mt-2",
         value: Array.isArray(
@@ -755,7 +758,7 @@ const JsonData = (params) => {
         type: "file",
         placeholder: "Choose a file",
         divClassName: "col-12 mb-2",
-        accept: ".csv",
+        accept: ".xlsx",
         className: "file-inputs mt-2",
         fileLength: 1,
         value: Array.isArray(
@@ -888,8 +891,67 @@ const JsonData = (params) => {
         title: "Time Submitted",
         divClassName: "col-3 text-center border-end p-3 text-primary-emphasis"
       }
-    ]
-  };
+    ],
+    selectOverviewHistory: [
+      {
+        category: "select",
+        type: "react_dropdown_select",
+        options: Array.isArray(
+          teachersState?.teacher_GetAllSubjects?.data[routeState?.classroom_id]
+        )
+          ? teachersState.teacher_GetAllSubjects.data[
+              routeState?.classroom_id
+            ]?.map((subject) => ({
+              label: subject.subject_name,
+              value: subject.subject_id,
+            }))
+          : [],
+        multi: false,
+        divClassName: "grade-dashboard-teacher-input",
+        className: "custom-dropdown",
+    
+        value: Array.isArray(
+          teachersState?.teacher_Current_perfomance_history_subject?.data
+            ?.subject_id
+        )
+          ? teachersState.teacher_Current_perfomance_history_subject.data.subject_id.map(
+              (id) => {
+                const subject = teachersState?.teacher_GetAllSubjects?.data[
+                  routeState?.classroom_id
+                ]?.find((s) => s.subject_id === id);
+                return {
+                  label: subject ? subject.subject_name : "",
+                  value: id,
+                };
+              }
+            )
+          : [{ label: "All Subjects", value: "all_subjects" }],
+    
+        change: (selectedOptions) =>
+          dispatch(
+            update_perfomance_history_by_subject({
+              subject_id: selectedOptions.map((opt) => opt.value),
+            })
+          ),
+      },
+    ],
+    selectOverallPerfomanceMonth: [
+      {
+        category: "input",
+        type: "month",
+        divClassName: "performance-month-picker",
+        className: "form-control performance-month-picker-input",
+        value: teachersState?.teacher_overview_perfomance_date?.data?.subject_date || new Date().toISOString().slice(0, 7),
+        max: new Date().toISOString().slice(0, 7),
+        change: (e) =>
+          dispatch(
+            update_overview_month_for_perfomance({
+              subject_date: e.target.value,
+            })
+          ),
+      },
+    ]  
+  }
 
   return {
     jsonOnly: jsonOnly,
