@@ -12,6 +12,10 @@ const JsonData = (params) => {
   const navigate = useCustomNavigate();
   const { commonState, teachersState } = useCommonState();
   const {class_id} = useParams();
+  const questionOptions = [
+          { label: "MCQ Questions", value: "mcq" },
+          { label: "Long Questions", value: "long_answer" }
+        ]
   const jsonOnly = {
     dashboard_count_details: [
       {
@@ -303,7 +307,7 @@ const JsonData = (params) => {
         options: Array.isArray(teachersState?.test_records?.data) ? teachersState?.test_records?.data?.map(
           (chapter) => ({
             label: chapter.title,
-            value: chapter.title,
+            value: chapter.chapter_range,
           }))
           : [],
         placeholder: "Select Chapter",
@@ -320,8 +324,11 @@ const JsonData = (params) => {
             },
           ] : [],
            change: (selected) => {
+            console.log(selected,"sdfdsfasdfasd")
           const selectedValue = Array.isArray(selected) ? selected[0]?.value : selected?.value;
-          dispatch(selected_students_in_schedule({ chapters: [selectedValue] }));
+          const selectedLabel =  Array.isArray(selected) ? selected[0]?.label : selected?.label
+          dispatch(selected_students_in_schedule({ chapters: [selectedLabel] }));
+          dispatch(selected_students_in_schedule({chapter_range:[selectedValue]}))
         },
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
         className:"modal-inputs",
@@ -342,14 +349,20 @@ const JsonData = (params) => {
       {
         name: "Type of Questions",
         category: "select",
-        type: "normal_select",
-        options: ["MCQ Questions", "Long Questions"],
+        type: "react_dropdown_select",
+        options: questionOptions,
         placeholder: "Select Type of Questions",
+        multi: false,
         isMandatory: true,
-        value:teachersState?.scheduleTest_values?.type_of_questions || "",
-        change: (e) =>
+      //   value: teachersState?.scheduleTest_values?.type_of_questions
+      //     ?  questionOptions.find(
+      //     (opt) =>
+      //       opt.value === teachersState?.scheduleTest_values?.type_of_questions
+      //   ) || null
+      // : null,
+        change: (selected) =>
           dispatch(
-            selected_students_in_schedule({type_of_questions:e.target.value})
+            selected_students_in_schedule({ type_of_questions: Array.isArray(selected) ? selected[0]?.value : selected?.value })
           ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
         className:"modal-inputs",
