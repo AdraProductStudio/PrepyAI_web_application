@@ -140,7 +140,7 @@ function App() {
                   <Route path=":student_id/overview" element={<StudentOverview />} />
                   <Route element={<ScheduleTestLayout />} >
                     <Route path="create_test" element={<CreateTest />} />
-                    <Route path="preview_test" element={<PreviewTest />} />
+                    <Route path="preview_test/:test_id" element={<PreviewTest />} />
                   </Route>
   
                 <Route path="test" element={<TestPageLayout />}>

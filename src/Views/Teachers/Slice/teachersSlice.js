@@ -387,11 +387,6 @@ const teachersSlice = createSlice({
     // },
     save_schedule_success(state, action) {
       state.save_schedule_status = "succeeded";
-      state.student_details = {
-        ...state.student_details,
-        schedule: action.payload,
-      };
-      state.test_id = action.payload.test_id;
       state.create_test = {};
     },
     save_schedule_failure(state, action) {
@@ -401,14 +396,17 @@ const teachersSlice = createSlice({
 
     get_test_questions_request(state) {
       state.get_test_questions_status = "loading";
+      state.get_test_questions_loading = true
       state.get_test_questions_error = null;
     },
     get_test_questions_success(state, action) {
       state.get_test_questions_status = "succeeded";
+      state.get_test_questions_loading = false
       state.test_questions = action.payload;
     },
     get_test_questions_failure(state, action) {
       state.get_test_questions_status = "failed";
+      state.get_test_questions_loading = false
       state.get_test_questions_error = action.payload;
     },
 
