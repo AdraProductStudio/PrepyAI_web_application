@@ -84,7 +84,7 @@ const LoginScreen = ({
                     <h3 className="text-center fw-bold login-title-colour">
                       {title}
                     </h3>
-                    <Button variant="light" className={`d-flex align-items-center justify-content-center border rounded px-3 py-2 google-button-background gap-2 w-110`}
+                    {/* <Button variant="light" className={`d-flex align-items-center justify-content-center border rounded px-3 py-2 google-button-background gap-2 w-110`}
                       onClick={() => dispatch(handleOAuth(navigate, "/oauth_learners"))} >
                       {Icons?.googleIcon}
                       <strong className="text-secondary">
@@ -93,7 +93,7 @@ const LoginScreen = ({
                     </Button>
                     <p className="mb-0 small fw-5 text-muted">
                       ------- or {as} --------
-                    </p>
+                    </p> */}
                   </div>
                 </Col>
 

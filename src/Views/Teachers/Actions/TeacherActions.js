@@ -1,3 +1,4 @@
+import { type } from "@testing-library/user-event/dist/type"
 import axiosInstance from "Services/axiosInstance"
 import {
     create_test_onchange,
@@ -12,7 +13,9 @@ import {
     getSubjectAttachments,
     handleGetBooks,
     handleGetTestRecords,
+    handleScheduleTest,
     handleUploadAttachment,
+    handleUploadBooks,
     save_schedule_failure,
     save_schedule_request,
     save_schedule_success
@@ -56,7 +59,8 @@ export const get_student_details = (classroom_id) => async (dispatch) => {
         dispatch(get_student_details_slice({ type: "request" }))
         const { data } = await axiosInstance.post("/teachers/get_students_for_test", classroom_id || {})
         if (data?.error_code === 0) {
-            dispatch(get_student_details_slice({ type: "response", data: data?.data?.bookmarks?.[0] || [] }))
+            const datas = data?.data?.students || [] 
+            dispatch(get_student_details_slice({ type: "response", data: datas}))
         }
         else {
             dispatch(get_student_details_slice({ type: "failure", message: data?.message || '' }))
@@ -69,23 +73,7 @@ export const get_student_details = (classroom_id) => async (dispatch) => {
 
 }
 
-// export const saveSchedule = (payload, navigate) => async (dispatch) => {
-//     try {
-//         dispatch(save_schedule_request());
-//         const response = await axiosInstance.post("/teachers/save_schedule", payload);
 
-//         if (response.data?.error_code === 0) {
-//             dispatch(save_schedule_success(response.data?.data));
-
-//             navigate(`/teachers_dashboard/classrooms/${payload.classroom_id}/${payload.subject_id}/preview_test`);
-
-//         } else {
-//             dispatch(save_schedule_failure(response.data?.message || "Unknown error"));
-//         }
-//     } catch (error) {
-//         dispatch(save_schedule_failure(error.message));
-//     }
-// };
 export const saveSchedule = (payload, navigate) => async (dispatch) => {
     try {
         dispatch(save_schedule_request());
@@ -163,6 +151,8 @@ export const handleGetSubjectAttachments = (subject_id) => async (dispatch) => {
 
 
 export const handleUploadBook = (params_data, file) => async (dispatch) => {
+    if (!file?.name) return dispatch(handleUploadAttachment({ type: "failure", message: "File required for uploading..." }));
+
     try {
         dispatch(handleUploadAttachment({ type: "request" }));
 
@@ -231,3 +221,44 @@ export const handleDeleteBook = (params) => async (dispatch) => {
         }));
     }
 };
+
+export const uploadBooks = (params) => async (dispatch) => {
+    if (!params?.file?.name) return dispatch(handleUploadBooks({ type: "failure", message: "Please select some books..." }));
+
+    try {
+        dispatch(handleUploadBooks({ type: "request" }));
+        const fd = new FormData();
+        fd.append("book", params?.file) 
+
+        const { data } = await axiosInstance.post(`/teachers/upload_book?classroom_id=${params?.classroom_id}&subject_id=${params?.subject_id}`, fd);
+
+        if (data?.error_code === 0) {
+            dispatch(handleUploadBooks({ type: "response", data: data?.data || [], }));
+            dispatch(getBooks({ classroom_id: params?.classroom_id, subject_id: params?.subject_id }));
+
+        } else {
+            dispatch(handleUploadBooks({ type: "failure", message: data?.message || "Upload failed", }));
+        }
+    } catch (err) {
+        dispatch(handleUploadBooks({ type: "failure", message: err?.message || "Server error", }));
+    }
+};
+ 
+
+// scheduleTest
+
+export const scheduleTest = (test_id) => async (dispatch) => {
+  try {
+    dispatch(handleScheduleTest({ type: "request" }));
+
+    const { data } = await axiosInstance.post("/teachers/schedule_test", test_id);
+
+    if (data?.error_code === 0) { dispatch(  handleScheduleTest({ type: "response", data: data?.data || {}, }));
+    } else {
+      dispatch(handleScheduleTest({type: "failure", message: data?.message || "Failed to schedule test", }));
+    }
+  } catch (err) {
+    dispatch( handleScheduleTest({ type: "failure",message: err?.message || "Server error", }));
+  }
+};
+

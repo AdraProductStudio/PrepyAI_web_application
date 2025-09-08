@@ -18,46 +18,31 @@ const CreateTest = () => {
     const [currentStep, setCurrentStep] = useState(1);
     const { teachersState } = useCommonState();
 
+    
     useEffect(() => {
-        dispatch(getBooks({ classroom_id: "18", subject_id: "1" }));
-        dispatch(get_student_details({ classroom_id: "18", page: 1 }));
+        if (class_id && subject_id) {
+            dispatch(getBooks({ classroom_id: class_id, subject_id: subject_id }));
+            dispatch(get_student_details({ classroom_id: class_id, page: 1 }));
+        }
     }, [dispatch, class_id, subject_id]);
 
+    useEffect(()=>{
+        console.log(teachersState,"efere")
+    },[])
+
     const handleNextClick = () => {
-        if (currentStep === 1 && !teachersState?.create_test?.selected_books?.book_id) {
-            alert("Please select a book before continuing.");
-            return;
-        }
-
-        if (currentStep === 2 && (!teachersState?.create_test?.selected_date || !teachersState?.create_test?.selected_time)) {
-            alert("Please select date and time.");
-            return;
-        }
-
-        if (currentStep < 4) {
-            setCurrentStep(currentStep + 1);
-        } else {
-            // Final step → build payload and save
             const payload = {
-                classroom_id: Number(class_id) || 18,
-                subject_id: Number(subject_id) || 1,
-                book_id: teachersState?.create_test?.selected_books?.book_id,
-                start_date: teachersState?.create_test?.selected_date,
-                start_time: teachersState?.create_test?.selected_time,
-                type_of_questions:
-                    teachersState?.create_test?.question_type === "Long Questions"
-                        ? "long_answer"
-                        : "mcq",
-                mode_of_test: teachersState?.create_test?.test_mode,
-                students: [88, 89, 90, 91],
-                set_questions: Number(teachersState?.create_test?.question_set),
-                no_of_questions: Number(teachersState?.create_test?.question_quantity),
-                level_of_test: "Easy",
-                chapter_range: [[32, 87]]
+                classroom_id: Number(class_id) ||"",
+                subject_id: Number(subject_id) || "",
             };
 
-            dispatch(saveSchedule(payload, navigate));
-        }
+            const jsonData = teachersState?.scheduleTest_values;
+
+            const formdata = {...payload,...jsonData}
+            console.log(formdata,"vweqwedqw")
+
+            dispatch(saveSchedule(formdata, navigate));
+        
     };
 
 

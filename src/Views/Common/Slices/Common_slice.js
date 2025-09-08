@@ -288,7 +288,11 @@ const commonSlice = createSlice({
             .addMatcher(
                 (action) => [
                     "teachersSlice/handleUploadAttachment",
-                    "teachersSlice/deleteBook"
+                    "teachersSlice/deleteBook",
+                    "teachersSlice/handleUploadAttachment",
+                    "teachersSlice/handleUploadBooks",
+                    "teachersSlice/handleScheduleTest",
+                    "teachersSlice/save_schedule_status",
                 ].includes(action.type),
 
                 (state, action) => {
@@ -306,7 +310,15 @@ const commonSlice = createSlice({
             //For handling response error [setting toast error message]
             .addMatcher(
                 (action) => [
-                    "teachersSlice/handleGetTestRecords"
+                    "teachersSlice/handleGetTestRecords",
+                    "teachersSlice/handleUploadAttachment",
+                    "teachersSlice/handleGetBooks",
+                    "teachersSlice/deleteBook",
+                    "teachersSlice/getSubjectAttachments",
+                    "teachersSlice/handleUploadBooks",
+                    "teachersSlice/handleScheduleTest",
+                    "teachersSlice/save_schedule_status",
+
                 ].includes(action.type),
 
                 (state, action) => {
@@ -326,7 +338,9 @@ const commonSlice = createSlice({
                     "authState/update_student_register",
                     "authState/update_forgot_password",
                     "authState/update_otp_verification",
-                    "authState/update_create_password"
+                    "authState/update_create_password",
+                    "teachersSlice/handleScheduleTest",
+                    "teachersSlice/save_schedule_status",
                 ].includes(action.type),
 
                 (state) => {
