@@ -6,6 +6,7 @@ import Images from "Utils/Image"
 import { useCommonState } from "Components/CustomHooks";
 
 const ProfileLayout = ({ navItems }) => {
+  const location = useLocation();
   const {profileInputs} = useCommonState()?.superadminState
   return (
     <div className="h-100">
@@ -77,7 +78,7 @@ const ProfileLayout = ({ navItems }) => {
                         }`
                       }
                     >
-                      <span className="fs-3 mb-1 me-3">{item?.icon}</span>
+                      <span className="fs-3 mb-1 me-3">{item.icon(location.pathname === item.to)}</span>
                       <span className="fs-5">{item.name}</span>
                     </NavLink>
                   </li>

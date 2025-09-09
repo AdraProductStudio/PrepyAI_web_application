@@ -42,8 +42,8 @@ export const InitializeProjectSetup = () => {
     useEffect(() => {
         const currentLocation = location[location.length - 1];
         if (commonState?.app_data?.currentMenuName !== currentLocation) {
-            const { token, user_role, user_id } = decrypt_app_data_logs();
-            dispatch(update_app_data({ type: "menu_name", data: { currentLocation, token, user_role, user_id } }));
+            const { token, refresh_token, user_role, user_id } = decrypt_app_data_logs();
+            dispatch(update_app_data({ type: "menu_name", data: { currentLocation, token, refresh_token, user_role, user_id } }));
         }
     }, [location, commonState?.app_data?.currentMenuName]);
 

@@ -52,7 +52,7 @@ function OrganisationDashboard() {
   }
 
   return (
-    <div className="vh-100 p-3">
+    <div className="h-100">
       <article className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 align-items-xl-center justify-content-xl-evenly">
         {jsonOnly?.dashboardCardInputs?.map((input, idx) => (
           <section key={idx} className="p-2">
@@ -152,7 +152,7 @@ function OrganisationDashboard() {
 
       <Row className="p-2">
         <Col>
-          <Card style={{ height: "34rem" }}>
+          <Card style={{ height: "35.3rem" }}>
             <section className="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center w-100 w-md-auto gap-2 p-3">
               <div className="w-100 w-md-auto">
                 <h5 className="mb-0 fs-5">Admins</h5>

@@ -21,7 +21,8 @@ const Input = ({
     eyeIcon,
     accept,
     ref,
-    name
+    name,
+    readOnly
 }) => {
 
     return (
@@ -47,6 +48,7 @@ const Input = ({
                 disabled={disabled}
                 max={max} min={min}
                 name={name}
+                readOnly={readOnly}
             />
 
             <span className='eye_button text-secondary' onClick={eyeFunction}> {eyeIcon} </span>

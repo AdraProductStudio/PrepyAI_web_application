@@ -255,12 +255,12 @@ const JsonData = () => {
     orgProfile_navItems: [
       {
         name: "Personal Information",
-        icon: <CiUser />,
+        icon: (isActive) => Icons.profile_icon(isActive),
         to: "/organisation_dashboard/org_profile"
       },
       {
         name: "Settings",
-        icon: <CiSettings />,
+        icon: (isActive) => Icons.settings_icon(isActive),
         to: "/organisation_dashboard/org_profile/settings"
       },
       // {

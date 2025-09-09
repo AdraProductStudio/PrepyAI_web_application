@@ -27,12 +27,14 @@ const StudentDetails = () => {
                 </thead>
                 <tbody className="staff_table_data">
                     {
-                        adminState?.placeholder ?
+                        adminState?.placeholder 
+                            ?
                             <tr>
                                 <td colSpan={8}> <SpinnerComponent /> </td>
                             </tr>
                             :
-                            adminState?.studentsTableData.length > 0 &&
+                            adminState?.studentsTableData.length > 0 
+                            ?
                             adminState?.studentsTableData.map((row, index) => (
                                 <tr key={index}>
                                     <td className="text-center">{index + 1}</td>
@@ -51,6 +53,10 @@ const StudentDetails = () => {
                                     </td>
                                 </tr>
                             ))
+                            :
+                            <tr>
+                                <td colSpan={8}>No Data Found</td>
+                            </tr>
                     }
                 </tbody>
             </table>

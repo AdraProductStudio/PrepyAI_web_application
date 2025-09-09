@@ -40,10 +40,28 @@ let initialState = {
     },
     dashboard_teachers_list: [],
     edit_dashboard_teacher: {},
-
     edit_classroom_teacher: {},
-    edit_classroom_student: {}
+    edit_classroom_student: {},
 
+    profileInputs: {
+        first_name: "",
+        last_name: "",
+        email_id: "",
+        phone_number: "",
+        address: ""
+    },
+    editProfileInputs: {},
+    isProfileEditing: false,
+    settingsInputs: {
+        old_password: "",
+        confirm_password: "",
+        new_password: ""
+    },
+
+    dashboard_chart_data: [],
+    classroom_chart_data: [],
+    overall_loading : [],
+    create_classroom_modal_teachers_list: []
 }
 
 const adminSlice = createSlice({    
@@ -178,10 +196,10 @@ const adminSlice = createSlice({
         updateDashboardOverviewData(state, action){
             const { type , data } = action.payload
             const { total_teachers, total_students, total_classrooms, total_tests } = data || {}
-            
+            const loading = "dashboard_overview_data"
             switch(type){
                 case "request":
-                    state.placeholder = true;
+                    state.overall_loading.push(loading)                
                     break;
 
                 case "response":
@@ -189,11 +207,11 @@ const adminSlice = createSlice({
                     state.dashboard_overview.total_students = total_students || ''
                     state.dashboard_overview.total_classrooms = total_classrooms || ''
                     state.dashboard_overview.total_tests = total_tests || ''
-                    state.placeholder = false;
+                    state.overall_loading = state.overall_loading.filter(item => item !== loading)
                     break;
 
                 case "failure":
-                    state.placeholder = false;
+                    state.overall_loading = state.overall_loading.filter(item => item !== loading)
                     break;
                 default:
                     break;
@@ -354,9 +372,158 @@ const adminSlice = createSlice({
                 default:
                     break;
             }
+        },
+
+        updatePersonalInfoInputs(state, action) {
+            const { first_name, last_name, email_id, phone_number, address } = action?.payload?.[0]
+            state.profileInputs.first_name = first_name
+            state.profileInputs.last_name = last_name
+            state.profileInputs.email_id = email_id
+            state.profileInputs.phone_number = phone_number
+            state.profileInputs.address = address
+            state.editProfileInputs.first_name = first_name
+            state.editProfileInputs.last_name = last_name
+            state.editProfileInputs.email_id = email_id
+            state.editProfileInputs.phone_number = phone_number
+            state.editProfileInputs.address = address
+        },
+
+        updateProfileEditing: (state, action) => {
+            state.isProfileEditing = !state.isProfileEditing
+        },
+        updateSettingsInputs: (state, action) => {
+            const { field, value } = action.payload;
+            state.settingsInputs[field] = value
+        },
+        edit_profile_Inputs: (state, action) => {
+            const { field, value } = action.payload;
+            state.editProfileInputs[field] = value
+        },
+
+        handleEditProfileDetails(state, action){
+            const { type } = action.payload
+            switch(type){
+                case "request" : 
+                    state.placeholder = true;
+                    break;
+
+                case "response":
+                    state.placeholder = false
+                    break;
+
+                case "failure" :
+                    state.placeholder = false;
+                    break;
+
+                default:
+                    break;
+            }
+        },
+
+        handlechangePassword(state, action){
+            const { type } = action.payload
+            switch(type){
+                case "request" : 
+                    state.placeholder = true;
+                    break;
+
+                case "response":
+                    state.placeholder = false
+                    break;
+
+                case "failure" :
+                    state.placeholder = false;
+                    break;
+
+                default:
+                    break;
+            }
+        },
+
+        handleGetDashboardChartData(state, action){
+            const { type, data } = action.payload
+            const loading = "dashboard_chart_data"
+            switch(type){
+                case "request" :
+                    state.overall_loading.push(loading)
+                    break;
+                case "response" :
+                    state.overall_loading = state.overall_loading.filter(item => item !== loading)
+                    state.dashboard_chart_data = data || [] ;
+                case "failure" :
+                    state.overall_loading = state.overall_loading.filter(item => item !== loading)
+                    break;
+                default :
+                    break;
+            }
+        },
+
+        updateDashboardOverviewData(state, action){
+            const { type , data } = action.payload
+            const { total_teachers, total_students, total_classrooms, total_tests } = data || {}
+            const loading = "dashboard_overview_data"
+            switch(type){
+                case "request":
+                    state.overall_loading.push(loading)                
+                    break;
+
+                case "response":
+                    state.dashboard_overview.total_teachers = total_teachers || ''
+                    state.dashboard_overview.total_students = total_students || ''
+                    state.dashboard_overview.total_classrooms = total_classrooms || ''
+                    state.dashboard_overview.total_tests = total_tests || ''
+                    state.overall_loading = state.overall_loading.filter(item => item !== loading)
+                    break;
+
+                case "failure":
+                    state.overall_loading = state.overall_loading.filter(item => item !== loading)
+                    break;
+                default:
+                    break;
+            }
+        },
+
+        handleGetClassroomChartData(state, action){
+            const { type, data } = action.payload
+            const loading = "classroom_chart_data"
+            switch(type){
+                case "request" :
+                    state.overall_loading.push(loading)
+                    break;
+                case "response" :
+                    state.overall_loading = state.overall_loading.filter(item => item !== loading)
+                    state.classroom_chart_data = data || [] ;
+                case "failure" :
+                    state.overall_loading = state.overall_loading.filter(item => item !== loading)
+                    break;
+                default :
+                    break;
+            }
+        },
+
+        getCreateClassroomModalTeachers(state, action){
+            const { type, data } = action.payload
+            console.log("data :", data)
+            const loading = "create_classroom_modal_teachers_list"
+            switch(type){
+                case "request" :
+                    state.overall_loading.push(loading)
+                    break;
+                case "response" :
+                    state.overall_loading = state.overall_loading.filter(item => item !== loading)
+                    state.create_classroom_modal_teachers_list = data || [] ;
+                case "failure" :
+                    state.overall_loading = state.overall_loading.filter(item => item !== loading)
+                    break;
+                default :
+                    break;
+            }
         }
 
+
+
     },
+
     extraReducers(builder) {    
         builder
             .addCase("common_slice/updateModalShow", (state, action) => {
@@ -405,7 +572,11 @@ export const {
     updateEditClassroomStudent, onChangeEditClassroomStudent,
     onChangeStaffForm,
     onChangeClassroomForm,
-    editDashboardTeachersData, editClassroomTeachersData, editClassroomStudentsData
+    editDashboardTeachersData, editClassroomTeachersData, editClassroomStudentsData,
+    updatePersonalInfoInputs, updateProfileEditing, updateSettingsInputs, edit_profile_Inputs,
+    handleEditProfileDetails, handlechangePassword,
+    handleGetDashboardChartData, handleGetClassroomChartData,
+    getCreateClassroomModalTeachers
 } = actions
 
 export default reducer

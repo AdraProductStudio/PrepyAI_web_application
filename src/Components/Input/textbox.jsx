@@ -12,7 +12,9 @@ const Textbox = ({
     cols,
     change,
     value,
-    disabled
+    disabled,
+    textBoxClassName,
+    readOnly
 }) => {
 
     return (
@@ -22,7 +24,7 @@ const Textbox = ({
                 {mandatory ? <span className='text-danger ms-1'>*</span> : null}
             </Form.Label>
             
-            <Form.Control as="textarea" rows={rows} cols={cols} onChange={change} value={value} disabled={disabled}/>
+            <Form.Control as="textarea" rows={rows} cols={cols} onChange={change} value={value} disabled={disabled} className={textBoxClassName} readOnly={readOnly} />
         </Form.Group>
     )
 }

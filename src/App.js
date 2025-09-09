@@ -25,6 +25,9 @@ import Classroom from "Views/Admin/Docs/Classroom";
 import ClassroomDetails from "Views/Admin/Layout/ClassroomDetailsLayout";
 import TeachersDetails from "Views/Admin/Docs/TeachersDetails";
 import StudentDetails from "Views/Admin/Docs/StudentDetails";
+import AdminProfile from "Views/Admin/Docs/AdminProfile";
+import AdminPersonalInfo from "Views/Admin/Docs/AdminPersonalInfo";
+import AdminSettings from "Views/Admin/Docs/AdminSettings";
 
 import TeacherLayout from "Views/Teachers/Layout/Layout";
 import TeacherDashboard from "Views/Teachers/Docs/Index";
@@ -44,6 +47,9 @@ import TeachersAssigned from "Views/Teachers/Docs/TeachersAssigned";
 import SelfTakingTest from "Views/Teachers/Docs/SelfTakingTest";
 import StudentsPerformanceLayout from "Views/Teachers/Layout/StudentsPerformanceLayout";
 import TeachersAuth from "Views/Teachers/Layout/TeachersAuth";
+import TeachersProfile from "Views/Teachers/Docs/TeachersProfile";
+import TeachersPersonalInfo from "Views/Teachers/Docs/TeachersPersonalInfo";
+import TeachersSettings from "Views/Teachers/Docs/TeachersSettings";
 
 import StudentsLayout from "Views/Students/Layout/Layout";
 import StudentDashboard from "Views/Students/Docs/index";
@@ -60,9 +66,9 @@ import GenerateQuestion from "Views/Students/Docs/GenerateQuestion";
 import McqQuestions from "Views/Students/Docs/McqQuestions";
 import LongQuestions from "Views/Students/Docs/LongQuestions";
 import McqTestLayout from "Views/Students/Layout/McqTestLayout";
-import StudentProfile from "Views/Students/Docs/Profile";
-import StudentPersonalInfo from "Views/Students/Docs/PersonalInfo";
-import StudentSettings from "Views/Students/Docs/Settings";
+import StudentProfile from "Views/Students/Docs/StudentProfile";
+import StudentPersonalInfo from "Views/Students/Docs/StudentPersonalInfo";
+import StudentSettings from "Views/Students/Docs/StudentSettings";
 
 
 import LearnersLayout from 'Views/Learners/Layout/Layout'
@@ -96,6 +102,8 @@ import TestHistory from "Views/Teachers/Docs/TestHistory";
 import { UpdateDynamic_Class_Subject_id } from "Views/Teachers/Docs/UpdateDynamic_Class_Subject_id";
 
 
+
+
 function App() {
   return (
     <Fragment>
@@ -124,6 +132,10 @@ function App() {
                   <Route path="teachers" element={<TeachersDetails />} />
                   <Route path="students" element={<StudentDetails />} />
                 </Route>
+              </Route>
+              <Route path="profile" element={<AdminProfile />} >
+                <Route index element={<AdminPersonalInfo/>} />
+                <Route path="settings" element={<AdminSettings/>} />
               </Route>
             </Route>
           </Route>
@@ -162,6 +174,11 @@ function App() {
                 <Route path=":student_id/overview" element={<StudentOverview />} />
               </Route>
               <Route path="notes" element={<Notes />} />
+
+              <Route path="profile" element={<TeachersProfile />} >
+                <Route index element={<TeachersPersonalInfo />} />
+                <Route path="settings" element={<TeachersSettings/>} />
+              </Route>
             </Route>
           </Route>
 
@@ -184,6 +201,7 @@ function App() {
                 <Route index element={<StudentPersonalInfo />} />
                 <Route path="settings" element={<StudentSettings />} />
               </Route>
+              
             </Route>
 
             <Route path="generate_question/:id" element={<GenerateQuestionLayout />}>
