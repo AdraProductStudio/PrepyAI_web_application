@@ -49,8 +49,8 @@ export function Inputfunctions(funBy) {
                                 name={ipVal?.name}
                                 isMandatory={ipVal?.isMandatory}
                                 options={ipVal?.options}
-                                labelField="label"
-                                valueField="label"
+                                labelField={ipVal?.labelField}
+                                valueField={ipVal?.valueField}
                                 create={ipVal?.create}
                                 value={ipVal?.value}
                                 change={ipVal?.change}
@@ -177,6 +177,7 @@ export function Inputfunctions(funBy) {
                                 placeholder={ipVal?.placeholder}
                                 max={ipVal?.name === "To Date" || ipVal?.name === "From Date" ? new Date().toISOString().split('T')[0] : null}
                                 min={ipVal?.name === "Next call date" ? new Date().toISOString().split('T')[0] : null}
+                                readOnly={ipVal?.readOnly}
                             />
                         </div>
                 }
@@ -208,6 +209,8 @@ export function Inputfunctions(funBy) {
                         mandatory={ipVal?.isMandatory}
                         inputError={ipVal?.Err}
                         disabled={ipVal?.disabled}
+                        textBoxClassName={ipVal?.textBoxClassName}
+                        readOnly={ipVal?.readOnly}
                     />
 
                     <div className='text-danger pt-2 ps-1 fs-15'>

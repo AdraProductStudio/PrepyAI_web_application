@@ -1,3 +1,4 @@
+import SpinnerComponent from "Components/Spinner/Spinner";
 import {
     ResponsiveContainer,
     BarChart,
@@ -6,21 +7,6 @@ import {
     Tooltip,
     CartesianGrid
 } from "recharts";
-
-const data = [
-    { name: "Jan", Emergent: 8, Developing: 8, Exemplar: 8 },
-    { name: "Feb", Emergent: 5, Developing: 5, Exemplar: 5 },
-    { name: "Mar", Emergent: 15, Developing: 3, Exemplar: 3 },
-    { name: "Apr", Emergent: 8, Developing: 4, Exemplar: 4 },
-    { name: "May", Emergent: 3, Developing: 2, Exemplar: 2 },
-    { name: "Jun", Emergent: 8, Developing: 2, Exemplar: 2 },
-    { name: "Jul", Emergent: 8, Developing: 2, Exemplar: 2 },
-    { name: "Aug", Emergent: 8, Developing: 2, Exemplar: 2 },
-    { name: "Sep", Emergent: 8, Developing: 2, Exemplar: 2 },
-    { name: "Oct", Emergent: 4, Developing: 2, Exemplar: 1 },
-    { name: "Nov", Emergent: 6, Developing: 3, Exemplar: 2 },
-    { name: "Dec", Emergent: 7, Developing: 2, Exemplar: 1 },
-];
 
 const colors = {
     Emergent: "#FD5081",
@@ -62,36 +48,47 @@ const CustomTooltip = ({ active, payload }) => {
     return null;
 };
 
-export default function TestPerformanceChart() {
+export default function TestPerformanceChart({data, loading}) {
     return (
-        <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-                data={data}
-                barCategoryGap={20}
-                margin={{ top: 20, right: 30, left: 0, bottom: 20 }}
-            >
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="name" tick={{ fontSize: 14 }} />
-                <Tooltip content={<CustomTooltip />} cursor={{ fill: "transparent" }} />
+        <div>
+            {
+                loading.includes("classroom_chart_data")
+                ?
+                    <div className="start-50 top-50">
+                        <SpinnerComponent />
+                    </div>
+                :
+                    <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                            data={data}
+                            barCategoryGap={20}
+                            margin={{ top: 20, right: 30, left: 0, bottom: 20 }}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                            <XAxis dataKey="name" tick={{ fontSize: 14 }} />
+                            <Tooltip content={<CustomTooltip />} cursor={{ fill: "transparent" }} />
 
-                <Bar
-                    dataKey="Developing"
-                    stackId="a"
-                    fill={colors.Developing}
+                            <Bar
+                                dataKey="Developing"
+                                stackId="a"
+                                fill={colors.Developing}
 
-                />
-                <Bar
-                    dataKey="Exemplar"
-                    stackId="a"
-                    fill={colors.Exemplar}
-                />
-                <Bar
-                    dataKey="Emergent"
-                    stackId="a"
-                    fill={colors.Emergent}
-                    radius={[8, 8, 0, 0]}
-                />
-            </BarChart>
-        </ResponsiveContainer>
+                            />
+                            <Bar
+                                dataKey="Exemplar"
+                                stackId="a"
+                                fill={colors.Exemplar}
+                            />
+                            <Bar
+                                dataKey="Emergent"
+                                stackId="a"
+                                fill={colors.Emergent}
+                                radius={[8, 8, 0, 0]}
+                            />
+                        </BarChart>
+                    </ResponsiveContainer>
+
+            }
+        </div>
     );
 }

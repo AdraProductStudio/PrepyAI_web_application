@@ -2,7 +2,7 @@ import { useCommonState, useCustomNavigate, useDispatch } from 'Components/Custo
 import { handlePostNote, update_app_data, update_note_data } from 'Views/Common/Slices/Common_slice';
 import Icons from 'Utils/Icons';
 import Image from 'Utils/Image';
-import { clear_form_fields, update_perfomance_by_classroom, update_selected_books, update_student_perfomance_dashboard, update_Students_classroom } from '../Slice/teachersSlice';
+import { clear_form_fields, edit_profile_Inputs, update_perfomance_by_classroom, update_selected_books, update_student_perfomance_dashboard, update_Students_classroom, updateSettingsInputs } from '../Slice/teachersSlice';
 import { get_bookmarks, handleGetSubjectAttachments } from '../Actions/TeacherActions';
 import { update_Create_student, update_Grade_by_classroom, updatePostClassroomsData, updatePostStudentData, updatePostSubjectsData } from '../Slice/teachersSlice';
 
@@ -238,7 +238,20 @@ const JsonData = (params) => {
         score: 38,
         status: "Developing",
       },
-    ]
+    ],
+
+    profileNavItems: [
+        {
+            name: "Personal Information",
+            icon: (isActive) => Icons.profile_icon(isActive),
+            to: "/teachers_dashboard/profile"
+        },
+        {
+            name: "Settings",
+            icon: (isActive) => Icons.settings_icon(isActive),
+            to: "/teachers_dashboard/profile/settings"
+        },
+    ],
   }
 
   const jsxJson = {
@@ -888,7 +901,189 @@ const JsonData = (params) => {
         title: "Time Submitted",
         divClassName: "col-3 text-center border-end p-3 text-primary-emphasis"
       }
-    ]
+    ],
+
+    profile_details:[
+      {
+          name: "First Name",
+          value: teachersState?.profileInputs?.first_name || '',
+          type: "text",
+          title: " ",
+          category: "input",
+          placeholder: "",
+          divClassName: "mb-3 col-12 col-lg-6 p-2",
+          readOnly: true
+      },
+      {
+          name: "Last Name",
+          value: teachersState?.profileInputs?.last_name || '',
+          type: "text",
+          title: " ",
+          category: "input",
+          placeholder: "",
+          divClassName: "mb-3 col-12 col-lg-6 p-2",
+          readOnly: true
+      },
+      {
+          name: "Email",
+          value: teachersState?.profileInputs?.email_id || '',
+          type: "text",
+          title: " ",
+          category: "input",
+          placeholder: "",
+          divClassName: "mb-3  col-12 col-lg-6 p-2",
+          readOnly: true
+      },
+      {
+          name: "Phone Number",
+          value: teachersState?.profileInputs?.phone_number || '',
+          type: "number",
+          title: " ",
+          category: "input",
+          placeholder: "",
+          divClassName: "mb-3  col-12 col-lg-6 p-2",
+          readOnly: true
+      },
+      {
+          name: "Address",
+          value: teachersState?.profileInputs?.address || '',
+          title: " ",
+          category: "textbox",
+          placeholder: "",
+          divClassName: "mb-3  col-12 p-2",
+          readOnly: true
+      }
+    ],
+
+    settings_details:
+      [
+        {
+            name: "Current Password",
+            type: "text",
+            title: " ",
+            category: "input",
+            placeholder: "Current Password",
+            value: teachersState?.settingsInputs?.old_password || '',
+            change: (e) => dispatch(updateSettingsInputs({ field: 'old_password', value: e.target.value })),
+            // keyDown: (e) => {
+            //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+            // },
+            divClassName: "mb-3",
+            isMandatory: true,
+            Err: commonState?.app_data?.validated && !teachersState?.settingsInputs?.old_password ? "First name required" : null
+        },
+        {
+            name: "New Password",
+            type: "text",
+            title: " ",
+            category: "input",
+            placeholder: "Current Password",
+            value: teachersState?.settingsInputs?.confirm_password || '',
+            change: (e) => dispatch(updateSettingsInputs({ field: 'confirm_password', value: e.target.value })),
+            // keyDown: (e) => {
+            //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+            // },
+            divClassName: "mb-3",
+            isMandatory: true,
+            Err: commonState?.app_data?.validated && !teachersState?.settingsInputs?.confirm_password ? "Confirm Password required" : null
+        },
+        {
+            name: "Confirm Password",
+            type: "text",
+            title: " ",
+            category: "input",
+            placeholder: "Confirm Password",
+            value: teachersState?.settingsInputs?.new_password || '',
+            change: (e) => dispatch(updateSettingsInputs({ field: 'new_password', value: e.target.value })),
+            // keyDown: (e) => {
+            //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+            // },
+            divClassName: "mb-3",
+            isMandatory: true,
+            Err: commonState?.app_data?.validated && !teachersState?.settingsInputs?.new_password ? "New password required" : null
+        },
+
+    ],
+
+    teachers_profile: [
+      {
+          name: "First Name",
+          type: "text",
+          title: " ",
+          category: "input",
+          placeholder: "",
+          value: teachersState?.editProfileInputs?.first_name || '',
+          change: (e) => dispatch(edit_profile_Inputs({ field: 'first_name', value: e.target.value })),
+          // keyDown: (e) => {
+          //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+          // },
+          divClassName: "mb-3",
+          isMandatory: false,
+          Err: commonState?.app_data?.validated && !teachersState?.editProfileInputs?.first_name ? "First name required" : null,
+      },
+      {
+          name: "Last Name",
+          type: "text",
+          title: " ",
+          category: "input",
+          placeholder: "",
+          value: teachersState?.editProfileInputs?.last_name || '',
+          change:(e) => dispatch(edit_profile_Inputs({ field: 'last_name', value: e.target.value })),
+          // keyDown: (e) => {
+          //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+          // },
+          divClassName: "mb-3",
+          isMandatory: false,
+          Err: commonState?.app_data?.validated && !teachersState?.editProfileInputs?.last_name ? "Last name required" : null,
+      },
+      {
+          name: "Email",
+          type: "text",
+          title: " ",
+          category: "input",
+          placeholder: "",
+          value: teachersState?.editProfileInputs?.email_id || '',
+          change:(e) => dispatch(edit_profile_Inputs({ field: 'email_id', value: e.target.value })),
+          // keyDown: (e) => {
+          //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+          // },
+          divClassName: "mb-3",
+          isMandatory: false,
+          Err: commonState?.app_data?.validated && !teachersState?.editProfileInputs?.email_id ? "Email required" : null,
+          disabled: true,
+          className: "bg-white"
+      },
+      {
+          name: "Phone Number",
+          type: "number",
+          title: " ",
+          category: "input",
+          placeholder: "",
+          value: teachersState?.editProfileInputs?.phone_number ||'',
+          change:(e) => dispatch(edit_profile_Inputs({ field: 'phone_number', value: e.target.value })),
+          // keyDown: (e) => {
+          //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+          // },
+          divClassName: "mb-3",
+          isMandatory: false,
+          Err: commonState?.app_data?.validated && !teachersState?.editProfileInputs?.phone_number ? "Phone Number required" : null
+      },
+      {
+          name: "Address",
+          title: " ",
+          category: "textbox",
+          placeholder: "",
+          value: teachersState?.editProfileInputs?.address ||'',
+          change:(e) => dispatch(edit_profile_Inputs({ field: 'address', value: e.target.value })),
+          // keyDown: (e) => {
+          //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+          // },
+          divClassName: "mb-3",
+          isMandatory: false,
+          Err: commonState?.app_data?.validated && !teachersState?.editProfileInputs?.address ? "Phone Number required" : null
+      },
+    ],
+    
   };
 
   return {

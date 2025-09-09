@@ -8,7 +8,7 @@ import Icons from "Utils/Icons";
 import JsonData from "Views/Admin/Utils/JsonData";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import { OverallModel } from "../Utils/OverallModal";
-import { getDashboardTeachersList, handleDashboardOverview } from "../Actions/Admin_action";
+import { getDashboardChartData, getDashboardTeachersList, handleDashboardOverview } from "../Actions/Admin_action";
 import { useEffect } from "react";
 import { useCommonState } from "Components/CustomHooks";
 import { updateEditDashboardTeacher } from "../Slices/adminSlice";
@@ -22,6 +22,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         dispatch(handleDashboardOverview())
         dispatch(getDashboardTeachersList())
+        dispatch(getDashboardChartData())
     }, [])
 
     return (
@@ -41,7 +42,7 @@ const AdminDashboard = () => {
                             <p className="fs-15 text-secondary mb-0">110 Test</p>
                         </Card.Header>
                         <Card.Body>
-                            <TestConductedChart />
+                            <TestConductedChart data = {adminState?.dashboard_chart_data}/>
                         </Card.Body>
                     </Card>
                 </div>
@@ -95,27 +96,32 @@ const AdminDashboard = () => {
                                                 <td colSpan={8}> <SpinnerComponent/> </td>
                                             </tr>
                                             :
-                                            adminState?.dashboard_teachers_list.length > 0 &&
-                                            adminState?.dashboard_teachers_list?.map((row, index) => (
-                                                <tr key={index}>
-                                                    <td>{index + 1}</td>
-                                                    <td>{row?.staff_name}</td>
-                                                    <td>{row?.institute_name}</td>
-                                                    <td>{row?.subject}</td>
-                                                    <td>{row?.contact_no}</td>
-                                                    <td>{row?.email}</td>
-                                                    <td>{row?.qualification}</td>
-                                                    <td>
-                                                        <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.edit_icon} clickFunction={()=> {   dispatch(updateEditDashboardTeacher(row))
-                                                            dispatch(updateModalShow({show: true, close_btn: true, modal_from: "admin", modal_type: "edit_dashboard_teacher"}))
-                                                        }} />
-                                                        <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.delete_icons} clickFunction={ () => {
-                                                            dispatch(updateEditDashboardTeacher(row))
-                                                            dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "admin", modal_type: "delete_dashboard_teacher" }))
-                                                        }}/>
-                                                    </td>
+                                            adminState?.dashboard_teachers_list.length > 0 
+                                                ?
+                                                adminState?.dashboard_teachers_list?.map((row, index) => (
+                                                    <tr key={index}>
+                                                        <td>{index + 1}</td>
+                                                        <td>{row?.staff_name}</td>
+                                                        <td>{row?.institute_name}</td>
+                                                        <td>{row?.subject}</td>
+                                                        <td>{row?.contact_no}</td>
+                                                        <td>{row?.email}</td>
+                                                        <td>{row?.qualification}</td>
+                                                        <td>
+                                                            <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.edit_icon} clickFunction={()=> {   dispatch(updateEditDashboardTeacher(row))
+                                                                dispatch(updateModalShow({show: true, close_btn: true, modal_from: "admin", modal_type: "edit_dashboard_teacher"}))
+                                                            }} />
+                                                            <ButtonComponent type="button" className="btn-transparent" buttonName={Icons?.delete_icons} clickFunction={ () => {
+                                                                dispatch(updateEditDashboardTeacher(row))
+                                                                dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "admin", modal_type: "delete_dashboard_teacher" }))
+                                                            }}/>
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                                :
+                                                 <tr>
+                                                    <td colSpan={8}>No Data Found</td>
                                                 </tr>
-                                            ))
                                         }
                                     </tbody>
                                 </table>

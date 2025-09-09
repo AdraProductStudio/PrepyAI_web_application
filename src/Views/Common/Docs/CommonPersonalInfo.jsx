@@ -1,27 +1,26 @@
-// import ButtonComponent from "Components/Button/Button";
 import ButtonComponent from "Components/Button/Button";
 import Input from "Components/Input/Input";
 import React, { useEffect } from "react";
 import { CiEdit } from "react-icons/ci";
-import { useDispatch, useSelector } from "react-redux";
-import JsonData from "../Utils/JsonData";
+import { useDispatch } from "react-redux";
 import Img from "Components/Img/Img";
-import { useCommonState } from "Components/CustomHooks";
-import Images from "Utils/Image"
+import Images from "Utils/Image";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
-import { updateModalShow } from "Views/Common/Slices/Common_slice";
-import { handleEditProfileDetails, handleGetProfileDetails } from "../Actions/StudentAction";
 
-
-const StudentPersonalInfo = () => {
-  const {jsxJson } = JsonData()
+const CommonPersonalInfo = ({
+  profileDetailsJson,
+  fetchProfileAction,
+  editProfileAction,
+  modalConfig,
+  openModalAction,
+}) => {
   const dispatch = useDispatch();
-  const {studeState} = useCommonState()
 
-  useEffect(()=>{
-    dispatch(handleGetProfileDetails())
-  },[])
-  
+  useEffect(() => {
+    if (fetchProfileAction) {
+      dispatch(fetchProfileAction());
+    }
+  }, [dispatch, fetchProfileAction]);
 
   return (
     <div className="h-100 p-xl-4 px-xl-5">
@@ -32,7 +31,7 @@ const StudentPersonalInfo = () => {
         >
           <Input
             label={
-              <span style={{cursor: "pointer"}}>
+              <span style={{ cursor: "pointer" }}>
                 <Img
                   src={Images?.default_prfile_pic}
                   alt={"ProfileImage"}
@@ -58,21 +57,29 @@ const StudentPersonalInfo = () => {
 
         <div>
           <ButtonComponent
-            buttonName={<div><CiEdit className="me-1 fs-5" /> Edit Profile</div>}
+            buttonName={
+              <div>
+                <CiEdit className="me-1 fs-5" /> Edit Profile
+              </div>
+            }
             className={"btn-outline-primary profile_edit_button"}
-            clickFunction={()=>{
-              dispatch(updateModalShow({show:true,close_btn:true, modal_from:"profile",modal_type:"edit_profile"}))}}
+            clickFunction={() => {
+              if (editProfileAction) dispatch(editProfileAction());
+              if (openModalAction && modalConfig) {
+                dispatch(openModalAction(modalConfig));
+              }
+            }}
           />
         </div>
       </section>
 
       <section className="overflow-auto mt-4 mt-md-4">
         <form className="row">
-          {Inputfunctions(jsxJson?.profile_details)}
+          {Inputfunctions(profileDetailsJson)}
         </form>
       </section>
     </div>
   );
 };
 
-export default StudentPersonalInfo;
+export default CommonPersonalInfo;

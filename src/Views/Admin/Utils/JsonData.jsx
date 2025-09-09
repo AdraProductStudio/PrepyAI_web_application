@@ -1,7 +1,7 @@
 // import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks';
 import { useCommonState } from 'Components/CustomHooks';
 import Icons from 'Utils/Icons';
-import { clearFieldError, onChangeClassroomForm, onChangeEditClassroomStudent, onChangeEditClassroomTeacher, onChangeEditDashboardTeacher, onChangeStaffForm, updateStaffForm } from '../Slices/adminSlice';
+import { clearFieldError, edit_profile_Inputs, onChangeClassroomForm, onChangeEditClassroomStudent, onChangeEditClassroomTeacher, onChangeEditDashboardTeacher, onChangeStaffForm, updateSettingsInputs } from '../Slices/adminSlice';
 import { useDispatch } from 'react-redux';
 
 const JsonData = () => {
@@ -10,8 +10,13 @@ const JsonData = () => {
     // const navigate = useCustomNavigate();
     // const { commonState } = useCommonState();
     
-    const { adminState } = useCommonState();
+    const { adminState, commonState } = useCommonState();
     // const { staffForm, file, loading } = adminState
+
+    const teacherOptions = adminState?.create_classroom_modal_teachers_list || [];
+    const selectedTeachers = (adminState?.classroomForm.teachers || [])
+    .map(id => teacherOptions.find(opt => opt.id?.toString() === id?.toString()))
+    .filter(Boolean);
 
     const jsonOnly = {
         sidebar_data: [
@@ -35,6 +40,19 @@ const JsonData = () => {
             { icon: Icons.multiple_people_icon, count: adminState?.dashboard_overview.total_students, description: "Total No.of Students" },
             { icon: Icons.admin_computer_icon_pink, count: adminState?.dashboard_overview.total_classrooms, description: "Total No.of Classrooms" },
             { icon: Icons.admin_test_icon, count: adminState?.dashboard_overview.total_tests, description: "Total No.of Tests" }
+        ],
+
+        profileNavItems: [
+            {
+                name: "Personal Information",
+                icon: (isActive) => Icons.profile_icon(isActive),
+                to: "/admin_dashboard/profile"
+            },
+            {
+                name: "Settings",
+                icon: (isActive) => Icons.settings_icon(isActive),
+                to: "/admin_dashboard/profile/settings"
+            },
         ],
 
     }
@@ -333,27 +351,205 @@ const JsonData = () => {
                 type: "react_dropdown_select",
                 divClassName: "mt-3",
                 labelClassName: "input-colur text-primary-emphasis",
-                options:[
-                    {label: "teacher1", value: 1},
-                    {label: "teacher2", value: 2},
-                    {label: "teacher3", value: 3}
-                ],
-                labelField: "label",
-                valueField: "value",
+                // options:[
+                //     {label: "teacher1", value: 1},
+                //     {label: "teacher2", value: 2},
+                //     {label: "teacher3", value: 3}
+                // ],
+                options: adminState?.create_classroom_modal_teachers_list || [],
+                labelField: "teacher_name",
+                valueField: "id",
                 multi: true,
-                // value: adminState?.classroomForm.teachers || [],
-                value: adminState?.classroomForm.teachers.map(id => [
-                    {label: "teacher1", value: 1},
-                    {label: "teacher2", value: 2},
-                    {label: "teacher3", value: 3}
-                ].find(opt=> opt.value === id)) || [],
+                value: selectedTeachers ,
                 change: (values) => { 
-                    const selectedIds = values.map(v => v.value)
+                    const selectedIds = values.map(v => v.id)
                     dispatch(onChangeClassroomForm({field: "teachers", data: selectedIds}))
                     dispatch(clearFieldError('teachers'))
                 },
                 Err: adminState?.errors.teachers || ''
             }
+        ],
+
+        profile_details:[
+            {
+                name: "First Name",
+                value: adminState?.profileInputs?.first_name || '',
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "",
+                divClassName: "mb-3 col-12 col-lg-6 p-2",
+                readOnly: true
+            },
+            {
+                name: "Last Name",
+                value: adminState?.profileInputs?.last_name || '',
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "",
+                divClassName: "mb-3 col-12 col-lg-6 p-2",
+                readOnly: true
+            },
+            {
+                name: "Email",
+                value: adminState?.profileInputs?.email_id || '',
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "",
+                divClassName: "mb-3  col-12 col-lg-6 p-2",
+                readOnly: true
+            },
+            {
+                name: "Phone Number",
+                value: adminState?.profileInputs?.phone_number || '',
+                type: "number",
+                title: " ",
+                category: "input",
+                placeholder: "",
+                divClassName: "mb-3  col-12 col-lg-6 p-2",
+                readOnly: true
+            },
+            {
+                name: "Address",
+                value: adminState?.profileInputs?.address || '',
+                title: " ",
+                category: "textbox",
+                placeholder: "",
+                divClassName: "mb-3  col-12 p-2",
+                readOnly: true
+            }
+
+        ],
+
+        settings_details:[
+                {
+                name: "Current Password",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "Current Password",
+                value: adminState?.settingsInputs?.old_password || '',
+                change: (e) => dispatch(updateSettingsInputs({ field: 'old_password', value: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                divClassName: "mb-3",
+                isMandatory: false,
+                Err: commonState?.app_data?.validated && !adminState?.settingsInputs?.old_password ? "First name required" : null
+            },
+            {
+                name: "New Password",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "Current Password",
+                value: adminState?.settingsInputs?.confirm_password || '',
+                change: (e) => dispatch(updateSettingsInputs({ field: 'confirm_password', value: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                divClassName: "mb-3",
+                isMandatory: false,
+                Err: commonState?.app_data?.validated && !adminState?.settingsInputs?.confirm_password ? "Confirm Password required" : null
+            },
+            {
+                name: "Confirm Password",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "Confirm Password",
+                value: adminState?.settingsInputs?.new_password || '',
+                change: (e) => dispatch(updateSettingsInputs({ field: 'new_password', value: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                divClassName: "mb-3",
+                isMandatory: false,
+                Err: commonState?.app_data?.validated && !adminState?.settingsInputs?.new_password ? "New password required" : null
+            },
+
+        ],
+
+        admin_profile: [
+            {
+                name: "First Name",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "",
+                value: adminState?.editProfileInputs?.first_name || '',
+                change: (e) => dispatch(edit_profile_Inputs({ field: 'first_name', value: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                divClassName: "mb-3",
+                isMandatory: false,
+                Err: commonState?.app_data?.validated && !adminState?.editProfileInputs?.first_name ? "First name required" : null,
+            },
+            {
+                name: "Last Name",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "",
+                value: adminState?.editProfileInputs?.last_name || '',
+                change:(e) => dispatch(edit_profile_Inputs({ field: 'last_name', value: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                divClassName: "mb-3",
+                isMandatory: false,
+                Err: commonState?.app_data?.validated && !adminState?.editProfileInputs?.last_name ? "Last name required" : null,
+            },
+            {
+                name: "Email",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "",
+                value: adminState?.editProfileInputs?.email_id || '',
+                change:(e) => dispatch(edit_profile_Inputs({ field: 'email_id', value: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                divClassName: "mb-3",
+                isMandatory: false,
+                Err: commonState?.app_data?.validated && !adminState?.editProfileInputs?.email_id ? "Email required" : null,
+                disabled: true,
+                className: "bg-white"
+            },
+            {
+                name: "Phone Number",
+                type: "number",
+                title: " ",
+                category: "input",
+                placeholder: "",
+                value: adminState?.editProfileInputs?.phone_number ||'',
+                change:(e) => dispatch(edit_profile_Inputs({ field: 'phone_number', value: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                divClassName: "mb-3",
+                isMandatory: false,
+                Err: commonState?.app_data?.validated && !adminState?.editProfileInputs?.phone_number ? "Phone Number required" : null
+            },
+            {
+                name: "Address",
+                title: " ",
+                category: "textbox",
+                placeholder: "",
+                value: adminState?.editProfileInputs?.address ||'',
+                change:(e) => dispatch(edit_profile_Inputs({ field: 'address', value: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                divClassName: "mb-3",
+                isMandatory: false,
+                Err: commonState?.app_data?.validated && !adminState?.editProfileInputs?.address ? "Phone Number required" : null
+            },
+
         ],
     }
 

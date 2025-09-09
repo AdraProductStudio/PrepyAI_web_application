@@ -1434,3 +1434,35 @@ input::placeholder {
     border-radius: 12px 0 0 12px !important;
   }
 }
+
+/* superadmin_dashboard */
+.strokeImage {
+  position: absolute;
+  bottom: 0rem;
+  right: 0rem;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.custom_responsive_cards {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -0.5rem;
+}
+
+.custom_responsive_cards > section {
+  width: 100%;
+  padding: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .custom_responsive_cards > section {
+    width: 50%;
+  }
+}
+
+@media (min-width: 1676px) {
+  .custom_responsive_cards > section {
+    width: 25%;
+  }
+}

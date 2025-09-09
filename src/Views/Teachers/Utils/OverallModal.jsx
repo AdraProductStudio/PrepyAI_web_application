@@ -17,6 +17,7 @@ import { Form, Button } from "react-bootstrap";
 import { clear_form_fields, handle_attachment_books_upload } from "../Slice/teachersSlice";
 import { handleUploadBook } from "../Actions/TeacherActions"; 
 import SpinnerComponent from "Components/Spinner/Spinner";
+import { editProfileDetails } from "../Actions/Teachers_action";
 
 
 export function OverallModel() {
@@ -47,6 +48,9 @@ export function OverallModel() {
 
           case "performance":
             return <h5 className="fw-bold">Student Score</h5>;
+          
+          case "edit_profile":
+            return <h5>Edit Profile</h5>;
 
           default:
             break;
@@ -92,6 +96,9 @@ export function OverallModel() {
           default:
             break;
         }
+
+      case "edit_profile":
+        return <h5>Edit Profile</h5>;
 
       default:
         break;
@@ -185,6 +192,26 @@ export function OverallModel() {
                 </div>
               </div>
             )
+
+          case "edit_profile":
+            return <div className="w-100">
+                {Inputfunctions(jsxJson?.teachers_profile)}
+                <ButtonComponent 
+                  type="button" 
+                  className="brand_color w-100 text-white" 
+                  clickFunction={()=>dispatch(editProfileDetails(teachersState?.editProfileInputs))}
+                  btnDisable={teachersState?.placeholder}
+                  children={
+                    teachersState?.placeholder
+                      ?
+                      <span className="d-flex align-items-center justify-content-center gap-2">
+                        <SpinnerComponent /> Processing...
+                      </span>
+                      :
+                      ("Submit")
+                  }
+                />
+            </div>
 
           default:
             break;

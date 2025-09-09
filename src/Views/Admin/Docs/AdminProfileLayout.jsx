@@ -4,8 +4,8 @@ import { Card } from "react-bootstrap";
 import Img from "Components/Img/Img";
 import Images from "Utils/Image"
 
-const OrgProfileLayout = ({ navItems }) => {
-  const location = useLocation()
+const AdminProfileLayout = ({ navItems, profileInputs }) => {
+  const location = useLocation();
   return (
     <div className="h-100">
       <h3 className="pt-3 ms-3 border-bottom pb-3">My Profile</h3>
@@ -45,7 +45,7 @@ const OrgProfileLayout = ({ navItems }) => {
           </ul>
 
           <Card.Body className="d-flex gap-3">
-            <Card className="h-75  pt-2 d-none d-xl-block col-xl-1 d-none d-xl-block shadow rounded-4" style={{width: "20rem"}}>
+            <Card className=" h-75  pt-2 d-none d-xl-block col-xl-1 d-none d-xl-block shadow rounded-4" style={{width: "20rem"}}>
               <div className="d-flex justify-content-start align-items-center gap-5 p-1 p-xxl-2 ps-xxl-4 border-bottom">
                 <Img
                   src={Images?.default_prfile_pic}
@@ -57,7 +57,7 @@ const OrgProfileLayout = ({ navItems }) => {
                 />
                 <div className="">
                   <h4 className="fs-4 fs-xxl-3">Hello &#x1F44B;</h4>
-                  <h3 className="fw-bold fs-4 fs-xxl-3">{"Prakash"}</h3>
+                  <h3 className="fw-bold fs-4 fs-xxl-3">{profileInputs?.first_name} {profileInputs?.last_name}</h3>
                 </div>
               </div>
 
@@ -94,4 +94,4 @@ const OrgProfileLayout = ({ navItems }) => {
   );
 };
 
-export default OrgProfileLayout;
+export default AdminProfileLayout;

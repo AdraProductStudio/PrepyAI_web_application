@@ -58,8 +58,8 @@ function SuperAdminDashboard() {
   const monthlyGrowthDropDownOptions = monthlyReports?.year?.map(year => ({ id: year, name: year.toString() }))
 
   return (
-    <div className="vh-100 p-2">
-      <article className="row row-cols-md-2 row-cols-xxl-4">
+    <div className="h-100">
+      <article className="custom_responsive_cards p-2">
         {jsonOnly?.cardInputs.map((input, idx) => (
           <section key={idx} className="position-relative p-2">
             <Card className="overflow-hidden superAdminCard">
@@ -72,26 +72,9 @@ function SuperAdminDashboard() {
                   {input.value}
                 </Card.Text>
               </Card.Body>
-
-              {
-                <div
-                  className="strokeImage"
-                  style={{
-                    filter:
-                      input.title === "Total Revenue"
-                        ? "invert(10%) sepia(80%) saturate(300%) hue-rotate(90deg)"
-                        : "",
-                  }}
-                >
-                  <Img
-                    src={Image.stroke}
-                    alt={"StrokeImage"}
-                    width={"180px"}
-                    height={"160px"}
-                    fluid={"fulid"}
-                  />
-                </div>
-              }
+              <div className="strokeImage" >
+                {input.stroke}
+              </div>
             </Card>
           </section>
         ))}
@@ -299,7 +282,7 @@ function SuperAdminDashboard() {
               style={{ flex: 1, overflow: "auto", width: "100%" }}
             >
               <table className="table table-bordered mb-0 mt-0">
-                <thead style={{ position: "sticky", top: "1px", bottom: "-1px" }}
+                <thead style={{ position: "sticky", top: "0px", bottom: "0px" }}
                 >
                   <tr>
                     {jsonOnly?.tableHeadings.map((title, idx) => (

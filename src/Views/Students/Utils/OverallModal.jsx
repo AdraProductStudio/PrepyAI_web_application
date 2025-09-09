@@ -518,10 +518,10 @@ export function OverallModel() {
                             <ButtonComponent type="button"
                                 buttonName={studentState?.loading['edit_profile'] ? (
                                     <div className="d-flex justify-content-center align-items-center">
-                                        <p className="m-0">Editing...</p> <SpinnerComponent className="p-0 my-0 ms-2 small-spinner" />
+                                        <p className="m-0">Processing...</p> <SpinnerComponent className="p-0 my-0 ms-2 small-spinner" />
                                     </div>
                                 ) :
-                                    'Edit'
+                                    'Submit'
                                 }
                                 className="brand_color w-100 text-white"
                                 clickFunction={() => dispatch(handleEditProfileDetails(studentState?.editProfileInputs))}
