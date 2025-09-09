@@ -93,7 +93,8 @@ const TeacherSlice = createSlice({
             overall_levels: [],
             performance: ""
 
-        }
+        },
+        placeholder: false
     },
     reducers: {
         caluculateRemainingTime: (state, action) => {
@@ -501,17 +502,32 @@ const TeacherSlice = createSlice({
         editProfileInputs: (state, action) => {
             const { field, value } = action.payload;
             state.editProfileInputs[field] = value
-
         },
         updateProfileEditing: (state, action) => {
             state.isProfileEditing = !state.isProfileEditing
         },
         updateGenerateQuestionCanvas: (state, action) => {
             state.offCanvasShow = action.payload
+        },
+        handlechangePassword(state, action){
+            const { type } = action.payload
+            switch(type){
+                case "request" : 
+                    state.placeholder = true;
+                    break;
 
-        }
+                case "response":
+                    state.placeholder = false
+                    break;
 
+                case "failure" :
+                    state.placeholder = false;
+                    break;
 
+                default:
+                    break;
+            }
+        },
     },
     extraReducers(builder) {
         builder
@@ -551,7 +567,8 @@ export const {
     setUploadLearnerBook, setClassroomCode, setUploadTestPaper, updateAudioRecording, updateQuestionType,
     updatePersonalInfoInputs, updateSettingsInputs, resetSettingsInputs, editProfileInputs, updateProfileEditing,
     updateGenerateQuestionFields, updateGenerateMcqQuestions, updateGenerateLongQuestions,
-    updateMcqQuestionAnswer, updateLongQuestionAnswerValue, updateLongQuestionAnswer, updateGenerateQuestionCanvas
+    updateMcqQuestionAnswer, updateLongQuestionAnswerValue, updateLongQuestionAnswer, updateGenerateQuestionCanvas,
+    handlechangePassword
 
 } = actions;
 

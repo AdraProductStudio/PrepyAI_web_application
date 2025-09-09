@@ -48,7 +48,7 @@ const initialState = {
     placeholder: false,
     placeholder2: false,
     assignedTest: {
-      jsonStudentsData: [{ student_name: "All", student_id: "all" }],
+      jsonStudentsData: [],
       pagination: {
         page: 1,
         show_entries: 10,
@@ -183,6 +183,22 @@ const initialState = {
     glow: false,
   },
 
+
+  profileInputs: {
+    first_name: "",
+    last_name: "",
+    email_id: "",
+    phone_number: "",
+    address: ""
+  },
+  editProfileInputs: {},
+  isProfileEditing: false,
+  settingsInputs: {
+    old_password: "",
+    confirm_password: "",
+    new_password: ""
+  },
+  placeholder: false
 }
 
 const teachersSlice = createSlice({
@@ -349,9 +365,6 @@ const teachersSlice = createSlice({
 
     },
     get_student_details_slice(state, action) {
-      // const { key, value } = action.payload
-      // state.student_details[key] = value
-
       const { type, data } = action.payload;
       switch (type) {
         case "request":
@@ -377,21 +390,8 @@ const teachersSlice = createSlice({
       state.save_schedule_status = "loading";
       state.save_schedule_error = null;
     },
-    // save_schedule_success(state, action) {
-    //     state.save_schedule_status = "succeeded";
-    //     state.student_details = {
-    //         ...state.student_details,
-    //         schedule: action.payload
-    //     };
-    //     state.create_test = {}
-    // },
     save_schedule_success(state, action) {
       state.save_schedule_status = "succeeded";
-      state.student_details = {
-        ...state.student_details,
-        schedule: action.payload,
-      };
-      state.test_id = action.payload.test_id;
       state.create_test = {};
     },
     save_schedule_failure(state, action) {
@@ -401,14 +401,17 @@ const teachersSlice = createSlice({
 
     get_test_questions_request(state) {
       state.get_test_questions_status = "loading";
+      state.get_test_questions_loading = true
       state.get_test_questions_error = null;
     },
     get_test_questions_success(state, action) {
       state.get_test_questions_status = "succeeded";
+      state.get_test_questions_loading = false
       state.test_questions = action.payload;
     },
     get_test_questions_failure(state, action) {
       state.get_test_questions_status = "failed";
+      state.get_test_questions_loading = false
       state.get_test_questions_error = action.payload;
     },
 
@@ -1051,6 +1054,73 @@ const teachersSlice = createSlice({
           return;
       }
     },
+
+    updateProfileEditing: (state, action) => {
+      state.isProfileEditing = !state.isProfileEditing
+    },
+    updatePersonalInfoInputs(state, action) {
+      const { first_name, last_name, email_id, phone_number, address } = action?.payload?.[0]
+      state.profileInputs.first_name = first_name
+      state.profileInputs.last_name = last_name
+      state.profileInputs.email_id = email_id
+      state.profileInputs.phone_number = phone_number
+      state.profileInputs.address = address
+      state.editProfileInputs.first_name = first_name
+      state.editProfileInputs.last_name = last_name
+      state.editProfileInputs.email_id = email_id
+      state.editProfileInputs.phone_number = phone_number
+      state.editProfileInputs.address = address
+    },
+    updateSettingsInputs: (state, action) => {
+      const { field, value } = action.payload;
+      state.settingsInputs[field] = value
+    },
+    edit_profile_Inputs: (state, action) => {
+      const { field, value } = action.payload;
+      state.editProfileInputs[field] = value
+    },
+    handleEditProfileDetails(state, action) {
+      const { type } = action.payload
+      switch (type) {
+        case "request":
+          state.placeholder = true;
+          break;
+
+        case "response":
+          state.placeholder = false
+          break;
+
+        case "failure":
+          state.placeholder = false;
+          break;
+
+        default:
+          break;
+      }
+    },
+    handlechangePassword(state, action) {
+      const { type } = action.payload
+      switch (type) {
+        case "request":
+          state.placeholder = true;
+          break;
+
+        case "response":
+          state.placeholder = false
+          break;
+
+        case "failure":
+          state.placeholder = false;
+          break;
+
+        default:
+          break;
+      }
+    },
+    resetSettingPasswordField(state, action) {
+      state.settingsInputs = initialState.settingsInputs
+    }
+
   },
 
   extraReducers(builder) {
@@ -1160,7 +1230,9 @@ export const {
   update_overview_month_for_perfomance, handleUploadBooks,
   handleScheduleTest,
   resetStudentState,
-  selected_students_in_schedule
+  selected_students_in_schedule, updatePersonalInfoInputs,
+  handleEditProfileDetails, handlechangePassword, resetSettingPasswordField,updateProfileEditing,
+  updateSettingsInputs,edit_profile_Inputs
 } = actions;
 
 export default reducer;

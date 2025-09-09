@@ -15,6 +15,7 @@ const TeachersAssigned = () => {
     const studentsPerformance = teachersState?.studentsPerformance || {}
     const jsonStudentsData = studentsPerformance?.assignedTest?.jsonStudentsData || []
     const pagination = studentsPerformance?.assignedTest?.pagination || 1
+    
     useEffect(() => {
         if (class_id && subject_id) {
             dispatch(handleTeacherAssingnedTestResult({

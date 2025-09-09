@@ -29,7 +29,7 @@ const LoginScreen = ({
     if (auth) {
       dispatch(authVerification(currenPath, navigate, `${process.env.REACT_APP_API_URL}/validate_invite?auth=${auth}`));
     }
-  }, [currenPath, auth, dispatch, navigate]);
+  }, []);
 
   // const containerWidth =
   //   title === "Register as a Admin" || title === "Register as a Organization"

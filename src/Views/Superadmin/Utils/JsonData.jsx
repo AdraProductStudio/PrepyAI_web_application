@@ -23,7 +23,7 @@ const { subcriptionDetails } = params
         ],
 
         planFilterOptions: [
-            { id: 1, name: "All Plans",value:"all" },
+            { id: 1, name: "All Plans",value:"all_plans" },
             { id: 2, name: "Basic Plan",value:"basic" },
             { id: 3, name: "Premimum Plan",value:"premium" },
             { id: 4, name: "Platinum Plan",value:"platinum" },
@@ -50,11 +50,13 @@ const { subcriptionDetails } = params
                 icon: Icons.organisation,
                 title: "Total No.of Organization",
                 value: subcriptionDetails?.total_orgs,
+                stroke: <Icons.strokeImage active={true} />
             },
             {
                 icon: Icons.revenue,
                 title: "Total Revenue",
                 value: subcriptionDetails?.total_revenue,
+                stroke:  <Icons.strokeImage active={true}/>
             }
         ],
 
@@ -84,12 +86,12 @@ const { subcriptionDetails } = params
         profileNavItems: [
             {
                 name: "Personal Information",
-                icon: Icons.profile,
+                icon: (isActive) => Icons.profile_icon(isActive),
                 to: "/superadmin_dashboard/profile"
             },
             {
                 name: "Settings",
-                icon: Icons.settings,
+                icon: (isActive) => Icons.settings_icon(isActive),
                 to: "/superadmin_dashboard/profile/settings"
             },
             // {

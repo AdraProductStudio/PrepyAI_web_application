@@ -1133,6 +1133,10 @@ td {
   font-size: 18px;
   font-weight: 700;
   color: #182988;
+  display: inline-block;
+  max-width: 300px;
+  white-space: normal;
+  line-height: 1.2;
 }
 
 .offcanvas_sidebar {
@@ -1459,4 +1463,46 @@ input::placeholder {
 .performance-month-picker-input:focus {
   background-color: #ffffff;
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+}
+
+
+.custom-progress {
+  height: 8px;  
+}
+.custom-progress .progress-bar {
+  background: linear-gradient(90deg, #ec008c 0%, #fc6767 100%) !important;
+}
+
+
+
+/* superadmin_dashboard */
+.strokeImage {
+  position: absolute;
+  bottom: 0rem;
+  right: 0rem;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.custom_responsive_cards {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -0.5rem;
+}
+
+.custom_responsive_cards > section {
+  width: 100%;
+  padding: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .custom_responsive_cards > section {
+    width: 50%;
+  }
+}
+
+@media (min-width: 1676px) {
+  .custom_responsive_cards > section {
+    width: 25%;
+  }
 }

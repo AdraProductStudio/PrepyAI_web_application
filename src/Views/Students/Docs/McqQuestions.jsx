@@ -69,23 +69,39 @@ const handleOptionSelect = (queId, optId) => {
 
   return (
     <Container fluid>
-      <Row className='mb-4'>
-        <Col className='d-flex align-items-center'>
-          <LinkComponent to={`/student_dashboard/generate_question/${id}`} className="brand-link-color d-flex align-items-center justify-content-center">
-                    <span className=''>{Icons.back_button_icon_blue}</span>
-                    <span className="chapter-title">{generate_question?.chapter_name}</span>
-                </LinkComponent>
+      <Row className="mb-4 align-items-center">
+        <Col className="d-flex align-items-center">
+          <LinkComponent
+            to={`/student_dashboard/generate_question/${id}`}
+            className="brand-link-color d-flex align-items-center justify-content-center"
+          >
+            <span>{Icons.back_button_icon_blue}</span>
+            <span className="chapter-title">{generate_question?.chapter_name}</span>
+          </LinkComponent>
         </Col>
-        <Col className='d-flex justify-content-end me-5'>
-          {generate_question?.test_status === "submitted" || generate_question?.test_status === "start"  ? <ButtonComponent type="button" buttonName="Re-Generate" className="brand_color text-white px-5" clickFunction={() => {
-            dispatch(updateModalShow({ show: true, close_btn: true, size: "md", modal_from: "Generate_Question", modal_type: "select_question_type" }))
-            dispatch(updateGenerateQuestionFields({ mcq_questions: [],summary:{},test_status:"start" }))
-          }} /> :
-            generate_question?.test_status === "generated" ?
-              <ButtonComponent type="button" buttonName="Submit" className="brand_color text-white px-5" clickFunction={handleTestSubmit} /> : null
-          }
+
+        <Col className="d-flex justify-content-end me-5">
+          {generate_question?.test_status === "submitted" ||
+            generate_question?.test_status === "start" ? (
+            <ButtonComponent
+              type="button"
+              buttonName="Re-Generate"
+              className="brand_color text-white px-5"
+              clickFunction={() => {dispatch(updateModalShow({show: true,close_btn: true,size: "md",modal_from: "Generate_Question",modal_type: "select_question_type",}))
+                dispatch(updateGenerateQuestionFields({mcq_questions: [],summary: {},test_status: "start",}));
+              }}
+            />
+          ) : generate_question?.test_status === "generated" ? (
+            <ButtonComponent
+              type="button"
+              buttonName="Submit"
+              className="brand_color text-white px-5"
+              clickFunction={handleTestSubmit}
+            />
+          ) : null}
         </Col>
       </Row>
+
       <hr className='text-secondary' />
       {
         generate_question?.test_status === "submitted" && <Row className='me-5'>

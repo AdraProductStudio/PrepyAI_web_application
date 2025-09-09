@@ -47,7 +47,7 @@ const TestDisplayCard = ({
                 return <div className="p-2 pointer" onClick={() => handleShowTable("Completed")}>
                     <div className="w-100 row align-items-end">
                         <div className="col-8">
-                            <h6 className="">{data?.title || 'heading'}</h6>
+                            <h6 className="">{data?.test_name || 'heading'}</h6>
                             <p className="fs-13 text-secondary mb-1">{data?.test_date || ''} | {data?.test_time || ''}</p>
                             <p className="fs-13 text-secondary mb-1">{data?.mode}</p>
                         </div>
@@ -81,7 +81,7 @@ const TestDisplayCard = ({
                 return <div className="p-2">
                     <div className="w-100 row">
                         <div className="col-8">
-                            <h6 className="">{data?.title || 'heading'}</h6>
+                            <h6 className="">{data?.test_name || 'heading'}</h6>
                             <p className="fs-13 text-secondary mb-1">{data?.test_date || ''} | {data?.test_time || ''}</p>
                             <p className="fs-13 text-secondary mb-1">{data?.mode}</p>
                         </div>

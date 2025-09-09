@@ -5,10 +5,19 @@ import SpinnerComponent from "Components/Spinner/Spinner";
 import { updateEditClassroomTeacher } from "../Slices/adminSlice";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { handleGetTeachersTableData } from "../Actions/Admin_action";
+import { useParams } from "react-router-dom";
 
 const TeachersDetails = () => {
+    const { id } = useParams()
     const { adminState } = useCommonState();
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(handleGetTeachersTableData({id}))
+    }, [id])
+
     return (
         <div className="table-responsive">
             <table className="table table-bordered">
@@ -21,13 +30,15 @@ const TeachersDetails = () => {
                 </thead>
                 <tbody className="staff_table_data">
                     {
-                        adminState?.placeholder ?
+                        adminState?.placeholder 
+                            ?
                             <tr>
                                 <td colSpan={7}> <SpinnerComponent /> </td>
                             </tr>
                             :
-                            adminState?.teachersTableData.length > 0 && (
-                                adminState?.teachersTableData.map((row, index) => (
+                            adminState?.teachersTableData.length > 0 
+                                ?
+                                (adminState?.teachersTableData.map((row, index) => (
                                     <tr key={index}>
                                         <td className="text-center">{index + 1}</td>
                                         <td className="text-center">{row?.staff_name}</td>
@@ -49,6 +60,11 @@ const TeachersDetails = () => {
                                         </td>
                                     </tr>
                                 )))
+                                :
+                                <tr>
+                                    <td colSpan={7}>No Data Found</td>
+                                </tr>
+
                     }
                 </tbody>
             </table>

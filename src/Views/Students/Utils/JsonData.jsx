@@ -1,7 +1,7 @@
 import { useCommonState, useCustomNavigate, useDispatch } from "Components/CustomHooks";
 import Icons from "Utils/Icons"
 import Image from "Utils/Image"
-import { editProfileInputs, setClassroomCode, setUploadLearnerBook, setUploadTestPaper } from "../Slices/StudentSlice";
+import { editProfileInputs, setClassroomCode, setUploadLearnerBook, setUploadTestPaper, updateSettingsInputs } from "../Slices/StudentSlice";
 import { handlePostNote, update_note_data } from "Views/Common/Slices/Common_slice";
 
 const JsonData = (params) => {
@@ -556,12 +556,12 @@ const JsonData = (params) => {
         profileNavItems: [
             {
                 name: "Personal Information",
-                icon: Icons.profile,
+                icon: (isActive) => Icons.profile_icon(isActive),
                 to: "/student_dashboard/profile"
             },
             {
                 name: "Settings",
-                icon: Icons.settings,
+                icon: (isActive) => Icons.settings_icon(isActive),
                 to: "/student_dashboard/profile/settings"
             },
             // {
@@ -570,25 +570,6 @@ const JsonData = (params) => {
             //   to: "/profile/timetable"
             // }
         ],
-
-        settingsInputs: [
-            {
-                label: "Current Password",
-                id: "old_password",
-                placeholder: "Current Password"
-            },
-            {
-                label: "New Password",
-                id: "new_password",
-                placeholder: "New Password"
-            },
-            {
-                label: "Confirm New Password",
-                id: "confirm_password",
-                placeholder: "Confirm New Password"
-            }
-        ],
-
 
         personalInfoInputs: [
             {
@@ -716,7 +697,8 @@ const JsonData = (params) => {
                 title: " ",
                 category: "input",
                 placeholder: "",
-                divClassName: "mb-3 ms-2 me-3 col-12 col-lg-5",
+                divClassName: "mb-3 col-12 col-lg-6 p-2",
+                readOnly: true
             },
             {
                 name: "Last Name",
@@ -725,7 +707,8 @@ const JsonData = (params) => {
                 title: " ",
                 category: "input",
                 placeholder: "",
-                divClassName: "mb-3 ms-5 col-12 col-lg-5",
+                divClassName: "mb-3 col-12 col-lg-6 p-2",
+                readOnly: true
             },
             {
                 name: "Email",
@@ -734,7 +717,8 @@ const JsonData = (params) => {
                 title: " ",
                 category: "input",
                 placeholder: "",
-                divClassName: "mb-3 ms-2 me-3 col-12 col-lg-5",
+                divClassName: "mb-3 col-12 col-lg-6 p-2",
+                readOnly: true
             },
             {
                 name: "Phone Number",
@@ -743,7 +727,8 @@ const JsonData = (params) => {
                 title: " ",
                 category: "input",
                 placeholder: "",
-                divClassName: "mb-3 ms-5 col-12 col-lg-5",
+                divClassName: "mb-3 col-12 col-lg-6 p-2",
+                readOnly: true
             },
             {
                 name: "Register Number",
@@ -752,7 +737,8 @@ const JsonData = (params) => {
                 title: " ",
                 category: "input",
                 placeholder: "",
-                divClassName: "mb-3 ms-2 me-3 col-12 col-lg-5",
+                divClassName: "mb-3 col-12 col-lg-6 p-2",
+                readOnly: true
             },
             {
                 name: "Class",
@@ -761,7 +747,8 @@ const JsonData = (params) => {
                 title: " ",
                 category: "input",
                 placeholder: "",
-                divClassName: "mb-3 ms-5 col-12 col-lg-5",
+                divClassName: "mb-3 col-12 col-lg-6 p-2",
+                readOnly: true
             },
             {
                 name: "Address",
@@ -769,10 +756,12 @@ const JsonData = (params) => {
                 title: " ",
                 category: "textbox",
                 placeholder: "",
-                divClassName: "mb-3 ms-2 me-5 col-12 col-lg-11",
+                divClassName: "mb-3  col-12 p-2",
+                readOnly: true
             }
 
         ],
+
         student_profile: [
             {
                 name: "First Name",
@@ -817,7 +806,8 @@ const JsonData = (params) => {
                 // },
                 divClassName: "mb-3",
                 isMandatory: false,
-                Err: commonState?.app_data?.validated && !studentState?.editProfileInputs?.email_id ? "Email required" : null
+                Err: commonState?.app_data?.validated && !studentState?.editProfileInputs?.email_id ? "Email required" : null,
+                readOnly: true
             },
             {
                 name: "Phone Number",
@@ -847,7 +837,8 @@ const JsonData = (params) => {
                 // },
                 divClassName: "mb-3",
                 isMandatory: false,
-                Err: commonState?.app_data?.validated && !studentState?.editProfileInputs?.reg_no ? "Register Number required" : null
+                Err: commonState?.app_data?.validated && !studentState?.editProfileInputs?.reg_no ? "Register Number required" : null,
+                readOnly: true
             },
             {
                 name: "Class",
@@ -878,9 +869,57 @@ const JsonData = (params) => {
                 isMandatory: false,
                 Err: commonState?.app_data?.validated && !studentState?.editProfileInputs?.address ? "Address required" : null
             },
+        ],
 
+        settings_details:
+        [
+            {
+                name: "Current Password",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "Current Password",
+                value: studentState?.settingsInputs?.old_password || '',
+                change: (e) => dispatch(updateSettingsInputs({ field: 'old_password', value: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                divClassName: "mb-3",
+                isMandatory: true,
+                Err: commonState?.app_data?.validated && !studentState?.settingsInputs?.old_password ? "First name required" : null
+            },
+            {
+                name: "New Password",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "Current Password",
+                value: studentState?.settingsInputs?.confirm_password || '',
+                change: (e) => dispatch(updateSettingsInputs({ field: 'confirm_password', value: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                divClassName: "mb-3",
+                isMandatory: true,
+                Err: commonState?.app_data?.validated && !studentState?.settingsInputs?.confirm_password ? "Confirm Password required" : null
+            },
+            {
+                name: "Confirm Password",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "Confirm Password",
+                value: studentState?.settingsInputs?.new_password || '',
+                change: (e) => dispatch(updateSettingsInputs({ field: 'new_password', value: e.target.value })),
+                // keyDown: (e) => {
+                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
+                // },
+                divClassName: "mb-3",
+                isMandatory: true,
+                Err: commonState?.app_data?.validated && !studentState?.settingsInputs?.new_password ? "New password required" : null
+            },
 
-        ]
+        ],
 
     }
 

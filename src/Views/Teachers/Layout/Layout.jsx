@@ -1,4 +1,4 @@
-import { useDispatch } from "Components/CustomHooks";
+import { useCustomNavigate, useDispatch } from "Components/CustomHooks";
 import Header from "Components/Panel_compnent/Header";
 import Sidebar from "Components/Panel_compnent/Sidebar"
 import { Outlet } from "react-router-dom";
@@ -9,6 +9,11 @@ import { OverallModel } from "Views/Teachers/Utils/OverallModal";
 export default function Layout() {
     const { jsonOnly } = JsonData();
     const dispatch = useDispatch();
+    const navigate = useCustomNavigate()
+
+    const profileOnClick = () => {
+        navigate('/teachers_dashboard/profile')
+    }
 
     return (
         <div className="layout_main">
@@ -18,7 +23,7 @@ export default function Layout() {
                 <main className="col layout_main_content overflow-hidden">
                     <div className="container-fluid h-100">
                         <header className="py-2">
-                            <Header offcanvasOn="lg" offcanvasOnButton={() => dispatch(update_app_data({ type: 'canvas', data: { show: true, from: 'sidebar', type: 'data', placement: 'start', close_btn: true, sidebar_data: jsonOnly.sidebar_data, extraClass: 'offcanvas_sidebar' } }))} />
+                            <Header offcanvasOn="lg" profileOnClick={profileOnClick} offcanvasOnButton={() => dispatch(update_app_data({ type: 'canvas', data: { show: true, from: 'sidebar', type: 'data', placement: 'start', close_btn: true, sidebar_data: jsonOnly.sidebar_data, extraClass: 'offcanvas_sidebar' } }))} />
                         </header>
                         <div className="pt-3 main_content_height">
                             <Outlet />

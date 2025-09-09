@@ -59,8 +59,8 @@ export const get_student_details = (classroom_id) => async (dispatch) => {
         dispatch(get_student_details_slice({ type: "request" }))
         const { data } = await axiosInstance.post("/teachers/get_students_for_test", classroom_id || {})
         if (data?.error_code === 0) {
-            const datas = data?.data?.students || [] 
-            dispatch(get_student_details_slice({ type: "response", data: datas}))
+            const datas = data?.data?.students || []
+            dispatch(get_student_details_slice({ type: "response", data: datas }))
         }
         else {
             dispatch(get_student_details_slice({ type: "failure", message: data?.message || '' }))
@@ -80,13 +80,11 @@ export const saveSchedule = (payload, navigate) => async (dispatch) => {
         const response = await axiosInstance.post("/teachers/save_schedule", payload);
 
         if (response.data?.error_code === 0) {
-            const { test_id, ...rest } = response.data?.data;
+            // const { test_id, ...rest } = response.data?.data;
+            // console.log(response?.data?.data,"tyrdftyfty")
+            dispatch(save_schedule_success(response.data?.data));
 
-            dispatch(save_schedule_success({ test_id, ...rest }));
-
-            navigate(
-                `/teachers_dashboard/classrooms/${payload.classroom_id}/${payload.subject_id}/preview_test`
-            );
+            navigate(`/teachers_dashboard/classrooms/${payload.classroom_id}/${payload.subject_id}/preview_test/${response.data?.data?.test_id || ''}`);
         } else {
             dispatch(save_schedule_failure(response.data?.message || "Unknown error"));
         }
@@ -98,7 +96,6 @@ export const saveSchedule = (payload, navigate) => async (dispatch) => {
 export const get_test_questions = (test_id) => async (dispatch) => {
     try {
         dispatch(get_test_questions_request({ type: "request" }));
-        console.log("test_id :", test_id)
         const response = await axiosInstance.post("/teachers/get_test_questions", test_id);
 
         if (response.data?.error_code === 0) {
@@ -228,7 +225,7 @@ export const uploadBooks = (params) => async (dispatch) => {
     try {
         dispatch(handleUploadBooks({ type: "request" }));
         const fd = new FormData();
-        fd.append("book", params?.file) 
+        fd.append("book", params?.file)
 
         const { data } = await axiosInstance.post(`/teachers/upload_book?classroom_id=${params?.classroom_id}&subject_id=${params?.subject_id}`, fd);
 
@@ -243,22 +240,23 @@ export const uploadBooks = (params) => async (dispatch) => {
         dispatch(handleUploadBooks({ type: "failure", message: err?.message || "Server error", }));
     }
 };
- 
+
 
 // scheduleTest
 
 export const scheduleTest = (test_id) => async (dispatch) => {
-  try {
-    dispatch(handleScheduleTest({ type: "request" }));
+    try {
+        dispatch(handleScheduleTest({ type: "request" }));
 
-    const { data } = await axiosInstance.post("/teachers/schedule_test", test_id);
+        const { data } = await axiosInstance.post("/teachers/schedule_test", test_id);
 
-    if (data?.error_code === 0) { dispatch(  handleScheduleTest({ type: "response", data: data?.data || {}, }));
-    } else {
-      dispatch(handleScheduleTest({type: "failure", message: data?.message || "Failed to schedule test", }));
+        if (data?.error_code === 0) {
+            dispatch(handleScheduleTest({ type: "response", data: data?.data || {}, }));
+        } else {
+            dispatch(handleScheduleTest({ type: "failure", message: data?.message || "Failed to schedule test", }));
+        }
+    } catch (err) {
+        dispatch(handleScheduleTest({ type: "failure", message: err?.message || "Server error", }));
     }
-  } catch (err) {
-    dispatch( handleScheduleTest({ type: "failure",message: err?.message || "Server error", }));
-  }
 };
 

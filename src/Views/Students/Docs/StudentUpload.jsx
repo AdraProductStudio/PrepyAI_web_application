@@ -6,7 +6,6 @@ import Icons from 'Utils/Icons';
 import BookCard from 'Components/Card/BookCard';
 import ButtonComponent from 'Components/Button/Button';
 import { updateModalShow } from 'Views/Common/Slices/Common_slice';
-import JsonData from 'Views/Students/Utils/JsonData';
 import { SearchComponent } from 'ResuableFunctions/SearchFun';
 import { handleGetLearnerBooks } from "../Actions/StudentAction"
 import { useCommonState } from "Components/CustomHooks"
@@ -16,7 +15,6 @@ import SpinnerComponent from "Components/Spinner/Spinner";
 
 
 const StudentUpload = () => {
-  const { jsonOnly } = JsonData();
   const dispatch = useDispatch();
   const { studentState, commonState } = useCommonState()
   const searchRegex = commonState?.search?.value
@@ -36,7 +34,7 @@ const StudentUpload = () => {
 
         <div className="col-md-5 col-lg-4">
           <div className="input-group h-100 rounded overflow-hidden">
-            <SearchComponent placeholder="Search..."/>
+            <SearchComponent placeholder="Search..." />
           </div>
         </div>
       </Card.Header>
@@ -66,7 +64,7 @@ const StudentUpload = () => {
                           data={book}
                           viewFunction={() => window.open(book.url, "_blank")}
                           generateFunction={() => console.log(`Generate ${book.book_name}`)}
-                          deleteFunction={() => console.log(`Delete ${book.book_name}`)}
+                          onClickDelete={book?.owned ? () => console.log(`Delete ${book.book_name}`) : null}
                         />
                       </div>
                     </Col>
@@ -88,7 +86,7 @@ const StudentUpload = () => {
                         data={book}
                         viewFunction={() => window.open(book.url, "_blank")}
                         generateFunction={() => console.log(`Generate ${book.book_name}`)}
-                        deleteFunction={() => console.log(`Delete ${book.book_name}`)}
+                        onClickDelete={book?.owned ? () => console.log(`Delete ${book.book_name}`) : null}
                       />
                     </div>
                   </Col>

@@ -3,12 +3,15 @@ import ModalComponent from "Components/Modal/Modal";
 import JsonData from "./JsonData";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import ButtonComponent from "Components/Button/Button";
-import { createOrganization, editProfileDetails } from "../Actions/superAdminAction";
+import { createOrganization, deleteOrganisation, editProfileDetails } from "../Actions/superAdminAction";
+import ButtonSpinner from "Components/Spinner/ButtonSpinner";
+import { updateModalShow } from "Views/Common/Slices/Common_slice";
+import { selectOrgToDelete } from "../Slices/SuperAdmin_slice";
 
 
 export function OverallModel() {
-    const { commonState,superadminState } = useCommonState();
-    const{ jsxJson} = JsonData()
+    const { commonState, superadminState } = useCommonState();
+    const { jsxJson } = JsonData()
     const dispatch = useDispatch()
 
 
@@ -19,6 +22,8 @@ export function OverallModel() {
                 switch (commonState?.modal?.type) {
                     case "create_organisation":
                         return <h5>Create Organisation</h5>;
+                    case "delete_org":
+                        return <h5>Delete Organisation</h5>;
                     default:
                         break
                 }
@@ -44,18 +49,41 @@ export function OverallModel() {
                     case "create_organisation":
                         return <div className="w-100">
                             {Inputfunctions(jsxJson?.create_organization)}
-                            <ButtonComponent type="button" buttonName="Send Mail" className="brand_color w-100 text-white" clickFunction={()=>dispatch(createOrganization(superadminState?.createOrganization))} />
+                            <ButtonSpinner
+                                className="brand_color w-100 text-white"
+                                title="Send Email"
+                                is_spinner={superadminState?.createOrganization?.is_sending}
+                                clickFunction={
+                                    superadminState?.createOrganization?.is_sending
+                                        ? null
+                                        :
+                                        () => dispatch(createOrganization(superadminState?.createOrganization))
+                                } />
+                        </div>
+
+                    case "delete_org":
+                        return <div className="w-100">
+                            <p className="mb-0 fs-5 text-muted">Are you want to delete this organization</p>
+                            <div className="d-flex mt-4 gap-3">
+                                <ButtonComponent type="button" buttonName="Cancel" className="btn-light w-100"
+                                    clickFunction={() => {
+                                        dispatch(updateModalShow({ show: false, close_btn: false, size: "", modal_from: "", modal_type: "" }))
+                                        dispatch(dispatch(selectOrgToDelete({})))
+                                    }} />
+                                <ButtonComponent type="button" buttonName="Confirm" className="brand_color w-100 text-white" clickFunction={() => dispatch(deleteOrganisation(superadminState?.selected_org_to_delete?.org_id))} />
+                            </div>
                         </div>
 
                     default:
                         break;
                 }
-                 case "Profile":
+                
+            case "Profile":
                 switch (commonState?.modal?.type) {
                     case "edit_profile":
                         return <div className="w-100">
                             {Inputfunctions(jsxJson?.super_admin_profile)}
-                            <ButtonComponent type="button" buttonName="Submit" className="brand_color w-100 text-white" clickFunction={()=>dispatch(editProfileDetails(superadminState?.editProfileInputs))} />
+                            <ButtonComponent type="button" buttonName="Submit" className="brand_color w-100 text-white" clickFunction={() => dispatch(editProfileDetails(superadminState?.editProfileInputs))} />
                         </div>
 
                     default:

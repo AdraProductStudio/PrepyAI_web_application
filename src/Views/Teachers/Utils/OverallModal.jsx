@@ -18,6 +18,7 @@ import { clear_form_fields, handle_attachment_books_upload } from "../Slice/teac
 import { deleteAttachment, handleDeleteBook, handleUploadBook, uploadBooks } from "../Actions/TeacherActions";
 import SpinnerComponent from "Components/Spinner/Spinner";
 import ButtonSpinner from "Components/Spinner/ButtonSpinner";
+import { editProfileDetails } from "../Actions/Teachers_action";
 
 
 export function OverallModel() {
@@ -54,6 +55,9 @@ export function OverallModel() {
             return <h5 className="fw-bold">Student Score</h5>;
           case "upload_books":
             return <h5>Upload Books</h5>
+
+          case "edit_profile":
+            return <h5>Edit Profile</h5>;
 
           default:
             break;
@@ -109,6 +113,9 @@ export function OverallModel() {
             break;
         }
         break;
+
+      case "edit_profile":
+        return <h5>Edit Profile</h5>;
 
       default:
         break;
@@ -176,45 +183,47 @@ export function OverallModel() {
             </div>
 
           case "performance":
-            return <div className="modal-body p-0 m-0 ">
-              <div className="table-responsive">
-                <table className="table table-bordered text-center align-middle mb-0">
-                  <thead>
-                    <tr>
-                      {jsxJson?.student_performance_modal.map((item, idx) => (
-                        <th className={item.divClassName} key={idx}>
-                          {item.title}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {teachersState?.studentsPerformance.placeholder2 ?
+            return (
+              <div className="modal-body p-0 m-0 ">
+                <div className="table-responsive">
+                  <table className="table table-bordered text-center align-middle mb-0">
+                    <thead>
                       <tr>
-                        <td colSpan={5}>
-                          <SpinnerComponent />
-                        </td>
+                        {jsxJson?.student_performance_modal.map((item, idx) => (
+                          <th className={item.divClassName} key={idx}>
+                            {item.title}
+                          </th>
+                        ))}
                       </tr>
-                      :
-                      teachersState?.studentsPerformance.performance_modalData.length > 0 ? (
-                        teachersState?.studentsPerformance.performance_modalData.map((data, idx) => (
-                          <tr key={idx} >
-                            <td>{data.first_name}</td>
-                            <td>{data.overall}</td>
-                            <td>{data.score}</td>
-                            <td>{data.performance_status}</td>
-                            <td>{data.time_submitted}</td>
-                          </tr>
-                        ))
-                      ) : (
+                    </thead>
+                    <tbody>
+                      {teachersState?.studentsPerformance.placeholder2 ?
                         <tr>
-                          <td colSpan={5} className="text-center py-4">No Data Found</td>
+                          <td colSpan={5}>
+                            <SpinnerComponent />
+                          </td>
                         </tr>
-                      )}
-                  </tbody>
-                </table>
+                        :
+                        teachersState?.studentsPerformance.performance_modalData.length > 0 ? (
+                          teachersState?.studentsPerformance.performance_modalData.map((data, idx) => (
+                            <tr key={idx} >
+                              <td>{data.first_name}</td>
+                              <td>{data.overall}</td>
+                              <td>{data.score}</td>
+                              <td>{data.performance_status}</td>
+                              <td>{data.time_submitted}</td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan={5} className="text-center py-4">No Data Found</td>
+                          </tr>
+                        )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
+            )
 
           case "upload_books":
             return <div className="col-12">
@@ -236,6 +245,26 @@ export function OverallModel() {
 
                 {teachersState?.uploadBooks?.filename && <p className="small text-success mt-2">📘 {teachersState?.uploadBooks?.filename}</p>}
               </div>
+            </div>
+
+          case "edit_profile":
+            return <div className="w-100">
+              {Inputfunctions(jsxJson?.teachers_profile)}
+              <ButtonComponent
+                type="button"
+                className="brand_color w-100 text-white"
+                clickFunction={() => dispatch(editProfileDetails(teachersState?.editProfileInputs))}
+                btnDisable={teachersState?.placeholder}
+                children={
+                  teachersState?.placeholder
+                    ?
+                    <span className="d-flex align-items-center justify-content-center gap-2">
+                      <SpinnerComponent /> Processing...
+                    </span>
+                    :
+                    ("Submit")
+                }
+              />
             </div>
 
           default:
@@ -484,7 +513,7 @@ export function OverallModel() {
                     className="btn border px-5 w-100"
                     type="button"
                     buttonName="Cancel"
-                     />
+                  />
                 </div>
                 <div className="col p-1">
                   <ButtonSpinner

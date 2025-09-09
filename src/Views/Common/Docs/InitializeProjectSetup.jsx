@@ -4,8 +4,8 @@ import { Outlet } from 'react-router-dom';
 import { update_error } from '../Slices/Common_slice';
 import { CustomUseLocationHook, useCommonState, useDispatch } from 'Components/CustomHooks';
 import { update_app_data } from 'Views/Common/Slices/Common_slice';
-import { decrypt_app_data_logs } from 'ResuableFunctions/logs_handler';
 import { OverallCanvas } from '../utils/OverallCanvas';
+import { decrypt_app_data_logs } from "ResuableFunctions/logs_handler";
 
 export const InitializeProjectSetup = () => {
     const dispatch = useDispatch();
@@ -42,11 +42,10 @@ export const InitializeProjectSetup = () => {
     useEffect(() => {
         const currentLocation = location[location.length - 1];
         if (commonState?.app_data?.currentMenuName !== currentLocation) {
-            const { access_token, role_name, user_id } = decrypt_app_data_logs();
-
-            dispatch(update_app_data({ type: "menu_name", data: { currentLocation, access_token, role_name, user_id } }));
+            const { token, refresh_token, user_role, user_id } = decrypt_app_data_logs();
+            dispatch(update_app_data({ type: "menu_name", data: { currentLocation, token, refresh_token, user_role, user_id } }));
         }
-    }, [location, commonState?.app_data?.currentMenuName, dispatch]);
+    }, [location, commonState?.app_data?.currentMenuName]);
 
 
     return commonState?.app_data?.isOnline ?

@@ -5,7 +5,7 @@ import JsonData from "./JsonData";
 import ButtonComponent from "Components/Button/Button";
 import { useDispatch } from "react-redux";
 import { clearClassroomForm, clearFieldError, clearForm, onChangeClassroomForm, setClassroomErrors, setErrors, setFile } from "../Slices/adminSlice";
-import { createClassroom, handleClassroomTeacherEdit, handleDashboardTeacherEdit, handleDeleteClassroomStudent, handleDeleteClassroomTeacher, handleDeleteDashboardTeacher, submitStaffFile, submitStaffManual } from "../Actions/Admin_action";
+import { createClassroom, editProfileDetails, handleClassroomTeacherEdit, handleDashboardTeacherEdit, handleDeleteClassroomStudent, handleDeleteClassroomTeacher, handleDeleteDashboardTeacher, submitStaffFile, submitStaffManual } from "../Actions/Admin_action";
 import React, { useRef } from "react";
 import Icons from "Utils/Icons";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
@@ -148,6 +148,9 @@ export function OverallModel() {
 
           case "delete_dashboard_teacher":
             return <h5 className="fw-bold"></h5>;
+
+          case "edit_profile":
+            return <h5>Edit Profile</h5>;
 
           default:
             break;
@@ -465,6 +468,26 @@ export function OverallModel() {
                 </div>
               </div>
             )
+
+          case "edit_profile":
+            return <div className="w-100">
+                {Inputfunctions(jsxJson?.admin_profile)}
+                <ButtonComponent 
+                  type="button" 
+                  className="brand_color w-100 text-white" 
+                  clickFunction={()=>dispatch(editProfileDetails(adminState?.editProfileInputs))}
+                  btnDisable={placeholder}
+                  children={
+                    placeholder 
+                      ?
+                      <span className="d-flex align-items-center justify-content-center gap-2">
+                        <SpinnerComponent /> Processing...
+                      </span>
+                      :
+                      ("Submit")
+                  }
+                />
+            </div>
 
           default:
             break;

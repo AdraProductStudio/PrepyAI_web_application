@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import Cookies from "js-cookie";
+import LZString from "lz-string";
 import { decrypt_app_data_logs, decryption, encryption, view_logout } from "ResuableFunctions/logs_handler";
 
 
@@ -32,12 +32,7 @@ let initialState = {
         innerHeight: window.innerHeight || 0,
         buttonSpinner: false,
         validated: false,
-        token: decrypt_app_data_logs()?.access_token || '',
-        refresh_token: decrypt_app_data_logs()?.refresh_token || '',
-        user_role: decrypt_app_data_logs()?.role_name || '',
-        user_id: decrypt_app_data_logs()?.user_id || '',
-        user_image: decrypt_app_data_logs()?.profile_image || '',
-        user_name: decrypt_app_data_logs()?.user_name || '',
+        ...decrypt_app_data_logs(),
     },
     pagination: {
         currentPage: 1,
@@ -171,8 +166,9 @@ const commonSlice = createSlice({
                     state.app_data.isOnline = data || false;
                     break;
                 case "menu_name":
-                    state.app_data.token = data?.access_token || '';
-                    state.app_data.user_role = data?.role_name || '';
+                    state.app_data.token = data?.token || '';
+                    state.app_data.refresh_token = data?.refresh_token || '';
+                    state.app_data.user_role = data?.user_role || '';
                     state.app_data.user_id = data?.user_id || '';
                     state.app_data.current_location = window.location.pathname || '';
                     state.app_data.currentMenuName = data?.currentLocation || '';
@@ -251,23 +247,44 @@ const commonSlice = createSlice({
                     case "response":
                         let decrypt_logs;
                         let update_cookie_log;
-                        let roleKey = data?.role_name;
+                        const roleKey = data?.role_name;
+                        let new_keys = {};
 
-                        if (Cookies.get('project_log')) decrypt_logs = decryption();
-                        if (decrypt_logs) {
-                            if (roleKey && !decrypt_logs?.hasOwnProperty(roleKey)) update_cookie_log = { ...decrypt_logs, [roleKey]: data || {} };
-                            else update_cookie_log = { ...decrypt_logs };
+                        if (Object.keys(data || {}).length > 0) {
+                            new_keys = {
+                                token: data?.access_token,
+                                refresh_token: data?.refresh_token,
+                                user_role: roleKey,
+                                user_id: data?.user_id,
+                                user_image: data?.user_image,
+                                user_name: data?.user_name,
+                            };
                         }
-                        else update_cookie_log = { [roleKey]: data || {} };
 
-                        const encrypted_logs = encryption(update_cookie_log);
-                        Cookies.set('project_log', encrypted_logs);
+                        // get old logs if any
+                        if (localStorage.getItem("project_log")) decrypt_logs = decryption();
+                        const decompressed = decrypt_logs
+                            ? JSON.parse(LZString.decompressFromUTF16(decrypt_logs))
+                            : null;
 
-                        state.app_data.token = data?.access_token || '';
-                        state.app_data.refresh_token = data?.refresh_token || '';
-                        state.app_data.user_image = data?.profile_image || '';
-                        state.app_data.user_role = data?.role_name || '';
-                        state.app_data.user_name = data?.user_name || '';
+                        if (decompressed) {
+                            // overwrite or add role key
+                            update_cookie_log = { ...decompressed, [roleKey]: new_keys };
+                        } else {
+                            update_cookie_log = { [roleKey]: new_keys };
+                        }
+
+                        // compress + encrypt
+                        const compressed = LZString.compressToUTF16(JSON.stringify(update_cookie_log));
+                        const encrypted_logs = encryption(compressed);
+                        localStorage.setItem("project_log", encrypted_logs);
+
+                        // update redux state
+                        state.app_data.token = data?.access_token || "";
+                        state.app_data.refresh_token = data?.refresh_token || "";
+                        state.app_data.user_image = data?.user_image || ""; // fixed naming
+                        state.app_data.user_role = roleKey || "";
+                        state.app_data.user_name = data?.user_name || "";
                         state.app_data.validated = false;
                         break;
 
@@ -293,6 +310,7 @@ const commonSlice = createSlice({
                     "teachersSlice/handleUploadBooks",
                     "teachersSlice/handleScheduleTest",
                     "teachersSlice/save_schedule_status",
+                    "admin_slice/create_organisation"
                 ].includes(action.type),
 
                 (state, action) => {
@@ -318,7 +336,7 @@ const commonSlice = createSlice({
                     "teachersSlice/handleUploadBooks",
                     "teachersSlice/handleScheduleTest",
                     "teachersSlice/save_schedule_status",
-
+                    "admin_slice/create_organisation"
                 ].includes(action.type),
 
                 (state, action) => {

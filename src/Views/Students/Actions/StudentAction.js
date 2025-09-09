@@ -27,7 +27,6 @@ import {
     updatePersonalInfoInputs,
     updateProfileEditing,
     setLoading,
-    updateSettingsInputs,
     resetSettingsInputs,
     updateGenerateQuestionFields,
     updateGenerateMcqQuestions,
@@ -36,6 +35,7 @@ import {
     updateLongQuestionAnswer,
     updateLongQuestionAnswerValue,
     resetMcq,
+    handlechangePassword,
 
 } from "Views/Students/Slices/StudentSlice"
 import { IndexedDbDeleteFun } from "../IndexDbDeleteFun";
@@ -596,7 +596,7 @@ export const handleUploadTestPaper = (formData) => async (dispatch, getState) =>
     }
 }
 
-export const handleGetProfileDetails = () => async (dispatch) => {
+export const getProfileDetails = () => async (dispatch) => {
     try {
         const { data } = await axiosInstance.get('/students/get_profile')
 
@@ -604,33 +604,28 @@ export const handleGetProfileDetails = () => async (dispatch) => {
             const profile = Array.isArray(data?.data) ? data?.data[0] : data?.data
             dispatch(updatePersonalInfoInputs(profile))
         } else {
-
+            return
         }
-
     } catch (error) {
-        // console.log("Error in getProfileDetails", error)
         dispatch(update_error({ Err: error?.response?.data?.message || error?.message || "Something went wrong", Toast_Type: "error" }))
-
     }
 }
 
 export const handleEditProfileDetails = (payload) => async (dispatch) => {
     dispatch(setLoading({ key: "edit_profile", value: true }))
-
     try {
         dispatch(updateProfileEditing())
         const { data } = await axiosInstance.post('/students/edit_profile', payload)
 
         if (data.error_code === 0) {
-            dispatch(updatePersonalInfoInputs(data?.data))
+            dispatch(updatePersonalInfoInputs(payload))
             dispatch(updateProfileEditing())
             dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
+            dispatch(update_error({ Err: data.message, Toast_Type: "success" }))
         } else {
             dispatch(updateProfileEditing())
         }
-
     } catch (error) {
-        // console.log("Error in editProfileDetails")
         dispatch(updateProfileEditing())
         dispatch(update_error({ Err: error?.response?.data?.message || error?.message || "Something went wrong", Toast_Type: "error" }))
     } finally {
@@ -638,27 +633,23 @@ export const handleEditProfileDetails = (payload) => async (dispatch) => {
     }
 }
 
-export const handleChangePassword = (payload) => async (dispatch) => {
-    dispatch(setLoading({ key: "change_password", value: true }))
 
-    try {
+export const changePassword = (payload) => async (dispatch) => {
+  try {
+    dispatch(handlechangePassword({type: "request"}))
         const { data } = await axiosInstance.post('/students/update_password', payload)
-
-        if (data.error_code === 0) {
-            dispatch(update_error({ Err: data.message, Toast_Type: "success" }))
-            dispatch(resetSettingsInputs())
-        } else {
-            dispatch(update_error({ Err: data.message, Toast_Type: "error" }))
-        }
-
-    } catch (error) {
-        // console.log("Error in editProfileDetails")
-        dispatch(update_error({ Err: error?.response?.data?.message || error?.message || "Something went wrong", Toast_Type: "error" }))
-
-    } finally {
-        dispatch(setLoading({ key: "change_password", value: false }))
+     if (data?.error_code === 0) {
+        dispatch(handlechangePassword({type: "response"}))
+        dispatch(update_error({ Err: data?.message, Toast_Type: "success" }));
+        dispatch(resetSettingsInputs())
+    } else {
+        dispatch(handlechangePassword({type: "failure"}))
+        dispatch(update_error({ Err: data?.message, Toast_Type: "error" }));
     }
-
+  } catch (error) {
+    dispatch(handlechangePassword({type: "failure"}))
+    dispatch(update_error({ Err: error?.response?.data?.message || error?.message || "Something went wrong", Toast_Type: "error" }))
+  }
 }
 
 export const getBookmarks = (book_id)=>async (dispatch)=>{

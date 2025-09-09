@@ -4,7 +4,7 @@ const ProgressBarComp = ({
   componentFrom,
   progressNow, className, animated = false
 }) => {
-  
+
   return (
     <ProgressBar animated={animated} now={progressNow} className={className} />
   )
