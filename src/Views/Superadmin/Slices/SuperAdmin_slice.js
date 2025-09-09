@@ -23,7 +23,14 @@ let initialState = {
     },
     organizationDetails: [],
     subcriptionDetails: {},
-    monthlyReports: []
+    monthlyReports: [],
+    selected_org_to_delete:{},
+    filterInputs:{
+        currentPage:0,
+        searchValue:"",
+        filterValue:"all_plans",
+        total_count:0
+    }
 }
 
 const adminSlice = createSlice({
@@ -59,13 +66,33 @@ const adminSlice = createSlice({
             state.organizationDetails = action.payload
         },
         updateSubcriptionDetails: (state, action) => {
-            state.subcriptionDetails = action?.payload
+            const subcription = action.payload
+            Object.entries(subcription).forEach(([key,value])=>{
+                state.subcriptionDetails[key] = value
+            })
+            
         },
         updateMonthlyReports: (state, action) => {
             state.monthlyReports = action.payload
         },
         updateProfileEditing: (state, action) => {
             state.isProfileEditing = !state.isProfileEditing
+        },
+        clearSettingsInputs:(state)=>{
+            state.settingsInputs = {
+                old_password: "",
+                confirm_password: "",
+                new_password: ""
+            }
+        },
+        selectOrgToDelete:(state,action)=>{
+            state.selected_org_to_delete=action.payload
+        },
+        updateFilterInputs:(state,action)=>{
+            const inputs = action.payload
+            Object.entries(inputs).forEach(([key,value])=>{
+                state.filterInputs[key]=value
+            })
         }
     },
     extraReducers(builder) {
@@ -77,6 +104,7 @@ const adminSlice = createSlice({
                         email_id: "",
                         organization_name: ""
                     }
+                    state.selected_org_to_delete={}
 
                 }
             })
@@ -93,7 +121,10 @@ export const {
     updateMonthlyReports,
     updateCreateOrgInputs,
     updateProfileEditing,
-    edit_profile_Inputs
+    edit_profile_Inputs,
+    clearSettingsInputs,
+    selectOrgToDelete,
+    updateFilterInputs
 } = actions
 
 export default reducer

@@ -4,11 +4,11 @@ import { CiUser } from "react-icons/ci"
 import { CiSettings } from "react-icons/ci";
 import { edit_org_profile_Inputs, updateCreateAdminInputs, updateOrgSettingsInputs } from "../Slices/Organisation_slice";
 
-const JsonData = (params = {}) => {
+const JsonData = () => {
   const dispatch = useDispatch()
   // const navigate = useCustomNavigate();
   const { commonState, organisationState } = useCommonState()
-  const { organizationInfo } = params
+
 
   const jsonOnly = {
     sidebar_data: [
@@ -29,18 +29,18 @@ const JsonData = (params = {}) => {
       {
         icon: Icons.admins,
         title: "Total No.of Admins",
-        value: organizationInfo?.admins,
+        value: organisationState?.organizationInfo?.admins,
       },
       {
         icon: Icons.teachers,
         title: "Total No.of Teachers",
-        value: organizationInfo?.teachers,
+        value:organisationState?.organizationInfo?.teachers,
       },
       {
         icon: Icons.billing,
         title: "Billing History",
         subTitle: "Total spent",
-        value: organizationInfo?.billing_history,
+        value: organisationState?.organizationInfo?.billing_history,
       },
     ],
 

@@ -3,7 +3,9 @@ import ModalComponent from "Components/Modal/Modal";
 import JsonData from "./JsonData";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import ButtonComponent from "Components/Button/Button";
-import { createOrganization, editProfileDetails } from "../Actions/superAdminAction";
+import { createOrganization, deleteOrganisation, editProfileDetails } from "../Actions/superAdminAction";
+import { updateModalShow } from "Views/Common/Slices/Common_slice";
+import { selectOrgToDelete } from "../Slices/SuperAdmin_slice";
 
 
 export function OverallModel() {
@@ -19,6 +21,8 @@ export function OverallModel() {
                 switch (commonState?.modal?.type) {
                     case "create_organisation":
                         return <h5>Create Organisation</h5>;
+                    case "delete_org":
+                        return <h5>Delete Organisation</h5>;
                     default:
                         break
                 }
@@ -45,6 +49,18 @@ export function OverallModel() {
                         return <div className="w-100">
                             {Inputfunctions(jsxJson?.create_organization)}
                             <ButtonComponent type="button" buttonName="Send Mail" className="brand_color w-100 text-white" clickFunction={()=>dispatch(createOrganization(superadminState?.createOrganization))} />
+                        </div>
+                    case "delete_org":
+                        return <div className="w-100">
+                           <p className="mb-0 fs-5 text-muted">Are you want to delete this organization</p>
+                            <div className="d-flex mt-4 gap-3">
+                                <ButtonComponent type="button" buttonName="Cancel" className="btn-light w-100" 
+                                clickFunction={()=>{
+                                    dispatch(updateModalShow({show:false,close_btn:false,size:"",modal_from:"",modal_type:""}))
+                                    dispatch(dispatch(selectOrgToDelete({})))
+                            }} />
+                                 <ButtonComponent type="button" buttonName="Confirm" className="brand_color w-100 text-white" clickFunction={()=>dispatch(deleteOrganisation(superadminState?.selected_org_to_delete?.org_id))} />
+                            </div>
                         </div>
 
                     default:

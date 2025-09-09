@@ -1098,6 +1098,10 @@ td {
   font-size: 18px;
   font-weight: 700;
   color: #182988;
+  display: inline-block;
+  max-width: 300px;
+  white-space: normal;
+  line-height: 1.2;
 }
 
 .offcanvas_sidebar {
@@ -1169,3 +1173,11 @@ outline: none !important;
 box-shadow: none !important;
 border-color: inherit !important;
 }
+
+.custom-progress {
+  height: 8px;  
+}
+.custom-progress .progress-bar {
+  background: linear-gradient(90deg, #ec008c 0%, #fc6767 100%) !important;
+}
+
