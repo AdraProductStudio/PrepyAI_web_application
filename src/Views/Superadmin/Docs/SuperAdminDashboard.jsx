@@ -7,52 +7,45 @@ import Icons from "Utils/Icons";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, Tooltip } from "recharts";
 import { Card, Col, Row } from "react-bootstrap";
 import ReactPaginate from "react-paginate";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ReactDropdownSelect from "Components/Input/ReactDropdownSelect";
 import Input from "Components/Input/Input";
 import Img from "Components/Img/Img";
 import ButtonComponent from "Components/Button/Button";
 import JsonData from "../Utils/JsonData";
 import {useCommonState, useDispatch } from "Components/CustomHooks";
-import { deleteOrganisation, getMonthlyReportDetails, getOrganizationList, getSubcriptionDetails, } from "../Actions/superAdminAction";
+import {getMonthlyReportDetails, getOrganizationList, getSubcriptionDetails, } from "../Actions/superAdminAction";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
-import { type } from "@testing-library/user-event/dist/type";
+import { selectOrgToDelete, updateFilterInputs } from "../Slices/SuperAdmin_slice";
 
 
 function SuperAdminDashboard() {
-  const {organizationDetails,subcriptionDetails,monthlyReports} = useCommonState()?.superadminState
+  const {organizationDetails,subcriptionDetails,monthlyReports,filterInputs} = useCommonState()?.superadminState
   const { jsonOnly } = JsonData({subcriptionDetails})
   const dispatch = useDispatch()
-  
-  const itemsPerPage = 3;
-  const [currentPage, setCurrentPage] = useState(0)
-  const [searchValue, setSearchValue] = useState("")
-  const [filterValue, setFilterValue] = useState("all")
-  const [year,setYear] = useState(new Date().getFullYear())
-
-  const pageCount = Math.ceil(subcriptionDetails?.total_orgs / itemsPerPage)
-  const offset = currentPage * itemsPerPage
+  const itemsPerPage = 10;
+  const pageCount = Math.ceil(filterInputs?.total_count / itemsPerPage)
 
 
   const handlePageClick = ({ selected }) => {
-    setCurrentPage(selected)
-    dispatch(getOrganizationList({ page: selected + 1, show_entries: itemsPerPage }))
+    dispatch(updateFilterInputs({currentPage:selected}))
+    dispatch(getOrganizationList({ page: selected + 1, show_entries: itemsPerPage,search_query:filterInputs?.searchValue,filter_by:filterInputs?.filterValue }))
   }
 
 
   useEffect(() => {
-    dispatch(getOrganizationList({ page: currentPage + 1, show_entries: itemsPerPage }))
+    dispatch(getOrganizationList({ page: filterInputs?.currentPage + 1, show_entries: itemsPerPage,search_query:filterInputs?.searchValue,filter_by:filterInputs?.filterValue }))
   }, [])
 
   useEffect(() => {
     dispatch(getSubcriptionDetails())
-    dispatch(getMonthlyReportDetails(year))
+    dispatch(getMonthlyReportDetails(new Date().getFullYear()))
   }, [])
 
 
-  const handleFilterOrganizations = (value) => {
-    setSearchValue(value)
-     dispatch(getOrganizationList({ page: currentPage + 1, search_query: value,show_entries: itemsPerPage  }))
+  const handleFilterOrganizations = (value,filterValue) => {
+    dispatch(updateFilterInputs({searchValue:value}))
+     dispatch(getOrganizationList({ page: filterInputs?.currentPage + 1, search_query: value,show_entries: itemsPerPage,filter_by:filterValue  }))
   }
 
   const monthlyGrowthDropDownOptions = monthlyReports?.year?.map(year => ({ id: year, name: year.toString() }))
@@ -232,7 +225,7 @@ function SuperAdminDashboard() {
               <div className="w-100 w-md-auto">
                 <h5 className="mb-0 fs-5">Organization</h5>
                 <span className="text-secondary" style={{ fontSize: "0.8rem" }}>
-                  {organizationDetails?.length} Organizations
+                  {filterInputs?.total_count} Organizations
                 </span>
               </div>
 
@@ -244,7 +237,7 @@ function SuperAdminDashboard() {
                   className="position-relative w-100 w-md-auto"
                   style={{ minWidth: "120px" }}
                 >
-                  <Input type={"text"} placeholder={"Search..."} value={searchValue}  change={(e) => handleFilterOrganizations(e.target.value, filterValue)} />
+                  <Input type={"text"} placeholder={"Search..."} value={filterInputs?.searchValue}  change={(e) => handleFilterOrganizations(e.target.value, filterInputs?.filterValue)} />
                   <CiSearch
                     style={{
                       position: "absolute",
@@ -268,6 +261,7 @@ function SuperAdminDashboard() {
                     change={(values) => {
                       const subscription_plan = values?.[0]?.value
                       dispatch(getOrganizationList({ filter_by: subscription_plan,show_entries: itemsPerPage }))
+                      dispatch(updateFilterInputs({filterValue:subscription_plan}))
                     }}
                   
                   />
@@ -329,7 +323,13 @@ function SuperAdminDashboard() {
                         {/* <button type="button" className="btn" onClick={()=>console.log('edit',org.id)}>
                           <CiEdit className=" me-1 fs-5 text-primary" />
                         </button> */}
-                        <button type="button" className="btn" onClick={()=>dispatch(deleteOrganisation({org_id:org.id}))}>
+                        <button type="button" className="btn" 
+                        // onClick={()=>dispatch(deleteOrganisation({org_id:org.id}))}
+                        onClick={()=>{
+                          dispatch(updateModalShow({show:true,close_btn:true,size:"md",modal_from:"Home",modal_type:"delete_org"}))
+                          dispatch(selectOrgToDelete({org_id:org.id,name:org.organization_name}))
+                        }}
+                        >
                           <MdDelete className="fs-5 text-danger" />
                         </button>
                       </td>
@@ -354,6 +354,7 @@ function SuperAdminDashboard() {
       </Row>
 
       <footer className="d-flex justify-content-end">
+        {pageCount > 0 ?
         <div className=" pe-2">
           <ReactPaginate
             previousLabel={"Prev"}
@@ -374,7 +375,7 @@ function SuperAdminDashboard() {
             marginPagesDisplayed={2}
             pageRangeDisplayed={1}
           />
-        </div>
+        </div> : null}
       </footer>
     </div>
   );

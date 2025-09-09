@@ -9,6 +9,8 @@ import { updateGenerateQuestionFields } from '../Slices/StudentSlice'
 import { Router, useParams } from 'react-router-dom'
 import ReactDropdownSelect from 'Components/Input/ReactDropdownSelect'
 import Spinner from 'Components/Spinner/CustomSpinner'
+import LinkComponent from 'Components/Router_components/LinkComponent'
+import Icons from 'Utils/Icons'
 
 const GenerateQuestion = () => {
     const dispatch = useDispatch()
@@ -47,9 +49,15 @@ const GenerateQuestion = () => {
 
     return (
         <Container fluid>
-            <Row className='my-3'>
+            <Row className='my-3 align-items-center'>
                 <Col className='d-flex align-items-start align-items-lg-end' xs={12} md={6}>
-                    <p className="mb-0 chapter-title text-center">{generate_question?.chapter_name ||generate_question?.bookmarks?.bookmarks?.[0]?.title}</p>
+                    <LinkComponent
+                        to={`/student_dashboard/home`}
+                        className="brand-link-color d-flex align-items-center justify-content-center"
+                    >
+                        <span>{Icons.back_button_icon_blue}</span>
+                        <span className="chapter-title">{generate_question?.chapter_name ||generate_question?.bookmarks?.bookmarks?.[0]?.title}</span>
+                    </LinkComponent>
                 </Col>
                 <Col className="d-flex flex-wrap justify-content-center justify-content-lg-end gap-4" xs={12} md={6}>
                     <div className="">

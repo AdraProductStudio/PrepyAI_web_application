@@ -4,7 +4,7 @@ import { MdDelete } from "react-icons/md";
 
 import { CiSearch } from "react-icons/ci";
 import Image from "Utils/Image";
-import { Card, Col, Row } from "react-bootstrap";
+import { Card, Col, ProgressBar, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import Img from "Components/Img/Img";
@@ -15,6 +15,7 @@ import Icons from "Utils/Icons";
 import { useCommonState, useDispatch } from "Components/CustomHooks";
 import { deleteAdmin, getAdminList, getOrganizationInfo } from "../Actions/organisationAction";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
+import ProgressBarComp from "Components/Progress/ProgressBar";
 
 function OrganisationDashboard() {
   const { organizationInfo, adminList } = useCommonState()?.organisationState
@@ -58,23 +59,23 @@ function OrganisationDashboard() {
             <Card style={{ height: "12rem" }}>
               <Card.Body className="d-flex flex-column align-items-start justify-content-between">
                 <Card.Title className="organisation_iconWrapper p-2 rounded">{input.icon}</Card.Title>
-                {input.subTitle && input.title && (
+                {input?.subTitle && input?.title && (
                   <div>
                     <Card.Text className="text-body-secondary m-0 p-0 fw-semibold">
-                      {input.title}
+                      {input?.title}
                     </Card.Text>
                     <span className={`text-secondary ${input.subTitle ? "mb-1" : "mb-5"}`}  >
-                      {input.subTitle}
+                      {input?.subTitle}
                     </span>
                   </div>
                 )}
-                {!input.subTitle && (
+                {!input?.subTitle && (
                   <Card.Text className="text-body-secondary fw-semibold">
-                    {input.title}
+                    {input?.title}
                   </Card.Text>
                 )}
                 <Card.Text className="fs-3 fw-semibold">
-                  {input.value}
+                  {input?.value}
                 </Card.Text>
               </Card.Body>
             </Card>
@@ -90,71 +91,24 @@ function OrganisationDashboard() {
               </Card.Text>
 
               <div className="w-100 d-flex align-items-center gap-2 mt-2">
-                <small className="text-secondary" style={{ minWidth: "70px" }}>
+                <small className="text-secondary col-3">
                   Admin
                 </small>
-                <div
-                  className="progress flex-grow-1"
-                  style={{
-                    height: "9px",
-                    backgroundColor: "hsla(343, 100%, 96%, 1)",
-                  }}
-                >
-                  <div
-                    className="progress-bar brand_color"
-                    role="progressbar"
-                    style={{ width: "60%", borderRadius: "4px" }}
-                  ></div>
+               <div className="col-8">
+                <ProgressBarComp animated={false} progressNow={organizationInfo?.active_admins/organizationInfo?.admins*100} className="custom-progress " />
                 </div>
-                <p className="mb-0 text-secondary fw-bold">{organizationInfo?.active_admins}</p>
+                <p className="mb-0 text-secondary fw-bold col-1">{organizationInfo?.active_admins}</p>
               </div>
 
               <div className="w-100 d-flex align-items-center gap-2 mt-1">
-                <small className="text-secondary" style={{ minWidth: "70px" }}>
+                <small className="text-secondary col-3">
                   Teachers
                 </small>
-                <div
-                  className="progress flex-grow-1"
-                  style={{
-                    height: "9px",
-                    backgroundColor: "hsla(343, 100%, 96%, 1)",
-                  }}
-                >
-                  <div
-                    className="progress-bar brand_color"
-                    role="progressbar"
-                    style={{
-                      width: "85%", borderRadius: "4px",
-                    }}
-                  ></div>
-                </div><p className="mb-0 text-secondary fw-bold">{organizationInfo?.active_teachers}</p>
-              </div>
-
-              {/* <div className="w-100 d-flex align-items-center py-2">
-                <small className="text-secondary" style={{ minWidth: "75px" }}>
-                  Admin
-                </small>
-                <div className="flex-grow-1">
-                  <ProgressBarComp
-                    progressNow={70}
-                    lineHeight={0.6}
-                    variant="primary"
-                  />
+                <div className="col-8">
+                <ProgressBarComp animated={false} progressNow={organizationInfo?.active_teachers/organizationInfo?.teachers*100} className="custom-progress " />
                 </div>
+                <p className="mb-0 text-secondary fw-bold col-1">{organizationInfo?.active_teachers}</p>
               </div>
-
-              <div className="w-100 d-flex align-items-center">
-                <small className="text-secondary" style={{ minWidth: "75px" }}>
-                  Teacher
-                </small>
-                <div className="flex-grow-1">
-                  <ProgressBarComp
-                    progressNow={80}
-                    lineHeight={0.6}
-                    variant="primary"
-                  />
-                </div>
-              </div> */}
             </Card.Body>
           </Card>
         </section>
@@ -181,11 +135,14 @@ function OrganisationDashboard() {
                 {organizationInfo?.plan}
               </Card.Title>
               <Card.Text className="text-secondary mb-4 text-white">
-                Expiring {organizationInfo?.expiry_date}
+                {organizationInfo?.expiry_date == null ? "Welcome" : (`Expiring ${organizationInfo?.expiry_date}`)
+                }
+               
               </Card.Text>
               <button className="btn btn-light w-100 py-1">
                 <span style={{ color: "hsla(324, 100%, 46%, 1)" }}>
-                  Upgrade Plan
+                  {organizationInfo?.plan == null ? "Purchase Plan" :"Upgrade Plan" }
+                
                 </span>
               </button>
             </Card.Body>
@@ -269,7 +226,7 @@ function OrganisationDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {adminList?.organization_list?.map((org, idx) => (
+                  {adminList?.organization_list?.length> 0 ? adminList?.organization_list?.map((org, idx) => (
                     <tr key={idx}>
                       <td className="text-center border-bottom-non">
                         {idx + 1}
@@ -289,7 +246,8 @@ function OrganisationDashboard() {
                         </button>
                       </td>
                     </tr>
-                  ))}
+                  )) : <tr className="">
+                    <td colSpan="8" className="text-center py-3">No data</td></tr>}
                 </tbody>
               </table>
             </section>
@@ -298,7 +256,8 @@ function OrganisationDashboard() {
       </Row>
 
       <footer className="d-flex justify-content-end pt-1">
-        <div className=" pe-2">
+        {
+        adminList?.organization_list?.length> 0 ? <div className=" pe-2">
           <ReactPaginate
             previousLabel={"Prev"}
             nextLabel={"Next"}
@@ -318,7 +277,9 @@ function OrganisationDashboard() {
             marginPagesDisplayed={2}
             pageRangeDisplayed={1}
           />
-        </div>
+        </div> : null
+        }
+        
       </footer>
     </div>
   );

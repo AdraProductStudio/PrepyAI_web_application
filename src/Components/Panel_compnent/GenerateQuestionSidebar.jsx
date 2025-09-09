@@ -70,7 +70,7 @@ const GenerateQuestionSidebar = ({
                         </div>
                     </div>
 
-                    <div className="sidebar-body-with-footer overflow-auto">
+                    <div className="sidebar-body-with-footer overflow-auto mb-3">
                         {bodyContent()}
                     </div>
 

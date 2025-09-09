@@ -23,7 +23,7 @@ const { subcriptionDetails } = params
         ],
 
         planFilterOptions: [
-            { id: 1, name: "All Plans",value:"all" },
+            { id: 1, name: "All Plans",value:"all_plans" },
             { id: 2, name: "Basic Plan",value:"basic" },
             { id: 3, name: "Premimum Plan",value:"premium" },
             { id: 4, name: "Platinum Plan",value:"platinum" },
