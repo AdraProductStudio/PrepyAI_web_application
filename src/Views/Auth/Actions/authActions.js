@@ -1,3 +1,4 @@
+import sha256 from "sha256";
 import axios from "axios";
 import { LoginSuccessNavigateTo } from "ResuableFunctions/LoginSuccessNavigateTo";
 
@@ -17,11 +18,12 @@ export const handleLogin = (formdata, navigate) => async (dispatch) => {
   const { username, password } = formdata;
   if (!username || !password) return dispatch(update_app_data({ type: "validation", data: true }));
 
+  console.log(sha256(password))
   try {
     dispatch(login_endpoint({ type: "request" }));
     const response = await axios.get(process.env.REACT_APP_API_URL + "/login", {
       headers: {
-        "Authorization": `Basic ${btoa(`${username}:${password}`)}`,
+        "Authorization": `Basic ${btoa(`${username}:${sha256(password)}`)}`,
         "Content-Type": "application/json",
       }
     });
@@ -37,33 +39,33 @@ export const handleLogin = (formdata, navigate) => async (dispatch) => {
 };
 
 export const handleRegister = (login_data, navigate, endpoint) => async (dispatch) => {
-  const { first_name,organization_name, institute_name,last_name, email_id,phone_number,location, new_password, confirm_password } = login_data;
-  switch(endpoint){
-    case "/register/learner" :{
+  const { first_name, organization_name, institute_name, last_name, email_id, phone_number, location, new_password, confirm_password } = login_data;
+  switch (endpoint) {
+    case "/register/learner": {
       if (!first_name || !last_name || !email_id || !new_password || !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
       break;
     }
-    case "/register/organization":{
-      if (!first_name ||!organization_name|| !last_name || !email_id || !new_password ||!phone_number ||!location|| !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
+    case "/register/organization": {
+      if (!first_name || !organization_name || !last_name || !email_id || !new_password || !phone_number || !location || !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
       break;
     }
-      case "/register/teacher":{
-      if (!first_name ||!institute_name|| !last_name || !email_id || !new_password ||!phone_number|| !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
+    case "/register/teacher": {
+      if (!first_name || !institute_name || !last_name || !email_id || !new_password || !phone_number || !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
       break;
     }
-    case "/register/student":{
-      if (!first_name ||!institute_name|| !last_name || !email_id || !new_password ||!phone_number|| !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
+    case "/register/student": {
+      if (!first_name || !institute_name || !last_name || !email_id || !new_password || !phone_number || !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
       break;
     }
-    case "/register/admin":{
-      if (!first_name ||!institute_name|| !last_name || !email_id || !new_password ||!phone_number||!location|| !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
+    case "/register/admin": {
+      if (!first_name || !institute_name || !last_name || !email_id || !new_password || !phone_number || !location || !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
       break;
     }
   }
 
   try {
     dispatch(update_spinner_loadning({ status: true }));
-    const response = await axios.post(process.env.REACT_APP_API_URL + endpoint, { ...login_data });
+    const response = await axios.post(process.env.REACT_APP_API_URL + endpoint, { ...login_data, confirm_password: sha256(confirm_password), new_password: sha256(new_password) });
 
     const { message, success } = response?.data;
     if (!success) {
@@ -155,8 +157,8 @@ export const handleOAuth = (navigate, endpoint) => async (dispatch) => {
 };
 
 export const handleForgetPass = (forget_data, navigate, endpoint) => async (dispatch) => {
-  const {email_id} = forget_data
-  if (!email_id ) return dispatch(update_app_data({ type: "validation", data: true }));
+  const { email_id } = forget_data
+  if (!email_id) return dispatch(update_app_data({ type: "validation", data: true }));
 
   try {
     dispatch(update_spinner_loadning({ status: true }))
@@ -206,11 +208,14 @@ export const handleOtpVerification = (forget_data, routeState, navigate, endpoin
 };
 
 export const handleCreatePassword = (forget_data, routeState, navigate, endpoint) => async (dispatch) => {
-  const {new_password,confirm_password} = forget_data;
-  if (!new_password || !confirm_password ) return dispatch(update_app_data({ type: "validation", data: true }));
+  const { new_password, confirm_password } = forget_data;
+  if (!new_password || !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
   try {
     dispatch(update_spinner_loadning({ status: true }))
     const filterData = { ...forget_data, ...routeState };
+    filterData.new_password = sha256(new_password);
+    filterData.confirm_password = sha256(confirm_password);
+
     const api = process.env.REACT_APP_API_URL + endpoint;
     const response = await axios.post(api, filterData);
 

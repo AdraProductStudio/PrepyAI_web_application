@@ -1,5 +1,5 @@
 import { update_error, updateModalShow } from "Views/Common/Slices/Common_slice"
-import { updateFilteredOrganizationDetails, updateMonthlyReports, updateOrganizationDetails, updatePersonalInfoInputs, updateSubcriptionDetails } from "../Slices/SuperAdmin_slice"
+import { create_organisation, updateMonthlyReports, updateOrganizationDetails, updatePersonalInfoInputs, updateSubcriptionDetails } from "../Slices/SuperAdmin_slice"
 import axiosInstance from "Services/axiosInstance"
 
 export const getOrganizationList = (payload) => async (dispatch) => {
@@ -50,12 +50,19 @@ export const deleteOrganisation = (org_id) => async (dispatch) => {
 }
 
 export const createOrganization = (payload) => async (dispatch) => {
-  try {
-    const { data } = await axiosInstance.post('/super_admin/invite', payload)
-  } catch (error) {
-    dispatch(update_error({ Err: error?.response?.data?.message || error?.message || "Something went wrong", Toast_Type: "error" }))
-  }
+  if (!payload?.email_id || !payload?.organization_name) return dispatch(create_organisation({ type: "failure", message: "Some fields are empty" }))
 
+  try {
+    dispatch(create_organisation({ type: "request" }))
+    const { data } = await axiosInstance.post('/super_admin/invite', payload)
+
+    if (data?.error_code === 0)
+      dispatch(create_organisation({ type: "response" }))
+    else
+      dispatch(create_organisation({ type: "failure", message: data?.message || "Failed to create organization" }))
+  } catch (error) {
+    dispatch(create_organisation({ type: "failure", message: error?.response?.data?.message || error?.message || "Something went wrong" }))
+  }
 }
 
 export const getProfileDetails = () => async (dispatch) => {

@@ -10,7 +10,7 @@ const BookCard = ({
     onClickDelete, className, viewFunction, previewFunction
 }) => {
     const navigate = useCustomNavigate();
-    
+
     function dynamicContent() {
         const path = window.location.pathname;
 
@@ -36,9 +36,9 @@ const BookCard = ({
         <Card className={`${className?.includes("border") ? "border" : "border-0"} rounded-4 shadow-sm px-3 h-100 ${className}`}>
             <Card.Header className="bg-transparent border-0 border-bottom row align-items-center px-0">
                 <div className="col-10"><h6 className="mb-0">{data?.book_name || 'Book title'}</h6></div>
-                <div className="col-2 text-end">
+                {onClickDelete && <div className="col-2 text-end">
                     <ButtonComponent type="button" className="bg-transparent" clickFunction={onClickDelete} buttonName={Icons?.delete_icons} />
-                </div>
+                </div>}
             </Card.Header>
             <Card.Body className="row align-items-center pointer" onClick={viewFunction}>
                 <div className="col-3">

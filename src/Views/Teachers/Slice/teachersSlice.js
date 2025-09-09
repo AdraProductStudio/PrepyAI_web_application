@@ -48,7 +48,7 @@ const initialState = {
     placeholder: false,
     placeholder2: false,
     assignedTest: {
-      jsonStudentsData: [{ student_name: "All", student_id: "all" }],
+      jsonStudentsData: [],
       pagination: {
         page: 1,
         show_entries: 10,
@@ -349,9 +349,6 @@ const teachersSlice = createSlice({
 
     },
     get_student_details_slice(state, action) {
-      // const { key, value } = action.payload
-      // state.student_details[key] = value
-
       const { type, data } = action.payload;
       switch (type) {
         case "request":
@@ -377,14 +374,6 @@ const teachersSlice = createSlice({
       state.save_schedule_status = "loading";
       state.save_schedule_error = null;
     },
-    // save_schedule_success(state, action) {
-    //     state.save_schedule_status = "succeeded";
-    //     state.student_details = {
-    //         ...state.student_details,
-    //         schedule: action.payload
-    //     };
-    //     state.create_test = {}
-    // },
     save_schedule_success(state, action) {
       state.save_schedule_status = "succeeded";
       state.create_test = {};

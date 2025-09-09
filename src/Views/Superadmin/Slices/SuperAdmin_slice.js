@@ -66,6 +66,24 @@ const adminSlice = createSlice({
         },
         updateProfileEditing: (state, action) => {
             state.isProfileEditing = !state.isProfileEditing
+        },
+        create_organisation: (state, action) => {
+            const { type, data } = action.payload;
+            switch (type) {
+                case "request":
+                    state.createOrganization.is_sending = true
+                    break;
+
+                case "success":
+                    state.createOrganization.is_sending = false
+                    state.createOrganization.email_id = ""
+                    state.createOrganization.organization_name = ""
+                    break;
+
+                case "failure":
+                    state.createOrganization.is_sending = false
+                    break;
+            }
         }
     },
     extraReducers(builder) {
@@ -93,7 +111,7 @@ export const {
     updateMonthlyReports,
     updateCreateOrgInputs,
     updateProfileEditing,
-    edit_profile_Inputs
+    edit_profile_Inputs, create_organisation
 } = actions
 
 export default reducer

@@ -4,11 +4,12 @@ import JsonData from "./JsonData";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import ButtonComponent from "Components/Button/Button";
 import { createOrganization, editProfileDetails } from "../Actions/superAdminAction";
+import ButtonSpinner from "Components/Spinner/ButtonSpinner";
 
 
 export function OverallModel() {
-    const { commonState,superadminState } = useCommonState();
-    const{ jsxJson} = JsonData()
+    const { commonState, superadminState } = useCommonState();
+    const { jsxJson } = JsonData()
     const dispatch = useDispatch()
 
 
@@ -44,18 +45,27 @@ export function OverallModel() {
                     case "create_organisation":
                         return <div className="w-100">
                             {Inputfunctions(jsxJson?.create_organization)}
-                            <ButtonComponent type="button" buttonName="Send Mail" className="brand_color w-100 text-white" clickFunction={()=>dispatch(createOrganization(superadminState?.createOrganization))} />
+                            <ButtonSpinner
+                                className="brand_color w-100 text-white"
+                                title="Send Email"
+                                is_spinner={superadminState?.createOrganization?.is_sending}
+                                clickFunction={
+                                    superadminState?.createOrganization?.is_sending
+                                        ? null
+                                        :
+                                        () => dispatch(createOrganization(superadminState?.createOrganization))
+                                } />
                         </div>
 
                     default:
                         break;
                 }
-                 case "Profile":
+            case "Profile":
                 switch (commonState?.modal?.type) {
                     case "edit_profile":
                         return <div className="w-100">
                             {Inputfunctions(jsxJson?.super_admin_profile)}
-                            <ButtonComponent type="button" buttonName="Submit" className="brand_color w-100 text-white" clickFunction={()=>dispatch(editProfileDetails(superadminState?.editProfileInputs))} />
+                            <ButtonComponent type="button" buttonName="Submit" className="brand_color w-100 text-white" clickFunction={() => dispatch(editProfileDetails(superadminState?.editProfileInputs))} />
                         </div>
 
                     default:

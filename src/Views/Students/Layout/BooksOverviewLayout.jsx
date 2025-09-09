@@ -69,7 +69,7 @@ const BooksOverviewLayout = () => {
                                         <iframe
                                             src={book?.url}
                                             width="100%"
-                                            height="700px"
+                                            height="100%"
                                             style={{ border: 'none' }}
                                             title="PDF Viewer"
                                         />

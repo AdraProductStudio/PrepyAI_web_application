@@ -2,15 +2,12 @@ import { Card } from "react-bootstrap";
 
 import CountShowingCard from "Components/Card/CountShowingCard";
 import TimeTableCard from "Components/Card/TimeTableCard";
-import Icons from "Utils/Icons";
 import ActivityCard from "Components/Card/ActivtyCard";
 import NotesDisplayCard from "Components/Card/NotesDisplayCard";
 import StudentsPerformanceChart from "Components/Charts/StudentsPerformanceChart";
 import GradeByClassroomChart from "Components/Charts/GradeByClassroomChart";
-import { useEffect, useState } from "react";
-import axiosInstance from "Services/axiosInstance";
+import { useEffect } from "react";
 import JsonData from "../Utils/JsonData";
-import { handleTeacherDashboard } from "../Slice/teachersSlice";
 import { useDispatch } from "react-redux";
 import { useCommonState } from "Components/CustomHooks";
 import { getAllClassRooms, GetAllsubjects, getGradeByClassroom, GetPerformanceBysubject, getSubjectByClassroom, getTeacherDashboardDatas } from "../Actions/teacherAction";
@@ -23,10 +20,10 @@ const TeacherDashboard = () => {
     const { teachersState } = useCommonState();
 
     const dispatch = useDispatch();
-    const {jsonOnly} = JsonData()
-    const {glow} = teachersState?.teacher_DashboardData 
+    const { jsonOnly } = JsonData()
+    const { glow } = teachersState?.teacher_DashboardData
     const { jsxJson } = JsonData();
-    const {data} = teachersState?.teacher_Current_Grade_Classroom;
+    const { data } = teachersState?.teacher_Current_Grade_Classroom;
     const gradeByClassroom = teachersState?.teacher_GradeByClassroom?.data;
     const studentPerfomancedata = teachersState?.teacher_GetStudencePerfomanceBySubject?.data;
     const currentStudentSubjectForPerfomance = teachersState?.teacher_Current_perfomance_Classroom?.data;
@@ -74,133 +71,133 @@ const TeacherDashboard = () => {
         },
     ];
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(getTeacherDashboardDatas());
         dispatch(getAllClassRooms())
         dispatch(getGradeByClassroom())
         dispatch(GetPerformanceBysubject())
         dispatch(GetAllsubjects())
-    },[])
+    }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(getGradeByClassroom(data))
-    },[data])
+    }, [data])
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(GetPerformanceBysubject(currentStudentSubjectForPerfomance))
-        console.log(currentStudentSubjectForPerfomance,"asdedwe")
-    },[currentStudentSubjectForPerfomance?.subject_id])
+        console.log(currentStudentSubjectForPerfomance, "asdedwe")
+    }, [currentStudentSubjectForPerfomance?.subject_id])
 
     return (
         <>
-        {glow ? (
-            <div className="w-100 h-100 d-flex flex-column align-items-center justify-content-center py-4">
-              <SpinnerComponent />
-              <p className="py-3">Getting Records</p>
-            </div>
-          ) :<div className="d-flex flex-wrap pb-3 pe-3 overflowY h-100">
-            <div className="col-5 d-flex flex-wrap">
-                {jsonOnly?.dashboard_count_details?.map((item, index) => (
-                    <div className="col-6 px-2" key={index}>
-                        <CountShowingCard data={item} className="border-1" />
-                    </div>
-                ))}
+            {glow ? (
+                <div className="w-100 h-100 d-flex flex-column align-items-center justify-content-center py-4">
+                    <SpinnerComponent />
+                    <p className="py-3">Getting Records</p>
+                </div>
+            ) : <div className="d-flex flex-wrap pb-3 pe-3 overflowY h-100">
+                <div className="col-5 d-flex flex-wrap">
+                    {jsonOnly?.dashboard_count_details?.map((item, index) => (
+                        <div className="col-6 px-2" key={index}>
+                            <CountShowingCard data={item} className="border-1" />
+                        </div>
+                    ))}
 
-                <div className="col-12 mt-3 px-2">
-                    <div className="w-100">
-                        <TimeTableCard />
+                    <div className="col-12 mt-3 px-2">
+                        <div className="w-100">
+                            <TimeTableCard />
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="col-7 row">
-                <div className="col-7 px-2 pe-3">
-                    <Card className='border-0 rounded-4 shadow-sm py-3 h-100'>
-                        <Card.Header className="border-bottom bg-transparent d-flex justify-content-between align-items-center">
-                            <Card.Title className='fs-16'> Student Performance </Card.Title>
-                            <div className="d-flex ">{Inputfunctions(jsxJson.selectClassRoomForPerfomance)} {Inputfunctions(jsxJson?.selectStudentPerfomance)}</div>
+                <div className="col-7 row">
+                    <div className="col-7 px-2 pe-3">
+                        <Card className='border-0 rounded-4 shadow-sm py-3 h-100'>
+                            <Card.Header className="border-bottom bg-transparent d-flex justify-content-between align-items-center">
+                                <Card.Title className='fs-16'> Student Performance </Card.Title>
+                                <div className="d-flex ">{Inputfunctions(jsxJson.selectClassRoomForPerfomance)} {Inputfunctions(jsxJson?.selectStudentPerfomance)}</div>
+                            </Card.Header>
+                            <Card.Body className="pe-none">
+                                <StudentsPerformanceChart data={Array.isArray(studentPerfomancedata) ? studentPerfomancedata : []} />
+                            </Card.Body>
+                        </Card>
+                    </div>
+
+                    <div className="col-5">
+                        <Card className='border-0 rounded-4 shadow-sm py-3 h-100'>
+                            <Card.Header className="border-bottom bg-transparent">
+                                <Card.Title className='fs-16'> Activities </Card.Title>
+                            </Card.Header>
+                            <Card.Body className="activity_card_body">
+                                {Array.isArray(teachersState?.teacher_DashboardData?.data?.activites) ? teachersState?.teacher_DashboardData?.data?.activites?.map((data, index) => (
+                                    <ActivityCard key={index} data={data} />
+                                )) : <div className="d-flex justify-content-center align-items-center h-100"><p>no data found</p></div>}
+                            </Card.Body>
+                        </Card>
+                    </div>
+                </div>
+
+                <div className="col-7 mt-3 px-2">
+                    <Card className='border-0 rounded-4 shadow-sm py-2 h-100'>
+                        <Card.Header className="border-bottom bg-transparent d-flex justify-content-between">
+                            <Card.Title className='fs-16'> Grade by Classroom </Card.Title>
+                            <div>{Inputfunctions(jsxJson.selectGradeByClassRoom)}</div>
                         </Card.Header>
-                        <Card.Body className="pe-none">
-                            <StudentsPerformanceChart data={ Array.isArray(studentPerfomancedata) ? studentPerfomancedata : []} />
+                        <Card.Body className="row">
+                            <div className="col-4 px-2">
+                                <Card className="border shadow-sm">
+                                    <Card.Body>
+                                        <div className="py-4 text-center">
+                                            <h5 className="grade_by_classroom">Emergent</h5>
+                                            <h4>{Number(gradeByClassroom[0]?.emergent || 0)}%</h4>
+                                        </div>
+                                        <GradeByClassroomChart color="#26B18D" graphData={graphData} />
+                                    </Card.Body>
+                                </Card>
+                            </div>
+
+                            <div className="col-4 px-2">
+                                <Card className="border shadow-sm">
+                                    <Card.Body>
+                                        <div className="py-4 text-center">
+                                            <h5 className="grade_by_classroom">Developing</h5>
+                                            <h4>{Number(gradeByClassroom[0]?.developing || 0)}%</h4>
+                                        </div>
+                                        <GradeByClassroomChart color="#E44646" graphData={graphData} />
+                                    </Card.Body>
+                                </Card>
+                            </div>
+
+                            <div className="col-4 px-2">
+                                <Card className="border shadow-sm">
+                                    <Card.Body>
+                                        <div className="py-4 text-center">
+                                            <h5 className="grade_by_classroom">Exemplar</h5>
+                                            <h4>{Number(gradeByClassroom[0]?.exemplar || 0)}%</h4>
+                                        </div>
+                                        <GradeByClassroomChart color="#26B18D" graphData={graphData} />
+                                    </Card.Body>
+                                </Card>
+                            </div>
                         </Card.Body>
                     </Card>
                 </div>
 
-                <div className="col-5">
-                    <Card className='border-0 rounded-4 shadow-sm py-3 h-100'>
+                <div className="col-5 mt-3 px-2">
+                    <Card className='border-0 rounded-4 shadow-sm py-2 h-100'>
                         <Card.Header className="border-bottom bg-transparent">
-                            <Card.Title className='fs-16'> Activities </Card.Title>
+                            <Card.Title className='fs-16'> Notes </Card.Title>
                         </Card.Header>
-                        <Card.Body className="activity_card_body">
-                            {Array.isArray(teachersState?.teacher_DashboardData?.data?.activites)? teachersState?.teacher_DashboardData?.data?.activites?.map((data, index) => (
-                                <ActivityCard key={index} data={data} />
-                            )) : <div className="d-flex justify-content-center align-items-center h-100"><p>no data found</p></div>}
+                        <Card.Body className="row">
+                            {Array.isArray(teachersState?.teacher_DashboardData?.data?.note) ? teachersState?.teacher_DashboardData?.data?.notes?.map((data, index) => (
+                                <div className="col-6 p-2">
+                                    <NotesDisplayCard className="border-0 overflow-hidden" style={{ background: '#FFAFAF' }} params={data} />
+                                </div>
+                            )) : <div className="d-flex justify-content-center align-items-center h-100"><p>Notes Not found</p></div>}
                         </Card.Body>
                     </Card>
                 </div>
-            </div>
-
-            <div className="col-7 mt-3 px-2">
-                <Card className='border-0 rounded-4 shadow-sm py-2 h-100'>
-                    <Card.Header className="border-bottom bg-transparent d-flex justify-content-between">
-                        <Card.Title className='fs-16'> Grade by Classroom </Card.Title>
-                        <div>{Inputfunctions(jsxJson.selectGradeByClassRoom)}</div>
-                    </Card.Header>
-                    <Card.Body className="row">
-                        <div className="col-4 px-2">
-                            <Card className="border shadow-sm">
-                                <Card.Body>
-                                    <div className="py-4 text-center">
-                                        <h5 className="grade_by_classroom">Emergent</h5>
-                                        <h4>{Number(gradeByClassroom[0]?.emergent || 0)}%</h4>
-                                    </div>
-                                    <GradeByClassroomChart color="#26B18D" graphData={graphData} />
-                                </Card.Body>
-                            </Card>
-                        </div>
-
-                        <div className="col-4 px-2">
-                            <Card className="border shadow-sm">
-                                <Card.Body>
-                                    <div className="py-4 text-center">
-                                        <h5 className="grade_by_classroom">Developing</h5>
-                                        <h4>{Number(gradeByClassroom[0]?.developing || 0)}%</h4>
-                                    </div>
-                                    <GradeByClassroomChart color="#E44646" graphData={graphData} />
-                                </Card.Body>
-                            </Card>
-                        </div>
-
-                        <div className="col-4 px-2">
-                            <Card className="border shadow-sm">
-                                <Card.Body>
-                                    <div className="py-4 text-center">
-                                        <h5 className="grade_by_classroom">Exemplar</h5>
-                                        <h4>{Number(gradeByClassroom[0]?.exemplar || 0)}%</h4>
-                                    </div>
-                                    <GradeByClassroomChart color="#26B18D" graphData={graphData} />
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    </Card.Body>
-                </Card>
-            </div>
-
-            <div className="col-5 mt-3 px-2">
-                <Card className='border-0 rounded-4 shadow-sm py-2 h-100'>
-                    <Card.Header className="border-bottom bg-transparent">
-                        <Card.Title className='fs-16'> Notes </Card.Title>
-                    </Card.Header>
-                    <Card.Body className="row">
-                            {teachersState?.teacher_DashboardData?.data?.notes?.map((data,index)=>(
-                        <div className="col-6 p-2">
-                                <NotesDisplayCard className="border-0 overflow-hidden" style={{ background: '#FFAFAF' }} params={data} />
-                        </div>
-                            ))}
-                    </Card.Body>
-                </Card>
-            </div>
-        </div>}</>
+            </div>}</>
     );
 }
 

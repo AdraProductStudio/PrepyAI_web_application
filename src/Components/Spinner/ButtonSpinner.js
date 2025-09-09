@@ -9,10 +9,10 @@ const ButtonSpinner = ({ is_spinner, title, className, btnDisable, clickFunction
       className={`w-100 ${className ? className : 'btn-primary'} py-2 rounded-3`}
       buttonName={is_spinner ?
         <div className='row align-items-center'>
-          <div className='col-10 text-start ps-3'>
+          <div className='col-10 text-start ps-3 text-truncate'>
             {title || 'Loading...'}
           </div>
-          <div className='col-2 border-start'>
+          <div className='col-2 border-start text-center'>
             <SpinnerComponent />
           </div>
         </div>

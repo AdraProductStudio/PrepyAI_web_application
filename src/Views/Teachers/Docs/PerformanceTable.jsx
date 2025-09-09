@@ -83,7 +83,7 @@ const PerformanceTable = ({ studentsData, testType }) => {
                                 onClick={goToPreviousMonth}
                                 className="btn border-0 "
                                 style={{ fontSize: "1.2rem" }}
-                            > 
+                            >
                                 {Icons.left_arrow}
                             </button>
                             &nbsp;
@@ -124,10 +124,10 @@ const PerformanceTable = ({ studentsData, testType }) => {
                             teachersState?.studentsPerformance.placeholder ?
                                 <div className="position-absolute top-50 start-50 translate-middle">
                                     <SpinnerComponent />
-                                </div>  
+                                </div>
                                 :
                                 <tbody>
-                                    {studentsData?.map((std, idx) =>  {
+                                    {studentsData?.map((std, idx) => {
                                         const colorInfo = studentsWithColors.find((obj) => obj.name === std.student_name);
                                         return (
                                             <tr key={idx} className="border border-white bg-white">
@@ -135,16 +135,16 @@ const PerformanceTable = ({ studentsData, testType }) => {
                                                     className="bg-white d-flex justify-content-start align-items-center "
                                                     style={{ position: "sticky", left: 0, zIndex: 9, width: "220px" }}
                                                 >
-                                                    <CgProfile  className="me-2"/>
+                                                    <CgProfile className="me-2" />
                                                     <span style={{ fontSize: "0.9rem" }}>{(std.student_name).length <= 12 ? std.student_name : `${(std.student_name).slice(0, 12)}...`}</span>
                                                 </td>
                                                 {monthDates?.map((date) => {
-                                                    let bg =  "#E3F3FF";
-                                                    if(colorInfo?.greenBox.includes(date.date)) bg = "#64DD6C";
-                                                    else if(colorInfo?.yellowBox.includes(date.date)) bg = "#E0E96C";
-                                                    else if(colorInfo?.redBox.includes(date.date)) bg = "#FF5C5C";
-                                                    else if(colorInfo?.grayBox.includes(date.date)) bg = "#FF8383";
-                                                
+                                                    let bg = "#E3F3FF";
+                                                    if (colorInfo?.greenBox.includes(date.date)) bg = "#64DD6C";
+                                                    else if (colorInfo?.yellowBox.includes(date.date)) bg = "#E0E96C";
+                                                    else if (colorInfo?.redBox.includes(date.date)) bg = "#FF5C5C";
+                                                    else if (colorInfo?.grayBox.includes(date.date)) bg = "#FF8383";
+
                                                     return (
                                                         <td key={date.date} className="text-center p-1 ">
                                                             <button
@@ -155,13 +155,14 @@ const PerformanceTable = ({ studentsData, testType }) => {
                                                                     cursor: "pointer",
                                                                     backgroundColor: bg,
                                                                 }}
-                                                                onClick={()=>{
+                                                                onClick={() => {
                                                                     dispatch(handlePerformanceModal({
-                                                                        id: std.student_id, 
-                                                                        date: date.date , 
-                                                                        testType, 
+                                                                        id: std.student_id,
+                                                                        date: date.date,
+                                                                        testType,
                                                                     }))
-                                                                    dispatch(updateModalShow({show: true, size: "lg", close_btn: true, modal_from: "teacher", modal_type: "performance"}))}
+                                                                    dispatch(updateModalShow({ show: true, size: "lg", close_btn: true, modal_from: "teacher", modal_type: "performance" }))
+                                                                }
                                                                 }
                                                             >
                                                                 &nbsp;
@@ -226,7 +227,7 @@ const PerformanceTable = ({ studentsData, testType }) => {
                     </div>
 
                 </div>
-            </div> 
+            </div>
         </>
 
     );

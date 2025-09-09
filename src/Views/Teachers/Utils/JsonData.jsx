@@ -88,8 +88,8 @@ const JsonData = (params) => {
         route: `/teachers_dashboard/classrooms/${params?.class_id}/${params?.subject_id}/test/ongoing_test`,
       },
       {
-        name: "Completed",
-        route: `/teachers_dashboard/classrooms/${params?.class_id}/${params?.subject_id}/test/completed_test`,
+        name: "Cancelled",
+        route: `/teachers_dashboard/classrooms/${params?.class_id}/${params?.subject_id}/test/cancelled_test`,
       },
     ],
 
