@@ -85,7 +85,6 @@ const TeacherDashboard = () => {
 
     useEffect(() => {
         dispatch(GetPerformanceBysubject(currentStudentSubjectForPerfomance))
-        console.log(currentStudentSubjectForPerfomance, "asdedwe")
     }, [currentStudentSubjectForPerfomance?.subject_id])
 
     return (
