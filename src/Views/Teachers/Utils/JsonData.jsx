@@ -782,15 +782,15 @@ const JsonData = (params) => {
     ],
     editStudent: [
       {
-        name: "Enter Student Name",
+        name: "Enter First Name",
         type: "text",
         category: "input",
-        placeholder: "Student name",
+        placeholder: "Student first name",
         value:
-          teachersState?.teacher_PostStudents?.data?.data?.student_name || "",
+          teachersState?.teacher_PostStudents?.data?.data?.first_name || "",
         change: (e) =>{
-          if (/^[A-Za-z\s]*$/.test(e.target.value)) {
-            dispatch(updatePostStudentData({ name: e.target.value }));
+          if (/^[A-Za-z]*$/.test(e.target.value)) {
+            dispatch(updatePostStudentData({ first_name: e.target.value }));
           }
         },
         divClassName: "col-12 mb-4 mt-2",
@@ -798,7 +798,27 @@ const JsonData = (params) => {
         isMandatory: true,
         Err:
           commonState?.app_data?.validated 
-            ? commonState?.app_data?.validationMessage?.student_name
+            ? commonState?.app_data?.validationMessage?.first_name
+            : null,
+      },
+      {
+        name: "Enter Last Name",
+        type: "text",
+        category: "input",
+        placeholder: "Student last name",
+        value:
+          teachersState?.teacher_PostStudents?.data?.data?.last_name || "",
+        change: (e) =>{
+          if (/^[A-Za-z]*$/.test(e.target.value)) {
+            dispatch(updatePostStudentData({ last_name: e.target.value }));
+          }
+        },
+        divClassName: "col-12 mb-4 mt-2",
+        className: "modal-inputs",
+        isMandatory: true,
+        Err:
+          commonState?.app_data?.validated 
+            ? commonState?.app_data?.validationMessage?.last_name
             : null,
       },
       {

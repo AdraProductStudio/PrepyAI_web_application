@@ -91,7 +91,7 @@ const StudentsTableCard = ({ className, navigate_to, data, glow }) => {
                 {data?.students?.map((student, index) => (
                   <tr key={index}>
                     <td className="border-end">{index + 1}</td>
-                    <td className="border-end">{student.student_name}</td>
+                    <td className="border-end">{student.first_name+" "+student.last_name}</td>
                     <td className="border-end">{student.contact_no}</td>
                     <td className="border-end">{student.student_email}</td>
                     <td className="border-end">{student.status}</td>

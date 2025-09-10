@@ -24,23 +24,34 @@ const validateStudentForm = (values) => {
   
   const errors = {};
 
-  if (!values.student_name) {
-    errors.student_name = "Student name is required";
-  } else if (!/^[A-Za-z\s]+$/.test(values.student_name)) {
-    errors.student_name = "Only alphabets allowed";
-  }
+  // if (!values.student_name) {
+  //   errors.name = "Student name is required";
+  // } else if (!/^[A-Za-z\s]+$/.test(values.student_name)) {
+  //   errors.student_name = "Only alphabets allowed";
+  // }
 
-  if (!values.student_email) {
-    errors.student_email = "Email is required";
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.student_email)) {
-    errors.student_email = "Invalid email format";
-  }
+  // if (!values.student_email) {
+  //   errors.student_email = "Email is required";
+  // } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.student_email)) {
+  //   errors.student_email = "Invalid email format";
+  // }
+  // if (!values.first_name) {
+  //   errors.first_name = "First name is required";
+  // } else if (!/^[A-Za-z\s]+$/.test(values.first_name)) {
+  //   errors.first_name = "Only alphabets allowed";
+  // }
 
-  if (!values.student_reg_no) {
-    errors.student_reg_no = "Registration number is required";
-  } else if (!/^[A-Z0-9]+$/.test(values.student_reg_no)) {
-    errors.student_reg_no = "Only uppercase letters and numbers allowed";
-  }
+  // if (!values.last_name) {
+  //   errors.last_name = "Last name is required";
+  // } else if (!/^[A-Za-z\s]+$/.test(values.last_name)) {
+  //   errors.last_name = "Only alphabets allowed";
+  // }
+
+  // if (!values.student_reg_no) {
+  //   errors.student_reg_no = "Registration number is required";
+  // } else if (!/^[A-Z0-9]+$/.test(values.student_reg_no)) {
+  //   errors.student_reg_no = "Only uppercase letters and numbers allowed";
+  // }
 
   if (!values.name) {
     errors.name = "Name is required";
@@ -69,12 +80,82 @@ const validateStudentForm = (values) => {
   if (!values.classroom_name) {
     errors.classroom_name = "Classroom name is required";
   }
-  if (!values.teachers || !values.teachers_id) {
+  // if (!values.teachers || !values.teachers_id) {
+  //   errors.teachers = "Teachers is required";
+  // }
+  // if (!values.student_file) {
+  //   errors.student_file = "Student List is required";
+  // }
+  // if(!values.subject_name) {
+  //   errors.subject_name = "Subject name is required";
+  // }
+
+  return errors;
+};
+
+const validateStudentEditForm = (values) => {
+  
+  const errors = {};
+
+  if (!values.student_email) {
+    errors.student_email = "Email is required";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.student_email)) {
+    errors.student_email = "Invalid email format";
+  }
+
+  if (!values.first_name) {
+    errors.first_name = "First name is required";
+  } else if (!/^[A-Za-z\s]+$/.test(values.first_name)) {
+    errors.first_name = "Only alphabets allowed";
+  }
+
+  if (!values.last_name) {
+    errors.last_name = "Last name is required";
+  } else if (!/^[A-Za-z\s]+$/.test(values.last_name)) {
+    errors.last_name = "Only alphabets allowed";
+  }
+
+  if (!values.student_reg_no) {
+    errors.student_reg_no = "Registration number is required";
+  } else if (!/^[A-Z0-9]+$/.test(values.student_reg_no)) {
+    errors.student_reg_no = "Only uppercase letters and numbers allowed";
+  }
+
+
+  if (!values.contact_no) {
+    errors.contact_no = "Contact number is required";
+  } else if (!/^\d{10}$/.test(values.contact_no)) {
+    errors.contact_no = "Contact number must be exactly 10 digits";
+  }
+
+  return errors;
+};
+
+const validateClassroomForm = (values) => {
+  
+  const errors = {};
+
+  if (!values.classroom_name) {
+    errors.classroom_name = "Classroom name is required";
+  }
+  if (!values.teachers) {
     errors.teachers = "Teachers is required";
   }
   if (!values.student_file) {
     errors.student_file = "Student List is required";
   }
+
+  return errors;
+};
+
+const validateSubjectForm = (values) => {
+  
+  const errors = {};
+
+  if (!values.teachers_id) {
+    errors.teachers = "Teachers is required";
+  }
+
   if(!values.subject_name) {
     errors.subject_name = "Subject name is required";
   }
@@ -426,8 +507,8 @@ export const GetAllsubjects = (params) => async (dispatch) => {
 
 export const postClassrooms = (form_data) => async (dispatch) => {
   const { classroom_name, teachers, student_file } = form_data;
-
-      const errors = validateStudentForm(form_data || {});
+    console.log(form_data,"zdsdasqw")
+      const errors = validateClassroomForm(form_data || {});
 
       if (Object.keys(errors).length > 0) {
         dispatch(update_app_data({ type: "validation", data: true }));
@@ -473,7 +554,7 @@ export const postSubjects = (form_data) => async (dispatch) => {
   //   return dispatch(update_app_data({ type: "validation", data: true }));
   // }
 
-  const errors = validateStudentForm(form_data || {});
+  const errors = validateSubjectForm(form_data || {});
 
   if (Object.keys(errors).length > 0) {
     dispatch(update_app_data({ type: "validation", data: true }));
@@ -508,7 +589,7 @@ export const postStudents = (form_data) => async (dispatch) => {
   const pagination = form_data?.getdata?.pagination;
   // const student_id = form_data?.getdata?.student_id;
 
-   const errors = validateStudentForm(form_data?.data || {});
+   const errors = validateStudentEditForm(form_data?.data || {});
 
    if (Object.keys(errors).length > 0) {
     dispatch(update_app_data({ type: "validation", data: true }));
@@ -559,6 +640,7 @@ export const postStudents = (form_data) => async (dispatch) => {
 
 export const postCreateStudent = (form_data) => async (dispatch) => {
   const { name, contact_no, email_id, register_no, classroom_name } = form_data;
+  console.log(form_data,"Dasdasdas")
 
   let response;
 
@@ -579,11 +661,15 @@ export const postCreateStudent = (form_data) => async (dispatch) => {
     } else {
       const errors = validateStudentForm(form_data || {});
 
+      console.log("Validation errors:", errors);
+
+
       if (Object.keys(errors).length > 0) {
         dispatch(update_app_data({ type: "validation", data: true }));
         dispatch(update_app_data({ type: "validationMessage", data: errors }));
         return; 
       }
+
       response = await axiosInstance.post("/teachers/add_student", form_data);
     }
 
