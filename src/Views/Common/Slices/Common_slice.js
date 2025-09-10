@@ -371,6 +371,9 @@ const commonSlice = createSlice({
                     "authState/update_create_password",
                     "teachersSlice/handleScheduleTest",
                     "teachersSlice/save_schedule_status",
+                    "organisation_slice/change_password",
+                    "organisation_slice/edit_organization",
+                    "organisation_slice/create_admin",
                 ].includes(action.type),
 
                 (state) => {
