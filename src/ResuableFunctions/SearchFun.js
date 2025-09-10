@@ -4,16 +4,25 @@ import Icons from 'Utils/Icons';
 import { useCommonState, useDispatch } from 'Components/CustomHooks';
 import { update_error, update_search } from 'Views/Common/Slices/Common_slice';
 
-export function SearchComponent({ className, placeholder, onClick }) {
+export function SearchComponent({ className, placeholder, onClick, filter_options }) {
     const dispatch = useDispatch();
     const { commonState } = useCommonState();
 
+    function searchFun() {
+        if (commonState?.search?.value) {
+            if (typeof onClick === 'function') {
+                dispatch(update_search({ value: commonState?.search?.value, clicked: true }))
+                if (typeof filter_options === 'object') {
+                    onClick({ filter_options, search_query: commonState?.search?.value })
+                }
+            }
+        }
+        else dispatch(update_error({ Toast_Type: "error", Err: "search field should not be empty" }))
+    }
+
     function handleSearchEnter(event) {
         if (event.code === "Enter") {
-            if (commonState?.search?.value) {
-                if (typeof onClick === 'function') onClick();
-            }
-            else dispatch(update_error({ Toast_Type: "error", Err: "search field should not be empty" }))
+            searchFun()
         }
     }
 
@@ -28,9 +37,15 @@ export function SearchComponent({ className, placeholder, onClick }) {
                 value={commonState?.search?.value || ''}
             />
 
-            <span className="input-group-start-icon">{Icons.searchIcon}</span>
-            {/* {commonState?.search?.value ? <span className="input-group-end-icon-two cursor-pointer" onClick={handleSearchClicked}>{Icons.searchIcon}</span> : null}
-            <span className={`${!commonState?.search?.clicked ? "pe-none" : 'cursor-pointer'} input-group-end-icon-one`} onClick={() => dispatch(update_search({ value: '', clicked: false }))}>{Icons.searchCancelIcon}</span> */}
+            <span className="input-group-start-icon text-secondary">{Icons.searchIconGray}</span>
+            {commonState?.search?.value ?
+                <span className={`${commonState?.search?.clicked ? 'cursor-pointer' : 'pe-none'} input-group-end-icon-three`} onClick={() => {
+                    dispatch(update_search({ value: '', clicked: false }))
+                    onClick({ filter_options, search_query: '' })
+                }}>{Icons.search_cancel_icon}</span>
+                :
+                <span className="input-group-end-icon-two cursor-pointer" onClick={searchFun}>{Icons.searchIcon}</span>
+            }
         </div>
     );
 

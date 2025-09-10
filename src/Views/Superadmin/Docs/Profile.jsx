@@ -4,13 +4,9 @@ import JsonData from "../Utils/JsonData";
 
 const Profile = () => {
   const { jsonOnly } = JsonData();
-  
+
   return (
-    <>
-      <ProfileLayout
-        navItems ={jsonOnly?.profileNavItems}
-      />
-    </>
+    <ProfileLayout navItems={jsonOnly?.profileNavItems} />
   );
 };
 

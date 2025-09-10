@@ -1,12 +1,12 @@
 import { useCommonState, useDispatch } from "Components/CustomHooks"
 import Icons from "Utils/Icons"
-import { edit_profile_Inputs, updateCreateOrgInputs, updatePersonalInfoInputs, updateSettingsInputs } from "../Slices/SuperAdmin_slice"
+import { edit_profile_Inputs, updateCreateOrgInputs, updateSettingsInputs } from "../Slices/SuperAdmin_slice"
 
 
-const JsonData = (params={}) => {
-const {commonState,superadminState} = useCommonState()
-const dispatch = useDispatch()
-const { subcriptionDetails } = params
+const JsonData = (params = {}) => {
+    const { commonState, superadminState } = useCommonState()
+    const dispatch = useDispatch()
+
     const jsonOnly = {
         sidebar_data: [
             {
@@ -23,11 +23,11 @@ const { subcriptionDetails } = params
         ],
 
         planFilterOptions: [
-            { id: 1, name: "All Plans",value:"all_plans" },
-            { id: 2, name: "Basic Plan",value:"basic" },
-            { id: 3, name: "Premimum Plan",value:"premium" },
-            { id: 4, name: "Platinum Plan",value:"platinum" },
-            { id: 5, name: "Enterprise Plan",value:"enterprise" }
+            { id: 1, name: "All Plans", value: "all_plans" },
+            { id: 2, name: "Basic Plan", value: "basic" },
+            { id: 3, name: "Premimum Plan", value: "premium" },
+            { id: 4, name: "Platinum Plan", value: "platinum" },
+            { id: 5, name: "Enterprise Plan", value: "enterprise" }
         ],
 
         monthlyGrowthData: [
@@ -49,22 +49,22 @@ const { subcriptionDetails } = params
             {
                 icon: Icons.organisation,
                 title: "Total No.of Organization",
-                value: subcriptionDetails?.total_orgs,
+                value: params?.total_orgs || 0,
                 stroke: <Icons.strokeImage active={true} />
             },
             {
                 icon: Icons.revenue,
                 title: "Total Revenue",
-                value: subcriptionDetails?.total_revenue,
-                stroke:  <Icons.strokeImage active={true}/>
+                value: params?.total_revenue || 0,
+                stroke: <Icons.strokeImage active={true} />
             }
         ],
 
         planData: [
-            { name: "Basic Plan", value: Number(subcriptionDetails?.basic), color: "hsla(266, 100%, 83%, 1)" },
-            { name: "Premium Plan", value: Number(subcriptionDetails?.premium), color: "hsla(339, 100%, 71%, 1)" },
-            { name: "Platinum Plan", value: Number(subcriptionDetails?.platinum), color: "hsla(31, 70%, 78%, 1)" },
-            { name: "Enterprise", value: Number(subcriptionDetails?.enterprise), color: "hsla(354, 100%, 82%, 1)" }
+            { name: "Basic Plan", value: Number(params?.basic), color: "hsla(266, 100%, 83%, 1)" },
+            { name: "Premium Plan", value: Number(params?.premium), color: "hsla(339, 100%, 71%, 1)" },
+            { name: "Platinum Plan", value: Number(params?.platinum), color: "hsla(31, 70%, 78%, 1)" },
+            { name: "Enterprise", value: Number(params?.enterprise), color: "hsla(354, 100%, 82%, 1)" }
         ],
 
         tableHeadings: [
@@ -82,7 +82,6 @@ const { subcriptionDetails } = params
 
 
         // Profile //
-
         profileNavItems: [
             {
                 name: "Personal Information",
@@ -148,39 +147,33 @@ const { subcriptionDetails } = params
 
     const jsxJson = {
         create_organization: [
-                    {
-                        name: "Organization Name",
-                        type: "text",
-                        title:" ",
-                        category: "input",
-                        placeholder: "",
-                        value: superadminState?.createOrganization?.organization_name || '',
-                        change: (e) => dispatch(updateCreateOrgInputs({ field: 'organization_name', value: e.target.value })),
-                        // keyDown: (e) => {
-                        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-                        // },
-                        divClassName: "mb-3",
-                        isMandatory: false,
-                        Err: commonState?.app_data?.validated && !superadminState?.createOrganization?.organization_name  ? "Organization name required" : null
-                    },
-                    {
-                        name: "Email Id ",
-                        type: "text",
-                        title:"",
-                        category: "input",
-                        placeholder: "",
-                        value: superadminState?.createOrganization?.email_id || '',
-                        change: (e) => dispatch(updateCreateOrgInputs({ field: 'email_id', value: e.target.value })),
-                        // keyDown: (e) => {
-                        //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-                        // },
-                        divClassName: "mb-3",
-                        isMandatory: false,
-                        Err: commonState?.app_data?.validated && !superadminState?.createOrganization?.email_id ? "Email required" : null
-                    },
-                    
-                ],
-        profile_details:[
+            {
+                name: "Organization Name",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "",
+                value: superadminState?.createOrganization?.organization_name || '',
+                change: (e) => dispatch(updateCreateOrgInputs({ field: 'organization_name', value: e.target.value })),
+                divClassName: "mb-3",
+                isMandatory: false,
+                Err: commonState?.app_data?.validated && !superadminState?.createOrganization?.organization_name ? "Organization name required" : null
+            },
+            {
+                name: "Email Id ",
+                type: "text",
+                title: "",
+                category: "input",
+                placeholder: "",
+                value: superadminState?.createOrganization?.email_id || '',
+                change: (e) => dispatch(updateCreateOrgInputs({ field: 'email_id', value: e.target.value })),
+                divClassName: "mb-3",
+                isMandatory: false,
+                Err: commonState?.app_data?.validated && !superadminState?.createOrganization?.email_id ? "Email required" : null
+            },
+
+        ],
+        profile_details: [
             {
                 name: "First Name",
                 value: superadminState?.profileInputs?.first_name || '',
@@ -193,7 +186,7 @@ const { subcriptionDetails } = params
             {
                 name: "Last Name",
                 value: superadminState?.profileInputs?.last_name || '',
-                 type: "text",
+                type: "text",
                 title: " ",
                 category: "input",
                 placeholder: "",
@@ -202,7 +195,7 @@ const { subcriptionDetails } = params
             {
                 name: "Email",
                 value: superadminState?.profileInputs?.email_id || '',
-                 type: "text",
+                type: "text",
                 title: " ",
                 category: "input",
                 placeholder: "",
@@ -219,7 +212,7 @@ const { subcriptionDetails } = params
             }
 
         ],
-        
+
         super_admin_profile: [
             {
                 name: "First Name",
@@ -227,11 +220,8 @@ const { subcriptionDetails } = params
                 title: " ",
                 category: "input",
                 placeholder: "",
-                value:superadminState?.editProfileInputs?.first_name || '',
+                value: superadminState?.editProfileInputs?.first_name || '',
                 change: (e) => dispatch(edit_profile_Inputs({ field: 'first_name', value: e.target.value })),
-                // keyDown: (e) => {
-                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-                // },
                 divClassName: "mb-3",
                 isMandatory: false,
                 Err: commonState?.app_data?.validated && !superadminState?.editProfileInputs?.first_name ? "First name required" : null
@@ -242,11 +232,8 @@ const { subcriptionDetails } = params
                 title: " ",
                 category: "input",
                 placeholder: "",
-                value:superadminState?.editProfileInputs?.last_name || '',
-                change:(e) => dispatch(edit_profile_Inputs({ field: 'last_name', value: e.target.value })),
-                // keyDown: (e) => {
-                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-                // },
+                value: superadminState?.editProfileInputs?.last_name || '',
+                change: (e) => dispatch(edit_profile_Inputs({ field: 'last_name', value: e.target.value })),
                 divClassName: "mb-3",
                 isMandatory: false,
                 Err: commonState?.app_data?.validated && !superadminState?.editProfileInputs?.last_name ? "Last name required" : null
@@ -257,11 +244,8 @@ const { subcriptionDetails } = params
                 title: " ",
                 category: "input",
                 placeholder: "",
-                value:superadminState?.editProfileInputs?.email_id || '',
-                change:(e) => dispatch(edit_profile_Inputs({ field: 'email_id', value: e.target.value })),
-                // keyDown: (e) => {
-                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-                // },
+                value: superadminState?.editProfileInputs?.email_id || '',
+                change: (e) => dispatch(edit_profile_Inputs({ field: 'email_id', value: e.target.value })),
                 divClassName: "mb-3",
                 isMandatory: false,
                 Err: commonState?.app_data?.validated && !superadminState?.editProfileInputs?.email_id ? "Email required" : null
@@ -272,29 +256,27 @@ const { subcriptionDetails } = params
                 title: " ",
                 category: "input",
                 placeholder: "",
-                value: superadminState?.editProfileInputs?.phone_number ||'',
-                change:(e) => dispatch(edit_profile_Inputs({ field: 'phone_number', value: e.target.value })),
-                // keyDown: (e) => {
-                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-                // },
+                value: superadminState?.editProfileInputs?.phone_number || '',
+                change: (e) => {
+                    if (/^\d{0,10}$/.test(e.target.value) && e.target.value.length <= 10) {
+                        dispatch(edit_profile_Inputs({ field: 'phone_number', value: e.target.value }))
+                    }
+                },
                 divClassName: "mb-3",
                 isMandatory: false,
                 Err: commonState?.app_data?.validated && !superadminState?.editProfileInputs?.phone_number ? "Phone Number required" : null
             },
 
         ],
-        settings_details:[
-             {
+        settings_details: [
+            {
                 name: "Current Password",
                 type: "text",
                 title: " ",
                 category: "input",
                 placeholder: "Current Password",
-                value:superadminState?.settingsInputs?.old_password || '',
+                value: superadminState?.settingsInputs?.old_password || '',
                 change: (e) => dispatch(updateSettingsInputs({ field: 'old_password', value: e.target.value })),
-                // keyDown: (e) => {
-                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-                // },
                 divClassName: "mb-3",
                 isMandatory: false,
                 Err: commonState?.app_data?.validated && !superadminState?.settingsInputs?.old_password ? "First name required" : null
@@ -305,14 +287,11 @@ const { subcriptionDetails } = params
                 title: " ",
                 category: "input",
                 placeholder: "Current Password",
-                value:superadminState?.settingsInputs?.confirm_password || '',
-                change: (e) => dispatch(updateSettingsInputs({ field: 'confirm_password', value: e.target.value })),
-                // keyDown: (e) => {
-                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-                // },
+                value: superadminState?.settingsInputs?.new_password || '',
+                change: (e) => dispatch(updateSettingsInputs({ field: 'new_password', value: e.target.value })),
                 divClassName: "mb-3",
                 isMandatory: false,
-                Err: commonState?.app_data?.validated && !superadminState?.settingsInputs?.confirm_password ? "Confirm Password required" : null
+                Err: commonState?.app_data?.validated && !superadminState?.settingsInputs?.new_password ? "New Password required" : null
             },
             {
                 name: "Confirm Password",
@@ -320,14 +299,11 @@ const { subcriptionDetails } = params
                 title: " ",
                 category: "input",
                 placeholder: "Confirm Password",
-                value:superadminState?.settingsInputs?.new_password || '',
-                change: (e) => dispatch(updateSettingsInputs({ field: 'new_password', value: e.target.value })),
-                // keyDown: (e) => {
-                //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
-                // },
+                value: superadminState?.settingsInputs?.confirm_password || '',
+                change: (e) => dispatch(updateSettingsInputs({ field: 'confirm_password', value: e.target.value })),
                 divClassName: "mb-3",
                 isMandatory: false,
-                Err: commonState?.app_data?.validated && !superadminState?.settingsInputs?.new_password ? "New password required" : null
+                Err: commonState?.app_data?.validated && !superadminState?.settingsInputs?.confirm_password ? "Confirm password required" : null
             },
 
         ]

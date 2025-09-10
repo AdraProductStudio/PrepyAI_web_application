@@ -4,18 +4,18 @@ import ReactPaginate from "react-paginate";
 import { useDispatch } from "react-redux";
 import { update_app_data } from "Views/Common/Slices/Common_slice";
 
-const ReactPaginateComp = ({totalPages}) => {
+const ReactPaginateComp = ({ totalPages, onClick, filter_options }) => {
   const { commonState } = useCommonState();
   const dispatch = useDispatch();
 
-  const handlePageClick = (e)=>{
-          const selectedPage = e.selected + 1;
-          const data = {
-                currentPage: selectedPage,
-                totalCount: 10,
-                siblingCount: 10,
-            }
-            dispatch(update_app_data({type:"pagination" ,data}))
+  const handlePageClick = (e) => {
+    const selectedPage = e.selected + 1;
+    if (typeof onClick === 'function') {
+      dispatch(update_app_data({ type: "pagination", data: { currentPage: selectedPage } }));
+      if (typeof filter_options === 'object') {
+        onClick({ filter_options, page: selectedPage })
+      }
+    }
   }
 
   return (
@@ -26,6 +26,8 @@ const ReactPaginateComp = ({totalPages}) => {
       pageRangeDisplayed={2}
       marginPagesDisplayed={2}
       pageCount={totalPages}
+      currentPage={commonState?.pagination?.currentPage - 1}
+      forcePage={commonState?.pagination?.currentPage - 1}
       previousLabel="<"
       renderOnZeroPageCount={null}
       containerClassName="pagination justify-content-end"
