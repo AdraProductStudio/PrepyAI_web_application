@@ -26,10 +26,6 @@ const CreateTest = () => {
         }
     }, [dispatch, class_id, subject_id]);
 
-    useEffect(()=>{
-        console.log(teachersState,"efere")
-    },[])
-
     const handleNextClick = () => {
             const payload = {
                 classroom_id: Number(class_id) ||"",
@@ -39,7 +35,6 @@ const CreateTest = () => {
             const jsonData = teachersState?.scheduleTest_values;
 
             const formdata = {...payload,...jsonData}
-            console.log(formdata,"vweqwedqw")
 
             dispatch(saveSchedule(formdata, navigate));
         

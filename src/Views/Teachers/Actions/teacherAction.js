@@ -20,6 +20,68 @@ import {
 } from "../Slice/teachersSlice";
 import { update_app_data, update_error, updateModalShow } from "Views/Common/Slices/Common_slice";
 
+const validateStudentForm = (values) => {
+  
+  const errors = {};
+
+  if (!values.student_name) {
+    errors.student_name = "Student name is required";
+  } else if (!/^[A-Za-z\s]+$/.test(values.student_name)) {
+    errors.student_name = "Only alphabets allowed";
+  }
+
+  if (!values.student_email) {
+    errors.student_email = "Email is required";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.student_email)) {
+    errors.student_email = "Invalid email format";
+  }
+
+  if (!values.student_reg_no) {
+    errors.student_reg_no = "Registration number is required";
+  } else if (!/^[A-Z0-9]+$/.test(values.student_reg_no)) {
+    errors.student_reg_no = "Only uppercase letters and numbers allowed";
+  }
+
+  if (!values.name) {
+    errors.name = "Name is required";
+  } else if (!/^[A-Za-z\s]+$/.test(values.name)) {
+    errors.name = "Name should contain alphabets only";
+  }
+
+  if (!values.contact_no) {
+    errors.contact_no = "Contact number is required";
+  } else if (!/^\d{10}$/.test(values.contact_no)) {
+    errors.contact_no = "Contact number must be exactly 10 digits";
+  }
+
+  if (!values.email_id) {
+    errors.email_id = "Email is required";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email_id)) {
+    errors.email_id = "Please enter a valid email address";
+  }
+
+  if (!values.register_no) {
+    errors.register_no = "Register number is required";
+  } else if (!/^[A-Z0-9]+$/.test(values.register_no)) {
+    errors.register_no = "Registration number must contain only uppercase letters and numbers";
+  }
+
+  if (!values.classroom_name) {
+    errors.classroom_name = "Classroom name is required";
+  }
+  if (!values.teachers || !values.teachers_id) {
+    errors.teachers = "Teachers is required";
+  }
+  if (!values.student_file) {
+    errors.student_file = "Student List is required";
+  }
+  if(!values.subject_name) {
+    errors.subject_name = "Subject name is required";
+  }
+
+  return errors;
+};
+
 
 // GET
 export const getTeachers = () => async (dispatch) => {
@@ -364,9 +426,14 @@ export const GetAllsubjects = (params) => async (dispatch) => {
 
 export const postClassrooms = (form_data) => async (dispatch) => {
   const { classroom_name, teachers, student_file } = form_data;
-  if (!classroom_name || !teachers?.length || !student_file) {
-    return dispatch(update_app_data({ type: "validation", data: true }));
-  }
+
+      const errors = validateStudentForm(form_data || {});
+
+      if (Object.keys(errors).length > 0) {
+        dispatch(update_app_data({ type: "validation", data: true }));
+        dispatch(update_app_data({ type: "validationMessage", data: errors }));
+        return; 
+      }
 
   try {
     const formData = new FormData();
@@ -400,9 +467,18 @@ export const postClassrooms = (form_data) => async (dispatch) => {
 };
 
 export const postSubjects = (form_data) => async (dispatch) => {
-  const { subject_name, classroom_id, teachers_id, } = form_data;
-  if (!subject_name || !teachers_id || !classroom_id) {
-    return dispatch(update_app_data({ type: "validation", data: true }));
+  const {classroom_id } = form_data;
+  // console.log(teachers_id,subject_name,"sadasdew")
+  // if (!subject_name || !teachers_id || !classroom_id) {
+  //   return dispatch(update_app_data({ type: "validation", data: true }));
+  // }
+
+  const errors = validateStudentForm(form_data || {});
+
+  if (Object.keys(errors).length > 0) {
+    dispatch(update_app_data({ type: "validation", data: true }));
+    dispatch(update_app_data({ type: "validationMessage", data: errors }));
+    return; 
   }
 
   try {
@@ -430,12 +506,16 @@ export const postStudents = (form_data) => async (dispatch) => {
   const id = form_data?.getdata?.id;
   const id_from = form_data?.getdata?.from;
   const pagination = form_data?.getdata?.pagination;
-  const student_id = form_data?.getdata?.student_id;
+  // const student_id = form_data?.getdata?.student_id;
 
-  if (!student_name || !contact_no || !student_email || !student_reg_no) {
-    return dispatch(update_app_data({ type: "validation", data: true }));
+   const errors = validateStudentForm(form_data?.data || {});
+
+   if (Object.keys(errors).length > 0) {
+    dispatch(update_app_data({ type: "validation", data: true }));
+    dispatch(update_app_data({ type: "validationMessage", data: errors }));
+    return; 
   }
-  
+ 
   try {
     const response = await axiosInstance.post("/teachers/edit_student", form_data?.data);
 
@@ -484,6 +564,7 @@ export const postCreateStudent = (form_data) => async (dispatch) => {
 
   try {
     if (form_data?.student_file) {
+
       if (!form_data?.student_file) {
         return dispatch(update_app_data({ type: "validation", data: true }));
       }
@@ -496,8 +577,12 @@ export const postCreateStudent = (form_data) => async (dispatch) => {
         },
       });
     } else {
-      if (!name || !contact_no || !email_id || !register_no || !classroom_name) {
-        return dispatch(update_app_data({ type: "validation", data: true }));
+      const errors = validateStudentForm(form_data || {});
+
+      if (Object.keys(errors).length > 0) {
+        dispatch(update_app_data({ type: "validation", data: true }));
+        dispatch(update_app_data({ type: "validationMessage", data: errors }));
+        return; 
       }
       response = await axiosInstance.post("/teachers/add_student", form_data);
     }

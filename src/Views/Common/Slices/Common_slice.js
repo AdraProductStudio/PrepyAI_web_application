@@ -32,6 +32,7 @@ let initialState = {
         innerHeight: window.innerHeight || 0,
         buttonSpinner: false,
         validated: false,
+        validationMessage: "",
         ...decrypt_app_data_logs(),
     },
     pagination: {
@@ -147,6 +148,8 @@ const commonSlice = createSlice({
             state.modal.type = modal_type || null
             state.modal.close_btn = close_btn || false
             state.modal.modal_data = data || null
+            state.app_data.validated = false
+            state.app_data.validationMessage = {}
         },
         update_app_data(state, action) {
             const { type, data } = action.payload;
@@ -181,6 +184,8 @@ const commonSlice = createSlice({
                 case "validation":
                     state.app_data.validated = data || false;
                     break;
+                case "validationMessage":
+                    state.app_data.validationMessage = data || false
                 case "pagination":
                     state.pagination.currentPage = data?.currentPage || 1;
                     break;
@@ -249,7 +254,7 @@ const commonSlice = createSlice({
                 }
             })
 
-            // login response 
+            // login response
             .addCase("authState/login_endpoint", (state, action) => {
                 const { type, data, message } = action.payload || {};
                 switch (type) {
@@ -298,9 +303,9 @@ const commonSlice = createSlice({
                         break;
 
                     case "failure":
-                        state.app_data.token = '';
-                        state.app_data.refresh_token = '';
-                        state.app_data.user_role = '';
+                        state.app_data.token = "";
+                        state.app_data.refresh_token = "";
+                        state.app_data.user_role = "";
                         state.app_data.validated = false;
                         state.error.Err = message || "Login failed";
                         state.error.Toast_Type = "error";
@@ -310,48 +315,56 @@ const commonSlice = createSlice({
                         break;
                 }
             })
-
+            .addCase("common_slice/updateModalShow", (state, action) => {
+                const { show } = action.payload;
+                if (!show) {
+                    state.app_data.validationMessage = {};
+                    state.app_data.validated = false;
+                }
+            })
             .addMatcher(
-                (action) => [
-                    "teachersSlice/handleUploadAttachment",
-                    "teachersSlice/deleteBook",
-                    "teachersSlice/handleUploadAttachment",
-                    "teachersSlice/handleUploadBooks",
-                    "teachersSlice/handleScheduleTest",
-                    "teachersSlice/save_schedule_status",
-                    "admin_slice/create_organisation",
-                    "admin_slice/edit_profile_Inputs_endpoint",
-                    "admin_slice/dele_organisation_endpoint"
-                ].includes(action.type),
+                (action) =>
+                    [
+                        "teachersSlice/handleUploadAttachment",
+                        "teachersSlice/deleteBook",
+                        "teachersSlice/handleUploadAttachment",
+                        "teachersSlice/handleUploadBooks",
+                        "teachersSlice/handleScheduleTest",
+                        "teachersSlice/save_schedule_status",
+                        "admin_slice/create_organisation", ,
+                        "admin_slice/edit_profile_Inputs_endpoint",
+                        "admin_slice/dele_organisation_endpoint"
+                    ].includes(action.type),
 
                 (state, action) => {
                     const { type } = action.payload || {};
                     if (type === "response") {
-                        state.modal.show = false
-                        state.modal.size = "md"
-                        state.modal.from = null
-                        state.modal.type = null
-                        state.modal.close_btn = false
+                        state.modal.show = false;
+                        state.modal.size = "md";
+                        state.modal.from = null;
+                        state.modal.type = null;
+                        state.modal.close_btn = false;
                     }
                 }
             )
 
             //For handling response error [setting toast error message]
             .addMatcher(
-                (action) => [
-                    "teachersSlice/handleGetTestRecords",
-                    "teachersSlice/handleUploadAttachment",
-                    "teachersSlice/handleGetBooks",
-                    "teachersSlice/deleteBook",
-                    "teachersSlice/getSubjectAttachments",
-                    "teachersSlice/handleUploadBooks",
-                    "teachersSlice/handleScheduleTest",
-                    "teachersSlice/save_schedule_status",
-                    "admin_slice/create_organisation",
-                    "admin_slice/edit_profile_Inputs_endpoint",
-                    "admin_slice/change_password_endpoint",
-                    "admin_slice/dele_organisation_endpoint"
-                ].includes(action.type),
+                (action) =>
+                    [
+                        "teachersSlice/handleGetTestRecords",
+                        "teachersSlice/handleUploadAttachment",
+                        "teachersSlice/handleGetBooks",
+                        "teachersSlice/deleteBook",
+                        "teachersSlice/getSubjectAttachments",
+                        "teachersSlice/handleUploadBooks",
+                        "teachersSlice/handleScheduleTest",
+                        "teachersSlice/save_schedule_status",
+                        "admin_slice/create_organisation", ,
+                        "admin_slice/edit_profile_Inputs_endpoint",
+                        "admin_slice/change_password_endpoint",
+                        "admin_slice/dele_organisation_endpoint"
+                    ].includes(action.type),
 
                 (state, action) => {
                     const { type } = action.payload || {};
@@ -361,24 +374,44 @@ const commonSlice = createSlice({
 
             //Remove the validation failure status
             .addMatcher(
-                (action) => [
-                    "authState/update_login_data",
-                    "authState/update_learners_register",
-                    "authState/update_organization_register",
-                    "authState/update_admin_register",
-                    "authState/update_teacher_register",
-                    "authState/update_student_register",
-                    "authState/update_forgot_password",
-                    "authState/update_otp_verification",
-                    "authState/update_create_password",
-                    "teachersSlice/handleScheduleTest",
-                    "teachersSlice/save_schedule_status",
-                ].includes(action.type),
+                (action) =>
+                    [
+                        "teachersSlice/handleScheduleTest",
+                        "teachersSlice/save_schedule_status",
+                    ].includes(action.type),
 
                 (state) => {
                     if (state.app_data.validated) state.app_data.validated = false;
                 }
             )
+            .addMatcher(
+                (action) =>
+                    [
+                        "authState/update_login_data",
+                        "authState/update_learners_register",
+                        "authState/update_organization_register",
+                        "authState/update_admin_register",
+                        "authState/update_teacher_register",
+                        "authState/update_student_register",
+                        "authState/update_forgot_password",
+                        "authState/update_otp_verification",
+                        "authState/update_create_password",
+                        "teachersSlice/update_Create_student",
+                        "teachersSlice/updatePostStudentData",
+                        "teachersSlice/updatePostClassroomsData",
+                        "teachersSlice/updatePostSubjectsData",
+                    ].includes(action.type),
+                (state, action) => {
+                    const obj1 = action.payload;
+                    const obj2 = state.app_data.validationMessage;
+
+                    for (let key in obj1) {
+                        if (obj2.hasOwnProperty(key)) {
+                            delete obj2[key];
+                        }
+                    }
+                }
+            );
     }
 })
 

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useCommonState } from "Components/CustomHooks";
 
 const initialState = {
   selected_books: {},
@@ -943,7 +944,6 @@ const teachersSlice = createSlice({
           return;
       }
     },
-
     delete_attachment_request(state) {
       state.delete_attachment_status = "loading";
       state.delete_attachment_error = null;
@@ -986,11 +986,9 @@ const teachersSlice = createSlice({
     resetStudentState(state) {
       state.studentsPerformance.assignedTest.jsonStudentsData = [{ student_id: "all", student_name: "All" }]
     },
-
     resetStudentJsonDataState(state) {
       state.studentsPerformance.assignedTest.jsonStudentsData = [{ student_id: "all", student_name: "All" }]
     },
-
     handleUploadBooks(state, action) {
       const { type, data, message } = action.payload || {};
 
@@ -1120,7 +1118,6 @@ const teachersSlice = createSlice({
     resetSettingPasswordField(state, action) {
       state.settingsInputs = initialState.settingsInputs
     }
-
   },
 
   extraReducers(builder) {
@@ -1156,8 +1153,9 @@ const teachersSlice = createSlice({
           };
           state.teacher_GetStudentOverviewTestCount = {
             data: {},
-          }
+          };
         }
+
       });
   },
 });
