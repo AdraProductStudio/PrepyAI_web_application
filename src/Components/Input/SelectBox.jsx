@@ -27,8 +27,8 @@ const SelectBox = ({
             }
             <Form.Select size={selectBoxSize} className={className} disabled={disableSelectBox} onChange={change} value={value}>
                 {componentFrom !== "Entries" ? <option value=""disabled>Select</option> : null}
-                {selectOptions?.map((value, ind) => {
-                    return <option value={value} key={ind}>{value}</option>
+                {selectOptions?.map((item, ind) => {
+                    return <option value={item?.value} key={ind}>{item?.name}</option>
                 })}
             </Form.Select>
         </Fragment>

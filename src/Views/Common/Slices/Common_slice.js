@@ -36,8 +36,6 @@ let initialState = {
     },
     pagination: {
         currentPage: 1,
-        totalCount: 0,
-        siblingCount: 10,
     },
     search: {
         value: '',
@@ -174,8 +172,6 @@ const commonSlice = createSlice({
                     state.app_data.currentMenuName = data?.currentLocation || '';
                     state.app_data.validated = false;
                     state.pagination.currentPage = 1;
-                    state.pagination.totalCount = 0;
-                    state.pagination.siblingCount = 10;
                     state.canvas.show = false;
                     break;
                 case "dimension":
@@ -187,8 +183,6 @@ const commonSlice = createSlice({
                     break;
                 case "pagination":
                     state.pagination.currentPage = data?.currentPage || 1;
-                    state.pagination.totalCount = data?.totalCount || 0;
-                    state.pagination.siblingCount = data?.siblingCount || 10;
                     break;
 
                 default:
@@ -240,6 +234,21 @@ const commonSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            .addCase("admin_slice/get_organinsation_details", (state, action) => {
+                const { type, page, is_plan_changed } = action.payload;
+                if (type === "request") {
+                    if (is_plan_changed) {
+                        state.search.value = '';
+                        state.search.clicked = false;
+                        state.pagination.currentPage = 1;
+                    }
+
+                    if (page) {
+                        state.pagination.currentPage = page;
+                    }
+                }
+            })
+
             // login response 
             .addCase("authState/login_endpoint", (state, action) => {
                 const { type, data, message } = action.payload || {};
@@ -310,7 +319,9 @@ const commonSlice = createSlice({
                     "teachersSlice/handleUploadBooks",
                     "teachersSlice/handleScheduleTest",
                     "teachersSlice/save_schedule_status",
-                    "admin_slice/create_organisation"
+                    "admin_slice/create_organisation",
+                    "admin_slice/edit_profile_Inputs_endpoint",
+                    "admin_slice/dele_organisation_endpoint"
                 ].includes(action.type),
 
                 (state, action) => {
@@ -336,7 +347,10 @@ const commonSlice = createSlice({
                     "teachersSlice/handleUploadBooks",
                     "teachersSlice/handleScheduleTest",
                     "teachersSlice/save_schedule_status",
-                    "admin_slice/create_organisation"
+                    "admin_slice/create_organisation",
+                    "admin_slice/edit_profile_Inputs_endpoint",
+                    "admin_slice/change_password_endpoint",
+                    "admin_slice/dele_organisation_endpoint"
                 ].includes(action.type),
 
                 (state, action) => {

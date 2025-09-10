@@ -7,6 +7,7 @@ import { createOrganization, deleteOrganisation, editProfileDetails } from "../A
 import ButtonSpinner from "Components/Spinner/ButtonSpinner";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import { selectOrgToDelete } from "../Slices/SuperAdmin_slice";
+import Icons from "Utils/Icons";
 
 
 export function OverallModel() {
@@ -51,7 +52,7 @@ export function OverallModel() {
                             {Inputfunctions(jsxJson?.create_organization)}
                             <ButtonSpinner
                                 className="brand_color w-100 text-white"
-                                title="Send Email"
+                                title={superadminState?.createOrganization?.is_sending ? "Sending..." : "Send Email"}
                                 is_spinner={superadminState?.createOrganization?.is_sending}
                                 clickFunction={
                                     superadminState?.createOrganization?.is_sending
@@ -63,27 +64,51 @@ export function OverallModel() {
 
                     case "delete_org":
                         return <div className="w-100">
-                            <p className="mb-0 fs-5 text-muted">Are you want to delete this organization</p>
+                            <div className="col text-center pt-5 pb-3">
+                                {Icons?.deleteIcon}
+                                <p className="my-3 fs-5 text-muted">Are you want to delete this organization</p>
+                            </div>
                             <div className="d-flex mt-4 gap-3">
                                 <ButtonComponent type="button" buttonName="Cancel" className="btn-light w-100"
                                     clickFunction={() => {
                                         dispatch(updateModalShow({ show: false, close_btn: false, size: "", modal_from: "", modal_type: "" }))
                                         dispatch(dispatch(selectOrgToDelete({})))
                                     }} />
-                                <ButtonComponent type="button" buttonName="Confirm" className="brand_color w-100 text-white" clickFunction={() => dispatch(deleteOrganisation(superadminState?.selected_org_to_delete?.org_id))} />
+
+
+                                <ButtonSpinner
+                                    className="brand_color w-100 text-white"
+                                    title={superadminState?.organisation_delete_spinner ? "Deleting..." : "Delete"}
+                                    is_spinner={superadminState?.organisation_delete_spinner}
+                                    clickFunction={
+                                        superadminState?.organisation_delete_spinner
+                                            ? null
+                                            :
+                                            () => dispatch(deleteOrganisation({ org_id: superadminState?.selected_org_to_delete?.org_id, data: superadminState?.organizationDetails.data }))
+                                    } />
                             </div>
                         </div>
 
                     default:
                         break;
                 }
-                
+
             case "Profile":
                 switch (commonState?.modal?.type) {
                     case "edit_profile":
                         return <div className="w-100">
                             {Inputfunctions(jsxJson?.super_admin_profile)}
-                            <ButtonComponent type="button" buttonName="Submit" className="brand_color w-100 text-white" clickFunction={() => dispatch(editProfileDetails(superadminState?.editProfileInputs))} />
+
+                            <ButtonSpinner
+                                className="brand_color w-100 text-white"
+                                title={superadminState?.editProfileInputs?.is_fetching ? "Submitting..." : "Submit"}
+                                is_spinner={superadminState?.editProfileInputs?.is_fetching}
+                                clickFunction={
+                                    superadminState?.editProfileInputs?.is_fetching
+                                        ? null
+                                        :
+                                        () => dispatch(editProfileDetails(superadminState?.editProfileInputs))
+                                } />
                         </div>
 
                     default:

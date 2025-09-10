@@ -121,9 +121,9 @@
 
 
 @media (max-width: 1199.98px) {
-    .layout_main_content {
+    /* .layout_main_content {
         padding-top: 1rem;
-    }
+    } */
 
     .sidebar-wrapper {
         width: 100%;
