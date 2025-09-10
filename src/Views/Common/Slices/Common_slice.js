@@ -32,6 +32,7 @@ let initialState = {
         innerHeight: window.innerHeight || 0,
         buttonSpinner: false,
         validated: false,
+        validationMessage:"",
         ...decrypt_app_data_logs(),
     },
     pagination: {
@@ -149,6 +150,8 @@ const commonSlice = createSlice({
             state.modal.type = modal_type || null
             state.modal.close_btn = close_btn || false
             state.modal.modal_data = data || null
+            state.app_data.validated = false
+            state.app_data.validationMessage = {}
         },
         update_app_data(state, action) {
             const { type, data } = action.payload;
@@ -185,6 +188,8 @@ const commonSlice = createSlice({
                 case "validation":
                     state.app_data.validated = data || false;
                     break;
+                case "validationMessage":
+                    state.app_data.validationMessage = data || false
                 case "pagination":
                     state.pagination.currentPage = data?.currentPage || 1;
                     state.pagination.totalCount = data?.totalCount || 0;
@@ -240,131 +245,168 @@ const commonSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            // login response 
-            .addCase("authState/login_endpoint", (state, action) => {
-                const { type, data, message } = action.payload || {};
-                switch (type) {
-                    case "response":
-                        let decrypt_logs;
-                        let update_cookie_log;
-                        const roleKey = data?.role_name;
-                        let new_keys = {};
+          // login response
+          .addCase("authState/login_endpoint", (state, action) => {
+            const { type, data, message } = action.payload || {};
+            switch (type) {
+              case "response":
+                let decrypt_logs;
+                let update_cookie_log;
+                const roleKey = data?.role_name;
+                let new_keys = {};
 
-                        if (Object.keys(data || {}).length > 0) {
-                            new_keys = {
-                                token: data?.access_token,
-                                refresh_token: data?.refresh_token,
-                                user_role: roleKey,
-                                user_id: data?.user_id,
-                                user_image: data?.user_image,
-                                user_name: data?.user_name,
-                            };
-                        }
-
-                        // get old logs if any
-                        if (localStorage.getItem("project_log")) decrypt_logs = decryption();
-                        const decompressed = decrypt_logs
-                            ? JSON.parse(LZString.decompressFromUTF16(decrypt_logs))
-                            : null;
-
-                        if (decompressed) {
-                            // overwrite or add role key
-                            update_cookie_log = { ...decompressed, [roleKey]: new_keys };
-                        } else {
-                            update_cookie_log = { [roleKey]: new_keys };
-                        }
-
-                        // compress + encrypt
-                        const compressed = LZString.compressToUTF16(JSON.stringify(update_cookie_log));
-                        const encrypted_logs = encryption(compressed);
-                        localStorage.setItem("project_log", encrypted_logs);
-
-                        // update redux state
-                        state.app_data.token = data?.access_token || "";
-                        state.app_data.refresh_token = data?.refresh_token || "";
-                        state.app_data.user_image = data?.user_image || ""; // fixed naming
-                        state.app_data.user_role = roleKey || "";
-                        state.app_data.user_name = data?.user_name || "";
-                        state.app_data.validated = false;
-                        break;
-
-                    case "failure":
-                        state.app_data.token = '';
-                        state.app_data.refresh_token = '';
-                        state.app_data.user_role = '';
-                        state.app_data.validated = false;
-                        state.error.Err = message || "Login failed";
-                        state.error.Toast_Type = "error";
-                        break;
-
-                    default:
-                        break;
+                if (Object.keys(data || {}).length > 0) {
+                  new_keys = {
+                    token: data?.access_token,
+                    refresh_token: data?.refresh_token,
+                    user_role: roleKey,
+                    user_id: data?.user_id,
+                    user_image: data?.user_image,
+                    user_name: data?.user_name,
+                  };
                 }
-            })
 
-            .addMatcher(
-                (action) => [
-                    "teachersSlice/handleUploadAttachment",
-                    "teachersSlice/deleteBook",
-                    "teachersSlice/handleUploadAttachment",
-                    "teachersSlice/handleUploadBooks",
-                    "teachersSlice/handleScheduleTest",
-                    "teachersSlice/save_schedule_status",
-                    "admin_slice/create_organisation"
-                ].includes(action.type),
+                // get old logs if any
+                if (localStorage.getItem("project_log")) decrypt_logs = decryption();
+                const decompressed = decrypt_logs
+                  ? JSON.parse(LZString.decompressFromUTF16(decrypt_logs))
+                  : null;
 
-                (state, action) => {
-                    const { type } = action.payload || {};
-                    if (type === "response") {
-                        state.modal.show = false
-                        state.modal.size = "md"
-                        state.modal.from = null
-                        state.modal.type = null
-                        state.modal.close_btn = false
-                    }
+                if (decompressed) {
+                  // overwrite or add role key
+                  update_cookie_log = { ...decompressed, [roleKey]: new_keys };
+                } else {
+                  update_cookie_log = { [roleKey]: new_keys };
                 }
-            )
 
-            //For handling response error [setting toast error message]
-            .addMatcher(
-                (action) => [
-                    "teachersSlice/handleGetTestRecords",
-                    "teachersSlice/handleUploadAttachment",
-                    "teachersSlice/handleGetBooks",
-                    "teachersSlice/deleteBook",
-                    "teachersSlice/getSubjectAttachments",
-                    "teachersSlice/handleUploadBooks",
-                    "teachersSlice/handleScheduleTest",
-                    "teachersSlice/save_schedule_status",
-                    "admin_slice/create_organisation"
-                ].includes(action.type),
+                // compress + encrypt
+                const compressed = LZString.compressToUTF16(JSON.stringify(update_cookie_log));
+                const encrypted_logs = encryption(compressed);
+                localStorage.setItem("project_log", encrypted_logs);
 
-                (state, action) => {
-                    const { type } = action.payload || {};
-                    if (type === "failure") setToastState(state, action);
+                // update redux state
+                state.app_data.token = data?.access_token || "";
+                state.app_data.refresh_token = data?.refresh_token || "";
+                state.app_data.user_image = data?.user_image || ""; // fixed naming
+                state.app_data.user_role = roleKey || "";
+                state.app_data.user_name = data?.user_name || "";
+                state.app_data.validated = false;
+                break;
+
+              case "failure":
+                state.app_data.token = "";
+                state.app_data.refresh_token = "";
+                state.app_data.user_role = "";
+                state.app_data.validated = false;
+                state.error.Err = message || "Login failed";
+                state.error.Toast_Type = "error";
+                break;
+
+              default:
+                break;
+            }
+          })
+          .addCase("common_slice/updateModalShow", (state, action) => {
+            const { show } = action.payload;
+            if (!show) {
+                state.app_data.validationMessage={};
+                state.app_data.validated = false;
+            }
+          })
+          .addMatcher(
+            (action) =>
+              [
+                "teachersSlice/handleUploadAttachment",
+                "teachersSlice/deleteBook",
+                "teachersSlice/handleUploadAttachment",
+                "teachersSlice/handleUploadBooks",
+                "teachersSlice/handleScheduleTest",
+                "teachersSlice/save_schedule_status",
+                "admin_slice/create_organisation",
+              ].includes(action.type),
+
+            (state, action) => {
+              const { type } = action.payload || {};
+              if (type === "response") {
+                state.modal.show = false;
+                state.modal.size = "md";
+                state.modal.from = null;
+                state.modal.type = null;
+                state.modal.close_btn = false;
+              }
+            }
+          )
+
+          //For handling response error [setting toast error message]
+          .addMatcher(
+            (action) =>
+              [
+                "teachersSlice/handleGetTestRecords",
+                "teachersSlice/handleUploadAttachment",
+                "teachersSlice/handleGetBooks",
+                "teachersSlice/deleteBook",
+                "teachersSlice/getSubjectAttachments",
+                "teachersSlice/handleUploadBooks",
+                "teachersSlice/handleScheduleTest",
+                "teachersSlice/save_schedule_status",
+                "admin_slice/create_organisation",
+              ].includes(action.type),
+
+            (state, action) => {
+              const { type } = action.payload || {};
+              if (type === "failure") setToastState(state, action);
+            }
+          )
+
+          //Remove the validation failure status
+          .addMatcher(
+            (action) =>
+              [
+                // "authState/update_login_data",
+                // "authState/update_learners_register",
+                // "authState/update_organization_register",
+                // "authState/update_admin_register",
+                // "authState/update_teacher_register",
+                // "authState/update_student_register",
+                // "authState/update_forgot_password",
+                // "authState/update_otp_verification",
+                // "authState/update_create_password",
+                "teachersSlice/handleScheduleTest",
+                "teachersSlice/save_schedule_status",
+              ].includes(action.type),
+
+            (state) => {
+              if (state.app_data.validated) state.app_data.validated = false;
+            }
+          )
+          .addMatcher(
+            (action) =>
+              [
+                "authState/update_login_data",
+                "authState/update_learners_register",
+                "authState/update_organization_register",
+                "authState/update_admin_register",
+                "authState/update_teacher_register",
+                "authState/update_student_register",
+                "authState/update_forgot_password",
+                "authState/update_otp_verification",
+                "authState/update_create_password",
+                "teachersSlice/update_Create_student",
+                "teachersSlice/updatePostStudentData",
+                "teachersSlice/updatePostClassroomsData",
+                "teachersSlice/updatePostSubjectsData",
+              ].includes(action.type),
+            (state, action) => {
+              const obj1 = action.payload;
+              const obj2 = state.app_data.validationMessage;
+          
+              for (let key in obj1) {
+                if (obj2.hasOwnProperty(key)) {
+                  delete obj2[key];
                 }
-            )
-
-            //Remove the validation failure status
-            .addMatcher(
-                (action) => [
-                    "authState/update_login_data",
-                    "authState/update_learners_register",
-                    "authState/update_organization_register",
-                    "authState/update_admin_register",
-                    "authState/update_teacher_register",
-                    "authState/update_student_register",
-                    "authState/update_forgot_password",
-                    "authState/update_otp_verification",
-                    "authState/update_create_password",
-                    "teachersSlice/handleScheduleTest",
-                    "teachersSlice/save_schedule_status",
-                ].includes(action.type),
-
-                (state) => {
-                    if (state.app_data.validated) state.app_data.validated = false;
-                }
-            )
+              }
+            }
+          );
     }
 })
 
