@@ -733,7 +733,7 @@ const JsonData = () => {
         divClassName: "mb-3",
         isMandatory: false,
         Err: commonState?.app_data?.validated
-          ? commonState?.app_data?.validationMessage?.organization_name
+          ? commonState?.app_data?.validationMessage?.last_name
           : null,
       },
       {

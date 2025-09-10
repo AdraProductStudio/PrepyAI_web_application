@@ -87,6 +87,10 @@ const initialState = {
     glow: true,
     data: [],
   },
+  teachers_GetStudentsSortBy: {
+    sort_by: "",
+    sort_order: "",
+  },
   teacher_GetAllSubjects: {
     glow: true,
     data: [],
@@ -184,30 +188,29 @@ const initialState = {
     glow: false,
   },
 
-
   profileInputs: {
     first_name: "",
     last_name: "",
     email_id: "",
     phone_number: "",
-    address: ""
+    address: "",
   },
   editProfileInputs: {},
   isProfileEditing: false,
   settingsInputs: {
     old_password: "",
     confirm_password: "",
-    new_password: ""
+    new_password: "",
   },
-  placeholder: false
-}
+  placeholder: false,
+};
 
 const teachersSlice = createSlice({
   name: "teachersSlice",
   initialState: initialState,
   reducers: {
-    handleStudentsPerformance(state, action) { },
-    handleJsonStudentsData(state, action) { },
+    handleStudentsPerformance(state, action) {},
+    handleJsonStudentsData(state, action) {},
     handleTeacherDashboard(state, action) {
       const { type, data } = action.payload;
 
@@ -360,10 +363,9 @@ const teachersSlice = createSlice({
       state.scheduleTest_values[key] = value;
     },
     update_selected_books(state, action) {
-      const { key, value } = action.payload
-      if (key === "selected_books") state.create_test["chapters"] = ""
-      state.create_test[key] = value
-
+      const { key, value } = action.payload;
+      if (key === "selected_books") state.create_test["chapters"] = "";
+      state.create_test[key] = value;
     },
     get_student_details_slice(state, action) {
       const { type, data } = action.payload;
@@ -402,17 +404,17 @@ const teachersSlice = createSlice({
 
     get_test_questions_request(state) {
       state.get_test_questions_status = "loading";
-      state.get_test_questions_loading = true
+      state.get_test_questions_loading = true;
       state.get_test_questions_error = null;
     },
     get_test_questions_success(state, action) {
       state.get_test_questions_status = "succeeded";
-      state.get_test_questions_loading = false
+      state.get_test_questions_loading = false;
       state.test_questions = action.payload;
     },
     get_test_questions_failure(state, action) {
       state.get_test_questions_status = "failed";
-      state.get_test_questions_loading = false
+      state.get_test_questions_loading = false;
       state.get_test_questions_error = action.payload;
     },
 
@@ -450,6 +452,11 @@ const teachersSlice = createSlice({
       const { class_id, subject_id } = action.payload;
       state.studentsPerformance.classroom_id = class_id;
       state.studentsPerformance.subject_id = subject_id;
+    },
+    updateStudentsListSortBy(state, action) {
+      const { sort_by, sort_order } = action.payload;
+      state.teachers_GetStudentsSortBy.sort_by = sort_by;
+      state.teachers_GetStudentsSortBy.sort_order = sort_order;
     },
     handleSelfStudentsTestData(state, action) {
       const { type, data } = action.payload;
@@ -984,10 +991,14 @@ const teachersSlice = createSlice({
       state.teacher_overview_perfomance_date.data[key] = value || "";
     },
     resetStudentState(state) {
-      state.studentsPerformance.assignedTest.jsonStudentsData = [{ student_id: "all", student_name: "All" }]
+      state.studentsPerformance.assignedTest.jsonStudentsData = [
+        { student_id: "all", student_name: "All" },
+      ];
     },
     resetStudentJsonDataState(state) {
-      state.studentsPerformance.assignedTest.jsonStudentsData = [{ student_id: "all", student_name: "All" }]
+      state.studentsPerformance.assignedTest.jsonStudentsData = [
+        { student_id: "all", student_name: "All" },
+      ];
     },
     handleUploadBooks(state, action) {
       const { type, data, message } = action.payload || {};
@@ -1054,38 +1065,39 @@ const teachersSlice = createSlice({
     },
 
     updateProfileEditing: (state, action) => {
-      state.isProfileEditing = !state.isProfileEditing
+      state.isProfileEditing = !state.isProfileEditing;
     },
     updatePersonalInfoInputs(state, action) {
-      const { first_name, last_name, email_id, phone_number, address } = action?.payload?.[0]
-      state.profileInputs.first_name = first_name
-      state.profileInputs.last_name = last_name
-      state.profileInputs.email_id = email_id
-      state.profileInputs.phone_number = phone_number
-      state.profileInputs.address = address
-      state.editProfileInputs.first_name = first_name
-      state.editProfileInputs.last_name = last_name
-      state.editProfileInputs.email_id = email_id
-      state.editProfileInputs.phone_number = phone_number
-      state.editProfileInputs.address = address
+      const { first_name, last_name, email_id, phone_number, address } =
+        action?.payload?.[0];
+      state.profileInputs.first_name = first_name;
+      state.profileInputs.last_name = last_name;
+      state.profileInputs.email_id = email_id;
+      state.profileInputs.phone_number = phone_number;
+      state.profileInputs.address = address;
+      state.editProfileInputs.first_name = first_name;
+      state.editProfileInputs.last_name = last_name;
+      state.editProfileInputs.email_id = email_id;
+      state.editProfileInputs.phone_number = phone_number;
+      state.editProfileInputs.address = address;
     },
     updateSettingsInputs: (state, action) => {
       const { field, value } = action.payload;
-      state.settingsInputs[field] = value
+      state.settingsInputs[field] = value;
     },
     edit_profile_Inputs: (state, action) => {
       const { field, value } = action.payload;
-      state.editProfileInputs[field] = value
+      state.editProfileInputs[field] = value;
     },
     handleEditProfileDetails(state, action) {
-      const { type } = action.payload
+      const { type } = action.payload;
       switch (type) {
         case "request":
           state.placeholder = true;
           break;
 
         case "response":
-          state.placeholder = false
+          state.placeholder = false;
           break;
 
         case "failure":
@@ -1097,14 +1109,14 @@ const teachersSlice = createSlice({
       }
     },
     handlechangePassword(state, action) {
-      const { type } = action.payload
+      const { type } = action.payload;
       switch (type) {
         case "request":
           state.placeholder = true;
           break;
 
         case "response":
-          state.placeholder = false
+          state.placeholder = false;
           break;
 
         case "failure":
@@ -1116,8 +1128,11 @@ const teachersSlice = createSlice({
       }
     },
     resetSettingPasswordField(state, action) {
-      state.settingsInputs = initialState.settingsInputs
-    }
+      state.settingsInputs = initialState.settingsInputs;
+    },
+    clear_Classroom_Upload_fields(state, action) {
+      state.teacher_PostClassrooms.data.student_file = null;
+    },
   },
 
   extraReducers(builder) {
@@ -1140,10 +1155,10 @@ const teachersSlice = createSlice({
             data: {},
           };
           state.teacher_Current_perfomance_Classroom = {
-            data: {}
+            data: {},
           };
           state.teacher_Current_Grade_Classroom = {
-            data: {}
+            data: {},
           };
           state.teacher_students_Classroom = {
             data: {},
@@ -1155,7 +1170,6 @@ const teachersSlice = createSlice({
             data: {},
           };
         }
-
       });
   },
 });
@@ -1225,12 +1239,20 @@ export const {
   delete_attachment_failure,
   updateDeleteAttachment,
   deleteBook,
-  update_overview_month_for_perfomance, handleUploadBooks,
+  update_overview_month_for_perfomance,
+  handleUploadBooks,
   handleScheduleTest,
   resetStudentState,
-  selected_students_in_schedule, updatePersonalInfoInputs,
-  handleEditProfileDetails, handlechangePassword, resetSettingPasswordField,updateProfileEditing,
-  updateSettingsInputs,edit_profile_Inputs
+  selected_students_in_schedule,
+  updatePersonalInfoInputs,
+  handleEditProfileDetails,
+  handlechangePassword,
+  resetSettingPasswordField,
+  updateProfileEditing,
+  updateSettingsInputs,
+  edit_profile_Inputs,
+  updateStudentsListSortBy,
+  clear_Classroom_Upload_fields,
 } = actions;
 
 export default reducer;

@@ -2,7 +2,7 @@ import { useCommonState, useCustomNavigate, useDispatch } from 'Components/Custo
 import { handlePostNote, update_app_data, update_note_data } from 'Views/Common/Slices/Common_slice';
 import Icons from 'Utils/Icons';
 import Image from 'Utils/Image';
-import { clear_form_fields, update_overview_month_for_perfomance, resetStudentState, selected_students_in_schedule, edit_profile_Inputs, update_perfomance_by_classroom, update_perfomance_history_by_subject, update_selected_books, update_student_perfomance_dashboard, update_Students_classroom, updateSettingsInputs } from '../Slice/teachersSlice';
+import { clear_form_fields, update_overview_month_for_perfomance, resetStudentState, selected_students_in_schedule, edit_profile_Inputs, update_perfomance_by_classroom, update_perfomance_history_by_subject, update_selected_books, update_student_perfomance_dashboard, update_Students_classroom, updateSettingsInputs, updateStudentsListSortBy, clear_Classroom_Upload_fields } from '../Slice/teachersSlice';
 import { get_bookmarks, get_student_details, handleGetSubjectAttachments } from '../Actions/TeacherActions';
 import { update_Create_student, update_Grade_by_classroom, updatePostClassroomsData, updatePostStudentData, updatePostSubjectsData } from '../Slice/teachersSlice';
 import { useLocation, useParams } from 'react-router-dom';
@@ -18,6 +18,13 @@ const JsonData = (params) => {
     { label: "MCQ Questions", value: "mcq" },
     { label: "Long Questions", value: "long_answer" }
   ]
+
+  const studentsSortbyOptions = [
+   { label: "Student name (asc)", value: { sortby: "student_name", sort_order: "asc" } },
+   { label: "Student name (desc)", value: { sortby: "student_name", sort_order: "desc" } },
+   { label: "Joined at (newest first)", value: { sortby: "joined_at", sort_order: "desc" } },
+   { label: "Joined at (oldest first)", value: { sortby: "joined_at", sort_order: "asc" } },
+ ]
   const jsonOnly = {
     dashboard_count_details: [
       {
@@ -694,6 +701,7 @@ const JsonData = (params) => {
         accept: ".xlsx",
         fileLength: 1,
         className: "file-inputs mt-2",
+        deleteImg: () => dispatch(clear_Classroom_Upload_fields()),
         value: Array.isArray(
           teachersState?.teacher_PostClassrooms?.data?.student_file
         )
@@ -704,6 +712,7 @@ const JsonData = (params) => {
         change: (e) => {
           const files = Array.from(e.target.files);
           dispatch(updatePostClassroomsData({ student_file: files }));
+          e.target.value = "";
         },
         isMandatory: true,
         Err:
@@ -1012,6 +1021,7 @@ const JsonData = (params) => {
         change: (e) => {
           const files = Array.from(e.target.files);
           dispatch(update_Create_student({ student_file: files }));
+          e.target.value = "";
         },
         fileUploadValue: "Upload Csv,xlxs files",
         disabled: Object.entries(
@@ -1036,7 +1046,7 @@ const JsonData = (params) => {
           : [],
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
-        className: "custom-dropdown",
+        className: "custom-dropdownss",
         value: [{ label: "All Classrooms", value: "all_classrooms" }],
         change: (selectedOptions) =>
           dispatch(
@@ -1058,7 +1068,7 @@ const JsonData = (params) => {
           : [],
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
-        className: "custom-dropdown",
+        className: "custom-dropdownss",
         value: [{ label: "All Classrooms", value: "all_classrooms" }],
         change: (selectedOptions) =>
           dispatch(
@@ -1079,8 +1089,8 @@ const JsonData = (params) => {
             }))
           : [],
         multi: false,
-        divClassName: "studentsSelectClasses",
-        className: "",
+        divClassName: "grade-dashboard-teacher-input",
+        className: "studentsSelectClasses",
         value: [{ label: "All Classrooms", value: "all_classrooms" }],
         change: (selectedOptions) =>
           dispatch(
@@ -1110,7 +1120,7 @@ const JsonData = (params) => {
           : [],
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
-        className: "custom-dropdown",
+        className: "custom-dropdownss",
         value: [{ label: "All Subjects", value: "all_subjects" }],
         change: (selectedOptions) =>
           dispatch(
@@ -1159,7 +1169,7 @@ const JsonData = (params) => {
           : [],
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
-        className: "custom-dropdown",
+        className: "custom-dropdownss",
 
         value: Array.isArray(
           teachersState?.teacher_Current_perfomance_history_subject?.data
@@ -1204,6 +1214,26 @@ const JsonData = (params) => {
           ),
       },
     ],
+    sortForStudents: [
+      {
+        category: "select",
+        type: "react_dropdown_select",
+        options: studentsSortbyOptions,
+        multi: false,
+        divClassName: "grade-dashboard-teacher-input",
+        className: "studentsSelectClasses",
+        placeholder: "SortBy",
+        value: [studentsSortbyOptions[3]],
+        change: (selectedOption) => {
+          dispatch(
+            updateStudentsListSortBy({
+              sort_by: selectedOption[0].value.sortby,
+              sort_order: selectedOption[0].value.sort_order,
+            })
+          );
+        },
+      },
+    ],    
     profile_details: [
       {
         name: "First Name",

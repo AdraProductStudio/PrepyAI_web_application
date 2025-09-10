@@ -1218,25 +1218,30 @@ input::placeholder {
   align-items: center;
 }
 
-.custom-dropdown {
+.custom-dropdownss {
   border: none !important;
-  border-radius: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
   background: transparent !important;
   font-size: 14px !important;
   font-weight: 500;
-  color: #3b57c9 !important; /* bluish text like in image */
-  padding: 0 20px 0 0 !important; /* spacing for arrow */
-  appearance: none; /* remove default select styling */
+  color: #3b57c9 !important;
+  padding: 0 20px 0 0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
   cursor: pointer;
-  min-width: auto;
-  /* width: 10px !important; */
+
+  min-width: 130px;
+  width: 130px; 
+  max-width: 220px; 
 }
 
-/* Remove focus border */
-.custom-dropdown:focus {
+.custom-dropdownss:focus-visible {
   outline: none !important;
   box-shadow: none !important;
 }
+
 
 /* Add custom arrow */
 .custom-dropdown {
