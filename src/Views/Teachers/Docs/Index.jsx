@@ -188,7 +188,7 @@ const TeacherDashboard = () => {
                             <Card.Title className='fs-16'> Notes </Card.Title>
                         </Card.Header>
                         <Card.Body className="row">
-                            {Array.isArray(teachersState?.teacher_DashboardData?.data?.note) ? teachersState?.teacher_DashboardData?.data?.notes?.map((data, index) => (
+                            {Array.isArray(teachersState?.teacher_DashboardData?.data?.notes) ? teachersState?.teacher_DashboardData?.data?.notes?.map((data, index) => (
                                 <div className="col-6 p-2">
                                     <NotesDisplayCard className="border-0 overflow-hidden" style={{ background: '#FFAFAF' }} params={data} />
                                 </div>

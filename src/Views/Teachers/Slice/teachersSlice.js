@@ -87,6 +87,7 @@ const initialState = {
     glow: true,
     data: [],
   },
+  buttonSpinner:false,
   teachers_GetStudentsSortBy: {
     sort_by: "",
     sort_order: "",
@@ -810,6 +811,9 @@ const teachersSlice = createSlice({
       const { data, getdata } = action.payload;
       state.teacher_PostStudents.data = { data, getdata };
     },
+    update_button_spinner(state,action) {
+      state.buttonSpinner = action.payload.status || false 
+    },
     update_Create_student(state, action) {
       const [key, value] = Object.entries(action.payload)[0] || [];
       state.teacher_CreateStudents.data[key] = value || "";
@@ -1253,6 +1257,7 @@ export const {
   edit_profile_Inputs,
   updateStudentsListSortBy,
   clear_Classroom_Upload_fields,
+  update_button_spinner
 } = actions;
 
 export default reducer;

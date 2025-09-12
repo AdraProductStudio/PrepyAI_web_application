@@ -347,8 +347,8 @@
 
 .students_list_table tbody {
   display: block;
-  max-height: 360px;
-  overflow-y: auto;
+  max-height: 350px;
+  overflow: auto;
 }
 
 .students_list_table thead,
@@ -1235,6 +1235,14 @@ input::placeholder {
   min-width: 130px;
   width: 130px; 
   max-width: 220px; 
+}
+
+.button-spinner-modal-input-size{
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
+}
+.button-spinner-modal-input-student{
+    width: 50% !important;
 }
 
 .custom-dropdownss:focus-visible {
