@@ -275,9 +275,25 @@ export function OverallModel() {
       case "TeacherClassroom":
         switch (commonState?.modal?.type) {
           case "createClassroom":
-            return <> {Inputfunctions(jsxJson.classroomModal)}
-              <ButtonComponent title={"Create"} className="btn-md btn-brand-color p-3 w-100" clickFunction={() => dispatch(postClassrooms(teachersState?.teacher_PostClassrooms?.data))} buttonName={"Create"} />
-            </>
+            return (
+              <>
+                {" "}
+                {Inputfunctions(jsxJson.classroomModal)}
+                <ButtonSpinner
+                  className="btn-md button-spinner-modal-input-size btn-brand-color p-3 w-100"
+                  title={teachersState?.buttonSpinner ? "Processing..." : "Create"}
+                  is_spinner={teachersState?.buttonSpinner}
+                  clickFunction={() =>
+                    dispatch(
+                      postClassrooms(
+                        teachersState?.teacher_PostClassrooms?.data
+                      )
+                    )
+                  }
+                  buttonName={"Create"}
+                />
+              </>
+            );
 
           default:
             break;
@@ -318,7 +334,29 @@ export function OverallModel() {
       case "subjects":
         switch (commonState?.modal?.type) {
           case "subjects":
-            return <> {Inputfunctions(jsxJson.addSubjects)}<ButtonComponent className="btn-md btn-brand-color p-3 w-100" buttonName={"Add Subject"} clickFunction={() => dispatch(postSubjects({ subject_name: teachersState?.teacher_PostSubjects?.data?.subject_name, classroom_id: class_id, teachers_id: teachersState?.teacher_PostSubjects?.data?.teachers }))} /></>
+            return (
+              <>
+                {" "}
+                {Inputfunctions(jsxJson.addSubjects)}
+                <ButtonSpinner
+                 className="btn-md button-spinner-modal-input-size btn-brand-color p-3 w-100"
+                 title={teachersState?.buttonSpinner ? "Processing..." : "Add Subject"}
+                 is_spinner={teachersState?.buttonSpinner}
+                  clickFunction={() =>
+                    dispatch(
+                      postSubjects({
+                        subject_name:
+                          teachersState?.teacher_PostSubjects?.data
+                            ?.subject_name,
+                        classroom_id: class_id,
+                        teachers_id:
+                          teachersState?.teacher_PostSubjects?.data?.teachers,
+                      })
+                    )
+                  }
+                />
+              </>
+            );
 
           default:
             break;
@@ -350,9 +388,10 @@ export function OverallModel() {
                       }
                     />
 
-                    <ButtonComponent
-                      className="btn-md w-50 text-white btn-brand-color"
-                      buttonName={"Yes"}
+                    <ButtonSpinner
+                      className="btn-md w-50 button-spinner-modal-input-student text-white btn-brand-color"
+                      title={teachersState?.buttonSpinner ? "" : "Yes"}
+                      is_spinner={teachersState?.buttonSpinner}
                       clickFunction={commonState?.modal?.modal_data}
                     />
                   </div>
@@ -404,9 +443,10 @@ export function OverallModel() {
                       dispatch(updateModalShow({ show: false }))
                     }
                   />
-                  <ButtonComponent
-                    className="btn-md btn-brand-color w-50 p-3"
-                    buttonName={"Create"}
+                  <ButtonSpinner
+                    className="btn-md button-spinner-modal-input-student btn-brand-color w-50"
+                    title={teachersState?.buttonSpinner ? "Processing..." : "Create"}
+                    is_spinner={teachersState?.buttonSpinner}
                     clickFunction={() =>
                       dispatch(
                         postCreateStudent(
@@ -423,9 +463,10 @@ export function OverallModel() {
             return (
               <>
                 {Inputfunctions(jsxJson.editStudent)}
-                <ButtonComponent
-                  className="btn-md btn-brand-color p-3 w-100"
-                  buttonName={"Edit Student"}
+                <ButtonSpinner
+                  className="btn-md button-spinner-modal-input-size btn-brand-color p-3 w-100"
+                  title={teachersState?.buttonSpinner ? "Processing..." : "Edit Student"}
+                  is_spinner={teachersState?.buttonSpinner}
                   clickFunction={() =>
                     dispatch(
                       postStudents(teachersState?.teacher_PostStudents?.data)
