@@ -206,7 +206,7 @@ const spendingHoursGlow = teachersState?.teacher_GetStudentOverviewSpendingHours
                             <p className="py-3">Getting Overview Records</p>
                           </div>
                         ) : (
-                          <Card.Body className="p-0 mt-3">
+                          <Card.Body className="p-0 mt-3" style={{overflow:"hidden"}}>
                             {book_data?.data?.length > 0 ? (
                               <div className="table-responsive">
                                 <table className="table students_list_table">

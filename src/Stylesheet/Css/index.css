@@ -348,8 +348,8 @@
 
 .students_list_table tbody {
   display: block;
-  max-height: 360px;
-  overflow-y: auto;
+  max-height: 350px;
+  overflow: auto;
 }
 
 .students_list_table thead,
@@ -1234,28 +1234,38 @@ input::placeholder {
   align-items: center;
 }
 
-.custom-dropdown {
+.custom-dropdownss {
   border: none !important;
-  border-radius: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
   background: transparent !important;
   font-size: 14px !important;
   font-weight: 500;
   color: #3b57c9 !important;
-  /* bluish text like in image */
   padding: 0 20px 0 0 !important;
-  /* spacing for arrow */
-  appearance: none;
-  /* remove default select styling */
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
   cursor: pointer;
-  min-width: auto;
-  /* width: 10px !important; */
+
+  min-width: 130px;
+  width: 130px; 
+  max-width: 220px; 
 }
 
-/* Remove focus border */
-.custom-dropdown:focus {
+.button-spinner-modal-input-size{
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
+}
+.button-spinner-modal-input-student{
+    width: 50% !important;
+}
+
+.custom-dropdownss:focus-visible {
   outline: none !important;
   box-shadow: none !important;
 }
+
 
 /* Add custom arrow */
 .custom-dropdown {

@@ -141,7 +141,7 @@ const Subject = () => {
                           close_btn: true,
                           modal_from: "techaersdeletemodal",
                           modal_type: "techaersdeletemodal",
-                          data:()=>dispatch(deleteSubjects(val?.subject_id)),
+                          data:()=>dispatch(deleteSubjects(val?.subject_id,class_id)),
                         })
                       );
                     }}

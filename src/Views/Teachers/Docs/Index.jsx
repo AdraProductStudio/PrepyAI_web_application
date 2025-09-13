@@ -114,7 +114,7 @@ const TeacherDashboard = () => {
                         <Card className='border-0 rounded-4 shadow-sm py-3 h-100'>
                             <Card.Header className="border-bottom bg-transparent d-flex justify-content-between align-items-center">
                                 <Card.Title className='fs-16'> Student Performance </Card.Title>
-                                <div className="d-flex ">{Inputfunctions(jsxJson.selectClassRoomForPerfomance)} {Inputfunctions(jsxJson?.selectStudentPerfomance)}</div>
+                                <div className="d-flex mb-2">{Inputfunctions(jsxJson.selectClassRoomForPerfomance)} {Inputfunctions(jsxJson?.selectStudentPerfomance)}</div>
                             </Card.Header>
                             <Card.Body className="pe-none">
                                 <StudentsPerformanceChart data={Array.isArray(studentPerfomancedata) ? studentPerfomancedata : []} />
@@ -188,7 +188,7 @@ const TeacherDashboard = () => {
                             <Card.Title className='fs-16'> Notes </Card.Title>
                         </Card.Header>
                         <Card.Body className="row">
-                            {Array.isArray(teachersState?.teacher_DashboardData?.data?.note) ? teachersState?.teacher_DashboardData?.data?.notes?.map((data, index) => (
+                            {Array.isArray(teachersState?.teacher_DashboardData?.data?.notes) ? teachersState?.teacher_DashboardData?.data?.notes?.map((data, index) => (
                                 <div className="col-6 p-2">
                                     <NotesDisplayCard className="border-0 overflow-hidden" style={{ background: '#FFAFAF' }} params={data} />
                                 </div>

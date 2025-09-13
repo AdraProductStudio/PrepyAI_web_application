@@ -28,17 +28,18 @@ const Students = () => {
         search_query: "",
         show_entries: pagination?.siblingCount,
         page: pagination?.currentPage,
-        sort_by: "joined_at",
-        sort_order: "asc",
+        sort_by: teachersState?.teachers_GetStudentsSortBy?.sort_by || "joined_at",
+        sort_order: teachersState?.teachers_GetStudentsSortBy?.sort_order || "asc",
       })
     );
-  }, [pagination,teachersState?.teacher_students_Classroom?.data?.classroom_id]);
+  }, [pagination,teachersState?.teacher_students_Classroom?.data?.classroom_id,teachersState?.teachers_GetStudentsSortBy]);
 
       // useEffect(()=>{
       //     dispatch(getGradeByClassroom(data))
       // },[data])
 
       useEffect(()=>{
+        console.log(teachersState?.teacher_CreateStudents?.data,"DasdasdsadA")
           dispatch(getAllClassRooms())
           dispatch(
             update_Students_classroom({
@@ -71,7 +72,7 @@ const Students = () => {
             {Icons.sortBy}
             <span className="align-middle">Sort by</span>
           </ButtonComponent> */}
-
+           <div className="custom-select-wrapper">{Inputfunctions(jsxJson.sortForStudents)}</div>
            <div className="custom-select-wrapper">{Inputfunctions(jsxJson.selectStudentsByClassRoom)}</div>
 
           <ButtonComponent

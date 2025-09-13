@@ -13,7 +13,7 @@ import {
 
 } from "Views/Auth/Slices/authSlice";
 
-const validateStudentForm = (values) => {
+const validateAdminForm = (values) => {
   const errors = {};
 
   if (!values.first_name) {
@@ -50,6 +50,92 @@ const validateStudentForm = (values) => {
     errors.institute_name = "Institute name is required";
   }
 
+  if (!values.location) {
+    errors.location = "Location is required";
+  }
+
+  if (!values.new_password) {
+    errors.new_password = "Password is required";
+  } else if (
+    !/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(values.new_password)
+  ) {
+    errors.new_password =
+      "Password must be at least 8 characters, include 1 uppercase, 1 number, and 1 symbol";
+  }
+
+  if (!values.confirm_password) {
+    errors.confirm_password = "Confirm password is required";
+  } else if (values.confirm_password !== values.new_password) {
+    errors.confirm_password = "Passwords do not match";
+  }
+
+  return errors;
+};
+const validateLearnersForm = (values) => {
+  const errors = {};
+
+  if (!values.first_name) {
+    errors.first_name = "First name is required";
+  } else if (!/^[A-Za-z\s]+$/.test(values.first_name)) {
+    errors.first_name = "Only alphabets allowed";
+  }
+
+  if (!values.last_name) {
+    errors.last_name = "Last name is required";
+  } else if (!/^[A-Za-z\s]+$/.test(values.last_name)) {
+    errors.last_name = "Only alphabets allowed";
+  }
+
+  if (!values.email_id) {
+    errors.email_id = "Email is required";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email_id)) {
+    errors.email_id = "Invalid email format";
+  }
+
+  if (!values.new_password) {
+    errors.new_password = "Password is required";
+  } else if (
+    !/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(values.new_password)
+  ) {
+    errors.new_password =
+      "Password must be at least 8 characters, include 1 uppercase, 1 number, and 1 symbol";
+  }
+
+  if (!values.confirm_password) {
+    errors.confirm_password = "Confirm password is required";
+  } else if (values.confirm_password !== values.new_password) {
+    errors.confirm_password = "Passwords do not match";
+  }
+
+  return errors;
+};
+const validateOrganizationForm = (values) => {
+  const errors = {};
+
+  if (!values.first_name) {
+    errors.first_name = "First name is required";
+  } else if (!/^[A-Za-z\s]+$/.test(values.first_name)) {
+    errors.first_name = "Only alphabets allowed";
+  }
+
+  if (!values.last_name) {
+    errors.last_name = "Last name is required";
+  } else if (!/^[A-Za-z\s]+$/.test(values.last_name)) {
+    errors.last_name = "Only alphabets allowed";
+  }
+
+  if (!values.email_id) {
+    errors.email_id = "Email is required";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email_id)) {
+    errors.email_id = "Invalid email format";
+  }
+
+  if (!values.phone_number) {
+    errors.phone_number = "Contact number is required";
+  } else if (!/^\d{10}$/.test(values.phone_number)) {
+    errors.phone_number = "Must be exactly 10 digits";
+  }
+
   if (!values.organization_name) {
     errors.organization_name = "Organization name is required";
   }
@@ -74,6 +160,86 @@ const validateStudentForm = (values) => {
 
   return errors;
 };
+const validateTeacherStudentForm = (values) => {
+  const errors = {};
+
+  if (!values.first_name) {
+    errors.first_name = "First name is required";
+  } else if (!/^[A-Za-z\s]+$/.test(values.first_name)) {
+    errors.first_name = "Only alphabets allowed";
+  }
+
+  if (!values.last_name) {
+    errors.last_name = "Last name is required";
+  } else if (!/^[A-Za-z\s]+$/.test(values.last_name)) {
+    errors.last_name = "Only alphabets allowed";
+  }
+
+  if (!values.email_id) {
+    errors.email_id = "Email is required";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email_id)) {
+    errors.email_id = "Invalid email format";
+  }
+
+  if (!values.phone_number) {
+    errors.phone_number = "Contact number is required";
+  } else if (!/^\d{10}$/.test(values.phone_number)) {
+    errors.phone_number = "Must be exactly 10 digits";
+  }
+
+  if (!values.institute_name) {
+    errors.institute_name = "Institute name is required";
+  }
+
+  if (!values.new_password) {
+    errors.new_password = "Password is required";
+  } else if (
+    !/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(values.new_password)
+  ) {
+    errors.new_password =
+      "Password must be at least 8 characters, include 1 uppercase, 1 number, and 1 symbol";
+  }
+
+  if (!values.confirm_password) {
+    errors.confirm_password = "Confirm password is required";
+  } else if (values.confirm_password !== values.new_password) {
+    errors.confirm_password = "Passwords do not match";
+  }
+
+  return errors;
+};
+const validateForgetForm = (values) => {
+  const errors = {};
+
+  if (!values.email_id) {
+    errors.email_id = "Email is required";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email_id)) {
+    errors.email_id = "Invalid email format";
+  }
+
+  return errors;
+}
+const validateCreatePasswordForm = (values) => {
+  const errors = {};
+
+  if (!values.new_password) {
+    errors.new_password = "Password is required";
+  } else if (
+    !/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(values.new_password)
+  ) {
+    errors.new_password =
+      "Password must be at least 8 characters, include 1 uppercase, 1 number, and 1 symbol";
+  }
+
+  if (!values.confirm_password) {
+    errors.confirm_password = "Confirm password is required";
+  } else if (values.confirm_password !== values.new_password) {
+    errors.confirm_password = "Passwords do not match";
+  }
+
+  return errors;
+};
+
 
 export const handleLogin = (formdata, navigate) => async (dispatch) => {
   const { username, password } = formdata;
@@ -100,36 +266,36 @@ export const handleLogin = (formdata, navigate) => async (dispatch) => {
 };
 
 export const handleRegister = (login_data, navigate, endpoint) => async (dispatch) => {
-  const { first_name, organization_name, institute_name, last_name, email_id, phone_number, location, new_password, confirm_password } = login_data;
-  // switch (endpoint) {
-  //   case "/register/learner": {
-  //     if (!first_name || !last_name || !email_id || !new_password || !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
-  //     break;
-  //   }
-  //   case "/register/organization": {
-  //     if (!first_name || !organization_name || !last_name || !email_id || !new_password || !phone_number || !location || !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
-  //     break;
-  //   }
-  //   case "/register/teacher": {
-  //     if (!first_name || !institute_name || !last_name || !email_id || !new_password || !phone_number || !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
-  //     break;
-  //   }
-  //   case "/register/student": {
-  //     if (!first_name || !institute_name || !last_name || !email_id || !new_password || !phone_number || !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
-  //     break;
-  //   }
-  //   case "/register/admin": {
-  //     if (!first_name || !institute_name || !last_name || !email_id || !new_password || !phone_number || !location || !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
-  //     break;
-  //   }
-  // }
-        const errors = validateStudentForm(login_data || {});
-  
-        if (Object.keys(errors).length > 0) {
-          dispatch(update_app_data({ type: "validation", data: true }));
-          dispatch(update_app_data({ type: "validationMessage", data: errors }));
-          return; 
-        }
+  const { new_password, confirm_password } = login_data;
+  let errors = {};
+  switch (endpoint) {
+    case "/register/learner": {
+      errors = validateLearnersForm(login_data || {});
+      break;
+    }
+    case "/register/organization": {
+      errors = validateOrganizationForm(login_data || {});
+      break;
+    }
+    case "/register/teacher": {
+      errors = validateTeacherStudentForm(login_data || {});
+      break;
+    }
+    case "/register/student": {
+      errors = validateTeacherStudentForm(login_data || {});
+      break;
+    }
+    case "/register/admin": {
+      errors = validateAdminForm(login_data || {});
+      break;
+    }
+  }
+
+  if (Object.keys(errors).length > 0) {
+    dispatch(update_app_data({ type: "validation", data: true }));
+    dispatch(update_app_data({ type: "validationMessage", data: errors }));
+    return;
+  }
 
   try {
     dispatch(update_spinner_loadning({ status: true }));
@@ -228,7 +394,7 @@ export const handleForgetPass = (forget_data, navigate, endpoint) => async (disp
   // const { email_id } = forget_data
   // if (!email_id) return dispatch(update_app_data({ type: "validation", data: true }));
 
-  const errors = validateStudentForm(forget_data || {});
+  const errors = validateForgetForm(forget_data || {});
   
   if (Object.keys(errors).length > 0) {
     dispatch(update_app_data({ type: "validation", data: true }));
@@ -286,7 +452,7 @@ export const handleOtpVerification = (forget_data, routeState, navigate, endpoin
 export const handleCreatePassword = (forget_data, routeState, navigate, endpoint) => async (dispatch) => {
   const { new_password, confirm_password } = forget_data;
   // if (!new_password || !confirm_password) return dispatch(update_app_data({ type: "validation", data: true }));
-  const errors = validateStudentForm(forget_data || {});
+  const errors = validateCreatePasswordForm(forget_data || {});
   
   if (Object.keys(errors).length > 0) {
     dispatch(update_app_data({ type: "validation", data: true }));

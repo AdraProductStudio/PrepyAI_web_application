@@ -39,7 +39,7 @@ const CreatePassword = () => {
       Formfor={"forgotForm"}
       subTitle={subTitle}
       img={Images?.ForgotPassword}
-      navigateBack={"/otpverification"}
+      navigateBack={"/otp_verification"}
     />
   );
 };
