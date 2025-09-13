@@ -1,25 +1,25 @@
 import ButtonComponent from "Components/Button/Button";
 import Input from "Components/Input/Input";
-import React, { useEffect } from "react";
+import React from "react";
 import { CiEdit } from "react-icons/ci";
 import { useDispatch } from "react-redux";
 import JsonData from "../Utils/JsonData";
 import Img from "Components/Img/Img";
 import Images from "Utils/Image"
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
-import { getOrganizationProfileDetails } from "../Actions/organisationAction";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
+import { useCommonState } from "Components/CustomHooks";
+import Spinner from "Components/Spinner/CustomSpinner";
 
 const OrgPersonalInfo = () => {
   const { jsxOnly } = JsonData()
   const dispatch = useDispatch();
+  const {profileInputs } = useCommonState()?.organisationState
 
-  useEffect(() => {
-    dispatch(getOrganizationProfileDetails())
-  }, [])
-
-
-  return (
+  return ( <>
+    {profileInputs?.is_loading ? (
+      <div className="d-flex justify-content-center align-items-center h-100" > <Spinner /></div>
+    ) : 
     <div className="h-100 p-xl-4 px-xl-5">
       <section className="d-flex justify-content-between align-items-center gap-3 gap-md-5">
         <article
@@ -65,16 +65,11 @@ const OrgPersonalInfo = () => {
       <section className="overflow-auto mt-4 mt-md-4">
         <form className="row">
           {Inputfunctions(jsxOnly?.profile_details)}
-          {/* <div className="d-flex justify-content-end p-md-2">
-            <ButtonComponent
-              type={"button"}
-              className={"btn btn-primary col-5 col-md-3 col-xl-2 brand_color"}
-              buttonName={"Submit"}
-            />
-          </div> */}
         </form>
       </section>
     </div>
+          }
+        </>
   );
 };
 

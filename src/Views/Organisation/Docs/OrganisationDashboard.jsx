@@ -1,32 +1,27 @@
 import { FaPlus } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
-
 import { CiSearch } from "react-icons/ci";
 import Image from "Utils/Image";
-import { Card, Col, ProgressBar, Row } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { Card, Col,Row } from "react-bootstrap";
+import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import Img from "Components/Img/Img";
 import ButtonComponent from "Components/Button/Button";
-// import ProgressBarComp from "Components/Progress/ProgressBar";
 import JsonData from "../Utils/JsonData";
 import Icons from "Utils/Icons";
 import { useCommonState, useDispatch } from "Components/CustomHooks";
-import { deleteAdmin, getAdminList, getOrganizationInfo } from "../Actions/organisationAction";
+import { getAdminList, getOrganizationInfo } from "../Actions/organisationAction";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import ProgressBarComp from "Components/Progress/ProgressBar";
+import Spinner from "Components/Spinner/CustomSpinner";
+import { updateSearchInputs, updateSelectedAdminToDel } from "../Slices/Organisation_slice";
 
 function OrganisationDashboard() {
-  const { organizationInfo, adminList } = useCommonState()?.organisationState
-  const { jsonOnly } = JsonData({ organizationInfo });
-
-  const itemsPerPage = 3;
-  const [currentPage, setCurrentPage] = useState(0);
-  const [searchValue, setSearchValue] = useState('')
-  const pageCount = Math.ceil(adminList?.total_count / itemsPerPage);
-  const offset = currentPage * itemsPerPage;
-  const currentItems = jsonOnly?.orgDetails.slice(offset, offset + itemsPerPage);
+  const { organizationInfo, adminList,searchInputs } = useCommonState()?.organisationState
+  const { jsonOnly } = JsonData()
+  const itemsPerPage = 3
+  const pageCount = Math.ceil(adminList?.data?.total_count / itemsPerPage)
 
 
 
@@ -34,20 +29,20 @@ function OrganisationDashboard() {
   const dispatch = useDispatch()
 
   const handlePageClick = ({ selected }) => {
-    setCurrentPage(selected)
+    dispatch(updateSearchInputs({currentPage:selected}))
     dispatch(getAdminList({ page: selected + 1, show_entries: itemsPerPage }))
   }
   useEffect(() => {
-    dispatch(getAdminList({ page: currentPage + 1, show_entries: itemsPerPage }))
-  }, [currentPage])
+    dispatch(getAdminList({ page: searchInputs?.currentPage+1, show_entries: itemsPerPage }))
+  }, [])
 
   useEffect(() => {
     dispatch(getOrganizationInfo())
   }, [])
 
   const handleSearchAdmin = (value) => {
-    setSearchValue(value)
-    dispatch(getAdminList({ page: currentPage + 1, search_query: value,show_entries: itemsPerPage  }))
+    dispatch(updateSearchInputs({searchValue:value}))
+    dispatch(getAdminList({ page: searchInputs?.currentPage + 1, search_query: value,show_entries: itemsPerPage  }))
 
   }
 
@@ -57,59 +52,69 @@ function OrganisationDashboard() {
         {jsonOnly?.dashboardCardInputs?.map((input, idx) => (
           <section key={idx} className="p-2">
             <Card style={{ height: "12rem" }}>
-              <Card.Body className="d-flex flex-column align-items-start justify-content-between">
-                <Card.Title className="organisation_iconWrapper p-2 rounded">{input.icon}</Card.Title>
-                {input?.subTitle && input?.title && (
-                  <div>
-                    <Card.Text className="text-body-secondary m-0 p-0 fw-semibold">
+              {organizationInfo?.is_loading ? (
+                <div className="h-100 d-flex justify-content-center align-items-center"><Spinner /></div>
+                ) :
+                <Card.Body className="d-flex flex-column align-items-start justify-content-between">
+                  <Card.Title className="organisation_iconWrapper p-2 rounded">{input.icon}</Card.Title>
+                  {input?.subTitle && input?.title && (
+                    <div>
+                      <Card.Text className="text-body-secondary m-0 p-0 fw-semibold">
+                        {input?.title}
+                      </Card.Text>
+                      <span className={`text-secondary ${input.subTitle ? "mb-1" : "mb-5"}`}  >
+                        {input?.subTitle}
+                      </span>
+                    </div>
+                  )}
+                  {!input?.subTitle && (
+                    <Card.Text className="text-body-secondary fw-semibold">
                       {input?.title}
                     </Card.Text>
-                    <span className={`text-secondary ${input.subTitle ? "mb-1" : "mb-5"}`}  >
-                      {input?.subTitle}
-                    </span>
-                  </div>
-                )}
-                {!input?.subTitle && (
-                  <Card.Text className="text-body-secondary fw-semibold">
-                    {input?.title}
+                  )}
+                  <Card.Text className="fs-3 fw-semibold">
+                    {input?.value}
                   </Card.Text>
-                )}
-                <Card.Text className="fs-3 fw-semibold">
-                  {input?.value}
-                </Card.Text>
-              </Card.Body>
+                </Card.Body>
+              }
             </Card>
           </section>
         ))}
 
         <section className="p-2">
           <Card style={{ height: "12rem" }}>
-            <Card.Body className="d-flex flex-column align-items-start justify-content-center pb-5">
-              <Card.Title className="organisation_iconWrapper p-2 rounded"> {Icons.activeUsers} </Card.Title>
-              <Card.Text className="mt-3 mb-2 text-body-secondary fw-semibold">
-                Active Users
-              </Card.Text>
+            {
+              organizationInfo?.is_loading ? (
+                <div className="h-100 d-flex justify-content-center align-items-center"><Spinner /></div>
+              ) :
 
-              <div className="w-100 d-flex align-items-center gap-2 mt-2">
-                <small className="text-secondary col-3">
-                  Admin
-                </small>
-               <div className="col-8">
-                <ProgressBarComp animated={false} progressNow={organizationInfo?.active_admins/organizationInfo?.admins*100} className="custom-progress " />
-                </div>
-                <p className="mb-0 text-secondary fw-bold col-1">{organizationInfo?.active_admins}</p>
-              </div>
+                <Card.Body className="d-flex flex-column align-items-start justify-content-center pb-5">
+                  <Card.Title className="organisation_iconWrapper p-2 rounded"> {Icons.activeUsers} </Card.Title>
+                  <Card.Text className="mt-3 mb-2 text-body-secondary fw-semibold">
+                    Active Users
+                  </Card.Text>
 
-              <div className="w-100 d-flex align-items-center gap-2 mt-1">
-                <small className="text-secondary col-3">
-                  Teachers
-                </small>
-                <div className="col-8">
-                <ProgressBarComp animated={false} progressNow={organizationInfo?.active_teachers/organizationInfo?.teachers*100} className="custom-progress " />
-                </div>
-                <p className="mb-0 text-secondary fw-bold col-1">{organizationInfo?.active_teachers}</p>
-              </div>
-            </Card.Body>
+                  <div className="w-100 d-flex align-items-center gap-2 mt-2">
+                    <small className="text-secondary col-3">
+                      Admin
+                    </small>
+                    <div className="col-8">
+                      <ProgressBarComp animated={false} progressNow={organizationInfo?.data?.active_admins / organizationInfo?.data?.admins * 100} className="custom-progress " />
+                    </div>
+                    <p className="mb-0 text-secondary fw-bold col-1">{organizationInfo?.data?.active_admins}</p>
+                  </div>
+
+                  <div className="w-100 d-flex align-items-center gap-2 mt-1">
+                    <small className="text-secondary col-3">
+                      Teachers
+                    </small>
+                    <div className="col-8">
+                      <ProgressBarComp animated={false} progressNow={organizationInfo?.data?.active_teachers / organizationInfo?.data?.teachers * 100} className="custom-progress " />
+                    </div>
+                    <p className="mb-0 text-secondary fw-bold col-1">{organizationInfo?.data?.active_teachers}</p>
+                  </div>
+                </Card.Body>
+            }
           </Card>
         </section>
 
@@ -132,10 +137,10 @@ function OrganisationDashboard() {
             </div>
             <Card.Body className="d-flex flex-column align-items-start justify-content-center gap-2">
               <Card.Title className="fw-bold text-white fs-4 mb-0">
-                {organizationInfo?.plan}
+                {organizationInfo?.data?.plan}
               </Card.Title>
               <Card.Text className="text-secondary mb-4 text-white">
-                {organizationInfo?.expiry_date == null ? "Welcome" : (`Expiring ${organizationInfo?.expiry_date}`)
+                {organizationInfo?.data?.expiry_date == null ? "Welcome" : (`Expiring ${organizationInfo?.data?.expiry_date}`)
                 }
                
               </Card.Text>
@@ -157,7 +162,7 @@ function OrganisationDashboard() {
               <div className="w-100 w-md-auto">
                 <h5 className="mb-0 fs-5">Admins</h5>
                 <span className="text-secondary" style={{ fontSize: "0.8rem" }}>
-                  {jsonOnly?.orgDetails.length} Admins
+                  {adminList?.data?.total_count} Admins
                 </span>
               </div>
               <div
@@ -171,7 +176,9 @@ function OrganisationDashboard() {
                       className="form-control"
                       placeholder="Search..."
                       style={{ minWidth: "200px" }}
+                      value={searchInputs?.searchValue}
                       onChange={(e) => handleSearchAdmin(e.target.value)}
+
                     />
                     <CiSearch
                       style={{
@@ -216,7 +223,7 @@ function OrganisationDashboard() {
                   style={{ position: "sticky", top: "-2px", bottom: "-1px" }}
                 >
                   <tr>
-                    {jsonOnly?.OrgDashboardTableHeadings.map((title, idx) => (
+                    {jsonOnly?.OrgDashboardTableHeadings?.map((title, idx) => (
                       <th key={idx} className="text-center py-3">
                         <span className="text-primary-emphasis fw-bold">
                           {title}
@@ -226,29 +233,45 @@ function OrganisationDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {adminList?.organization_list?.length> 0 ? adminList?.organization_list?.map((org, idx) => (
-                    <tr key={idx}>
-                      <td className="text-center border-bottom-non">
-                        {idx + 1}
-                      </td>
-                      <td className="text-center">{org.name}</td>
-                      <td className="text-center">{org.institute_name}</td>
-                      <td className="text-center">{org.role}</td>
-                      <td className="text-center">{org.contact_no}</td>
-                      <td className="text-center">{org.email}</td>
-                      <td className="text-center">{org.location}</td>
-                      <td className="text-center">
-                        {/* <button type="button" className="btn">
-                          <CiEdit className=" me-1 fs-5 text-primary" />
-                        </button> */}
-                        <button type="button" className="btn" onClick={() => dispatch(deleteAdmin({ admin_id: org.id }))}>
-                          <MdDelete className="fs-5 text-danger" />
-                        </button>
+                  {adminList?.is_loading ? (
+                    <tr>
+                      <td colSpan={8} className="text-center py-5">
+                        <div className="d-flex justify-content-center align-items-center">
+                          <Spinner />
+                        </div>
                       </td>
                     </tr>
-                  )) : <tr className="">
-                    <td colSpan="8" className="text-center py-3">No data</td></tr>}
+                  ) : adminList?.data?.organization_list?.length > 0 ? (
+                    adminList?.data?.organization_list?.map((org, idx) => (
+                      <tr key={idx}>
+                        <td className="text-center border-bottom-non">{idx + 1}</td>
+                        <td className="text-center">{org.name}</td>
+                        <td className="text-center">{org.institute_name}</td>
+                        <td className="text-center">{org.role}</td>
+                        <td className="text-center">{org.contact_no}</td>
+                        <td className="text-center">{org.email}</td>
+                        <td className="text-center">{org.location}</td>
+                        <td className="text-center">
+                        <ButtonComponent 
+                            className="btn"
+                            clickFunction={()=> {
+                              dispatch(updateSelectedAdminToDel({admin_id: org.id,name:org.name }))
+                              dispatch(updateModalShow({show:true,close_btn:true,size:"md",modal_from:"Home",modal_type:"delete_admin"}))
+                            }}
+                            buttonName={<MdDelete className="fs-5 text-danger" />}
+                          />
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={8} className="text-center py-5">
+                        No data
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
+
               </table>
             </section>
           </Card>
@@ -256,8 +279,7 @@ function OrganisationDashboard() {
       </Row>
 
       <footer className="d-flex justify-content-end pt-1">
-        {
-        adminList?.organization_list?.length> 0 ? <div className=" pe-2">
+        {pageCount> 0 ? <div className=" pe-2">
           <ReactPaginate
             previousLabel={"Prev"}
             nextLabel={"Next"}
