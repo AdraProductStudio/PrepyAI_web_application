@@ -29,18 +29,18 @@ const JsonData = () => {
       {
         icon: Icons.admins,
         title: "Total No.of Admins",
-        value: organisationState?.organizationInfo?.admins,
+        value: organisationState?.organizationInfo?.data?.admins,
       },
       {
         icon: Icons.teachers,
         title: "Total No.of Teachers",
-        value:organisationState?.organizationInfo?.teachers,
+        value:organisationState?.organizationInfo?.data?.teachers,
       },
       {
         icon: Icons.billing,
         title: "Billing History",
         subTitle: "Total spent",
-        value: organisationState?.organizationInfo?.billing_history,
+        value: organisationState?.organizationInfo?.data?.billing_history,
       },
     ],
 
@@ -346,7 +346,7 @@ const JsonData = () => {
         // },
         divClassName: "mb-3",
         isMandatory: false,
-        Err: commonState?.app_data?.validated && !organisationState?.createAdminInputs?.admin_name ? "Organization name required" : null
+        Err: commonState?.app_data?.validated && !organisationState?.createAdminInputs?.admin_name ? "Admin name required" : null
       },
       {
         name: "Email Id ",
@@ -374,6 +374,7 @@ const JsonData = () => {
         category: "input",
         placeholder: "",
         divClassName: "mb-3 col-12 col-lg-8",
+        readOnly:true
       },
       {
         name: "Last Name",
@@ -383,6 +384,7 @@ const JsonData = () => {
         category: "input",
         placeholder: "",
         divClassName: "mb-3 col-12 col-lg-8",
+        readOnly:true
       },
       {
         name: "Email",
@@ -392,6 +394,7 @@ const JsonData = () => {
         category: "input",
         placeholder: "",
         divClassName: "mb-3  col-12 col-lg-8",
+        readOnly:true
       },
       {
         name: "Phone Number",
@@ -401,6 +404,7 @@ const JsonData = () => {
         category: "input",
         placeholder: "",
         divClassName: "mb-3  col-12 col-lg-8",
+        readOnly:true
       },
       {
         name: "Address",
@@ -410,6 +414,7 @@ const JsonData = () => {
         category: "input",
         placeholder: "",
         divClassName: "mb-3  col-12 col-lg-8",
+        readOnly:true
       }
 
     ],
@@ -457,7 +462,8 @@ const JsonData = () => {
         // },
         divClassName: "mb-3",
         isMandatory: false,
-        Err: commonState?.app_data?.validated && !organisationState?.editProfileInputs?.email_id ? "Email required" : null
+        Err: commonState?.app_data?.validated && !organisationState?.editProfileInputs?.email_id ? "Email required" : null,
+        readOnly:true
       },
       {
         name: "Phone Number",
@@ -466,7 +472,11 @@ const JsonData = () => {
         category: "input",
         placeholder: "",
         value: organisationState?.editProfileInputs?.phone_number || '',
-        change: (e) => dispatch(edit_org_profile_Inputs({ field: 'phone_number', value: e.target.value })),
+        change: (e) => {
+          if (/^\d{0,10}$/.test(e.target.value) && e.target.value.length <= 10) {
+            dispatch(edit_org_profile_Inputs({ field: 'phone_number', value: e.target.value }))
+          }
+        },
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },

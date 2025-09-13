@@ -3,7 +3,10 @@ import ModalComponent from "Components/Modal/Modal";
 import JsonData from "./JsonData";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import ButtonComponent from "Components/Button/Button";
-import { createAdmin, editOrgProfileDetails } from "../Actions/organisationAction";
+import { handleCreateAdmin,editOrgProfileDetails, deleteAdmin } from "../Actions/organisationAction";
+import ButtonSpinner from "Components/Spinner/ButtonSpinner";
+import { update_app_data, updateModalShow } from "Views/Common/Slices/Common_slice";
+import { updateSelectedAdminToDel } from "../Slices/Organisation_slice";
 
 
 export function OverallModel() {
@@ -16,7 +19,9 @@ export function OverallModel() {
             case "Home":
                 switch (commonState?.modal?.type) {
                     case "create_admin":
-                        return <h5>Create Admin</h5>
+                        return <h5 className="mb-0">Create Admin</h5>
+                    case "delete_admin":
+                        return <h5 className="mb-0">Delete Admin</h5>
                     default:
                         break;
                 }
@@ -42,16 +47,38 @@ export function OverallModel() {
                         return (
                             <div className="w-100">
                                 {Inputfunctions(jsxOnly?.create_admin)}
-                                <ButtonComponent
-                                    type="button"
-                                    buttonName="Send Mail"
+                                <ButtonSpinner
                                     className="brand_color w-100 text-white"
-                                    clickFunction={() =>
-                                        dispatch(createAdmin(organisationState?.createAdminInputs))
-                                    }
+                                    title="Send Email"
+                                    is_spinner={organisationState?.createAdminInputs?.is_sending}
+                                    clickFunction={
+                                        organisationState?.createAdminInputs?.is_sending ? null :
+                                        ()=> {dispatch(handleCreateAdmin(organisationState?.createAdminInputs))
+                                            dispatch(update_app_data({type:"validation",data:true}))
+                                    }}
+                                
                                 />
                             </div>
                         );
+                    case "delete_admin":
+                        return <div className="w-100">
+                            <p className="mb-0 fs-5 text-muted">Are you want to delete {organisationState?.selectedAdminToDel?.name} ?</p>
+                            <div className="d-flex mt-4 gap-3">
+                                <ButtonComponent type="button" buttonName="Cancel" className="btn-light w-100"
+                                    clickFunction={() => {
+                                        dispatch(updateModalShow({ show: false, close_btn: false, size: "", modal_from: "", modal_type: "" }))
+                                        dispatch(dispatch(updateSelectedAdminToDel({ admin_id: null, name: "" })))
+                                    }} />
+                                <ButtonSpinner
+                                    className="brand_color w-100 text-white"
+                                    title="Confirm"
+                                    is_spinner={organisationState?.selectedAdminToDel?.is_spinner}
+                                    clickFunction={organisationState?.selectedAdminToDel?.is_spinner ? null : 
+                                      () => dispatch(deleteAdmin(organisationState?.selectedAdminToDel?.admin_id))}
+                                />
+
+                            </div>
+                        </div>
                     default:
                         break;
                 }
@@ -63,11 +90,14 @@ export function OverallModel() {
                         return (
                             <div className="w-100">
                                 {Inputfunctions(jsxOnly?.organization_edit_profile)}
-                                <ButtonComponent
-                                    type="button"
-                                    buttonName="Submit"
+                                <ButtonSpinner
                                     className="brand_color w-100 text-white"
-                                    clickFunction={() => dispatch(editOrgProfileDetails(organisationState?.editProfileInputs))}
+                                    title="Submit"
+                                    is_spinner={organisationState?.editProfileInputs?.is_editing}
+                                    clickFunction={organisationState?.selectedAdminToDel?.is_spinner ? null : 
+                                      () => {
+                                        dispatch(update_app_data({type:"validation",data:true}))
+                                        dispatch(editOrgProfileDetails(organisationState?.editProfileInputs))}}
                                 />
                             </div>
                         );

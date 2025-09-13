@@ -333,7 +333,10 @@ const commonSlice = createSlice({
                         "teachersSlice/save_schedule_status",
                         "admin_slice/create_organisation", ,
                         "admin_slice/edit_profile_Inputs_endpoint",
-                        "admin_slice/dele_organisation_endpoint"
+                        "admin_slice/dele_organisation_endpoint",
+                        "organisation_slice/create_admin",
+                        "organisation_slice/delete_admin",
+                        "organisation_slice/edit_organization"
                     ].includes(action.type),
 
                 (state, action) => {
@@ -363,7 +366,15 @@ const commonSlice = createSlice({
                         "admin_slice/create_organisation", ,
                         "admin_slice/edit_profile_Inputs_endpoint",
                         "admin_slice/change_password_endpoint",
-                        "admin_slice/dele_organisation_endpoint"
+                        "admin_slice/dele_organisation_endpoint",
+                        "organisation_slice/create_admin",
+                        "organisation_slice/updateOrganizationInfo",
+                        "organisation_slice/updateAdminList",
+                        "organisation_slice/delete_admin",
+                        "organisation_slice/updateOrgProfileInputs",
+                        "organisation_slice/delete_admin",
+                        "organisation_slice/edit_organization",
+                        "organisation_slice/change_password"
                     ].includes(action.type),
 
                 (state, action) => {
@@ -400,6 +411,9 @@ const commonSlice = createSlice({
                         "teachersSlice/updatePostStudentData",
                         "teachersSlice/updatePostClassroomsData",
                         "teachersSlice/updatePostSubjectsData",
+                        "organisation_slice/change_password",
+                        "organisation_slice/edit_organization",
+                        "organisation_slice/create_admin",
                     ].includes(action.type),
                 (state, action) => {
                     const obj1 = action.payload;
