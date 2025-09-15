@@ -308,7 +308,7 @@ function SuperAdminDashboard() {
                     ))}
                   </tr>
                 </thead>
-                <tbody style={{ zIndex: "3" }}>
+                <tbody>
                   {organizationDetails?.length >=1 ? organizationDetails?.map((org, idx) => (
                     <tr key={idx}>
                       <td className="text-center border-bottom-non">
@@ -342,7 +342,7 @@ function SuperAdminDashboard() {
                       <td colSpan={jsonOnly?.tableHeadings.length || 10}>
                         <div
                           className="d-flex justify-content-center align-items-center"
-                          style={{ height: "400px", width: "100%" }}
+                          style={{ height: "100px", width: "100%" }}
                         >
                           <span className="text-muted fs-5">No details found</span>
                         </div>

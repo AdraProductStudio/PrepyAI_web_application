@@ -140,10 +140,10 @@ const PerformanceTable = ({ studentsData, testType }) => {
                                                 </td>
                                                 {monthDates?.map((date) => {
                                                     let bg = "#E3F3FF";
-                                                    if (colorInfo?.greenBox.includes(date.date)) bg = "#64DD6C";
-                                                    else if (colorInfo?.yellowBox.includes(date.date)) bg = "#E0E96C";
-                                                    else if (colorInfo?.redBox.includes(date.date)) bg = "#FF5C5C";
-                                                    else if (colorInfo?.grayBox.includes(date.date)) bg = "#FF8383";
+                                                    if (colorInfo?.greenBox?.includes(date.date)) bg = "#64DD6C";
+                                                    else if (colorInfo?.yellowBox?.includes(date.date)) bg = "#E0E96C";
+                                                    else if (colorInfo?.redBox?.includes(date.date)) bg = "#FF5C5C";
+                                                    else if (colorInfo?.grayBox?.includes(date.date)) bg = "#FF8383";
 
                                                     return (
                                                         <td key={date.date} className="text-center p-1 ">
