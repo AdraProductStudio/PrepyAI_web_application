@@ -38,20 +38,20 @@ const PerformanceTable = ({ studentsData, testType }) => {
             if (!std?.student_name) return std;
 
             return {
-                name: std.student_name,
-                test_results: std.test_results,
-                greenBox: std.test_results
-                    .filter((t) => t.status === "exemplar")
-                    .map((t) => t.testDate),
-                yellowBox: std.test_results
-                    .filter((t) => t.status === "developing")
-                    .map((t) => t.testDate),
-                redBox: std.test_results
-                    .filter(((t) => t.status === "emergent"))
-                    .map((t) => t.testDate),
-                grayBox: std.test_results
-                    .filter((t) => t.status === "not_attempted")
-                    .map((t) => t.testDate)
+                name: std?.student_name,
+                test_results: std?.test_results,
+                greenBox: std?.test_results
+                    ?.filter((t) => t?.status === "exemplar")
+                    ?.map((t) => t?.testDate),
+                yellowBox: std?.test_results
+                    ?.filter((t) => t?.status === "developing")
+                    ?.map((t) => t?.testDate),
+                redBox: std?.test_results
+                    ?.filter(((t) => t?.status === "emergent"))
+                    ?.map((t) => t?.testDate),
+                grayBox: std?.test_results
+                    ?.filter((t) => t?.status === "not_attempted")
+                    ?.map((t) => t?.testDate)
             }
         })
 

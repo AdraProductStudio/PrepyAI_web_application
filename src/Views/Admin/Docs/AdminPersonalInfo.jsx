@@ -17,7 +17,7 @@ const AdminPersonalInfo = () => {
 
   useEffect(()=>{
     dispatch(getProfileDetails())
-  },[])
+  },[dispatch])
 
   return (
     <div className="h-100 p-xl-4 px-xl-5">

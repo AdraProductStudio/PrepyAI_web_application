@@ -5,7 +5,7 @@ import JsonData from "./JsonData";
 import ButtonComponent from "Components/Button/Button";
 import { useDispatch } from "react-redux";
 import { clearClassroomForm, clearFieldError, clearForm, onChangeClassroomForm, setClassroomErrors, setErrors, setFile } from "../Slices/adminSlice";
-import { createClassroom, editProfileDetails, handleClassroomTeacherEdit, handleDashboardTeacherEdit, handleDeleteClassroomStudent, handleDeleteClassroomTeacher, handleDeleteDashboardTeacher, submitStaffFile, submitStaffManual } from "../Actions/Admin_action";
+import { createClassroom, editProfileDetails, handleClassroomTeacherEdit, handleDashboardTeacherEdit, handleDeleteClassroom, handleDeleteClassroomStudent, handleDeleteClassroomTeacher, handleDeleteDashboardTeacher, submitStaffFile, submitStaffManual } from "../Actions/Admin_action";
 import React, { useRef } from "react";
 import Icons from "Utils/Icons";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
@@ -24,7 +24,7 @@ export function OverallModel() {
   //     }
   // };
   
-  const { jsonOnly, jsxJson } = JsonData()
+  const { jsxJson } = JsonData()
   const dispatch = useDispatch();
   const { adminState } = useCommonState();
   const { staffForm, file, loading, edit_dashboard_teacher, placeholder, placeholder2, edit_classroom_teacher } = adminState
@@ -89,9 +89,10 @@ export function OverallModel() {
   const handleEditDashboardTeacher = (e) => {
     e.preventDefault();
     const newErrors = {};
-    if(!edit_dashboard_teacher.staff_name.trim()) newErrors.staff_name = "Staff Name is required"
+    if(!edit_dashboard_teacher.first_name.trim()) newErrors.first_name = "First Name is required"
+    if(!edit_dashboard_teacher.last_name.trim()) newErrors.last_name = "Last Name is required"
     if(!edit_dashboard_teacher.institute_name.trim()) newErrors.institute_name = "Institute Name is required"
-    if(!edit_dashboard_teacher.subject.trim()) newErrors.subject = "Subject Name is required"
+    // if(!edit_dashboard_teacher.subject.trim()) newErrors.subject = "Subject Name is required"
     if(!edit_dashboard_teacher.contact_no.trim()) newErrors.contact_no = "Contact Number is required"
     if(!edit_dashboard_teacher.email.trim()) newErrors.email = "Email Id is required";
     else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(edit_dashboard_teacher.email)) newErrors.email = "Invalid email"
@@ -110,7 +111,8 @@ export function OverallModel() {
     e.preventDefault();
     const newErrors = {}
 
-    if(!edit_classroom_teacher.staff_name.trim()) newErrors.staff_name = "Staff Name is required"
+    if(!edit_classroom_teacher.first_name.trim()) newErrors.first_name = "First Name is required"
+    if(!edit_classroom_teacher.last_name.trim()) newErrors.last_name = "Last Name is required"
     if(!edit_classroom_teacher.subject_name.trim()) newErrors.subject_name = "Subject Name is required"
     if(!edit_classroom_teacher.contact_no.trim()) newErrors.contact_no = "Contact Number is required"
     if(!edit_classroom_teacher.email.trim()) newErrors.email = "Email Id is required"
@@ -122,7 +124,7 @@ export function OverallModel() {
       return;
     }
 
-    dispatch(handleClassroomTeacherEdit(edit_classroom_teacher, adminState?.teachersTableData))
+    dispatch(handleClassroomTeacherEdit(edit_classroom_teacher, adminState?.classroom_id?.id, adminState?.teachersTableData))
       // .then(dispatch(clearForm()))
   }
 
@@ -145,9 +147,6 @@ export function OverallModel() {
           
           case "edit_classroom_student":
             return <h5 className="fw-bold">Edit Student Data</h5>;
-
-          case "delete_dashboard_teacher":
-            return <h5 className="fw-bold"></h5>;
 
           case "edit_profile":
             return <h5>Edit Profile</h5>;
@@ -380,12 +379,12 @@ export function OverallModel() {
                     type={"button"}
                     className={"btn-outline-secondary px-5"}
                     children={"No"}
-                    clickFunction={() => dispatch(updateModalShow({ show: false, close_btn: true, modal_from: "admin", modal_type: "delete_dashboard_teacher" })) }
+                    clickFunction={() => dispatch(updateModalShow({ show: false })) }
                   />
                   <ButtonComponent
                     type={"button"}
                     className={"btn-danger brand_color px-5 border-0"}
-                    clickFunction={() => dispatch(handleDeleteDashboardTeacher(adminState?.edit_dashboard_teacher.s_no, adminState?.dashboard_teachers_list))}
+                    clickFunction={() => dispatch(handleDeleteDashboardTeacher(adminState?.edit_dashboard_teacher.teacher_id, adminState?.dashboard_teachers_list))}
                     btnDisable={placeholder2}
                     children={
                       placeholder2 ? (
@@ -419,7 +418,7 @@ export function OverallModel() {
                   <ButtonComponent
                     type={"button"}
                     className={"btn-danger brand_color px-5 border-0"}
-                    clickFunction={()=> dispatch(handleDeleteClassroomTeacher(adminState?.edit_classroom_teacher, adminState?.teachersTableData))}
+                    clickFunction={()=> dispatch(handleDeleteClassroomTeacher(adminState?.edit_classroom_teacher, adminState?.classroom_id?.id,adminState?.teachersTableData))}
                     btnDisable={placeholder2}
                     children={
                       placeholder2 ? (
@@ -468,9 +467,45 @@ export function OverallModel() {
                 </div>
               </div>
             )
+            
+            case "delete_classroom":
+              return (
+                <div className="w-100">
+                  <div className="text-center mb-4">
+                    {Icons.delete_model_icon}
+                  </div>
+                  <h5 className="text-center">Are you want to Delete this Classroom </h5>
+                  {Inputfunctions(jsxJson?.delete_classroom_model)}
+                  <div className="d-flex align-items-center justify-content-center gap-3">
+                    <ButtonComponent
+                      type={"button"}
+                      className={"btn-outline-secondary px-5"}
+                      children={"No"}
+                      clickFunction={() => dispatch(updateModalShow({ show: false }))}
+                    />
+                    <ButtonComponent
+                      type={"button"}
+                      className={"btn-danger brand_color px-5 border-0"}
+                      clickFunction={() => dispatch(handleDeleteClassroom(adminState?.delete_classroom_data, adminState?.classroomsJson))}
+                      btnDisable={adminState?.overall_loading.includes("update_classrooms_Json")}
+                      children={
+                        adminState?.overall_loading.includes("update_classrooms_Json")
+                        ?
+                        (
+                          <span className="d-flex align-items-center justify-content-center"> 
+                            <SpinnerComponent />
+                          </span>
+                        )
+                        : 
+                        ("Yes")
+                      }
+                    />
+                  </div>
+                </div>
+              )
 
-          case "edit_profile":
-            return <div className="w-100">
+            case "edit_profile":
+              return <div className="w-100">
                 {Inputfunctions(jsxJson?.admin_profile)}
                 <ButtonComponent 
                   type="button" 
@@ -485,9 +520,10 @@ export function OverallModel() {
                       </span>
                       :
                       ("Submit")
-                  }
+                    }
                 />
             </div>
+
 
           default:
             break;
@@ -505,7 +541,6 @@ export function OverallModel() {
         switch (commonState?.modal?.type) {
           case "":
             return <h5>Home</h5>;
-            break;
 
           default:
             break;

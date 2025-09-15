@@ -7,19 +7,23 @@ import { useDispatch } from "react-redux";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import Icons from "Utils/Icons";
 import { handleUpdateClassroomId } from "../Slices/adminSlice";
-import { handleClassroomChart, handleClassroomOverview, handleGetTeachersTableData } from "../Actions/Admin_action";
+import { handleClassroomChart, handleClassroomOverview } from "../Actions/Admin_action";
 import { useCommonState } from "Components/CustomHooks";
+import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
+import JsonData from "../Utils/JsonData";
 
 const ClassroomDetailsLayout = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const { adminState } = useCommonState()
+    const { jsxJson } = JsonData()
 
     useEffect(() => {
+        let year = new Date().getFullYear()
         dispatch(handleUpdateClassroomId({id}))
         dispatch(handleClassroomOverview({id}))
-        dispatch(handleClassroomChart({id}))
-    }, [id])
+        dispatch(handleClassroomChart({classroom_id: id, year : `${year}`}))
+    }, [id, dispatch])
 
     return (
         <div className="h-100">
@@ -27,7 +31,7 @@ const ClassroomDetailsLayout = () => {
                 <div className="w-100 border-bottom pb-3">
                     <LinkComponent to="/admin_dashboard/classrooms" className="brand-link-color">
                         <span>{Icons.back_button_icon_blue}</span>
-                        <span className="align-middle">{adminState?.classroom_name}</span>
+                        <span className="align-middle">{adminState?.classroom_overview.classroom_name}</span>
                     </LinkComponent>
                 </div>
                 <div className="w-100 row py-3">
@@ -43,8 +47,9 @@ const ClassroomDetailsLayout = () => {
                     </div>
                     <div className="col-8 p-1">
                         <Card className="h-100 border-0 rounded-4 shadow-sm test_conducted_chart_height">
-                            <Card.Header className="bg-transparent border-0 pt-3">
+                            <Card.Header className="bg-transparent border-0 pt-3 d-flex align-items-start justify-content-between">
                                 <h6 className="mb-2">Test Conducted</h6>
+                                {Inputfunctions(jsxJson?.classroom_chart_months)}
                             </Card.Header>
                             <Card.Body>
                                 <TestPerformanceChart data={adminState?.classroom_chart_data} loading={adminState?.overall_loading} />

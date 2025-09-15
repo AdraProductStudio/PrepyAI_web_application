@@ -1,7 +1,4 @@
 import { FaPlus } from "react-icons/fa";
-import { CiEdit } from "react-icons/ci";
-import { MdDelete } from "react-icons/md";
-
 import { CiSearch } from "react-icons/ci";
 import Image from "Utils/Image";
 import { Card, Col, ProgressBar, Row } from "react-bootstrap";
@@ -231,18 +228,18 @@ function OrganisationDashboard() {
                       <td className="text-center border-bottom-non">
                         {idx + 1}
                       </td>
-                      <td className="text-center">{org.name}</td>
-                      <td className="text-center">{org.institute_name}</td>
-                      <td className="text-center">{org.role}</td>
-                      <td className="text-center">{org.contact_no}</td>
-                      <td className="text-center">{org.email}</td>
-                      <td className="text-center">{org.location}</td>
+                      <td className="text-center">{org?.name}</td>
+                      <td className="text-center">{org?.institute_name}</td>
+                      <td className="text-center">{org?.role}</td>
+                      <td className="text-center">{org?.contact_no}</td>
+                      <td className="text-center">{org?.email}</td>
+                      <td className="text-center">{org?.location}</td>
                       <td className="text-center">
                         {/* <button type="button" className="btn">
                           <CiEdit className=" me-1 fs-5 text-primary" />
                         </button> */}
                         <button type="button" className="btn" onClick={() => dispatch(deleteAdmin({ admin_id: org.id }))}>
-                          <MdDelete className="fs-5 text-danger" />
+                          {Icons.delete_icons}
                         </button>
                       </td>
                     </tr>

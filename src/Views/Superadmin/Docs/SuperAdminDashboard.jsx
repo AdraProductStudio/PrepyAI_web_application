@@ -1,8 +1,5 @@
 import { FaPlus } from "react-icons/fa";
-import { CiEdit } from "react-icons/ci";
-import { MdDelete } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
-import Image from "Utils/Image";
 import Icons from "Utils/Icons";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, Tooltip } from "recharts";
 import { Card, Col, Row } from "react-bootstrap";
@@ -10,7 +7,6 @@ import ReactPaginate from "react-paginate";
 import { useEffect } from "react";
 import ReactDropdownSelect from "Components/Input/ReactDropdownSelect";
 import Input from "Components/Input/Input";
-import Img from "Components/Img/Img";
 import ButtonComponent from "Components/Button/Button";
 import JsonData from "../Utils/JsonData";
 import {useCommonState, useDispatch } from "Components/CustomHooks";
@@ -49,6 +45,27 @@ function SuperAdminDashboard() {
   }
 
   const monthlyGrowthDropDownOptions = monthlyReports?.year?.map(year => ({ id: year, name: year.toString() }))
+
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div style={{
+          background: "linear-gradient(135deg, #ec008c, #fc6767)",
+          color: "#fff",
+          padding: "8px 12px",
+          borderRadius: "12px",
+          boxShadow: "0 4px 8px rgba(0,0,0,0.2)"
+        }}>
+          <p style={{ fontSize: "12px", margin: 0 }}>{label}</p>
+          <p style={{ fontSize: "14px", fontWeight: "bold", margin: 0 }}>
+            Total: {payload[0].value}
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
 
   return (
     <div className="h-100">
@@ -134,7 +151,11 @@ function SuperAdminDashboard() {
                       axisLine={false}
                       tickLine={false}
                     />
-                    <Tooltip cursor={{ fill: "transparent" }} />
+                    
+                    <Tooltip
+                      cursor={{ fill: "transparent" }}
+                      content={<CustomTooltip />}
+                    />
 
                     <Bar
                       dataKey={() => 100}
@@ -272,12 +293,11 @@ function SuperAdminDashboard() {
             </section>
 
             <section
-              className="mt-2 custom-scroll"
+              className="mt-2 custom-scroll p-3"
               style={{ flex: 1, overflow: "auto", width: "100%" }}
             >
               <table className="table table-bordered mb-0 mt-0">
-                <thead style={{ position: "sticky", top: "0px", bottom: "0px" }}
-                >
+                <thead>
                   <tr>
                     {jsonOnly?.tableHeadings.map((title, idx) => (
                       <th key={idx} className="text-center py-3">
@@ -294,14 +314,14 @@ function SuperAdminDashboard() {
                       <td className="text-center border-bottom-non">
                         {idx + 1}
                       </td>
-                      <td className="text-center">{org.organization_name}</td>
-                      <td className="text-center">{org.name}</td>
-                      <td className="text-center">{org.contact_no}</td>
-                      <td className="text-center">{org.email}</td>
-                      <td className="text-center">{org.location}</td>
-                      <td className="text-center">{org.subscription_plan}</td>
-                      <td className="text-center">{org.created_date}</td>
-                      <td className="text-center">{org.subscription_duration}</td>
+                      <td className="text-center">{org?.organization_name}</td>
+                      <td className="text-center">{org?.name}</td>
+                      <td className="text-center">{org?.contact_no}</td>
+                      <td className="text-center">{org?.email}</td>
+                      <td className="text-center">{org?.location}</td>
+                      <td className="text-center">{org?.subscription_plan}</td>
+                      <td className="text-center">{org?.created_date}</td>
+                      <td className="text-center">{org?.subscription_duration}</td>
                       <td className="text-center">
                         {/* <button type="button" className="btn" onClick={()=>console.log('edit',org.id)}>
                           <CiEdit className=" me-1 fs-5 text-primary" />
@@ -313,7 +333,7 @@ function SuperAdminDashboard() {
                           dispatch(selectOrgToDelete({org_id:org.id,name:org.organization_name}))
                         }}
                         >
-                          <MdDelete className="fs-5 text-danger" />
+                          {Icons.delete_icons}
                         </button>
                       </td>
                     </tr>

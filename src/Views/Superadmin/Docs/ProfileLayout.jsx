@@ -47,7 +47,7 @@ const ProfileLayout = ({ navItems }) => {
           </ul>
 
           <Card.Body className="d-flex gap-3">
-            <Card className=" h-75  pt-2 d-none d-xl-block col-xl-1 d-none d-xl-block shadow rounded-4" style={{width: "20rem"}}>
+            <Card className="pt-2 d-none d-xl-block col-xl-1 d-none d-xl-block shadow rounded-4" style={{width: "20rem", height: "25rem"}}>
               <div className="d-flex justify-content-start align-items-center gap-5 p-1 p-xxl-2 ps-xxl-4 border-bottom">
                 <Img
                   src={Images?.default_prfile_pic}
@@ -63,7 +63,7 @@ const ProfileLayout = ({ navItems }) => {
                 </div>
               </div>
 
-              <ul className="navbar-nav mt-3 mt-4">
+              <ul className="navbar-nav mt-3">
                 {navItems?.map((item) => (
                   <li
                     key={item.name}

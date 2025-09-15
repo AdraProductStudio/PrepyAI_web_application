@@ -38,7 +38,7 @@ const CustomTooltip = ({ active, payload }) => {
                                 marginRight: 6,
                             }}
                         ></span>
-                        {entry.name}: {entry.value} Hr
+                        {entry.name}: {entry.value} %
                     </div>
                 ))}
             </div>
@@ -50,11 +50,11 @@ const CustomTooltip = ({ active, payload }) => {
 
 export default function TestPerformanceChart({data, loading}) {
     return (
-        <div>
+        <div className="position-relative h-100">
             {
                 loading.includes("classroom_chart_data")
                 ?
-                    <div className="start-50 top-50">
+                    <div className="start-50 top-50 position-absolute translate-middle">
                         <SpinnerComponent />
                     </div>
                 :
@@ -65,7 +65,7 @@ export default function TestPerformanceChart({data, loading}) {
                             margin={{ top: 20, right: 30, left: 0, bottom: 20 }}
                         >
                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                            <XAxis dataKey="name" tick={{ fontSize: 14 }} />
+                            <XAxis dataKey="month" tick={{ fontSize: 14 }} />
                             <Tooltip content={<CustomTooltip />} cursor={{ fill: "transparent" }} />
 
                             <Bar
