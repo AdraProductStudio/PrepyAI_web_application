@@ -1107,6 +1107,7 @@ td {
 
 .react-dropdown-select {
   border: 1px solid #EC008C !important;
+  word-break: break-all;
 }
 
 
