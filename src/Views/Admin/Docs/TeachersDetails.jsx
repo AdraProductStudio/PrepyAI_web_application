@@ -16,7 +16,7 @@ const TeachersDetails = () => {
 
     useEffect(() => {
         dispatch(handleGetTeachersTableData({id}))
-    }, [id])
+    }, [id, dispatch])
 
     return (
         <div className="table-responsive">
@@ -41,7 +41,7 @@ const TeachersDetails = () => {
                                 (adminState?.teachersTableData.map((row, index) => (
                                     <tr key={index}>
                                         <td className="text-center">{index + 1}</td>
-                                        <td className="text-center">{row?.staff_name}</td>
+                                        <td className="text-center">{row?.first_name} {row?.last_name}</td>
                                         <td className="text-center">{row?.subject_name}</td>
                                         <td className="text-center">{row?.contact_no}</td>
                                         <td className="text-center">{row?.email}</td>

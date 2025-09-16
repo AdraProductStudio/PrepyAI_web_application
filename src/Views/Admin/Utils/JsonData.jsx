@@ -3,6 +3,7 @@ import { useCommonState } from 'Components/CustomHooks';
 import Icons from 'Utils/Icons';
 import { clearFieldError, edit_profile_Inputs, onChangeClassroomForm, onChangeEditClassroomStudent, onChangeEditClassroomTeacher, onChangeEditDashboardTeacher, onChangeStaffForm, updateSettingsInputs } from '../Slices/adminSlice';
 import { useDispatch } from 'react-redux';
+import { getDashboardChartData, handleClassroomChart } from '../Actions/Admin_action';
 
 const JsonData = () => {
     //main selectors
@@ -17,6 +18,9 @@ const JsonData = () => {
     const selectedTeachers = (adminState?.classroomForm.teachers || [])
     .map(id => teacherOptions.find(opt => opt.id?.toString() === id?.toString()))
     .filter(Boolean);
+
+    const dashboardMonthlyGrowthDropDownOptions = adminState?.dashboard_chart_years.map(item => ({ id: item.years, year: item.years }))
+    const classroomMonthlyGrowthDropDownOptions = adminState?.classroom_chart_years.map(item => ({ id: item.year, year: item.year }))
 
     const jsonOnly = {
         sidebar_data: [
@@ -33,7 +37,7 @@ const JsonData = () => {
                 route: '/admin_dashboard/classrooms'
             }
         ],
-        staff_table_headers: ['S.No', 'Staff Name', 'Institute Name', 'Subject', 'Contact No', 'Email', 'Qualification', 'Action'],
+        staff_table_headers: ['S.No', 'Staff Name', 'Institute Name', 'Contact No', 'Email', 'Qualification', 'Action'],
 
         card_data : [
             { icon: Icons.student_dashboard_to_no_stud_icon, count: adminState?.dashboard_overview.total_teachers, description: "Total No.of Teacher" },
@@ -62,14 +66,26 @@ const JsonData = () => {
             {
                 category: "input",
                 type: "text",
-                name: "Staff Name",
+                name: "First Name",
                 labelClassName: "input-colur text-primary-emphasis",
-                value: adminState?.edit_dashboard_teacher.staff_name || '',
+                value: adminState?.edit_dashboard_teacher.first_name || '',
                 change: (e) => {
-                    dispatch(onChangeEditDashboardTeacher({field: "staff_name", data: e.target.value}))
-                    dispatch(clearFieldError("staff_name"))
+                    dispatch(onChangeEditDashboardTeacher({field: "first_name", data: e.target.value}))
+                    dispatch(clearFieldError("first_name"))
                 },
-                Err: adminState?.errors.staff_name || ''
+                Err: adminState?.errors.first_name || ''
+            },
+            {
+                category: "input",
+                type: "text",
+                name: "Last Name",
+                labelClassName: "input-colur text-primary-emphasis",
+                value: adminState?.edit_dashboard_teacher.last_name || '',
+                change: (e) => {
+                    dispatch(onChangeEditDashboardTeacher({field: "last_name", data: e.target.value}))
+                    dispatch(clearFieldError("last_name"))
+                },
+                Err: adminState?.errors.last_name || ''
             },
             {
                 category: "input",
@@ -83,18 +99,18 @@ const JsonData = () => {
                 },
                 Err: adminState?.errors.institute_name || ''
             },
-            {
-                category: "input",
-                type: "text",
-                name: "Subject",
-                labelClassName: "input-colur text-primary-emphasis mt-3",
-                value: adminState?.edit_dashboard_teacher.subject || '',
-                change: (e) => {
-                    dispatch(onChangeEditDashboardTeacher({field: "subject", data: e.target.value}))
-                    dispatch(clearFieldError('subject'))
-                },
-                Err: adminState?.errors.subject || ''
-            },
+            // {
+            //     category: "input",
+            //     type: "text",
+            //     name: "Subject",
+            //     labelClassName: "input-colur text-primary-emphasis mt-3",
+            //     value: adminState?.edit_dashboard_teacher.subject || '',
+            //     change: (e) => {
+            //         dispatch(onChangeEditDashboardTeacher({field: "subject", data: e.target.value}))
+            //         dispatch(clearFieldError('subject'))
+            //     },
+            //     Err: adminState?.errors.subject || ''
+            // },
             {
                 category: "input",
                 type: "number",
@@ -112,6 +128,7 @@ const JsonData = () => {
                 type: "email",
                 name: "Email",
                 labelClassName: "input-colur text-primary-emphasis mt-3",
+                disabled: true,
                 value: adminState?.edit_dashboard_teacher.email || '',
                 change: (e) => {
                     dispatch(onChangeEditDashboardTeacher({field: "email", data: e.target.value}))
@@ -137,14 +154,26 @@ const JsonData = () => {
             {
                 category: "input",
                 type: "text",
-                name: "Staff Name",
+                name: "First Name",
                 labelClassName: "input-colur text-primary-emphasis",
-                value: adminState?.edit_classroom_teacher.staff_name || '',
+                value: adminState?.edit_classroom_teacher.first_name || '',
                 change: (e) => {
-                    dispatch(onChangeEditClassroomTeacher({field: "staff_name", data: e.target.value}))
-                    dispatch(clearFieldError('staff_name'))
+                    dispatch(onChangeEditClassroomTeacher({field: "first_name", data: e.target.value}))
+                    dispatch(clearFieldError('first_name'))
                 },
-                Err: adminState?.errors.staff_name || ''
+                Err: adminState?.errors.first_name || ''
+            },
+            {
+                category: "input",
+                type: "text",
+                name: "Last Name",
+                labelClassName: "input-colur text-primary-emphasis",
+                value: adminState?.edit_classroom_teacher.last_name || '',
+                change: (e) => {
+                    dispatch(onChangeEditClassroomTeacher({field: "last_name", data: e.target.value}))
+                    dispatch(clearFieldError('last_name'))
+                },
+                Err: adminState?.errors.last_name || ''
             },
             {
                 category: "input",
@@ -175,6 +204,7 @@ const JsonData = () => {
                 type: "email",
                 name: "Email",
                 labelClassName: "input-colur text-primary-emphasis mt-3",
+                disabled: true,
                 value: adminState?.edit_classroom_teacher.email || '',
                 change: (e) => {
                     dispatch(onChangeEditClassroomTeacher({field: "email", data: e.target.value}))
@@ -256,7 +286,7 @@ const JsonData = () => {
         delete_dashboard_teacher_model : [
             {
                 category: "heading",
-                title: `${adminState?.edit_dashboard_teacher.staff_name} ?` || '',
+                title: `${adminState?.edit_dashboard_teacher.first_name} ${adminState?.edit_dashboard_teacher.last_name} ?` || '',
                 divClassName: "text-center mb-4"
             },
         ],
@@ -264,7 +294,7 @@ const JsonData = () => {
         delete_classroom_teacher_model : [
             {
                 category: "heading",
-                title: `${adminState?.edit_classroom_teacher.staff_name} ?` || '',
+                title: `${adminState?.edit_classroom_teacher.first_name} ${adminState?.edit_classroom_teacher.last_name} ?` || '',
                 divClassName: "text-center mb-4"
             },
         ],
@@ -273,6 +303,14 @@ const JsonData = () => {
             {
                 category: "heading",
                 title: `${adminState?.edit_classroom_student.student_name} ?` || '',
+                divClassName: "text-center mb-4"
+            },
+        ],
+
+        delete_classroom_model : [
+            {
+                category: "heading",
+                title: `${adminState?.delete_classroom_data.classroom_name} ?` || '',
                 divClassName: "text-center mb-4"
             },
         ],
@@ -351,11 +389,6 @@ const JsonData = () => {
                 type: "react_dropdown_select",
                 divClassName: "mt-3",
                 labelClassName: "input-colur text-primary-emphasis",
-                // options:[
-                //     {label: "teacher1", value: 1},
-                //     {label: "teacher2", value: 2},
-                //     {label: "teacher3", value: 3}
-                // ],
                 options: adminState?.create_classroom_modal_teachers_list || [],
                 labelField: "teacher_name",
                 valueField: "id",
@@ -518,7 +551,6 @@ const JsonData = () => {
                 isMandatory: false,
                 Err: commonState?.app_data?.validated && !adminState?.editProfileInputs?.email_id ? "Email required" : null,
                 disabled: true,
-                className: "bg-white"
             },
             {
                 name: "Phone Number",
@@ -549,8 +581,47 @@ const JsonData = () => {
                 isMandatory: false,
                 Err: commonState?.app_data?.validated && !adminState?.editProfileInputs?.address ? "Phone Number required" : null
             },
-
         ],
+
+        dashboard_chart_months: [
+            {
+                category: "select",
+                type: "react_dropdown_select",
+                placeholder: "",
+                className: "custom-dropdown",
+                isMandatory: false,
+                labelClassName: "text-primary-emphasis",
+                options: dashboardMonthlyGrowthDropDownOptions || [],
+                labelField: "year",
+                valueField: "id",
+                multi: false,
+                value: [{id: 0, year: "year"}],
+                change: (values) => { 
+                    const selectedId = values?.[0]?.id
+                    dispatch(getDashboardChartData({year: selectedId}))
+                },
+            }
+        ],
+
+        classroom_chart_months: [
+            {
+                category: "select",
+                type: "react_dropdown_select",
+                placeholder: "",
+                className: "custom-dropdown",
+                isMandatory: false,
+                labelClassName: "text-primary-emphasis",
+                options: classroomMonthlyGrowthDropDownOptions || [],
+                labelField: "year",
+                valueField: "id",
+                multi: false,
+                value: [{id: 0, year: "year"}],
+                change: (values) => { 
+                    const selectedId = values?.[0]?.id
+                    dispatch(handleClassroomChart({classroom_id: adminState?.classroom_id?.id, year: selectedId}))
+                },
+            }
+        ]
     }
 
     return {

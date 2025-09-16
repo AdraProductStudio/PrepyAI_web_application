@@ -38,20 +38,20 @@ const PerformanceTable = ({ studentsData, testType }) => {
             if (!std?.student_name) return std;
 
             return {
-                name: std.student_name,
-                test_results: std.test_results,
-                greenBox: std.test_results
-                    .filter((t) => t.status === "exemplar")
-                    .map((t) => t.testDate),
-                yellowBox: std.test_results
-                    .filter((t) => t.status === "developing")
-                    .map((t) => t.testDate),
-                redBox: std.test_results
-                    .filter(((t) => t.status === "emergent"))
-                    .map((t) => t.testDate),
-                grayBox: std.test_results
-                    .filter((t) => t.status === "not_attempted")
-                    .map((t) => t.testDate)
+                name: std?.student_name,
+                test_results: std?.test_results,
+                greenBox: std?.test_results
+                    ?.filter((t) => t?.status === "exemplar")
+                    ?.map((t) => t?.testDate),
+                yellowBox: std?.test_results
+                    ?.filter((t) => t?.status === "developing")
+                    ?.map((t) => t?.testDate),
+                redBox: std?.test_results
+                    ?.filter(((t) => t?.status === "emergent"))
+                    ?.map((t) => t?.testDate),
+                grayBox: std?.test_results
+                    ?.filter((t) => t?.status === "not_attempted")
+                    ?.map((t) => t?.testDate)
             }
         })
 
@@ -140,10 +140,10 @@ const PerformanceTable = ({ studentsData, testType }) => {
                                                 </td>
                                                 {monthDates?.map((date) => {
                                                     let bg = "#E3F3FF";
-                                                    if (colorInfo?.greenBox.includes(date.date)) bg = "#64DD6C";
-                                                    else if (colorInfo?.yellowBox.includes(date.date)) bg = "#E0E96C";
-                                                    else if (colorInfo?.redBox.includes(date.date)) bg = "#FF5C5C";
-                                                    else if (colorInfo?.grayBox.includes(date.date)) bg = "#FF8383";
+                                                    if (colorInfo?.greenBox?.includes(date.date)) bg = "#64DD6C";
+                                                    else if (colorInfo?.yellowBox?.includes(date.date)) bg = "#E0E96C";
+                                                    else if (colorInfo?.redBox?.includes(date.date)) bg = "#FF5C5C";
+                                                    else if (colorInfo?.grayBox?.includes(date.date)) bg = "#FF8383";
 
                                                     return (
                                                         <td key={date.date} className="text-center p-1 ">

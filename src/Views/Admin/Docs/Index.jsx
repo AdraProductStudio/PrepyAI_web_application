@@ -7,23 +7,24 @@ import { SearchComponent } from "ResuableFunctions/SearchFun";
 import Icons from "Utils/Icons";
 import JsonData from "Views/Admin/Utils/JsonData";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
-import { OverallModel } from "../Utils/OverallModal";
 import { getDashboardChartData, getDashboardTeachersList, handleDashboardOverview } from "../Actions/Admin_action";
 import { useEffect } from "react";
 import { useCommonState } from "Components/CustomHooks";
 import { updateEditDashboardTeacher } from "../Slices/adminSlice";
 import SpinnerComponent from "Components/Spinner/Spinner";
+import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 
 const AdminDashboard = () => {
     const dispatch = useDispatch();
-    const { jsonOnly } = JsonData();
-    const { adminState } = useCommonState()
+    const { jsonOnly, jsxJson } = JsonData();
+    const { adminState, commonState } = useCommonState()
     
     useEffect(() => {
+        let currentYear = new Date().getFullYear();
         dispatch(handleDashboardOverview())
+        dispatch(getDashboardChartData({year: `${currentYear}`}))
         dispatch(getDashboardTeachersList())
-        dispatch(getDashboardChartData())
-    }, [])
+    }, [dispatch])
 
     return (
         <>
@@ -37,9 +38,12 @@ const AdminDashboard = () => {
                 </div>
                 <div className="col-7 p-1">
                     <Card className="h-100 border-0 rounded-4 shadow-sm test_conducted_chart_height">
-                        <Card.Header className="bg-transparent border-bottom pt-3">
-                            <h6 className="mb-2">Test Conducted</h6>
-                            <p className="fs-15 text-secondary mb-0">110 Test</p>
+                        <Card.Header className="bg-transparent border-bottom pt-3 d-flex align-items-center justify-content-between">
+                            <div>
+                                <h6 className="mb-2">Test Conducted</h6>
+                                <p className="fs-15 text-secondary mb-0">110 Test</p>
+                            </div>
+                            {Inputfunctions(jsxJson?.dashboard_chart_months)}
                         </Card.Header>
                         <Card.Body>
                             <TestConductedChart data = {adminState?.dashboard_chart_data}/>
@@ -55,17 +59,17 @@ const AdminDashboard = () => {
                                     <h6 className="mb-2">Teachers</h6>
                                     <p className="fs-15 text-secondary mb-0">25 Teachers</p>
                                 </div>
-                                <div className="col-6 row justify-content-end">
+                                <div className="col-4 row justify-content-end">
                                     <div className="col px-1">
-                                        <SearchComponent className="px-5 py-2" placeholder="Search" onClick={() => alert("hii")} />
+                                        <SearchComponent className="px-5 py-2" placeholder="Search" onClick={() => dispatch(getDashboardTeachersList(commonState?.search?.value)) } />
                                     </div>
-                                    <div className="col px-1">
+                                    {/* <div className="col px-1">
                                         <ButtonComponent
                                             type="button"
                                             className="btn-transparent w-100 border py-2"
                                             buttonName="Filter"
                                         />
-                                    </div>
+                                    </div> */}
                                     <div className="col px-1">
                                         <ButtonComponent 
                                             type="button" 
@@ -99,11 +103,11 @@ const AdminDashboard = () => {
                                             adminState?.dashboard_teachers_list.length > 0 
                                                 ?
                                                 adminState?.dashboard_teachers_list?.map((row, index) => (
-                                                    <tr key={index}>
+                                                    <tr key={row?.teacher_id}>
                                                         <td>{index + 1}</td>
-                                                        <td>{row?.staff_name}</td>
+                                                        <td>{row?.first_name} {row?.last_name}</td>
                                                         <td>{row?.institute_name}</td>
-                                                        <td>{row?.subject}</td>
+                                                        {/* <td>{row?.subject}</td> */}
                                                         <td>{row?.contact_no}</td>
                                                         <td>{row?.email}</td>
                                                         <td>{row?.qualification}</td>

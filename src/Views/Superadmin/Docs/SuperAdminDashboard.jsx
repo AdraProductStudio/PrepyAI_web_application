@@ -68,15 +68,12 @@ function SuperAdminDashboard() {
                 </div>
                 :
                 <React.Fragment>
-                  <div className="d-flex align-items-center">
-                    <Card.Text
-                      className="text-primary-emphasis fw-bold"
-                      style={{ flexBasis: "90%" }}
-                    >
+                  <div className="d-flex align-items-start justify-content-between">
+                    <Card.Text className="text-primary-emphasis fw-bold">
                       Monthly Growth
                     </Card.Text>
 
-                    <div className="mb-3" style={{ flexBasis: "20%", minWidth: "85px" }}  >
+                    <div className="mb-3" >
                       <ReactDropdownSelect
                         options={monthlyGrowthDropDownOptions}
                         value={[monthlyGrowthDropDownOptions?.[0] || { id: 0, name: "Year" }]}
@@ -262,7 +259,7 @@ function SuperAdminDashboard() {
                 <Card.Body className="mt-2 custom-scroll" style={{ flex: 1, overflow: "auto", width: "100%" }} >
                   {superadminState?.organizationDetails?.total_count ?
                     <table className="table table-bordered mb-0 mt-0">
-                      <thead style={{ position: "sticky", top: "0px", bottom: "0px" }}>
+                      <thead>
                         <tr>
                           {jsonOnly?.tableHeadings.map((title, idx) => (
                             <th key={idx} className="text-center py-3">

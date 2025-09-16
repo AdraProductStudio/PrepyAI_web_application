@@ -31,7 +31,7 @@ const CountShowingCard = ({
                     <div className="mb-3">
                         <h6 className="text-muted mb-0">{data?.description}</h6>
                     </div>
-                    <h5>{data?.count}</h5>
+                    <h5>{data?.count > 0 ? data?.count : 0 }</h5>
                 </div>
 
             default:
