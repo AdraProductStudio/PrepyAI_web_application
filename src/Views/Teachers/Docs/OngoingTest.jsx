@@ -11,12 +11,12 @@ import Image from "Utils/Image";
 const OngoingTest = () => {
 
     const { teachersState } = useCommonState();
-    const { class_id } = useParams();
+    const { class_id,subject_id } = useParams();
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (class_id) {
-            dispatch(getTestRecords({ classroom_id:class_id, type: "ongoing" }));
+        if (subject_id) {
+            dispatch(getTestRecords({ subject_id, type: "ongoing" }));
         }
 
     }, [])

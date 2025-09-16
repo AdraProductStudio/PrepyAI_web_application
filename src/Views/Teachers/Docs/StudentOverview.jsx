@@ -41,6 +41,8 @@ const StudentOverview = () => {
 const spendingHoursGlow = teachersState?.teacher_GetStudentOverviewSpendingHours?.glow
   const filteredMonthly_Perfomance =
     overallPerfomanceData?.data[0]?.monthly_performance;
+    const filteredMonthly_Perfomance_status =
+      overallPerfomanceData?.data[0]?.avg_status;
   const currentSubject =
     teachersState?.teacher_Current_perfomance_history_subject?.data
       ?.subject_id &&
@@ -77,6 +79,17 @@ const spendingHoursGlow = teachersState?.teacher_GetStudentOverviewSpendingHours
         return "/teachers_dashboard/students_details";
       default:
         return "";
+    }
+  }
+
+  function dynamicColor(status){
+    switch(status){
+      case "Emergent":
+        return "#4B3CFA"
+      case "Developing":
+        return "#45D655"
+      case "Exemplar":
+        return "#EC008C"
     }
   }
 
@@ -126,7 +139,7 @@ const spendingHoursGlow = teachersState?.teacher_GetStudentOverviewSpendingHours
       <div className="border-bottom pb-3 mt-3">
         <Link to={dynamicBackto()} className="brand-link-color">
           {Icons.back_button_icon_blue}
-          <span className="align-middle"> Student Overview</span>
+          <span className="align-middle"> Students List</span>
         </Link>
       </div>
 
@@ -170,12 +183,12 @@ const spendingHoursGlow = teachersState?.teacher_GetStudentOverviewSpendingHours
                             value={filteredMonthly_Perfomance}
                             data={[
                               {
-                                name: "Emergent",
+                                name: filteredMonthly_Perfomance_status,
                                 value: 100,
-                                color: "#4CD961",
+                                color: dynamicColor(filteredMonthly_Perfomance_status),
                               },
                             ]}
-                            label="Emergent"
+                            label={filteredMonthly_Perfomance_status}
                             needleColor="#FF914D"
                           />
                         </Card.Body>

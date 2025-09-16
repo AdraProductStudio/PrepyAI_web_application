@@ -1,5 +1,6 @@
 import { type } from "@testing-library/user-event/dist/type"
 import axiosInstance from "Services/axiosInstance"
+import { updateModalShow } from "Views/Common/Slices/Common_slice"
 import {
     create_test_onchange,
     delete_attachment_failure,
@@ -110,7 +111,7 @@ export const get_test_questions = (test_id) => async (dispatch) => {
 
 //delete attachments
 
-export const deleteAttachment = (attachment_id) => async (dispatch) => {
+export const deleteAttachment = (attachment_id,subject_id) => async (dispatch) => {
     try {
         dispatch(delete_attachment_request({ type: "reques" }));
 
@@ -118,6 +119,8 @@ export const deleteAttachment = (attachment_id) => async (dispatch) => {
 
         if (response.data?.error_code === 0) {
             dispatch(delete_attachment_success());
+            dispatch(updateModalShow({ show: false}))
+            dispatch(handleGetSubjectAttachments({subject_id}))
         } else {
             dispatch(
                 delete_attachment_failure(response.data?.message || "Delete failed")

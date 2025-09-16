@@ -1,13 +1,17 @@
 import ButtonComponent from "Components/Button/Button";
 import { Card } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { encryptData } from "Security/Crypto/Crypto";
 import Icons from "Utils/Icons";
+import { updateModalShow } from "Views/Common/Slices/Common_slice";
+import { deleteUpcomingTest } from "Views/Teachers/Actions/teacherAction";
 
 const TestDisplayCard = ({
     data = {}
 
 }) => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const { class_id, subject_id } = useParams();
 
@@ -25,14 +29,18 @@ const TestDisplayCard = ({
     }
     function ongoingStatus(status) {
         switch (status) {
-            case "Completed":
+            case "completed":
                 return <div className="test_completed">
                     Completed
                 </div>
 
-            case "Not Completed":
+            case "not completed":
                 return <div className="test_not_completed">
                     Not Completed
+                </div>
+            case "ongoing":
+                return <div className="test_ongoing">
+                    Ongoing
                 </div>
 
             default:
@@ -58,14 +66,14 @@ const TestDisplayCard = ({
                             </div>
                         </div>
                     </div>
-                    <div className="cursor-pointer text-success mt-2" >
-                        {ongoingStatus("Completed")}
+                   <div className="cursor-pointer text-success mt-2" >
+                        {ongoingStatus(data?.status)}
                     </div>
-                    <div
+                    {/* <div
                         className="cursor-pointer text-danger mt-2"
-                        onClick={() => handleShowTable("NotCompleted")}>
-                        {ongoingStatus("NotCompleted")}
-                    </div>
+                        onClick={() => handleShowTable("not_completed")}>
+                        {ongoingStatus("not_completed")}
+                    </div> */}
                 </div>
 
             case /test\/completed_test/.test(path):
@@ -78,24 +86,53 @@ const TestDisplayCard = ({
                 </div>
 
             case /test/.test(path):
-                return <div className="p-2">
+                return (
+                  <div className="p-2">
                     <div className="w-100 row">
-                        <div className="col-8">
-                            <h6 className="">{data?.test_name || 'heading'}</h6>
-                            <p className="fs-13 text-secondary mb-1">{data?.test_date || ''} | {data?.test_time || ''}</p>
-                            <p className="fs-13 text-secondary mb-1">{data?.mode}</p>
+                      <div className="col-8">
+                        <h6 className="">{data?.test_name || "heading"}</h6>
+                        <p className="fs-13 text-secondary mb-1">
+                          {data?.test_date || ""} | {data?.test_time || ""}
+                        </p>
+                        <p className="fs-13 text-secondary mb-1">
+                          {data?.mode}
+                        </p>
+                      </div>
+                      <div className="col-4">
+                        <div className="col-12 text-end">
+                          <ButtonComponent
+                            type="button"
+                            className="bg-transparent"
+                            buttonName={Icons.delete_icons}
+                            clickFunction={() => {
+                              dispatch(
+                                updateModalShow({
+                                  show: true,
+                                  close_btn: true,
+                                  modal_from: "techaersdeletemodal",
+                                  modal_type: "techaersdeletemodal",
+                                  data: () =>
+                                    dispatch(
+                                      deleteUpcomingTest({id:
+                                        data?.test_id,
+                                        subject_id,
+                                        classroom_id:class_id,
+                                        status:data?.status,
+                                      })
+                                    ),
+                                })
+                              );
+                            }}
+                          />
                         </div>
-                        <div className="col-4">
-                            <div className="col-12 text-end">
-                                <ButtonComponent type="button" className="bg-transparent" buttonName={Icons.delete_icons} />
-                            </div>
-                            <div className="upcoming_card_time">
-                                {Icons.upcoming_card_clock_icon}
-                                30 mins
-                            </div>
+                        <div className="upcoming_card_time">
+                          {Icons.upcoming_card_clock_icon}
+                          30 mins
                         </div>
+                      </div>
                     </div>
-                </div>
+                  </div>
+                );
 
             default:
                 return null
