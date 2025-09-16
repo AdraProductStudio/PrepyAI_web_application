@@ -91,7 +91,8 @@ const TeacherSlice = createSlice({
             summary: {},
             test_status: "start",
             overall_levels: [],
-            performance: ""
+            performance: "",
+            bookmarks_loading:false
 
         },
         placeholder: false
@@ -422,6 +423,42 @@ const TeacherSlice = createSlice({
                 state.generate_question[key] = value
             })
         },
+        get_bookmarks(state,action){
+            const  {type ,data} = action.payload
+            switch(type){
+                case "request":
+                    state.generate_question.bookmarks_loading = true
+                    break;
+                case "response":
+                    state.generate_question.bookmarks_loading = false
+                    break;
+                case "failure":
+                    state.generate_question.bookmarks_loading = false
+                    break
+            }
+        },
+        update_generate_questions(state,action){
+            const {type,data,type_of_question} = action?.payload
+            switch(type){
+                case "request":
+                    state.generate_question.loading = true
+                    state.generate_question.test_status = ""
+                    break;
+                case "response":
+                    state.generate_question.loading = false
+                    state.generate_question.test_status = "generated"
+                    if(type_of_question == "mcq"){
+                        state.generate_question.mcq_questions = data
+                    }else if(type_of_question == "long_answer"){
+                        state.generate_question.long_questions = data
+                    }
+                    break;
+                case "failure":
+                    state.generate_question.loading = false
+                    break;
+            }
+
+        },
         updateGenerateMcqQuestions(state, action) {
             state.generate_question.mcq_questions = action.payload
         },
@@ -476,6 +513,37 @@ const TeacherSlice = createSlice({
                 }
                 return q;
             })
+        },
+        submit_test(state,action){
+            const {type,data} = action.payload
+            switch(type){
+                case "request":
+                   state.generate_question.loading = true
+                    break;
+                case "response":
+                    state.generate_question.loading = false
+                    state.generate_question.test_status = "submitted"
+                    break;
+                case "failure":
+                    state.generate_question.loading = false
+                    state.generate_question.test_status = "generated"
+                    break;
+            }
+        },
+        convert_audio_to_text(state,action){
+            const {type,data} = action.payload
+            switch(type){
+                case "request":
+                   state.generate_question.recording = true
+                    break;
+                case "response":
+                    state.generate_question.recording = false
+                    break;
+                case "failure":
+                    state.generate_question.recording = false
+                    break;
+            }
+
         },
         updatePersonalInfoInputs: (state, action) => {
             if (!action.payload) return
@@ -568,7 +636,7 @@ export const {
     updatePersonalInfoInputs, updateSettingsInputs, resetSettingsInputs, editProfileInputs, updateProfileEditing,
     updateGenerateQuestionFields, updateGenerateMcqQuestions, updateGenerateLongQuestions,
     updateMcqQuestionAnswer, updateLongQuestionAnswerValue, updateLongQuestionAnswer, updateGenerateQuestionCanvas,
-    handlechangePassword
+    handlechangePassword,get_bookmarks,update_generate_questions,submit_test,convert_audio_to_text
 
 } = actions;
 

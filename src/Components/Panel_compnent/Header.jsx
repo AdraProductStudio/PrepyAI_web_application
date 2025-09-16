@@ -26,7 +26,7 @@ const Header = ({
 
         <div className="col d-inline-flex flex-wrap justify-content-end">
           <div className='d-inline-block cursor-pointer' onClick={profileOnClick}>
-            <Img src={commonState?.app_data?.user_image || Image.default_prfile_pic} alt="Profile" className="rounded-circle me-2 pointer header_profile_image" /><br />
+            <Img src={commonState?.app_data?.user_image || Image.default_prfile_pic} alt="Profile" className="rounded-circle me-2 pointer header_profile_image" /><br/>
           </div>
 
           {offcanvasOn ?

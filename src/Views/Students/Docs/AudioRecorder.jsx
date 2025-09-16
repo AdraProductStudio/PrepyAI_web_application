@@ -31,7 +31,7 @@ const AudioRecorder = ({ onComplete }) => {
   }
 
   const startRecording = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+    const stream = await navigator?.mediaDevices?.getUserMedia({ audio: true })
     mediaRecorderRef.current = new MediaRecorder(stream)
 
     mediaRecorderRef.current.ondataavailable = (event) => {

@@ -409,9 +409,8 @@ const JsonData = () => {
       {
         name: "Address",
         value: organisationState?.profileInputs?.address || '',
-        type: "text",
         title: " ",
-        category: "input",
+        category: "textbox",
         placeholder: "",
         divClassName: "mb-3  col-12 col-lg-8",
         readOnly:true
@@ -486,9 +485,8 @@ const JsonData = () => {
       },
       {
         name: "Address",
-        type: "text",
         title: " ",
-        category: "input",
+        category: "textbox",
         placeholder: "",
         value: organisationState?.editProfileInputs?.address || '',
         change: (e) => dispatch(edit_org_profile_Inputs({ field: 'address', value: e.target.value })),

@@ -48,7 +48,7 @@ export function OverallModel() {
                             <div className="w-100">
                                 {Inputfunctions(jsxOnly?.create_admin)}
                                 <ButtonSpinner
-                                    className="brand_color w-100 text-white"
+                                    className="brand_color w-100 text-white border-0"
                                     title="Send Email"
                                     is_spinner={organisationState?.createAdminInputs?.is_sending}
                                     clickFunction={
@@ -62,7 +62,7 @@ export function OverallModel() {
                         );
                     case "delete_admin":
                         return <div className="w-100">
-                            <p className="mb-0 fs-5 text-muted">Are you want to delete {organisationState?.selectedAdminToDel?.name} ?</p>
+                            <p className="mb-0 fs-5 text-muted">Do you want to delete {organisationState?.selectedAdminToDel?.name} ?</p>
                             <div className="d-flex mt-4 gap-3">
                                 <ButtonComponent type="button" buttonName="Cancel" className="btn-light w-100"
                                     clickFunction={() => {
@@ -70,7 +70,7 @@ export function OverallModel() {
                                         dispatch(dispatch(updateSelectedAdminToDel({ admin_id: null, name: "" })))
                                     }} />
                                 <ButtonSpinner
-                                    className="brand_color w-100 text-white"
+                                    className="brand_color w-100 text-white border-0"
                                     title="Confirm"
                                     is_spinner={organisationState?.selectedAdminToDel?.is_spinner}
                                     clickFunction={organisationState?.selectedAdminToDel?.is_spinner ? null : 

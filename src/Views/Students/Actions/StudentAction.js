@@ -29,13 +29,16 @@ import {
     setLoading,
     resetSettingsInputs,
     updateGenerateQuestionFields,
-    updateGenerateMcqQuestions,
-    updateGenerateLongQuestions,
     updateMcqQuestionAnswer,
     updateLongQuestionAnswer,
     updateLongQuestionAnswerValue,
     resetMcq,
     handlechangePassword,
+    get_bookmarks,
+    update_generate_questions,
+    updateGenerateMcqQuestions,
+    submit_test,
+    convert_audio_to_text,
 
 } from "Views/Students/Slices/StudentSlice"
 import { IndexedDbDeleteFun } from "../IndexDbDeleteFun";
@@ -87,7 +90,7 @@ export const handleStartTest = (test_id, navigate) => async (dispatch) => {
         const { data } = await axiosInstance.post("students/start_test", { test_id })
 
         if (data?.error_code === 0) {
-            const questions = data?.data || []
+            const questions = data?.data?.questions || []
 
             // Store in IndexedDB
             initializeDB(
@@ -110,7 +113,7 @@ export const handleStartTest = (test_id, navigate) => async (dispatch) => {
                 })
             })
             // const testDurationMinutes = 1
-            const testDurationMinutes = Number(process.env.REACT_APP_MCQ_TEST_TIMING)
+            const testDurationMinutes = Number(data?.data?.duration)
             const endTime = new Date()
             endTime.setMinutes(endTime.getMinutes() + testDurationMinutes)
 
@@ -569,8 +572,8 @@ export const handleJoinClassRoom = (code) => async (dispatch, getState) => {
 }
 
 export const handleUploadTestPaper = (formData) => async (dispatch, getState) => {
-    const { test_name, register_number, test_file } = getState().studentState.upload_test_paper
-    if (!test_name.trim() || !register_number.trim() || !test_file) {
+    const { test_name, register_number, test_file } = getState()?.studentState?.upload_test_paper
+    if (!test_name || !register_number?.trim() || !test_file) {
         return dispatch(update_error({ Err: "Test name, Register number and Test paper are required", Toast_Type: "error" }))
     }
     try {
@@ -652,20 +655,18 @@ export const changePassword = (payload) => async (dispatch) => {
   }
 }
 
-export const getBookmarks = (book_id)=>async (dispatch)=>{
+export const getBookmarks = (book_id) => async (dispatch) => {
     try {
-        dispatch(updateGenerateQuestionFields({bookmarks_loading:true}))
-        const { data } = await axiosInstance.post("students/get_bookmarks", {book_id} )
-        if(data?.error_code === 0){
-            dispatch(updateGenerateQuestionFields({bookmarks:data?.data,chapter_name:data?.data?.bookmarks?.[0]?.title}))
-             dispatch(updateGenerateQuestionFields({bookmarks_loading:false}))
-        }else{
-            dispatch(update_error({Err:data?.message|| "Failed to fetch bookmarks",Toast_Type:"error"}))
-             dispatch(updateGenerateQuestionFields({bookmarks_loading:false}))
+        dispatch(get_bookmarks({ type: "request" }))
+        const { data } = await axiosInstance.post("students/get_bookmarks", { book_id })
+        if (data?.error_code === 0) {
+            dispatch(updateGenerateQuestionFields({ bookmarks: data?.data, chapter_name: data?.data?.bookmarks?.[0]?.title }))
+            dispatch(get_bookmarks({ type: "response" }))
+        } else {
+            dispatch(get_bookmarks({ type: "failure", message: data?.message || "Failed to fetch bookmarks" }))
         }
     } catch (error) {
-        dispatch(update_error({ Err: error?.response?.data?.message || error?.message || "Something went wrong", Toast_Type: "error" }))
-        dispatch(updateGenerateQuestionFields({bookmarks_loading:false}))
+        dispatch(get_bookmarks({ type: "failure", message: error?.response?.data?.message || "Failed to fetch organization information" }))
     }
 }
 
@@ -673,7 +674,7 @@ export const getBookmarks = (book_id)=>async (dispatch)=>{
 export const handleGenerateQuestion = (payload,navigate,targetRoute,type_of_question)=> async(dispatch)=>{
     try {
         dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
-        dispatch(updateGenerateQuestionFields({loading:true,test_status:""}))
+        dispatch(update_generate_questions({type:"request"}))
         await IndexedDbDeleteFun()
         const {data} = await axiosInstance.post('students/generate_questions',payload)
         if(data?.error_code === 0){
@@ -700,20 +701,12 @@ export const handleGenerateQuestion = (payload,navigate,targetRoute,type_of_ques
             })
 
             navigate(targetRoute)
-            dispatch(updateGenerateQuestionFields({loading:false,test_status:"generated"}))
-            if (type_of_question == "mcq") {
-                dispatch(updateGenerateMcqQuestions(data?.data))
-            } else if (type_of_question == "long_answer") {
-                dispatch(updateGenerateLongQuestions(data?.data))
-            }
-          
+            dispatch(update_generate_questions({type:"response",data:data?.data,type_of_question}))  
         }else{
-             dispatch(update_error({ Err: data?.message || "Failed to fetch generate questions", Toast_Type: "error" }))
-              dispatch(updateGenerateQuestionFields({loading:false}))
+            dispatch(update_generate_questions({type:"failure",message: data?.message || "Failed to generate questions" }))
         }
     } catch (error) {
-         dispatch(update_error({ Err: error?.response?.data?.message || error?.message || "Something went wrong", Toast_Type: "error" }))
-         dispatch(updateGenerateQuestionFields({loading:false}))
+         dispatch(update_generate_questions({type:"failure",message: error?.response?.data?.message || "Failed to generate questions" }))
     }
 }
 
@@ -755,39 +748,34 @@ export const handleUpdateMcqQuestionAnswer = (queId, optId) => async (dispatch, 
 
 export const submitTest = (payload)=>async(dispatch)=>{
     try {
+        dispatch(submit_test({type:"request"}))
          const {data} = await axiosInstance.post('students/validate_self_test',payload)
          if(data?.error_code === 0){
+            dispatch(submit_test({type:"response"}))
             dispatch(updateMcqQuestionAnswer({answers:data?.data?.results,summary:data?.data?.summary}))
-            dispatch(updateGenerateQuestionFields({ test_status: "submitted" }))
             await IndexedDbDeleteFun()
          }else{
-             dispatch(update_error({ Err: data?.message || "Failed to submit test", Toast_Type: "error" }))
-             dispatch(updateGenerateQuestionFields({ test_status: "generated" }))
-         }
-        
+            dispatch(submit_test({type:"failure",message: data?.message || "Failed to submit test" }))
+         }    
     } catch (error) {
-          dispatch(update_error({ Err: error?.response?.data?.message || error?.message || "Something went wrong", Toast_Type: "error" }))
-           dispatch(updateGenerateQuestionFields({ test_status: "generated" }))
-        
+        dispatch(submit_test({type:"failure",message:error?.response?.data?.message || error?.message || "Something went wrong"}))
     }
 }
 
 export const submitLongQuestionTest = (payload) => async (dispatch) => {
     try {
-        dispatch(updateGenerateQuestionFields({ loading: true }))
+        dispatch(submit_test({ type: "request" }))
         const { data } = await axiosInstance.post('students/validate_self_test', payload)
         if (data?.error_code === 0) {
             dispatch(updateLongQuestionAnswer({answers:data?.data?.answers,overall_levels:data?.data?.overall_levels?.overall_levels,performance:data?.data?.performance}))
-            dispatch(updateGenerateQuestionFields({ loading: false,test_status: "submitted"  }))
+            dispatch(submit_test({type:"response"}))
             await IndexedDbDeleteFun()
         }else{
-            dispatch(update_error({ Err: data?.message || "Failed to submit test", Toast_Type: "error" }))
-            dispatch(updateGenerateQuestionFields({ loading: false,test_status: "generated"}))
+            dispatch(submit_test({type:"failure",message: data?.message || "Failed to submit test" }))
         }
 
     } catch (error) {
-        dispatch(updateGenerateQuestionFields({ loading: false,test_status: "generated" }))
-        dispatch(update_error({ Err: error?.response?.data?.message || error?.message || "Something went wrong", Toast_Type: "error" }))
+       dispatch(submit_test({type:"failure",message:error?.response?.data?.message || error?.message || "Something went wrong"}))
 
     }
 }
@@ -795,7 +783,7 @@ export const submitLongQuestionTest = (payload) => async (dispatch) => {
 
 export const convertAudioToText = (formData, test_id, question_no) => async (dispatch) => {
     try {
-         dispatch(updateGenerateQuestionFields({ recording: true }))
+         dispatch(convert_audio_to_text({type:"request"}))
         const { data } = await axiosInstance.post('students/validate_speech_answer', formData)
         if (data?.error_code === 0) {
             const intervalId = setInterval(async () => {
@@ -805,20 +793,18 @@ export const convertAudioToText = (formData, test_id, question_no) => async (dis
                         question_no
                     })
                     if (data?.error_code === 0) {
-                        dispatch(updateLongQuestionAnswerValue({Question_no:data?.data?.question_no,answer:data?.data?.answer}))
+                        dispatch(handleUpdateLongQuestionAnswer(data?.data?.question_no, data?.data?.answer))
                         clearInterval(intervalId)
-                        dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
-                         dispatch(updateGenerateQuestionFields({ recording: false }))
+                        dispatch(convert_audio_to_text({ type: "response" }))
                         
                     }else if(data?.error_code === 2){
                         clearInterval(intervalId)
-                        dispatch(updateGenerateQuestionFields({ recording: false }))
+                        dispatch(convert_audio_to_text({ type: "failure",message:data?.message || "failed to convert audio" }))
                     }
 
                 } catch (error) {
                     clearInterval(intervalId)
-                    dispatch(update_error({ Err: error?.response?.data?.message || error?.message || "Something went wrong", Toast_Type: "error" }))
-                    dispatch(updateGenerateQuestionFields({ recording: false }))
+                    dispatch(convert_audio_to_text({ type: "failure",message:error?.response?.data?.message || error?.message  || "failed to convert audio" }))
                 }
 
             }, 5000)
@@ -826,8 +812,7 @@ export const convertAudioToText = (formData, test_id, question_no) => async (dis
         }
 
     } catch (error) {
-        dispatch(update_error({ Err: error?.response?.data?.message || error?.message || "Something went wrong", Toast_Type: "error" }))
-        dispatch(updateGenerateQuestionFields({ recording: false }))
+      dispatch(convert_audio_to_text({ type: "failure",message:error?.response?.data?.message || error?.message  || "failed to convert audio" }))
     }
 }
 
