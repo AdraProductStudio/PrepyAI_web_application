@@ -14,7 +14,7 @@ const SelectBox = ({
     label,
     mandatory
 }) => {
-
+console.log(selectOptions)
     return (
         <Fragment>
             {label ?
@@ -28,7 +28,7 @@ const SelectBox = ({
             <Form.Select size={selectBoxSize} className={className} disabled={disableSelectBox} onChange={change} value={value}>
                 {componentFrom !== "Entries" ? <option value=""disabled>Select</option> : null}
                 {selectOptions?.map((item, ind) => {
-                    return <option value={item?.value} key={ind}>{item?.name}</option>
+                    return <option value={item} key={ind}>{item}</option>
                 })}
             </Form.Select>
         </Fragment>
