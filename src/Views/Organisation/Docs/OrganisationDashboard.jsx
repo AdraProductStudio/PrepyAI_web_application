@@ -3,7 +3,7 @@ import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import Image from "Utils/Image";
-import { Card, Col,Row } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
 import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import Img from "Components/Img/Img";
@@ -18,7 +18,7 @@ import Spinner from "Components/Spinner/CustomSpinner";
 import { updateSearchInputs, updateSelectedAdminToDel } from "../Slices/Organisation_slice";
 
 function OrganisationDashboard() {
-  const { organizationInfo, adminList,searchInputs } = useCommonState()?.organisationState
+  const { organizationInfo, adminList, searchInputs } = useCommonState()?.organisationState
   const { jsonOnly } = JsonData()
   const itemsPerPage = 3
   const pageCount = Math.ceil(adminList?.data?.total_count / itemsPerPage)
@@ -29,11 +29,11 @@ function OrganisationDashboard() {
   const dispatch = useDispatch()
 
   const handlePageClick = ({ selected }) => {
-    dispatch(updateSearchInputs({currentPage:selected}))
+    dispatch(updateSearchInputs({ currentPage: selected }))
     dispatch(getAdminList({ page: selected + 1, show_entries: itemsPerPage }))
   }
   useEffect(() => {
-    dispatch(getAdminList({ page: searchInputs?.currentPage+1, show_entries: itemsPerPage }))
+    dispatch(getAdminList({ page: searchInputs?.currentPage + 1, show_entries: itemsPerPage }))
   }, [])
 
   useEffect(() => {
@@ -41,8 +41,8 @@ function OrganisationDashboard() {
   }, [])
 
   const handleSearchAdmin = (value) => {
-    dispatch(updateSearchInputs({searchValue:value}))
-    dispatch(getAdminList({ page: searchInputs?.currentPage + 1, search_query: value,show_entries: itemsPerPage  }))
+    dispatch(updateSearchInputs({ searchValue: value }))
+    dispatch(getAdminList({ page: searchInputs?.currentPage + 1, search_query: value, show_entries: itemsPerPage }))
 
   }
 
@@ -54,7 +54,7 @@ function OrganisationDashboard() {
             <Card style={{ height: "12rem" }}>
               {organizationInfo?.is_loading ? (
                 <div className="h-100 d-flex justify-content-center align-items-center"><Spinner /></div>
-                ) :
+              ) :
                 <Card.Body className="d-flex flex-column align-items-start justify-content-between">
                   <Card.Title className="organisation_iconWrapper p-2 rounded">{input.icon}</Card.Title>
                   {input?.subTitle && input?.title && (
@@ -142,12 +142,12 @@ function OrganisationDashboard() {
               <Card.Text className="text-secondary mb-4 text-white">
                 {organizationInfo?.data?.expiry_date == null ? "Welcome" : (`Expiring ${organizationInfo?.data?.expiry_date}`)
                 }
-               
+
               </Card.Text>
               <button className="btn btn-light w-100 py-1">
                 <span style={{ color: "hsla(324, 100%, 46%, 1)" }}>
-                  {organizationInfo?.plan == null ? "Purchase Plan" :"Upgrade Plan" }
-                
+                  {organizationInfo?.plan == null ? "Purchase Plan" : "Upgrade Plan"}
+
                 </span>
               </button>
             </Card.Body>
@@ -208,7 +208,7 @@ function OrganisationDashboard() {
                       <span className=""> &nbsp;Create Admin</span>
                     </span>
                   }
-                  clickFunction={()=>dispatch(updateModalShow({show:true,close_btn:true,size:"md",modal_from:"Home",modal_type:"create_admin"}))}
+                  clickFunction={() => dispatch(updateModalShow({ show: true, close_btn: true, size: "md", modal_from: "Home", modal_type: "create_admin" }))}
                 />
               </div>
             </section>
@@ -218,10 +218,7 @@ function OrganisationDashboard() {
               style={{ flex: 1, overflow: "auto", width: "100%" }}
             >
               <table className="table table-bordered mb-0 mt-0">
-                <thead
-                  className="position-sticky"
-                  style={{ position: "sticky", top: "-2px", bottom: "-1px" }}
-                >
+                <thead>
                   <tr>
                     {jsonOnly?.OrgDashboardTableHeadings?.map((title, idx) => (
                       <th key={idx} className="text-center py-3">
@@ -252,11 +249,11 @@ function OrganisationDashboard() {
                         <td className="text-center">{org.email}</td>
                         <td className="text-center">{org.location}</td>
                         <td className="text-center">
-                        <ButtonComponent 
+                          <ButtonComponent
                             className="btn"
-                            clickFunction={()=> {
-                              dispatch(updateSelectedAdminToDel({admin_id: org.id,name:org.name }))
-                              dispatch(updateModalShow({show:true,close_btn:true,size:"md",modal_from:"Home",modal_type:"delete_admin"}))
+                            clickFunction={() => {
+                              dispatch(updateSelectedAdminToDel({ admin_id: org.id, name: org.name }))
+                              dispatch(updateModalShow({ show: true, close_btn: true, size: "md", modal_from: "Home", modal_type: "delete_admin" }))
                             }}
                             buttonName={<MdDelete className="fs-5 text-danger" />}
                           />
@@ -279,7 +276,7 @@ function OrganisationDashboard() {
       </Row>
 
       <footer className="d-flex justify-content-end pt-1">
-        {pageCount> 0 ? <div className=" pe-2">
+        {pageCount > 0 ? <div className=" pe-2">
           <ReactPaginate
             previousLabel={"Prev"}
             nextLabel={"Next"}
@@ -301,7 +298,7 @@ function OrganisationDashboard() {
           />
         </div> : null
         }
-        
+
       </footer>
     </div>
   );

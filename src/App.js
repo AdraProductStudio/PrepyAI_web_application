@@ -201,7 +201,7 @@ function App() {
                 <Route index element={<StudentPersonalInfo />} />
                 <Route path="settings" element={<StudentSettings />} />
               </Route>
-              
+
             </Route>
 
             <Route path="generate_question/:id" element={<GenerateQuestionLayout />}>

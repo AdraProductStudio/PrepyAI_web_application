@@ -13,7 +13,7 @@ const OrgProfileLayout = ({ navItems }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-     dispatch(getOrganizationProfileDetails())
+    dispatch(getOrganizationProfileDetails())
   }, [])
   return (
     <div className="h-100">
@@ -51,51 +51,50 @@ const OrgProfileLayout = ({ navItems }) => {
               </NavLink>
             ))}
           </ul>
-            <Card.Body className="d-flex gap-3">
-              <Card className="h-75  pt-2 d-none d-xl-block col-xl-1 d-none d-xl-block shadow rounded-4" style={{ width: "20rem" }}>
-              {profileInputs?.is_loading ? (
-                <div className="d-flex justify-content-center align-items-center mt-3"><Spinner /></div>
-              ) :
-                <div className="d-flex justify-content-start align-items-center gap-5 p-1 p-xxl-2 ps-xxl-4 border-bottom">
-                  <Img
-                    src={Images?.default_prfile_pic}
-                    alt={"ProfileImage"}
-                    fluid={"fluid"}
-                    width={"70px"}
-                    height={"100%"}
-                    className={"rounded-circle"}
-                  />
-                  <div className="">
-                    <h4 className="fs-4 fs-xxl-3">Hello &#x1F44B;</h4>
-                    <h3 className="fw-bold fs-5">{profileInputs?.first_name} {profileInputs?.last_name}</h3>
-                  </div>
-                </div>}
-                <ul className="navbar-nav mt-4">
-                  {navItems?.map((item) => (
-                    <li
-                      key={item.name}
-                      className="nav-item d-flex justify-content-center align-items-center"
-                    >
-                      <NavLink
-                        to={item.to}
-                        end
-                        className={({ isActive }) =>
-                          `nav-link w-100 ps-4 d-flex justify-content-start align-items-center rounded ${isActive ? "brand_color text-white" : "text-dark"
-                          }`
-                        }
-                      >
-                        <span className="fs-3 mb-1 me-3">{item.icon(location.pathname === item.to)}</span>
-                        <span className="fs-5">{item.name}</span>
-                      </NavLink>
-                    </li>
-                  ))}
-                </ul>
-              </Card>
 
-              <article className="w-100">
-                <Outlet />
-              </article>
-            </Card.Body>
+          <Card.Body className="d-flex gap-3">
+            <Card className="pt-2 d-none d-xl-block col-xl-1 d-none d-xl-block shadow rounded-4" style={{ width: "20rem", height: "25rem" }}>
+              <div className="d-flex justify-content-start align-items-center gap-5 p-1 p-xxl-2 ps-xxl-4 border-bottom" style={{ height: "7rem" }}>
+                <Img
+                  src={Images?.default_prfile_pic}
+                  alt={"ProfileImage"}
+                  fluid={"fluid"}
+                  width={"70px"}
+                  height={"100%"}
+                  className={"rounded-circle"}
+                />
+                <div className="">
+                  <h4 className="fs-4 fs-xxl-3">Hello &#x1F44B;</h4>
+                  <h3 className="fw-bold fs-4 fs-xxl-3">{"Prakash"}</h3>
+                </div>
+              </div>
+
+              <ul className="navbar-nav mt-3">
+                {navItems?.map((item) => (
+                  <li
+                    key={item.name}
+                    className="nav-item d-flex justify-content-center align-items-center"
+                  >
+                    <NavLink
+                      to={item.to}
+                      end
+                      className={({ isActive }) =>
+                        `nav-link w-100 ps-4 d-flex justify-content-start align-items-center rounded ${isActive ? "brand_color text-white" : "text-dark"
+                        }`
+                      }
+                    >
+                      <span className="fs-3 mb-1 me-3">{item.icon(location.pathname === item.to)}</span>
+                      <span className="fs-5">{item.name}</span>
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+
+            <article className="w-100">
+              <Outlet />
+            </article>
+          </Card.Body>
         </Card>
       </section>
     </div>

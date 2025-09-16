@@ -10,21 +10,6 @@ import {
     CartesianGrid,
 } from "recharts";
 
-// const data = [
-//     { name: "Jan", uv: 4 },
-//     { name: "Feb", uv: 8 },
-//     { name: "Mar", uv: 7 },
-//     { name: "Apr", uv: 9 },
-//     { name: "May", uv: 7 },
-//     { name: "Jun", uv: 20 },
-//     { name: "Jul", uv: 6 },
-//     { name: "Aug", uv: 10 },
-//     { name: "Sep", uv: 5 },
-//     { name: "Oct", uv: 9 },
-//     { name: "Nov", uv: 6 },
-//     { name: "Dec", uv: 8 },
-// ];
-
 const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
         return (
@@ -60,7 +45,7 @@ const CustomTooltip = ({ active, payload }) => {
 };
 
 export default function TestConductedChart({data}) {
-    const maxVal = Math.max(...data.map((d) => d.uv));
+    const maxVal = Math.max(...data.map((d) => d.test_count));
     const gradientId = "barGradient";
     const { adminState } = useCommonState()
 
@@ -81,7 +66,7 @@ export default function TestConductedChart({data}) {
                     >
                         <CartesianGrid strokeDasharray="3 3" vertical={false} />
 
-                        <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                        <XAxis dataKey="month" tick={{ fontSize: 12 }} />
 
                         <Tooltip content={<CustomTooltip />} cursor={{ fill: "transparent" }}/> 
                         <defs>
@@ -91,12 +76,12 @@ export default function TestConductedChart({data}) {
                             </linearGradient>
                         </defs>
 
-                        <Bar dataKey="uv" radius={[8, 8, 0, 0]}>
+                        <Bar dataKey="test_count" radius={[8, 8, 0, 0]}>
                             {data.map((entry, index) => (
                                 <Cell
                                     key={`cell-${index}`}
                                     fill={
-                                        entry.uv === maxVal
+                                        entry.test_count === maxVal
                                             ? `url(#${gradientId})`
                                             : "rgba(255, 95, 132, 0.2)"
                                     }

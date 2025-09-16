@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import Icons from "Utils/Icons";
 import Image from "Utils/Image";
 import { handleGetCreateClassroomModalTeachers, handleGetAllClassrooms } from "../Actions/Admin_action";
-import { handleUpdateClassroomName } from "../Slices/adminSlice";
+import { handleUpdateClassroomName, updateDeleteClassroomData } from "../Slices/adminSlice";
 import SpinnerComponent from "Components/Spinner/Spinner";
 import { OverallModel } from "../Utils/OverallModal";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
@@ -19,7 +19,7 @@ const Classroom = () => {
 
     useEffect(() => {
         dispatch(handleGetAllClassrooms())
-    }, [])
+    }, [dispatch])
 
     return (
         <>
@@ -56,10 +56,18 @@ const Classroom = () => {
                                 ? 
                                 (adminState?.classroomsJson.map((item, index) => (
                                     <div className="col-3 p-2" key={item.id}>
-                                        <ClassroomCard cardClassName="w-100" data={item} buttonName="View" onclick={() => {
-                                            dispatch(handleUpdateClassroomName(item.classroom_name))
-                                            navigate(`/admin_dashboard/classrooms/${item.id}/teachers`)
-                                        }} />
+                                        <ClassroomCard 
+                                            cardClassName="w-100" 
+                                            data={item} buttonName="View" 
+                                            onclick={() => {
+                                                dispatch(handleUpdateClassroomName(item.classroom_name))
+                                                navigate(`/admin_dashboard/classrooms/${item.id}/teachers`)
+                                            }}
+                                            onClickDelete={ () => {
+                                                dispatch(updateDeleteClassroomData(item))
+                                                dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "admin", modal_type: "delete_classroom" }))
+                                            }}
+                                        />
                                     </div>
                                 )))
                                 :
