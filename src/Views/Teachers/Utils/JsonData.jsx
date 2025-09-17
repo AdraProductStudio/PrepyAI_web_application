@@ -31,7 +31,7 @@ const JsonData = (params) => {
         icon: Icons.student_dashboard_to_no_stud_icon,
         count:
           teachersState?.teacher_DashboardData?.data?.total_no_of_students || 0,
-        description: "Total number of tests conducted",
+        description: "Total number of Students",
       },
       {
         icon: Icons.student_dashboard_to_no_cls_icon,
@@ -348,7 +348,6 @@ const JsonData = (params) => {
           ]
           : [],
         change: (selected) => {
-          console.log(selected, "sdfdsfasdfasd");
           const selectedValue = Array.isArray(selected)
             ? selected[0]?.value
             : selected?.value;

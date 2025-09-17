@@ -8,13 +8,13 @@ import Image from "Utils/Image";
 import { getTestRecords } from "Views/Teachers/Actions/TeacherActions";
 
 const CompletedTest = () => {
-    const { class_id } = useParams();
+    const { class_id,subject_id } = useParams();
     const dispatch = useDispatch();
     const { teachersState } = useCommonState();
 
     useEffect(() => {
         if(class_id){
-            dispatch(getTestRecords({ classroom_id: class_id, type: "cancelled" }));
+            dispatch(getTestRecords({ subject_id, type: "cancelled" }));
         }
     }, [class_id]);
 

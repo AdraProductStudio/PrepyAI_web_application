@@ -8,7 +8,7 @@ import Image from "Utils/Image";
 import JsonData from "Views/Teachers/Utils/JsonData";
 import { logout } from "../Slices/Common_slice";
 import Icons from "Utils/Icons";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { updateModalShow } from "../Slices/Common_slice";
 import Spinner from "Components/Spinner/CustomSpinner";
 
@@ -17,7 +17,7 @@ export function OverallCanvas() {
     const { jsonOnly } = JsonData();
     const dispatch = useDispatch();
     const location = useLocation();
-
+    const {subject_id} = useParams();
     const hanldeButton = (v) => {
         return <>
             <div className="col-3 pb-1 text-center">
@@ -89,7 +89,7 @@ export function OverallCanvas() {
                                                 </div>
                                                 {value?.map((item, index) => (
                                                     <div className="col-12 col-md-6 col-xl-4 col-xxl-3 mt-4 p-1" key={index}>
-                                                        <AttachmentCard className="attachment_books" data={item} delete_function={() => console.log("Delete function called")} />
+                                                        <AttachmentCard className="attachment_books" data={{...item,subject_id}} delete_function={() => console.log("Delete function called")} />
                                                     </div>
                                                 ))}
                                             </div >
