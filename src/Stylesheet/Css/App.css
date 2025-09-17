@@ -391,3 +391,6 @@ header {
 .brand_text_color {
   color: var(--brand-color) !important;
 }
+textarea{
+  resize: none;
+}

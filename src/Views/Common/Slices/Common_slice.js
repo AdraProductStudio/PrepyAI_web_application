@@ -323,21 +323,20 @@ const commonSlice = createSlice({
                 }
             })
             .addMatcher(
-                (action) =>
-                    [
-                        "teachersSlice/handleUploadAttachment",
-                        "teachersSlice/deleteBook",
-                        "teachersSlice/handleUploadAttachment",
-                        "teachersSlice/handleUploadBooks",
-                        "teachersSlice/handleScheduleTest",
-                        "teachersSlice/save_schedule_status",
-                        "admin_slice/create_organisation", ,
-                        "admin_slice/edit_profile_Inputs_endpoint",
-                        "admin_slice/dele_organisation_endpoint",
-                        "organisation_slice/create_admin",
-                        "organisation_slice/delete_admin",
-                        "organisation_slice/edit_organization"
-                    ].includes(action.type),
+                (action) => [
+                    "teachersSlice/handleUploadAttachment",
+                    "teachersSlice/deleteBook",
+                    "teachersSlice/handleUploadAttachment",
+                    "teachersSlice/handleUploadBooks",
+                    "teachersSlice/handleScheduleTest",
+                    "teachersSlice/save_schedule_status",
+                    "admin_slice/create_organisation",
+                    "organisation_slice/create_admin",
+                    "organisation_slice/delete_admin",
+                    "organisation_slice/edit_organization",
+                    "student_slice/convert_audio_to_text",
+
+                ].includes(action.type),
 
                 (state, action) => {
                     const { type } = action.payload || {};
@@ -353,29 +352,28 @@ const commonSlice = createSlice({
 
             //For handling response error [setting toast error message]
             .addMatcher(
-                (action) =>
-                    [
-                        "teachersSlice/handleGetTestRecords",
-                        "teachersSlice/handleUploadAttachment",
-                        "teachersSlice/handleGetBooks",
-                        "teachersSlice/deleteBook",
-                        "teachersSlice/getSubjectAttachments",
-                        "teachersSlice/handleUploadBooks",
-                        "teachersSlice/handleScheduleTest",
-                        "teachersSlice/save_schedule_status",
-                        "admin_slice/create_organisation", ,
-                        "admin_slice/edit_profile_Inputs_endpoint",
-                        "admin_slice/change_password_endpoint",
-                        "admin_slice/dele_organisation_endpoint",
-                        "organisation_slice/create_admin",
-                        "organisation_slice/updateOrganizationInfo",
-                        "organisation_slice/updateAdminList",
-                        "organisation_slice/delete_admin",
-                        "organisation_slice/updateOrgProfileInputs",
-                        "organisation_slice/delete_admin",
-                        "organisation_slice/edit_organization",
-                        "organisation_slice/change_password"
-                    ].includes(action.type),
+                (action) => [
+                    "teachersSlice/handleGetTestRecords",
+                    "teachersSlice/handleUploadAttachment",
+                    "teachersSlice/handleGetBooks",
+                    "teachersSlice/deleteBook",
+                    "teachersSlice/getSubjectAttachments",
+                    "teachersSlice/handleUploadBooks",
+                    "teachersSlice/handleScheduleTest",
+                    "teachersSlice/save_schedule_status",
+                    "admin_slice/create_organisation",
+                    "organisation_slice/create_admin",
+                    "organisation_slice/updateOrganizationInfo",
+                    "organisation_slice/updateAdminList",
+                    "organisation_slice/delete_admin",
+                    "organisation_slice/updateOrgProfileInputs",
+                    "organisation_slice/delete_admin",
+                    "organisation_slice/edit_organization",
+                    "organisation_slice/change_password",
+                    "student_slice/get_bookmarks",
+                    "student_slice/update_generate_questions",
+                    "student_slice/submit_test",
+                ].includes(action.type),
 
                 (state, action) => {
                     const { type } = action.payload || {};
@@ -385,45 +383,24 @@ const commonSlice = createSlice({
 
             //Remove the validation failure status
             .addMatcher(
-                (action) =>
-                    [
-                        "teachersSlice/handleScheduleTest",
-                        "teachersSlice/save_schedule_status",
-                    ].includes(action.type),
+                (action) => [
+                    "authState/update_login_data",
+                    "authState/update_learners_register",
+                    "authState/update_organization_register",
+                    "authState/update_admin_register",
+                    "authState/update_teacher_register",
+                    "authState/update_student_register",
+                    "authState/update_forgot_password",
+                    "authState/update_otp_verification",
+                    "authState/update_create_password",
+                    "teachersSlice/handleScheduleTest",
+                    "teachersSlice/save_schedule_status",
+                    "organisation_slice/change_password",
+                    "organisation_slice/create_admin",
+                ].includes(action.type),
 
                 (state) => {
                     if (state.app_data.validated) state.app_data.validated = false;
-                }
-            )
-            .addMatcher(
-                (action) =>
-                    [
-                        "authState/update_login_data",
-                        "authState/update_learners_register",
-                        "authState/update_organization_register",
-                        "authState/update_admin_register",
-                        "authState/update_teacher_register",
-                        "authState/update_student_register",
-                        "authState/update_forgot_password",
-                        "authState/update_otp_verification",
-                        "authState/update_create_password",
-                        "teachersSlice/update_Create_student",
-                        "teachersSlice/updatePostStudentData",
-                        "teachersSlice/updatePostClassroomsData",
-                        "teachersSlice/updatePostSubjectsData",
-                        "organisation_slice/change_password",
-                        "organisation_slice/edit_organization",
-                        "organisation_slice/create_admin",
-                    ].includes(action.type),
-                (state, action) => {
-                    const obj1 = action.payload;
-                    const obj2 = state.app_data.validationMessage;
-
-                    for (let key in obj1) {
-                        if (obj2.hasOwnProperty(key)) {
-                            delete obj2[key];
-                        }
-                    }
                 }
             );
     }

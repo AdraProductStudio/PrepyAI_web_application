@@ -1,12 +1,12 @@
 import ButtonComponent from 'Components/Button/Button'
-import React, { useEffect, useState } from 'react'
-import { Col, Container, Row, Dropdown, Card } from 'react-bootstrap'
+import React, { useEffect } from 'react'
+import { Col, Container, Row,Card } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { updateModalShow } from 'Views/Common/Slices/Common_slice'
 import { getBookmarks } from '../Actions/StudentAction'
 import { useCommonState } from 'Components/CustomHooks'
 import { updateGenerateQuestionFields } from '../Slices/StudentSlice'
-import { Router, useParams } from 'react-router-dom'
+import {useParams } from 'react-router-dom'
 import ReactDropdownSelect from 'Components/Input/ReactDropdownSelect'
 import Spinner from 'Components/Spinner/CustomSpinner'
 import LinkComponent from 'Components/Router_components/LinkComponent'
@@ -101,7 +101,7 @@ const GenerateQuestion = () => {
 
                     </div>
 
-                    <ButtonComponent type="button" buttonName="Generate Questions" className="brand_color text-white" clickFunction={()=>dispatch(updateModalShow({show:true,close_btn:true,size:"md",modal_from:"Generate_Question",modal_type:"select_question_type"}))} />
+                    <ButtonComponent type="button" buttonName="Generate Questions" className="brand_color text-white border-0" clickFunction={()=>dispatch(updateModalShow({show:true,close_btn:true,size:"md",modal_from:"Generate_Question",modal_type:"select_question_type"}))} />
                 </Col>
             </Row>
             <hr className='w-100 text-secondary' />
@@ -121,7 +121,7 @@ const GenerateQuestion = () => {
                                             <p className='mb-2 generate-question-sub-text'>4. If you didn't upload a book with bookmarks, the questions will be random from the entire content</p>
                                             <p className='mt-5 mb-0 generate-question-sub-text'>We hope AnatomyAI makes studying for exams easier and boosts your confidence in your learning journey!</p>
                                         </div>
-                                        <ButtonComponent type="button" buttonName="Generate Questions" className="brand_color text-white mt-5" clickFunction={() => dispatch(updateModalShow({ show: true, close_btn: true, size: "md", modal_from: "Generate_Question", modal_type: "select_question_type" }))} />
+                                        <ButtonComponent type="button" buttonName="Generate Questions" className="brand_color text-white mt-5 border-0" clickFunction={() => dispatch(updateModalShow({ show: true, close_btn: true, size: "md", modal_from: "Generate_Question", modal_type: "select_question_type" }))} />
                                     </div>
                                 </Col>
                             </Card.Body>

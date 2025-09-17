@@ -202,7 +202,7 @@ export function Inputfunctions(funBy) {
                         value={ipVal?.value}
                         change={ipVal?.change}
                         cols={10}
-                        rows={5}
+                        rows={3}
                         className={`${ipVal?.className}`}
                         label={ipVal?.name}
                         labelClassName="text-secondary fw-bold mb-0 fs-14"

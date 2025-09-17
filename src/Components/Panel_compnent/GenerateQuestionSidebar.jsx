@@ -5,8 +5,9 @@ import React, { Fragment, useState } from 'react'
 import Image from 'Utils/Image'
 import Icons from 'Utils/Icons'
 import AccordionSidebar from 'Components/Accordion/AccordionSidebar'
-import { useCommonState, useCustomNavigate } from 'Components/CustomHooks'
+import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks'
 import Spinner from 'Components/Spinner/CustomSpinner'
+import { updateGenerateQuestionCanvas } from 'Views/Students/Slices/StudentSlice'
 
 const GenerateQuestionSidebar = ({
     menuOptions, responsiveOn,
@@ -15,6 +16,7 @@ const GenerateQuestionSidebar = ({
 }) => {
 
     const navigate = useCustomNavigate()
+    const dispatch = useDispatch()
     const {generate_question,offCanvasShow} = useCommonState()?.studentState
 
     const headerFun = () => {
@@ -93,6 +95,7 @@ const GenerateQuestionSidebar = ({
                 offcanvasBodyClassname="sidebar-body-with-footer"
                 canvasBody={bodyContent()}
                 canvasFooter={footerContent()}
+                onHide = {()=>dispatch(updateGenerateQuestionCanvas(false))}
             />
         </Fragment>
     )

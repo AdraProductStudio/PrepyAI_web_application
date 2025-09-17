@@ -1,5 +1,4 @@
 import axiosInstance from "Services/axiosInstance"
-import { update_error, updateModalShow } from "Views/Common/Slices/Common_slice"
 import { change_password, clearSettingsInputs, create_admin, delete_admin, edit_organization, updateAdminList, updateOrganizationInfo, updateOrgProfileInputs } from "../Slices/Organisation_slice"
 import sha256 from "sha256"
 
@@ -40,7 +39,8 @@ export const deleteAdmin = (admin_id) => async (dispatch, getState) => {
         if (data?.error_code === 0) {
             const { searchInputs } = getState()?.superadminState
             dispatch(delete_admin({ type: "response" }))
-            dispatch(getAdminList({ page: searchInputs?.currentPage + 1 || 1, search_query: searchInputs?.searchValue || '', show_entries: 10 }))
+            dispatch(getAdminList({ page: searchInputs?.currentPage + 1 || 1, search_query: searchInputs?.searchValue || '', show_entries: 7 }))
+            dispatch(getOrganizationInfo())
         } else {
             dispatch(delete_admin({ type: "failure", message: data?.message || "Failed to delete admin" }))
         }
