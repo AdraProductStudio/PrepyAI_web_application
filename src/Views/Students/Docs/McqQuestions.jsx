@@ -4,7 +4,7 @@ import { Card, Col, Container, Row } from 'react-bootstrap';
 import ButtonComponent from 'Components/Button/Button';
 import { updateModalShow } from 'Views/Common/Slices/Common_slice';
 import { useCommonState, useDispatch } from 'Components/CustomHooks';
-import { updateGenerateMcqQuestions, updateGenerateQuestionFields } from '../Slices/StudentSlice';
+import { submit_test, updateGenerateMcqQuestions, updateGenerateQuestionFields } from '../Slices/StudentSlice';
 import { getAllQuestionsFromDB, getBookmarks, handleUpdateMcqQuestionAnswer, submitTest } from '../Actions/StudentAction';
 import Spinner from 'Components/Spinner/CustomSpinner';
 import { useParams } from 'react-router-dom';
@@ -49,6 +49,9 @@ const McqQuestions = () => {
         clicked_answer: q.candidate_answer || 0
       }
     })
+    if(!generate_question?.mcq_questions?.test_id){
+      return dispatch(dispatch(submit_test({type:"failure",message:"Test id required"})))
+    }
     const payload = {
       test_id: generate_question?.mcq_questions?.test_id,
       type_of_question: "mcq",
@@ -97,6 +100,7 @@ const handleOptionSelect = (queId, optId) => {
               buttonName="Submit"
               className="brand_color text-white px-5"
               clickFunction={handleTestSubmit}
+              btnDisable={generate_question.loading}
             />
           ) : null}
         </Col>

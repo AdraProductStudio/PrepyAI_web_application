@@ -7,14 +7,14 @@ const OffCanvas = ({
     offcanvasClassname, offcanvasPlacement, offcanvasHeaderClassname,
     canvasHeader, offcanvasHeaderTitleClassname,
     offcanvasBodyClassname, canvasBody, offcanvasCloseButton,
-    offCanvasShow, offcanvasResponsive, canvasFooter
+    offCanvasShow, offcanvasResponsive, canvasFooter,onHide
 }) => {
     const dispatch = useDispatch();
 
     return (
         <Offcanvas
             show={offCanvasShow}
-            onHide={offcanvasCloseButton ? () => dispatch(update_app_data({ type: "canvas", data: {} })) : null}
+            onHide={offcanvasCloseButton ? onHide ? onHide : () => dispatch(update_app_data({ type: "canvas", data: {} })) : null}
             responsive={offcanvasResponsive}
             backdrop="static"
             className={offcanvasClassname}

@@ -78,12 +78,12 @@ const handleAnswerChange = (Question_no, value) => {
                 </LinkComponent>
         </Col>
         <Col className="d-flex justify-content-end me-5">
-          {generate_question?.test_status === "submitted" ? <ButtonComponent type="button" buttonName="Re-Generate" className="brand_color text-white px-5" clickFunction={() => {
+          {generate_question?.test_status === "submitted" ? <ButtonComponent type="button" buttonName="Re-Generate" className="brand_color text-white px-5 border-0" clickFunction={() => {
             dispatch(updateModalShow({ show: true, close_btn: true, size: "md", modal_from: "Generate_Question", modal_type: "select_question_type" }))
             dispatch(updateGenerateQuestionFields({ long_questions: [],overall_levels:[],test_status:"",performance:"" }))
           }} /> :
             generate_question?.test_status === "generated" ?
-              <ButtonComponent type="button" buttonName="Submit" className="brand_color text-white px-5" clickFunction={handleTestSubmit} /> : null
+              <ButtonComponent type="button" buttonName="Submit" className="brand_color text-white px-5 border-0" clickFunction={handleTestSubmit} /> : null
           }
         </Col>
       </Row>
@@ -108,11 +108,11 @@ const handleAnswerChange = (Question_no, value) => {
                   <div className="fw-bold mb-1">Question {index + 1}</div>
                   <div className="mb-3">{question?.Question}</div>
                 </div>
-                <div className='col-2 d-flex justify-content-end'>
+                <div className='col-4 d-flex justify-content-end'>
                 <ButtonComponent
                   type="button"
                   buttonName="Record Your Audio"
-                  className="brand_color text-white px-5"
+                  className="brand_color text-white px-5 border-0"
                   clickFunction={()=>{
                     dispatch(updateGenerateQuestionFields({ recorded_que_no: question.Question_no }))
                     dispatch(updateModalShow({show:true,close_btn:true,size:"md",modal_from:"Generate_Question",modal_type:"record_audio"}))}} 

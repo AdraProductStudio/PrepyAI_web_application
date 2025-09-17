@@ -622,14 +622,15 @@ td {
 
 .performance_history_badge {
   position: absolute;
-  width: 30%;
+  width: auto;
   top: 0rem;
   right: 0rem;
   background: #DDE2FF;
   color: #4258D6;
   font-size: 13px;
   padding: 0.2rem 2rem;
-  border-radius: 0 .5rem 0 0;
+  border-radius: 0 .5rem 0 .5rem;
+  text-align: end;
 }
 
 .student_upload_body {

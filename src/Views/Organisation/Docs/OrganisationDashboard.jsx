@@ -20,7 +20,7 @@ import { updateSearchInputs, updateSelectedAdminToDel } from "../Slices/Organisa
 function OrganisationDashboard() {
   const { organizationInfo, adminList, searchInputs } = useCommonState()?.organisationState
   const { jsonOnly } = JsonData()
-  const itemsPerPage = 3
+  const itemsPerPage = 7
   const pageCount = Math.ceil(adminList?.data?.total_count / itemsPerPage)
 
 
@@ -51,7 +51,7 @@ function OrganisationDashboard() {
       <article className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 align-items-xl-center justify-content-xl-evenly">
         {jsonOnly?.dashboardCardInputs?.map((input, idx) => (
           <section key={idx} className="p-2">
-            <Card style={{ height: "12rem" }}>
+            <Card className="border-0 shadow-sm superAdminCard">
               {organizationInfo?.is_loading ? (
                 <div className="h-100 d-flex justify-content-center align-items-center"><Spinner /></div>
               ) :
@@ -82,7 +82,7 @@ function OrganisationDashboard() {
         ))}
 
         <section className="p-2">
-          <Card style={{ height: "12rem" }}>
+          <Card className="border-0 shadow-sm superAdminCard">
             {
               organizationInfo?.is_loading ? (
                 <div className="h-100 d-flex justify-content-center align-items-center"><Spinner /></div>
@@ -120,11 +120,7 @@ function OrganisationDashboard() {
 
         <section className="p-2">
           <Card
-            className="position-relative overflow-hidden brand_color"
-            style={{
-              height: "12rem",
-            }}
-          >
+            className="position-relative overflow-hidden brand_color superAdminCard border-0">
             <div className="basic_plan_rocket">
               <Img
                 src={Image.rocket}
@@ -146,8 +142,8 @@ function OrganisationDashboard() {
               </Card.Text>
               <button className="btn btn-light w-100 py-1">
                 <span style={{ color: "hsla(324, 100%, 46%, 1)" }}>
-                  {organizationInfo?.plan == null ? "Purchase Plan" : "Upgrade Plan"}
-
+                  {organizationInfo?.plan == "basic" ? "Purchase Plan" :"Upgrade Plan" }
+                
                 </span>
               </button>
             </Card.Body>
@@ -157,8 +153,8 @@ function OrganisationDashboard() {
 
       <Row className="p-2">
         <Col>
-          <Card style={{ height: "35.3rem" }}>
-            <section className="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center w-100 w-md-auto gap-2 p-3">
+          <Card style={{ height: "35.3rem" }} className="border-0 shadow-sm">
+            <section className="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center w-100 w-md-auto gap-2 p-3 border-bottom border-transparent">
               <div className="w-100 w-md-auto">
                 <h5 className="mb-0 fs-5">Admins</h5>
                 <span className="text-secondary" style={{ fontSize: "0.8rem" }}>
@@ -196,9 +192,7 @@ function OrganisationDashboard() {
 
                 <ButtonComponent
                   type={"button"}
-                  className={
-                    "btn-primary brand_color d-flex align-items-center justify-content-center gap-2"
-                  }
+                  className="btn brand_color text-white border-0 d-flex align-items-center justify-content-center gap-2"
                   buttonName={
                     <span
                       style={{ minWidth: "200px" }}
@@ -214,7 +208,7 @@ function OrganisationDashboard() {
             </section>
 
             <section
-              className="mt-2 custom-scroll"
+              className="mt-2 custom-scroll p-3"
               style={{ flex: 1, overflow: "auto", width: "100%" }}
             >
               <table className="table table-bordered mb-0 mt-0">
@@ -241,13 +235,13 @@ function OrganisationDashboard() {
                   ) : adminList?.data?.organization_list?.length > 0 ? (
                     adminList?.data?.organization_list?.map((org, idx) => (
                       <tr key={idx}>
-                        <td className="text-center border-bottom-non">{idx + 1}</td>
-                        <td className="text-center">{org.name}</td>
-                        <td className="text-center">{org.institute_name}</td>
-                        <td className="text-center">{org.role}</td>
-                        <td className="text-center">{org.contact_no}</td>
-                        <td className="text-center">{org.email}</td>
-                        <td className="text-center">{org.location}</td>
+                        <td className="text-center border-bottom-non">{org?.s_no}</td>
+                        <td className="text-center">{org?.name}</td>
+                        <td className="text-center">{org?.institute_name}</td>
+                        <td className="text-center">{org?.role}</td>
+                        <td className="text-center">{org?.contact_no}</td>
+                        <td className="text-center">{org?.email}</td>
+                        <td className="text-center">{org?.location}</td>
                         <td className="text-center">
                           <ButtonComponent
                             className="btn"
