@@ -8,14 +8,14 @@ import Image from "Utils/Image";
 import SpinnerComponent from "Components/Spinner/Spinner";
 
 const UpcomingTest = () => {
-    const { class_id } = useParams();
+    const { class_id,subject_id } = useParams();
     const dispatch = useDispatch();
     const { teachersState } = useCommonState();
    
 
     useEffect(() => {
         if (class_id) {
-            dispatch(getTestRecords({ classroom_id: class_id, type: "upcoming" }));
+            dispatch(getTestRecords({ subject_id, type: "upcoming" }));
         }
     }, [])
 

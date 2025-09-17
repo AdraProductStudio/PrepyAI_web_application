@@ -20,6 +20,7 @@ import {
   update_button_spinner
 } from "../Slice/teachersSlice";
 import { update_app_data, update_error, updateModalShow } from "Views/Common/Slices/Common_slice";
+import { getTestRecords } from "./TeacherActions";
 
 const validateStudentForm = (values) => {
   
@@ -666,9 +667,6 @@ export const deleteStudents = (data) => async (dispatch) => {
   const pagination = data?.pagination;
   const student_id = data?.student_id;
   let response;
-  if (!id || !id_from) {
-    return dispatch(update_app_data({ type: "validation", data: true }));
-  }
 
   try {
     switch (id_from) {
@@ -731,9 +729,6 @@ export const deleteStudents = (data) => async (dispatch) => {
 };
 
 export const deleteSubjects = (id,classroom_id) => async (dispatch) => {
-  if (!id) {
-    return dispatch(update_app_data({ type: "validation", data: true }));
-  }
 
   try {
     dispatch(update_button_spinner({status:true}))
@@ -755,9 +750,6 @@ export const deleteSubjects = (id,classroom_id) => async (dispatch) => {
 }
 
 export const deleteClassrooms = (id) => async (dispatch) => {
-  if (!id) {
-    return dispatch(update_app_data({ type: "validation", data: true }));
-  }
 
   try {
     dispatch(update_button_spinner({status:true}))
@@ -777,15 +769,66 @@ export const deleteClassrooms = (id) => async (dispatch) => {
   }
 };
 
+export const deleteUpcomingTest = (data) => async (dispatch) => {
+  const { id, subject_id, status } = data;
+
+  try {
+
+    dispatch(update_button_spinner({ status: true }));
+
+    let response = {};
+    if (status) {
+      if (status === "cancelled") {
+        response = await axiosInstance.delete(
+          `teachers/delete_test?test_id=${id}`
+        );
+      } else {
+        response = await axiosInstance.delete(
+          `teachers/cancel_test?test_id=${id}`
+        );
+      }
+    }
+
+    dispatch(update_button_spinner({ status: false }));
+    const { message, success } = response?.data;
+    if (!success) {
+      dispatch(update_error({ Err: message, Toast_Type: "error" }));
+    }
+    if (success) {
+      dispatch(update_error({ Err: message, Toast_Type: "success" }));
+      if (status) {
+        if (status === "cancelled") {
+          dispatch(getTestRecords({ subject_id, type: "cancelled" }));
+        } else {
+          dispatch(getTestRecords({ subject_id, type: "upcoming" }));
+        }
+      }
+      dispatch(updateModalShow({ show: false }));
+    }
+  } catch (error) {
+    console.log(error, "error from delete Upcoming Test");
+  }
+};
+
 export const getTestHistory = (params) => async (dispatch) => {
   try {
-    dispatch(handleTestHistoryGet({ type: "request" }))
-    const { data } = await axiosInstance.post("/teachers/get_students_by_test", params);
+    dispatch(handleTestHistoryGet({ type: "request" }));
+    const { data } = await axiosInstance.post(
+      "/teachers/get_students_by_test",
+      params
+    );
 
-    if (data?.error_code === 0) dispatch(handleTestHistoryGet({ type: "response", data: data?.data || [] }));
-    else dispatch(handleTestHistoryGet({ type: "failure", message: data?.message || "" }));
+    if (data?.error_code === 0)
+      dispatch(
+        handleTestHistoryGet({ type: "response", data: data?.data || [] })
+      );
+    else
+      dispatch(
+        handleTestHistoryGet({ type: "failure", message: data?.message || "" })
+      );
+  } catch (err) {
+    dispatch(
+      handleTestHistoryGet({ type: "failure", message: err?.message || "" })
+    );
   }
-  catch (err) {
-    dispatch(handleTestHistoryGet({ type: "failure", message: err?.message || "" }));
-  }
-}
+};

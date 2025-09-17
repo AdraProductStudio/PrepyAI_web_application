@@ -1,7 +1,7 @@
 import ButtonComponent from "Components/Button/Button";
 import { useCommonState, useDispatch } from "Components/CustomHooks";
 import ModalComponent from "Components/Modal/Modal";
-import { updateModalShow } from "Views/Common/Slices/Common_slice";
+import { update_app_data, updateModalShow } from "Views/Common/Slices/Common_slice";
 import { postTeacherNote } from "Views/Common/Actions/Common_action";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import JsonData from "./JsonData";
@@ -41,7 +41,7 @@ export function OverallModel() {
   };
 
 
-  const handleDelete = () => { dispatch(deleteAttachment(teachersState?.delete_attachment_id)) };
+  const handleDelete = () => { dispatch(deleteAttachment(teachersState?.delete_attachment_id?.id,teachersState?.delete_attachment_id?.subject_id)) };
 
   function modalHeaderFun() {
     switch (commonState?.modal?.from) {
@@ -153,7 +153,7 @@ export function OverallModel() {
               <div className="text-center mb-4">
                 {Icons.delete_model_icon}
               </div>
-              <h5 className="text-center">Are you want to Delete the Teacher </h5>
+              <h5 className="text-center">Are you want to Delete</h5>
               {Inputfunctions(jsxJson?.delete_dashboard_teacher_model)}
               <div className="d-flex align-items-center justify-content-center gap-3">
                 <ButtonComponent
@@ -424,7 +424,7 @@ export function OverallModel() {
                     <div className="d-flex mt-2 justify-content-end me-3 w-100">
                       <ButtonComponent
                         buttonName={"clear"}
-                        clickFunction={() => dispatch(clear_form_fields())}
+                        clickFunction={() => {dispatch(clear_form_fields()); dispatch(update_app_data({type:"validation",data:false}))}}
                         type="button"
                         className="btn p-0 text-primary btn-clear"
                       />

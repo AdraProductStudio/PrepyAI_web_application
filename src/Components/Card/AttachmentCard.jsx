@@ -13,6 +13,7 @@ const AttachmentCard = ({
      
 }) => {
  const dispatch = useDispatch();
+ const deleteData = {id:data?.id,subject_id:data?.subject_id}
     return (
         <Card className={`border-0 rounded-4 ${className}`} onClick={onClickViewBook}>
             <Card.Body className="position-relative">
@@ -24,7 +25,7 @@ const AttachmentCard = ({
                         className="btn-transparent"
                         buttonName={Icons?.delete_icons}
                         clickFunction={() =>{
-                            dispatch(updateDeleteAttachment(data.id))
+                            dispatch(updateDeleteAttachment(deleteData))
                             dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "teacher", modal_type: "delete_attachments" }))}
                         }
                             
