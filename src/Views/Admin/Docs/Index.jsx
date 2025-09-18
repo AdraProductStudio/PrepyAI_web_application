@@ -41,7 +41,7 @@ const AdminDashboard = () => {
                         <Card.Header className="bg-transparent border-bottom pt-3 d-flex align-items-center justify-content-between">
                             <div>
                                 <h6 className="mb-2">Test Conducted</h6>
-                                <p className="fs-15 text-secondary mb-0">110 Test</p>
+                                <p className="fs-15 text-secondary mb-0">{adminState?.dashboard_overview?.total_tests || 0 } Test</p>
                             </div>
                             {Inputfunctions(jsxJson?.dashboard_chart_months)}
                         </Card.Header>
@@ -57,11 +57,18 @@ const AdminDashboard = () => {
                             <div className="row justify-content-between">
                                 <div className="col-3">
                                     <h6 className="mb-2">Teachers</h6>
-                                    <p className="fs-15 text-secondary mb-0">25 Teachers</p>
+                                    <p className="fs-15 text-secondary mb-0">{adminState?.dashboard_teachers_list?.length || 0} Teachers</p>
                                 </div>
                                 <div className="col-4 row justify-content-end">
                                     <div className="col px-1">
-                                        <SearchComponent className="px-5 py-2" placeholder="Search" onClick={() => dispatch(getDashboardTeachersList(commonState?.search?.value)) } />
+                                        <SearchComponent
+                                            className="form-control"
+                                            placeholder="Search..."
+                                            filter_options={adminState?.filter_params}
+                                            onClick={({ filter_options, search_query }) =>
+                                                dispatch(getDashboardTeachersList({ ...filter_options, search_query, page: 1 }))
+                                            } 
+                                        />
                                     </div>
                                     {/* <div className="col px-1">
                                         <ButtonComponent

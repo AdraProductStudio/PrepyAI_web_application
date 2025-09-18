@@ -1,6 +1,7 @@
 import axiosInstance from "Services/axiosInstance"
 import { clearForm, editClassroomData, editClassroomStudentsData, editClassroomTeachersData, editDashboardTeachersData, getCreateClassroomModalTeachers, handlechangePassword, handleEditProfileDetails, handleGetClassroomChartData, handleGetDashboardChartData, onChangeClassroomForm, setLoading, updateClassroomsOverviewData, updateDashboardOverviewData, updateDashboardTeachersList, updateGetAllClassroomsData, updatePersonalInfoInputs, updateStudentsTableData, updateTeachersTableData } from "../Slices/adminSlice"
 import { update_error, updateModalShow } from "Views/Common/Slices/Common_slice"
+import sha256 from "sha256"
 
 export const handleGetAllClassrooms = () => async (dispatch) => {
     try {
@@ -93,6 +94,8 @@ export const submitStaffFile = (formData) => async (dispatch) => {
   } catch (err) {
         dispatch(setLoading(false))
         dispatch(update_error({ Err: "Network Error", Toast_Type: "error" }));
+    } finally{
+        dispatch(updateModalShow({ show: false }))
     }
 };
 
@@ -113,6 +116,8 @@ export const submitStaffManual = (staffForm) => async (dispatch) => {
         dispatch(setLoading(false));
         dispatch(update_error({ Err: "Network Error", Toast_Type: "error" }));
 
+    }finally{
+        dispatch(updateModalShow({ show: false }))
     }
 };
 
@@ -155,7 +160,7 @@ export const createClassroom = (formData) => async (dispatch) => {
 export const getDashboardTeachersList = (payload) => async (dispatch) => {
       try {
         dispatch(updateDashboardTeachersList({type: "request"}))
-        const { data } = await axiosInstance.post("/admin/get_dashboard_teachers", {search_query : payload || "" });
+        const { data } = await axiosInstance.post("/admin/get_dashboard_teachers", {search_query : payload?.search_query || "" });
         if (data) {
             dispatch(updateDashboardTeachersList({type: "response", data: data?.data?.teachers}))
         } else {
@@ -332,7 +337,8 @@ export const editProfileDetails = (payload) => async (dispatch) => {
     dispatch(handleEditProfileDetails({type: "request"}))
     const { data } = await axiosInstance.post('/admin/edit_profile', payload)
     if (data?.error_code === 0) {
-        dispatch(handleEditProfileDetails({type: "response"}))
+        dispatch(handleEditProfileDetails({type: "response", data : payload}))
+        dispatch(updatePersonalInfoInputs([payload]))
         dispatch(update_error({ Err: data?.message, Toast_Type: "success" }));
         dispatch(updateModalShow({ show: false }))
     } else {
@@ -348,7 +354,13 @@ export const editProfileDetails = (payload) => async (dispatch) => {
 export const changePassword = (payload) => async (dispatch) => {
   try {
     dispatch(handlechangePassword({type: "request"}))
-    const { data } = await axiosInstance.post('/admin/update_password', payload)
+    const { data } = await axiosInstance.post('/admin/update_password', 
+        {
+            old_password : sha256(payload.old_password),
+            new_password : sha256(payload.new_password),
+            confirm_password : sha256(payload.confirm_password),
+        }
+    )
      if (data?.error_code === 0) {
         dispatch(handlechangePassword({type: "response"}))
         dispatch(update_error({ Err: data?.message, Toast_Type: "success" }));

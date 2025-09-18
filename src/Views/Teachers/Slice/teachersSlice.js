@@ -53,7 +53,7 @@ const initialState = {
       pagination: {
         page: 1,
         show_entries: 10,
-        total_pages: null,
+        total_pages: 1,
       },
     },
     selfTest: {
@@ -61,7 +61,7 @@ const initialState = {
       pagination: {
         page: 1,
         show_entries: 10,
-        total_pages: null,
+        total_pages: 1,
       },
     },
     performance_modalData: [],

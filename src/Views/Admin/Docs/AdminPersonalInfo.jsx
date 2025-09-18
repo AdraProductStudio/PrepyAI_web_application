@@ -24,7 +24,7 @@ const AdminPersonalInfo = () => {
       <section className="d-flex justify-content-between align-items-center gap-3 gap-md-5">
         <article
           className="position-relative d-inline-block"
-          style={{ width: "100px", height: "100px" }}
+          style={{ width: "75px", height: "100%" }}
         >
           <Input
             label={
@@ -33,7 +33,7 @@ const AdminPersonalInfo = () => {
                   src={Images?.default_prfile_pic}
                   alt={"ProfileImage"}
                   fluid={"fluid"}
-                  width={"100px"}
+                  width={"75px"}
                   height={"100%"}
                   className={"rounded-circle"}
                 />

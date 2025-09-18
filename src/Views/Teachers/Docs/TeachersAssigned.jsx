@@ -45,7 +45,7 @@ const TeachersAssigned = () => {
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={2}
                     marginPagesDisplayed={2}
-                    pageCount={pagination.total_pages || 0}
+                    pageCount={pagination.total_pages || 1}
                     forcePage={pagination.page - 1}
                     previousLabel="<"
                     renderOnZeroPageCount={null}
