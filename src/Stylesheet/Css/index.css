@@ -630,9 +630,8 @@ td {
   background: #DDE2FF;
   color: #4258D6;
   font-size: 13px;
-  padding: 0.2rem 2rem;
-  border-radius: 0 .5rem 0 .5rem;
-  text-align: end;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0 .5rem 0 0;
 }
 
 .student_upload_body {

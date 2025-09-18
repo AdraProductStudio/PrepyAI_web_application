@@ -8,7 +8,7 @@ import ButtonComponent from 'Components/Button/Button';
 import { updateModalShow } from 'Views/Common/Slices/Common_slice';
 import { SearchComponent } from 'ResuableFunctions/SearchFun';
 import { handleGetLearnerBooks } from "../Actions/StudentAction"
-import { useCommonState } from "Components/CustomHooks"
+import { useCommonState, useCustomNavigate } from "Components/CustomHooks"
 import Image from "Utils/Image";
 import Img from "Components/Img/Img";
 import SpinnerComponent from "Components/Spinner/Spinner";
@@ -16,6 +16,7 @@ import SpinnerComponent from "Components/Spinner/Spinner";
 
 const StudentUpload = () => {
   const dispatch = useDispatch();
+  const navigate = useCustomNavigate()
   const { studentState, commonState } = useCommonState()
   const searchRegex = commonState?.search?.value
 
@@ -62,9 +63,9 @@ const StudentUpload = () => {
                         <BookCard
                           className="col border"
                           data={book}
-                          viewFunction={() => window.open(book.url, "_blank")}
+                          viewFunction={() => navigate(`/student_dashboard/learner_book/${book.book_id}`) }
                           generateFunction={() => console.log(`Generate ${book.book_name}`)}
-                          onClickDelete={book?.owned ? () => console.log(`Delete ${book.book_name}`) : null}
+                          // onClickDelete={book?.owned ? () => console.log(`Delete ${book.book_name}`) : null}
                         />
                       </div>
                     </Col>
@@ -84,9 +85,9 @@ const StudentUpload = () => {
                       <BookCard
                         className="col border"
                         data={book}
-                        viewFunction={() => window.open(book.url, "_blank")}
+                        viewFunction={() =>  navigate(`/student_dashboard/learner_book/${book.book_id}`)}
                         generateFunction={() => console.log(`Generate ${book.book_name}`)}
-                        onClickDelete={book?.owned ? () => console.log(`Delete ${book.book_name}`) : null}
+                        // onClickDelete={book?.owned ? () => console.log(`Delete ${book.book_name}`) : null}
                       />
                     </div>
                   </Col>

@@ -1,7 +1,7 @@
 import { initializeDB } from "Components/CustomHooks"
 import Cookies from "js-cookie";
 import axiosInstance from "Services/axiosInstance"
-import { update_error, updateModalShow } from "Views/Common/Slices/Common_slice"
+import { update_app_data, update_error, updateModalShow } from "Views/Common/Slices/Common_slice"
 import {
     updateAnswers, getLearnerBooks, getAllTests,
     getAllSubjects,
@@ -22,6 +22,7 @@ import {
     getOfflineTests,
     getSubjectPerformance,
     getBookPerformance,
+    getBookUrl,
     updateTestEndOn,
     updateManualCloseTest,
     updatePersonalInfoInputs,
@@ -43,6 +44,38 @@ import {
 } from "Views/Students/Slices/StudentSlice"
 import { IndexedDbDeleteFun } from "../IndexDbDeleteFun";
 
+const validateUploadTestPaper = (values) => {
+  
+  const errors = {}
+
+  if (!values.test_name) {
+    errors.test_name = "Test name is required"
+  }
+  if (!values.register_number) {
+    errors.register_number = "Register number is required"
+  }
+  
+  if (!values.test_file) {
+    errors.test_file = "Test file is required"
+  }
+
+  return errors
+}
+
+const validateUploadLearnerBook = (values) => {
+  
+  const errors = {}
+
+  if (!values.book_name) {
+    errors.book_name = "Book name is required"
+  }
+  
+  if (!values.book_file) {
+    errors.book_file = "Book file is required"
+  }
+
+  return errors
+}
 
 export const handleUpdateAnswer = ({ updationInd, ans }) => (dispatch) => {
     initializeDB(
@@ -113,7 +146,8 @@ export const handleStartTest = (test_id, navigate) => async (dispatch) => {
                 })
             })
             // const testDurationMinutes = 1
-            const testDurationMinutes = Number(data?.data?.duration)
+            // const testDurationMinutes = Number(process.env.REACT_APP_MCQ_TEST_TIMING)
+             const testDurationMinutes = Number(data?.data?.duration)
             const endTime = new Date()
             endTime.setMinutes(endTime.getMinutes() + testDurationMinutes)
 
@@ -328,11 +362,11 @@ export const handleGetSubjectPerformance = (subjectId) => async (dispatch) => {
     }
 }
 
-export const handleGetBookPerformance = (bookId) => async (dispatch) => {
+export const handleGetBookPerformance = (bookId, owned) => async (dispatch) => {
     dispatch(setLoading({ key: "book_performance", value: true }))
 
     try {
-        const { data } = await axiosInstance.post("students/get_book_performance", { book_id: bookId })
+        const { data } = await axiosInstance.post("students/get_book_performance", { book_id: bookId, owned})
 
         if (data?.error_code === 0) {
             dispatch(getBookPerformance(data?.data))
@@ -366,12 +400,12 @@ export const handleGetAllTestHistory = () => async (dispatch) => {
     }
 }
 
-export const handleGetBookTestHistory = (book_id) => async (dispatch) => {
+export const handleGetBookTestHistory = (book_id, owned) => async (dispatch) => {
     dispatch(setLoading({ key: "book_test_history", value: true }))
 
     try {
         
-        const { data } = await axiosInstance.post("students/get_book_test_history", { book_id })
+        const { data } = await axiosInstance.post("students/get_book_test_history", { book_id, owned })
         if (data?.error_code === 0) {
 
             dispatch(getBookTestHistory(data?.data))
@@ -401,6 +435,25 @@ export const handleGetAllSubjects = () => async (dispatch) => {
         dispatch(update_error({ Err: error?.response?.data?.message || error?.message || "Something went wrong", Toast_Type: "error" }))
     } finally {
         dispatch(setLoading({ key: "all_subjects", value: false }))
+    }
+}
+
+export const handleGetBookUrl = (book_id) => async (dispatch) => {
+    dispatch(setLoading({ key: "book_url", value: true }))
+
+    try {
+
+        const { data } = await axiosInstance.get(`students/get_pdf_preview?book_id=${book_id}`)
+
+        if (data?.error_code === 0) {
+            dispatch(getBookUrl(data?.data))
+        } else {
+            dispatch(update_error({ Err: data?.message, Toast_Type: "error" }))
+        }
+    } catch (error) {
+        dispatch(update_error({ Err: error?.response?.data?.message || error?.message || "Something went wrong", Toast_Type: "error" }))
+    } finally {
+        dispatch(setLoading({ key: "book_url", value: false }))
     }
 }
 
@@ -441,12 +494,12 @@ export const handleGetSubjectAttachments = (subject_id) => async (dispatch) => {
     }
 }
 
-export const handleGetUpcomingTests = () => async (dispatch) => {
+export const handleGetUpcomingTests = (subject_id) => async (dispatch) => {
     dispatch(setLoading({ key: "upcoming_tests", value: true }))
 
     try {
        
-        const { data } = await axiosInstance.get("students/get_upcoming_test")
+        const { data } = await axiosInstance.get(`students/get_upcoming_test?subject_id=${subject_id}`)
 
         if (data?.error_code === 0) {
             dispatch(getUpcomingTests(data?.data))
@@ -519,9 +572,12 @@ export const handleGetOfflineTests = () => async (dispatch) => {
 // }
 
 export const handleUploadLearnerBook = (formData) => async (dispatch, getState) => {
-    const { book_name, book_file } = getState().studentState.upload_learner_book
-    if (!book_name?.trim() || !book_file) {
-        return dispatch(update_error({ Err: "Book name and book are required", Toast_Type: "error" }))
+       const errors = validateUploadLearnerBook(getState().studentState.upload_learner_book || {})
+    
+    if (Object.keys(errors).length > 0) {
+        dispatch(update_app_data({ type: "validation", data: true }));
+        dispatch(update_app_data({ type: "validationMessage", data: errors }));
+        return;
     }
 
     try {
@@ -534,6 +590,7 @@ export const handleUploadLearnerBook = (formData) => async (dispatch, getState) 
         if (data?.error_code === 0) {
             dispatch(setUploadLearnerBook({ type: "response", loading: false }))
             dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
+            dispatch(handleGetLearnerBooks())
             dispatch(update_error({ Err: data.message, Toast_Type: "success" }))
         } else {
             dispatch(setUploadLearnerBook({ type: "failure", loading: false }))
@@ -560,6 +617,7 @@ export const handleJoinClassRoom = (code) => async (dispatch, getState) => {
         if (data?.error_code === 0) {
             dispatch(setClassroomCode({ type: "response", loading: false }))
             dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
+            dispatch(handleGetAllSubjects())
             dispatch(update_error({ Err: data.message, Toast_Type: "success" }))
         } else {
             dispatch(setClassroomCode({ type: "failure", loading: false }))
@@ -572,9 +630,14 @@ export const handleJoinClassRoom = (code) => async (dispatch, getState) => {
 }
 
 export const handleUploadTestPaper = (formData) => async (dispatch, getState) => {
-    const { test_name, register_number, test_file } = getState()?.studentState?.upload_test_paper
-    if (!test_name || !register_number?.trim() || !test_file) {
-        return dispatch(update_error({ Err: "Test name, Register number and Test paper are required", Toast_Type: "error" }))
+
+      
+    const errors = validateUploadTestPaper(getState().studentState.upload_test_paper || {})
+
+    if (Object.keys(errors).length > 0) {
+        dispatch(update_app_data({ type: "validation", data: true }));
+        dispatch(update_app_data({ type: "validationMessage", data: errors }));
+        return;
     }
     try {
         dispatch(setUploadTestPaper({ type: "request", loading: true }))
@@ -667,6 +730,21 @@ export const getBookmarks = (book_id) => async (dispatch) => {
         }
     } catch (error) {
         dispatch(get_bookmarks({ type: "failure", message: error?.response?.data?.message || "Failed to fetch organization information" }))
+    }
+}
+
+export const handleDeleteLearnerBook = (book_id)=> async(dispatch)=> {
+    
+    try {
+        const { data } = await axiosInstance.delete("students/delete_learner_book", {data: { book_id }})
+
+        if(data.error_code === 0){
+            dispatch(update_error({Err:data?.message, Toast_Type:"success"}))
+        }else{
+            dispatch(update_error({Err:data?.message, Toast_Type:"error"}))
+        }
+    } catch (error) {
+        dispatch(update_error({ Err: 'Something went wrong', Toast_Type: "error" }))
     }
 }
 

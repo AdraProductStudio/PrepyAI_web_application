@@ -6,11 +6,11 @@ import {
 const TestPerformanceChartStudent = ({ data }) => {
     const performanceColor = {
         schedule_test: "#EC008C", // Exemplar (pink)
-        self_test: "#4B3CFA",     // Emergent (blue)
+        individual: "#4B3CFA",     // Emergent (blue)
     };
 
     const scheduleTest = data?.schedule_test ?? []
-    const selfTest = data?.self_test ?? []
+    const selfTest = data?.individual ?? []
 
     const allMonths = [
         ...new Set([
@@ -26,15 +26,14 @@ const TestPerformanceChartStudent = ({ data }) => {
         return {
             name: month,
             schedule_test: scheduleItem?.avg_score || 0,
-            self_test: selfItem?.avg_score || 0,
+            individual: selfItem?.avg_score || 0,
         }
     })
 
     const performanceList = [
         { key: "schedule_test", label: "Schedule Test", color: performanceColor.schedule_test },
-        { key: "self_test", label: "Self Test", color: performanceColor.self_test },
-    ];
-
+        { key: "individual", label: "Self Test", color: performanceColor.individual },
+    ]
 
     const referenceBands = mergedData.map((_, i) =>
         i % 2 === 0 && i < mergedData.length - 1 ? (
@@ -122,7 +121,7 @@ const TestPerformanceChartStudent = ({ data }) => {
                                 // Map the dataKey to a nicer label
                                 const nameMap = {
                                     schedule_test: "Schedule test",
-                                    self_test: "Self test"
+                                    individual: "Self test"
                                 }
                                 return [value, nameMap[name] || name]
                             }}

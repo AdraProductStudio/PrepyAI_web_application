@@ -8,6 +8,8 @@ import { updateModalShow } from "Views/Common/Slices/Common_slice";
 const ActivityCard = ({data, startFunction}) => {
     function dynamicContent() {
         const path = window.location.pathname;
+        const today = new Date().toLocaleDateString('en-GB').split('/').join('-')
+        
         switch (true) {
             case /student_dashboard/.test(path):
                 return (
@@ -26,6 +28,7 @@ const ActivityCard = ({data, startFunction}) => {
                                 className="btn btn-brand-color"
                                 buttonName="Start test"
                                 clickFunction= {startFunction}
+                                btnDisable={data.test_date != today}
                             />
                         </div>
                     </div>
