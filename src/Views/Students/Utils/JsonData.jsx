@@ -1,7 +1,7 @@
 import { useCommonState, useCustomNavigate, useDispatch } from "Components/CustomHooks";
 import Icons from "Utils/Icons"
 import Image from "Utils/Image"
-import { editProfileInputs, setClassroomCode, setUploadLearnerBook, setUploadTestPaper, updateSettingsInputs } from "../Slices/StudentSlice";
+import { clear_learnerboook_upload_fields, clear_test_upload_fields, editProfileInputs, setClassroomCode, setUploadLearnerBook, setUploadTestPaper, updateSettingsInputs } from "../Slices/StudentSlice";
 import { handlePostNote, update_note_data } from "Views/Common/Slices/Common_slice";
 
 const JsonData = (params) => {
@@ -621,6 +621,32 @@ const JsonData = (params) => {
                 change: (e) => dispatch(setUploadLearnerBook({ type: 'set', book_name: e.target.value })),
                 divClassName: "mb-3",
                 isMandatory: true,
+                Err: commonState?.app_data?.validated ? commonState?.app_data?.validationMessage?.book_name : null,
+            },
+            {
+                name: "Upload File",
+                category: "input",
+                type: "file",
+                placeholder: "Choose a file",
+                divClassName: "col-12 mb-3",
+                accept: ".pdf",
+                fileLength: 1,
+                className: "file-inputs mt-2",
+                deleteImg: () => dispatch(clear_learnerboook_upload_fields()),
+                value: Array.isArray(
+                    studentState?.upload_learner_book.book_file
+                )
+                    ? studentState?.upload_learner_book.book_file?.map(
+                        (val) => val
+                    )
+                    : [],
+                change: (e) => {
+                    const files = Array.from(e.target.files);
+                    dispatch(setUploadLearnerBook({ type: 'set', book_file: files }));
+                    e.target.value = "";
+                },
+                isMandatory: true,
+                Err: commonState?.app_data?.validated ? commonState?.app_data?.validationMessage?.book_file : null,
             },
         ],
         uploadTest: [
@@ -628,18 +654,21 @@ const JsonData = (params) => {
                 name: "Test Name",
                 category: "select",
                 type: "normal_select",
-                options: studentState?.offline_tests?.map(t => t.test_name) || [],
+                options: studentState?.offline_tests?.map(test => ({
+                    value: test.test_id,
+                    name: test.test_name
+                })) || [],
                 isMandatory: true,
                 value: (() => {
                     const selected = studentState?.offline_tests?.find(
                         t => t.test_id === studentState?.upload_test_paper?.test_id
-                    )
-                    return selected?.test_name || ""
+                    );
+                    return selected?.test_id || ""
                 })(),
                 change: (e) => {
                     const selectedTest = studentState?.offline_tests?.find(
-                        t => t.test_name === e.target.value
-                    );
+                        t => t.test_id === Number(e.target.value)
+                    )
                     dispatch(setUploadTestPaper({
                         type: "set",
                         test_id: selectedTest?.test_id ?? "",
@@ -647,6 +676,7 @@ const JsonData = (params) => {
                     }))
                 },
                 divClassName: "m-2",
+                Err: commonState?.app_data?.validated ? commonState?.app_data?.validationMessage?.test_name : null,
             },
             {
                 name: "Register Number",
@@ -657,6 +687,36 @@ const JsonData = (params) => {
                 change: (e) => dispatch(setUploadTestPaper({ type: 'set', register_number: e.target.value })),
                 divClassName: "m-2",
                 isMandatory: true,
+                Err: commonState?.app_data?.validated ? commonState?.app_data?.validationMessage?.register_number : null,
+
+            },
+            {
+                name: "Upload File",
+                category: "input",
+                type: "file",
+                placeholder: "Choose a file",
+                divClassName: "col-12 mb-3",
+                accept: ".pdf",
+                fileLength: 1,
+                className: "file-inputs mt-2",
+                deleteImg: () => dispatch(clear_test_upload_fields()),
+                value: Array.isArray(
+                    studentState?.upload_test_paper.test_file
+                )
+                    ? studentState?.upload_test_paper.test_file?.map(
+                        (val) => val
+                    )
+                    : [],
+                change: (e) => {
+                    const files = Array.from(e.target.files);
+                    dispatch(setUploadTestPaper({ type: 'set', test_file: files }));
+                    e.target.value = "";
+                },
+                isMandatory: true,
+                Err:
+                    commonState?.app_data?.validated
+                        ? commonState?.app_data?.validationMessage?.test_file
+                        : null,
             },
         ],
         notes_input: [

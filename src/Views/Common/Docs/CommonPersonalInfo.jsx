@@ -16,11 +16,11 @@ const CommonPersonalInfo = ({
 }) => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (fetchProfileAction) {
-      dispatch(fetchProfileAction());
-    }
-  }, [dispatch, fetchProfileAction]);
+  // useEffect(() => {
+  //   if (fetchProfileAction) {
+  //     dispatch(fetchProfileAction());
+  //   }
+  // }, [dispatch, fetchProfileAction]);
 
   return (
     <div className="h-100 p-xl-4 px-xl-5">

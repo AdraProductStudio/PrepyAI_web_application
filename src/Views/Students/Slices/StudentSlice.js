@@ -10,6 +10,7 @@ const TeacherSlice = createSlice({
             questions: [],
             result: [],
             summary: {},
+            performance: '',
             test_end_on: Cookies.get("testEndOn") || '',
             remaining_time: null,
             selectedQuestionIndex: 0,
@@ -32,6 +33,7 @@ const TeacherSlice = createSlice({
         book_test_history: [],
         all_subjects: [],
         subject_books: [],
+        book_url:{},
         subject_attachments: {},
         upcoming_tests: [],
         offline_tests: [],
@@ -212,8 +214,9 @@ const TeacherSlice = createSlice({
         },
         updateMcqResult(state, action) {
             const { data } = action.payload
-            state.mcq_test.result = data.results || []
-            state.mcq_test.summary = data.summary || {}
+            state.mcq_test.result = data?.validated_results?.results || []
+            state.mcq_test.summary = data?.validated_results?.summary || {}
+            state.mcq_test.performance = data?.performance || ""
             state.mcq_test.isDataPresentInIndexedDb = false
         },
         resetMcq: (state) => {
@@ -249,6 +252,9 @@ const TeacherSlice = createSlice({
         },
         getBookPerformance(state, action) {
             state.book_performance = action.payload || []
+        },
+        getBookUrl(state, action) {
+            state.book_url = action.payload || {}
         },
         getAllTestHistory(state, action) {
             state.all_test_history = action.payload || []
@@ -342,6 +348,9 @@ const TeacherSlice = createSlice({
                     break;
             }
         },
+        clear_learnerboook_upload_fields(state, action) {
+            state.upload_test_paper.test_file = null;
+        },
 
         setClassroomCode(state, action) {
             const { type, data, classroom_code, loading } = action.payload
@@ -410,6 +419,9 @@ const TeacherSlice = createSlice({
                 default:
                     break;
             }
+        },
+        clear_test_upload_fields(state, action) {
+            state.upload_test_paper.test_file = null;
         },
         updateQuestionType(state, action) {
             state.question_type = action.payload
@@ -636,7 +648,7 @@ export const {
     updatePersonalInfoInputs, updateSettingsInputs, resetSettingsInputs, editProfileInputs, updateProfileEditing,
     updateGenerateQuestionFields, updateGenerateMcqQuestions, updateGenerateLongQuestions,
     updateMcqQuestionAnswer, updateLongQuestionAnswerValue, updateLongQuestionAnswer, updateGenerateQuestionCanvas,
-    handlechangePassword,get_bookmarks,update_generate_questions,submit_test,convert_audio_to_text
+    handlechangePassword,get_bookmarks,update_generate_questions,submit_test,convert_audio_to_text, getBookUrl, clear_test_upload_fields, clear_learnerboook_upload_fields
 
 } = actions;
 

@@ -8,7 +8,7 @@ import { updateModalShow } from "Views/Common/Slices/Common_slice"
 import { updateDeleteAttachment } from "Views/Teachers/Slice/teachersSlice"
 
 const AttachmentCard = ({
-    data, delete_function,
+    data, delete_function, download_function,
     className, onClickViewBook
      
 }) => {
@@ -18,7 +18,7 @@ const AttachmentCard = ({
         <Card className={`border-0 rounded-4 ${className}`} onClick={onClickViewBook}>
             <Card.Body className="position-relative">
                 <Img src={Image.book_image} alt="book image" className="book_image" />
-
+{/* 
                 <div className="delete_icon">
                     <ButtonComponent
                         type="button"
@@ -30,22 +30,13 @@ const AttachmentCard = ({
                         }
                             
                     />
-                </div>
+                </div> */}
 
                 <div className="download_icon">
                     <ButtonComponent
                         type="button"
                         className="btn-transparent"
-                        clickFunction={() => {
-                            if (!data?.url) return;
-
-                            const link = document.createElement("a");
-                            link.href = data.url;
-                            link.download = ""; // keeps original filename, or set "myfile.pdf"
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
-                        }}
+                        clickFunction={download_function}
                     >
                         {Icons?.attachment_download_icon}
                     </ButtonComponent>

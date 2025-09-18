@@ -202,6 +202,7 @@ const McqTest = () => {
                                     <Fragment>
                                         <span className="pe-2">{Icons?.timerIcon}</span>
                                         <span className="text-secondary pt-2">
+                                            {remaining_time.hours > 0 && String(remaining_time.hours).padStart(2, "0") + ":"}
                                             {String(remaining_time.minutes).padStart(2, "0")}
                                             :
                                             {String(remaining_time.seconds).padStart(2, "0")}

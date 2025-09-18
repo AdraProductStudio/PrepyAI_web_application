@@ -13,23 +13,19 @@ import Image from "Utils/Image";
 import ButtonComponent from "Components/Button/Button";
 import SpinnerComponent from "Components/Spinner/Spinner";
 
-const BooksOverviewLayout = () => {
-    const { subject_id, book_idx } = useParams()
+const LearnerBooksOverview = () => {
+ const { book_id } = useParams()
     const { studentState } = useCommonState()
     const [called, setCalled] = useState(false)
     const dispatch = useDispatch()
     const navigate = useCustomNavigate()
 
-    const book = studentState?.subject_books[book_idx]
+    const book = studentState?.all_learner_books?.books.find((book) => book.book_id === Number(book_id))
     const book_url = studentState?.book_url
-    
-    useEffect(() => {
-        dispatch(handleGetSubjectBooks(subject_id))
-    }, [])
-
+   
     useEffect(() => {
         if (!called && book?.book_id) {
-            dispatch(handleGetBookUrl(book.book_id, book.owned))
+            dispatch(handleGetBookUrl(book.book_id))
             dispatch(handleGetBookTestHistory(book.book_id, book.owned))
             dispatch(handleGetBookPerformance(book.book_id, book.owned))
             setCalled(true)
@@ -49,7 +45,7 @@ const BooksOverviewLayout = () => {
     return (
         <div className="container-fluid">
             <div className="d-flex justify-content-between w-100 border-bottom pb-3">
-                <LinkComponent to={`/student_dashboard/subjects/${subject_id}`} className="brand-link-color">
+                <LinkComponent to={`/student_dashboard`} className="brand-link-color">
                     <span>{Icons.back_button_icon_blue}</span>
                     <span className="align-middle">{book?.book_name}</span>
                 </LinkComponent>
@@ -108,4 +104,4 @@ const BooksOverviewLayout = () => {
     )
 }
 
-export default BooksOverviewLayout;
+export default LearnerBooksOverview;
