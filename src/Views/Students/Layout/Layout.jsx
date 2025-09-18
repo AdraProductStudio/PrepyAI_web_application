@@ -5,6 +5,7 @@ import Header from "Components/Panel_compnent/Header";
 import { logout, update_app_data } from "Views/Common/Slices/Common_slice";
 import { OverallModel } from "../Utils/OverallModal";
 import { useCustomNavigate, useDispatch } from "Components/CustomHooks";
+import { getProfileDetails } from "../Actions/StudentAction";
 
 
 const Layout = () => {
@@ -19,7 +20,7 @@ const Layout = () => {
             <main className="col layout_main_content">
                 <div className="container-fluid ">
                     <header className="py-2 mb-2">
-                        <Header offcanvasOn="xl" profileOnClick={()=> navigate('/student_dashboard/profile')} offcanvasOnButton={() => dispatch(update_app_data({ type: 'canvas', data: { show: true, from: 'sidebar', type: 'data', placement: 'start', close_btn: true, sidebar_data: jsonOnly.sidebar_data, extraClass: 'offcanvas_sidebar' } }))} />
+                        <Header offcanvasOn="xl" profileOnClick={()=> dispatch(getProfileDetails()).then(()=> navigate('/student_dashboard/profile'))} offcanvasOnButton={() => dispatch(update_app_data({ type: 'canvas', data: { show: true, from: 'sidebar', type: 'data', placement: 'start', close_btn: true, sidebar_data: jsonOnly.sidebar_data, extraClass: 'offcanvas_sidebar' } }))} />
                     </header>
                     <div className="pt-3 main_content_height overflowY">
                         <Outlet />

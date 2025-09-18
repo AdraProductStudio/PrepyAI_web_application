@@ -1,4 +1,5 @@
-import PerformanceAndHistoryChart from "Components/Charts/PerformanceAndHistoryChart";
+
+import BookPerformanceChart from "Components/Charts/StudentsBookPerformance";
 import { Card } from "react-bootstrap";
 import JsonData from "Views/Students/Utils/JsonData";
 
@@ -13,7 +14,7 @@ const IndividualBookTestPerformance = ({data}) => {
             <Card.Body className="py-4">
                 <div className="row align-items-center">
                     <div className="col-12 col-md-6 d-flex justify-content-center">
-                        <PerformanceAndHistoryChart data={data} />
+                        <BookPerformanceChart data={data} />
                     </div>
 
                     <div className="col-12 col-md-6">

@@ -69,6 +69,7 @@ import McqTestLayout from "Views/Students/Layout/McqTestLayout";
 import StudentProfile from "Views/Students/Docs/StudentProfile";
 import StudentPersonalInfo from "Views/Students/Docs/StudentPersonalInfo";
 import StudentSettings from "Views/Students/Docs/StudentSettings";
+import LearnerBooksOverview from "Views/Students/Docs/LearnerBooksOverview";
 
 
 import LearnersLayout from 'Views/Learners/Layout/Layout'
@@ -100,6 +101,7 @@ import SuperadminAuth from "Views/Superadmin/Docs/SuperadminAuth";
 import OrganisationAuth from "Views/Organisation/Docs/OrganisationAuth";
 import TestHistory from "Views/Teachers/Docs/TestHistory";
 import { UpdateDynamic_Class_Subject_id } from "Views/Teachers/Docs/UpdateDynamic_Class_Subject_id";
+
 
 
 
@@ -187,7 +189,8 @@ function App() {
             <Route element={<StudentsLayout />}>
               <Route path="home" element={<StudentDashboard />} />
               <Route path="notes" element={<Notes />} />
-
+              
+              <Route path="learner_book/:book_id"  element={<LearnerBooksOverview/>} />
               <Route path="subjects">
                 <Route index element={<StudentSubject />} />
                 <Route path=":subject_id" element={<BooksAndAttachmentsLayout />}>

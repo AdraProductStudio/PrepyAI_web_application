@@ -1,15 +1,17 @@
 import ButtonComponent from "Components/Button/Button";
-import { useCustomNavigate } from "Components/CustomHooks";
+import { useCustomNavigate, useDispatch } from "Components/CustomHooks";
 import Img from "Components/Img/Img";
 import { Card } from "react-bootstrap";
 import Icons from "Utils/Icons";
 import Image from "Utils/Image";
+import { handleDeleteLearnerBook } from "Views/Students/Actions/StudentAction";
 
 const BookCard = ({
     data = {},
     onClickDelete, className, viewFunction, previewFunction
 }) => {
     const navigate = useCustomNavigate();
+     const dispatch = useDispatch()
 
     function dynamicContent() {
         const path = window.location.pathname;
@@ -36,7 +38,7 @@ const BookCard = ({
         <Card className={`${className?.includes("border") ? "border" : "border-0"} rounded-4 shadow-sm px-3 h-100 ${className}`}>
             <Card.Header className="bg-transparent border-0 border-bottom row align-items-center px-0">
                 <div className="col-10"><h6 className="mb-0">{data?.book_name || 'Book title'}</h6></div>
-                {onClickDelete && <div className="col-2 text-end">
+                {data.owned && <div className="col-2 text-end">
                     <ButtonComponent type="button" className="bg-transparent" clickFunction={onClickDelete} buttonName={Icons?.delete_icons} />
                 </div>}
             </Card.Header>

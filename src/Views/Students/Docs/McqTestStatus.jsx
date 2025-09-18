@@ -40,7 +40,7 @@ function McqTestStatus() {
             <ButtonComponent
               type="button"
               className="btn btn-brand-color px-4 py-2 my- ms-2"
-              buttonName="Developing"
+              buttonName={studentState?.mcq_test?.performance}
               clickFunction={() => console.log('developing')}
             />
 

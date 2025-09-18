@@ -1,38 +1,43 @@
-import { useCommonState } from "Components/CustomHooks"
 import Img from "Components/Img/Img"
 // import SpinnerComponent from "Components/Spinner/Spinner"
 import Image from "Utils/Image"
 
 const COLORS = { exemplar: '#EC008C', developing: '#08D110', emergent: '#3E00C2', not_attempted: '#AAAAAA' }
 
-const PerformanceAndHistoryChart = ({ data = [], size = 150, strokeWidth = 10, gap = 10 }) => {
+const BookPerformanceChart = ({ data = [], size = 150, strokeWidth = 10, gap = 10 }) => {
 
-    const { studentState } = useCommonState()
+    if (data.length > 0) {
+        data = data.map((item) => {
+            let fill = COLORS.not_attempted
+            let name = "Not Attempted"
 
-    let chartData = []
+            const value = parseFloat(item.value) || 0
 
-    if (
-        Array.isArray(studentState?.overall_performance) &&
-        studentState.overall_performance.length > 0 &&
-        !studentState.loading['overall_performance']
-    ) {
-        const order = ["exemplar", "developing", "emergent"]
-        chartData = Object.entries(studentState.overall_performance[0])
-            .map(([key, value]) => ({
-                name: key
-                    .split('_')
-                    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-                    .join(' '),
-                value: parseFloat(value) || 0,
-                fill: COLORS[key] || '#000000',
-                key: key 
-            }))
-            .sort((a, b) => order.indexOf(a.key) - order.indexOf(b.key))
+            if (value >= 0 && value < 40) {
+                fill = COLORS.emergent
+                name = "Emergent"
+            } else if (value >= 40 && value < 80) {
+                fill = COLORS.developing
+                name = "Developing"
+            } else if (value >= 80 && value <= 100) {
+                fill = COLORS.exemplar
+                name = "Exemplar"
+            } else {
+                fill = COLORS.not_attempted
+                name = "Not Attempted"
+            }
 
-        // chartData.pop()
+            return {
+                ...item,
+                name,
+                value,
+                fill
+            }
+        })
+
+
     }
-        
-    data = chartData
+
     const totalWidth = size + data.length * (strokeWidth + gap)
 
     // else {
@@ -107,4 +112,4 @@ const PerformanceAndHistoryChart = ({ data = [], size = 150, strokeWidth = 10, g
     )
 }
 
-export default PerformanceAndHistoryChart
+export default BookPerformanceChart

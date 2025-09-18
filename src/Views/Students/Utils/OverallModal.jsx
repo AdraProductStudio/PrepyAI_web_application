@@ -32,14 +32,21 @@ export function OverallModel() {
 
         if (type === 'learner_book') {
             formData.append("book_name", studentState?.upload_learner_book?.book_name)
-            formData.append("book", studentState?.upload_learner_book?.book_file)
+            const files = studentState?.upload_learner_book?.book_file
+            if (Array.isArray(files) && files.length > 0) {
+                formData.append("book", files[0])
+            }
             dispatch(handleUploadLearnerBook(formData))
         }
+        
         if (type === 'test_paper') {
             formData.append("test_name", studentState?.upload_test_paper?.test_name)
             formData.append("test_id", studentState?.upload_test_paper?.test_id)
             formData.append("register_number", studentState?.upload_test_paper?.register_number)
-            formData.append("test_paper", studentState?.upload_test_paper?.test_file)
+            const files = studentState?.upload_test_paper?.test_file;
+            if (Array.isArray(files) && files.length > 0) {
+                formData.append("test_paper", files[0])
+            }
 
             dispatch(handleUploadTestPaper(formData))
         }
@@ -165,35 +172,6 @@ export function OverallModel() {
                     case "upload_book":
                         return <div className='p-2 mt-2'>
                             {Inputfunctions(jsxJson.uploadBook)}
-                            <div className="d-flex justify-content-center align-items-center p-3 my-4 cursor-pointer upload_book_div" 
-                                onClick={() => fileInputRef.current && fileInputRef.current.click()}>
-
-                                <div className="mx-3">
-                                    <span style={{ display: "none" }}>
-                                        <Input
-                                            type='file'
-                                            inputAccept=".pdf,.doc,.docx"
-                                            name="bookFile"
-                                            ref={fileInputRef}
-                                            change={(e) => {
-                                                const file = e.target.files[0]
-                                                if (file) dispatch(setUploadLearnerBook({ type: "set", book_file: file }))
-                                            }}
-                                        />
-                                    </span>
-                                    <span>{Icons.studentUploadLarge}</span>
-                                </div>
-                                <div className="pt-3">
-                                    {studentState?.upload_learner_book?.book_file ? (
-                                        <small className="m-0">{studentState.upload_learner_book.book_file.name}</small>
-                                    ) : (
-                                        <>
-                                            <strong>Browse your book</strong>
-                                            <p>Formats pdf, docs, doc & Max file size 1 GB</p>
-                                        </>
-                                    )}
-                                </div>
-                            </div>
                             <div className="d-flex justify-content-between align-items-center mt-5">
                                 <div className="">
                                     <ButtonComponent
@@ -255,35 +233,6 @@ export function OverallModel() {
                     case "upload_test_paper":
                         return <div>
                             {Inputfunctions(jsxJson.uploadTest)}
-                            <div className="d-flex justify-content-center align-items-center p-3 m-2 my-4 cursor-pointer upload_book_div" 
-                                onClick={() => fileInputRef.current && fileInputRef.current.click()}>
-
-                                <div className="mx-3 pointer">
-                                    <span style={{ display: "none" }}>
-                                        <Input
-                                            type='file'
-                                            inputAccept=".pdf,.doc,.docx"
-                                            name="bookFile"
-                                            ref={fileInputRef}
-                                            change={(e) => {
-                                                const file = e.target.files[0]
-                                                if (file) dispatch(setUploadTestPaper({ type: "set", test_file: file }))
-                                            }}
-                                        />
-                                    </span>
-                                    <span className="d-flex" >{Icons.studentUploadLarge}</span>
-                                </div>
-                                <div className="pt-3">
-                                    {studentState?.upload_test_paper?.test_file ? (
-                                        <small className="m-0">{studentState.upload_test_paper.test_file.name}</small>
-                                    ) : (
-                                        <>
-                                            <strong>Browse your test file</strong>
-                                            <p>Formats pdf, docs, doc & Max file size 1 GB</p>
-                                        </>
-                                    )}
-                                </div>
-                            </div>
                             <div className="d-flex justify-content-between align-items-center mt-5">
                                 <div className="">
                                     <ButtonComponent
