@@ -66,6 +66,18 @@ let initialState = {
   create_classroom_modal_teachers_list: [],
   delete_classroom_data: {},
   dashboard_chart_years: [],
+
+  filter_params: {
+    page: 1,
+    show_entries: 10,
+    search_query: '',
+    filter_by: ''
+  },
+  settings_password : {
+    show_old_password : false,
+    show_new_password : false,
+    show_confirm_password : false,
+  }
 };
 
 const adminSlice = createSlice({
@@ -435,7 +447,8 @@ const adminSlice = createSlice({
     },
 
     handleEditProfileDetails(state, action) {
-      const { type } = action.payload;
+      const { type , data} = action.payload;
+      console.log("data :", data)
       switch (type) {
         case "request":
           state.placeholder = true;
@@ -463,6 +476,11 @@ const adminSlice = createSlice({
 
         case "response":
           state.placeholder = false;
+          state.settingsInputs = {
+            old_password: "",
+            confirm_password: "",
+            new_password: "",
+          }
           break;
 
         case "failure":
@@ -578,6 +596,12 @@ const adminSlice = createSlice({
         classroom_name: data.classroom_name || "",
       };
     },
+
+    update_settings_eye(state, action) {
+      const [key , value] = Object.entries(action.payload || {})?.[0]
+      state.settings_password[key] = value || false
+    },
+
   },
 
   extraReducers(builder) {
@@ -646,6 +670,7 @@ export const {
   getCreateClassroomModalTeachers,
   updateDeleteClassroomData,
   editClassroomData,
+  update_settings_eye
 } = actions;
 
 export default reducer;
