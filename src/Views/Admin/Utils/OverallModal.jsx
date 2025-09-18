@@ -27,7 +27,7 @@ export function OverallModel() {
   const { jsxJson } = JsonData()
   const dispatch = useDispatch();
   const { adminState } = useCommonState();
-  const { staffForm, file, loading, edit_dashboard_teacher, placeholder, placeholder2, edit_classroom_teacher } = adminState
+  const { staffForm, file, loading, edit_dashboard_teacher, placeholder, placeholder2, edit_classroom_teacher, editProfileInputs } = adminState
 
   React.useEffect(() => {
     if (!file && fileInputRef.current) {
@@ -128,6 +128,25 @@ export function OverallModel() {
       // .then(dispatch(clearForm()))
   }
 
+  const handleProfile = (e) => {
+    e.preventDefault();
+    const newErrors = {}
+
+    if(!editProfileInputs?.first_name.trim()) newErrors.first_name = "First Name is required"
+    if(!editProfileInputs.last_name.trim()) newErrors.last_name = "Last Name is required"
+    // if(!editProfileInputs.email_id.trim()) newErrors.email = "Email Id is required"
+    // else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(edit_classroom_teacher.email)) newErrors.email = "Invalid email"
+    if(!/^\d{10}$/.test(editProfileInputs.phone_number.trim())) newErrors.phone_number = "Contact Number must be 10 digits"
+    // if(!editProfileInputs.address.trim()) newErrors.address = "Address is required"
+    
+    if(Object.keys(newErrors).length > 0 ){
+      dispatch(setErrors(newErrors))
+      return;
+    }
+
+    dispatch(editProfileDetails(adminState?.editProfileInputs))
+  }
+
 
   function modalHeaderFun() {
     switch (commonState?.modal?.from) {
@@ -195,7 +214,7 @@ export function OverallModel() {
                           {Icons.uploadIcon}
                           <div className="ms-2">
                             <p className="fw-bold mb-0">Upload CSV File</p>
-                            <p className="mb-0" style={{fontSize: "0.75rem"}}>Format: pdf,docx,doc & Max file size: 25 MB</p>
+                            <p className="mb-0" style={{fontSize: "0.75rem"}}>Format: csv, xlsx & Max file size: 25 MB</p>
                           </div>
                         </div>)
                       }
@@ -204,7 +223,7 @@ export function OverallModel() {
                       htmlFor={"staff_file"}
                       type={"file"}
                       name={"staff_file"}
-                      accept={".csv"}
+                      accept={".csv, .xlsx"}
                       change={ (e) => {
                         const file = e.target.files[0] || null;
                         dispatch(setFile(file));
@@ -271,7 +290,7 @@ export function OverallModel() {
                             <span>{Icons.uploadIcon}</span>
                             <div className="ms-2">
                               <p className="fw-bold mb-0">Upload CSV File</p>
-                              <p className="mb-0" style={{fontSize: "0.75rem"}}>Format: pdf,docx,doc & Max file size: 25 MB</p>
+                              <p className="mb-0" style={{fontSize: "0.75rem"}}>Format: csv, xlsx & Max file size: 25 MB</p>
                             </div>
                           </div>
                         </>
@@ -282,7 +301,7 @@ export function OverallModel() {
                     htmlFor={"student_file"}
                     type={"file"}
                     name={"student_file"}
-                    accept={".csv"}
+                    accept={".csv, .xlsx"}
                     change={(e) => {
                       dispatch(clearFieldError(e.target.name))
                       dispatch(onChangeClassroomForm({field: "student_file", data: e.target.files[0] || null }))
@@ -510,7 +529,7 @@ export function OverallModel() {
                 <ButtonComponent 
                   type="button" 
                   className="brand_color w-100 text-white" 
-                  clickFunction={()=>dispatch(editProfileDetails(adminState?.editProfileInputs))}
+                  clickFunction={handleProfile}
                   btnDisable={placeholder}
                   children={
                     placeholder 

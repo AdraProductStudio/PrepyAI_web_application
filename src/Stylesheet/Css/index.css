@@ -5,12 +5,14 @@
 
 .eye_button {
   position: absolute;
-  right: 0.9rem;
-  bottom: 16px;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   cursor: pointer;
   z-index: 1;
-  width: 20px;
+  /* width: 20px;   */
 }
+
 
 /* main  */
 .form-control.is-invalid,
