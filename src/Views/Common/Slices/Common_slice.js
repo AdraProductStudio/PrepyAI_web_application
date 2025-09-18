@@ -335,6 +335,8 @@ const commonSlice = createSlice({
                     "organisation_slice/delete_admin",
                     "organisation_slice/edit_organization",
                     "student_slice/convert_audio_to_text",
+                    "admin_slice/edit_profile_Inputs_endpoint",
+                    "admin_slice/dele_organisation_endpoint",
 
                 ].includes(action.type),
 
@@ -373,6 +375,9 @@ const commonSlice = createSlice({
                     "student_slice/get_bookmarks",
                     "student_slice/update_generate_questions",
                     "student_slice/submit_test",
+                    "admin_slice/edit_profile_Inputs_endpoint",
+                    "admin_slice/change_password_endpoint",
+                    "admin_slice/dele_organisation_endpoint",
                 ].includes(action.type),
 
                 (state, action) => {
@@ -397,10 +402,22 @@ const commonSlice = createSlice({
                     "teachersSlice/save_schedule_status",
                     "organisation_slice/change_password",
                     "organisation_slice/create_admin",
+                    "teachersSlice/update_Create_student",
+                    "teachersSlice/updatePostStudentData",
+                    "teachersSlice/updatePostClassroomsData",
+                    "teachersSlice/updatePostSubjectsData",
+                    "organisation_slice/edit_organization",
                 ].includes(action.type),
 
-                (state) => {
-                    if (state.app_data.validated) state.app_data.validated = false;
+                (state, action) => {
+                    const obj1 = action.payload;
+                    const obj2 = state.app_data.validationMessage;
+
+                    for (let key in obj1) {
+                        if (obj2.hasOwnProperty(key)) {
+                            delete obj2[key];
+                        }
+                    }
                 }
             );
     }
