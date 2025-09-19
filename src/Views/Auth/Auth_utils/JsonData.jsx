@@ -25,7 +25,7 @@ const JsonData = () => {
         placeholder: "mail@abc",
         value: authState?.logindata?.username || "",
         change: (e) => {
-          if (/^[A-Za-z0-9@._-]*$/.test(e.target.value)) {
+          if (/^[A-Za-z0-9._@-]*$/.test(e.target.value)) {
             dispatch(update_login_data({ username: e.target.value }));
           }
         },
@@ -1069,3 +1069,4 @@ const JsonData = () => {
 };
 
 export default JsonData;
+

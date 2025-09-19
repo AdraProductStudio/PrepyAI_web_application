@@ -40,12 +40,6 @@ const validateAdminForm = (values) => {
     errors.phone_number = "Must be exactly 10 digits";
   }
 
-  if (!values.register_no) {
-    errors.register_no = "Register number is required";
-  } else if (!/^[A-Z0-9]+$/.test(values.register_no)) {
-    errors.register_no = "Only uppercase letters and numbers allowed";
-  }
-
   if (!values.institute_name) {
     errors.institute_name = "Institute name is required";
   }
