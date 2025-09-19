@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { saveAs } from "file-saver";
 import ButtonComponent from "Components/Button/Button";
 import QuestionPaperCard from "Components/Card/QuestionPaperCard";
@@ -14,6 +14,8 @@ const PreviewTest = () => {
     const { test_id } = useParams();
     const dispatch = useDispatch();
     const { teachersState } = useCommonState()
+    const navigate = useNavigate();
+    const {class_id,subject_id} = useParams();
 
     useEffect(() => {
         dispatch(get_test_questions({ test_id: test_id }));
@@ -118,7 +120,7 @@ const PreviewTest = () => {
                                     className="w-100 btn-brand-color py-2"
                                     title={teachersState?.schedule_test?.glow ? "Scheduleing Test " : " Schedule Test in Online"}
                                     is_spinner={teachersState?.schedule_test?.glow}
-                                    clickFunction={() => dispatch(scheduleTest({ test_id }))}
+                                    clickFunction={() => dispatch(scheduleTest(test_id,navigate,class_id,subject_id))}
                                     buttonName="Schedule Test in Online"
                                 />
                             </div>

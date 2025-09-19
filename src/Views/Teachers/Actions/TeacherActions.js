@@ -1,7 +1,8 @@
 import { type } from "@testing-library/user-event/dist/type"
 import axiosInstance from "Services/axiosInstance"
-import { updateModalShow } from "Views/Common/Slices/Common_slice"
+import { update_app_data, update_error, updateModalShow } from "Views/Common/Slices/Common_slice"
 import {
+    clear_ScheduleTest_fields,
     create_test_onchange,
     delete_attachment_failure,
     delete_attachment_request,
@@ -22,6 +23,60 @@ import {
     save_schedule_success
 } from "Views/Teachers/Slice/teachersSlice"
 
+
+
+const validateScheduleTestForm = (values) => {
+  
+    const errors = {};
+  
+    if (!values.test_name) {
+      errors.test_name = "Test name is required";
+    }
+
+    if (!values.chapters) {
+      errors.chapters = "Chapters is required";
+    }
+
+    if (!values.total_duration) {
+      errors.total_duration = "Total time duration is required";
+    }
+
+    if (!values.type_of_questions) {
+      errors.type_of_questions = "Type Of Question is required";
+    }
+
+    if (!values.students) {
+      errors.students = "Students name is required";
+    } else if (!values.students?.length > 0) {
+        errors.students = "Students name is required";
+      }
+    
+    
+    if(!values?.start_time){
+        errors.start_time = "Start time is required"
+    }
+
+    if(!values?.start_date){
+        errors.start_date = "Start Date is required"
+    }
+    if(!values?.set_questions){
+        errors.set_questions = "Set Quesitions is required"
+    }
+    if(!values?.no_of_questions){
+        errors.no_of_questions = "No of Questions is required"
+    }
+    if(!values?.chapters){
+        errors.chapters = "Chapters is required"
+    }
+    if(!values?.chapter_range){
+        errors.chapter_range = "Chapter is required"
+    }
+    if(!values?.book_id){
+        errors.book_id = "Book is required"
+    }
+
+    return errors;
+  };
 
 export const getTestRecords = (params) => async (dispatch) => {
     try {
@@ -76,22 +131,39 @@ export const get_student_details = (classroom_id) => async (dispatch) => {
 
 
 export const saveSchedule = (payload, navigate) => async (dispatch) => {
-    try {
-        dispatch(save_schedule_request());
-        const response = await axiosInstance.post("/teachers/save_schedule", payload);
+//    return console.log(payload,"dasdd32")
+   const errors = validateScheduleTestForm(payload);
 
-        if (response.data?.error_code === 0) {
-            // const { test_id, ...rest } = response.data?.data;
-            // console.log(response?.data?.data,"tyrdftyfty")
-            dispatch(save_schedule_success(response.data?.data));
+   if (Object.keys(errors).length > 0) {
+     dispatch(update_app_data({ type: "validation", data: true }));
+     dispatch(update_app_data({ type: "validationMessage", data: errors }));
+     return;
+   }
+   try {
+     dispatch(save_schedule_request());
+     const response = await axiosInstance.post(
+       "/teachers/save_schedule",
+       payload
+     );
 
-            navigate(`/teachers_dashboard/classrooms/${payload.classroom_id}/${payload.subject_id}/preview_test/${response.data?.data?.test_id || ''}`);
-        } else {
-            dispatch(save_schedule_failure(response.data?.message || "Unknown error"));
-        }
-    } catch (error) {
-        dispatch(save_schedule_failure(error.message));
-    }
+     if (response.data?.error_code === 0) {
+       // const { test_id, ...rest } = response.data?.data;
+       // console.log(response?.data?.data,"tyrdftyfty")
+       dispatch(save_schedule_success(response.data?.data));
+       dispatch(clear_ScheduleTest_fields());
+       navigate(
+         `/teachers_dashboard/classrooms/${payload.classroom_id}/${
+           payload.subject_id
+         }/preview_test/${response.data?.data?.test_id || ""}`
+       );
+     } else {
+       dispatch(
+         save_schedule_failure(response.data?.message || "Unknown error")
+       );
+     }
+   } catch (error) {
+     dispatch(save_schedule_failure(error.message));
+   }
 };
 // preview
 export const get_test_questions = (test_id) => async (dispatch) => {
@@ -247,14 +319,16 @@ export const uploadBooks = (params) => async (dispatch) => {
 
 // scheduleTest
 
-export const scheduleTest = (test_id) => async (dispatch) => {
+export const scheduleTest = (test_id,navigate,class_id,subject_id) => async (dispatch) => {
     try {
         dispatch(handleScheduleTest({ type: "request" }));
 
-        const { data } = await axiosInstance.post("/teachers/schedule_test", test_id);
+        const { data } = await axiosInstance.post("/teachers/schedule_test", {test_id});
 
         if (data?.error_code === 0) {
             dispatch(handleScheduleTest({ type: "response", data: data?.data || {}, }));
+            navigate(`/teachers_dashboard/classrooms/${class_id}/${subject_id}`)
+            dispatch(update_error({ Err: data?.message ||"Scheduled Successfully", Toast_Type: "success" }))
         } else {
             dispatch(handleScheduleTest({ type: "failure", message: data?.message || "Failed to schedule test", }));
         }

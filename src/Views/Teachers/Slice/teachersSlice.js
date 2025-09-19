@@ -1137,6 +1137,9 @@ const teachersSlice = createSlice({
     clear_Classroom_Upload_fields(state, action) {
       state.teacher_PostClassrooms.data.student_file = null;
     },
+    clear_ScheduleTest_fields(state,action){
+      state.scheduleTest_values = {}
+    }
   },
 
   extraReducers(builder) {
@@ -1173,8 +1176,14 @@ const teachersSlice = createSlice({
           state.teacher_GetStudentOverviewTestCount = {
             data: {},
           };
+          state.teachers_GetStudentsSortBy = {
+            sort_by: "",
+            sort_order: "",
+          }
+
         }
-      });
+      })
+      // .addMatcher([""])
   },
 });
 
@@ -1257,7 +1266,8 @@ export const {
   edit_profile_Inputs,
   updateStudentsListSortBy,
   clear_Classroom_Upload_fields,
-  update_button_spinner
+  update_button_spinner,
+  clear_ScheduleTest_fields
 } = actions;
 
 export default reducer;
