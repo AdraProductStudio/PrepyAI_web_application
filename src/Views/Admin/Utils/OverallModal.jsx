@@ -94,6 +94,7 @@ export function OverallModel() {
     if(!edit_dashboard_teacher.institute_name.trim()) newErrors.institute_name = "Institute Name is required"
     // if(!edit_dashboard_teacher.subject.trim()) newErrors.subject = "Subject Name is required"
     if(!edit_dashboard_teacher.contact_no.trim()) newErrors.contact_no = "Contact Number is required"
+    else if(!/^\d{10}$/.test(edit_dashboard_teacher.contact_no.trim())) newErrors.contact_no = "Contact Number must be 10 digits"
     if(!edit_dashboard_teacher.email.trim()) newErrors.email = "Email Id is required";
     else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(edit_dashboard_teacher.email)) newErrors.email = "Invalid email"
     if(!edit_dashboard_teacher.qualification.trim()) newErrors.qualification = "Qualification is required"
@@ -115,6 +116,7 @@ export function OverallModel() {
     if(!edit_classroom_teacher.last_name.trim()) newErrors.last_name = "Last Name is required"
     if(!edit_classroom_teacher.subject_name.trim()) newErrors.subject_name = "Subject Name is required"
     if(!edit_classroom_teacher.contact_no.trim()) newErrors.contact_no = "Contact Number is required"
+    else if(!/^\d{10}$/.test(edit_dashboard_teacher.contact_no.trim())) newErrors.contact_no = "Contact Number must be 10 digits"
     if(!edit_classroom_teacher.email.trim()) newErrors.email = "Email Id is required"
     else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(edit_classroom_teacher.email)) newErrors.email = "Invalid email"
     if(!edit_classroom_teacher.qualification.trim()) newErrors.qualification = "Qualification is required"
@@ -136,7 +138,9 @@ export function OverallModel() {
     if(!editProfileInputs.last_name.trim()) newErrors.last_name = "Last Name is required"
     // if(!editProfileInputs.email_id.trim()) newErrors.email = "Email Id is required"
     // else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(edit_classroom_teacher.email)) newErrors.email = "Invalid email"
-    if(!/^\d{10}$/.test(editProfileInputs.phone_number.trim())) newErrors.phone_number = "Contact Number must be 10 digits"
+    if(editProfileInputs.phone_number){
+      if(!/^\d{10}$/.test(editProfileInputs.phone_number.trim())) newErrors.phone_number = "Contact Number must be 10 digits"
+    }
     // if(!editProfileInputs.address.trim()) newErrors.address = "Address is required"
     
     if(Object.keys(newErrors).length > 0 ){

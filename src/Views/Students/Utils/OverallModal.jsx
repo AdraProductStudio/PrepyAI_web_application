@@ -8,7 +8,7 @@ import Icons from "Utils/Icons";
 import Image from "Utils/Image";
 import { update_error, updateModalShow } from "Views/Common/Slices/Common_slice";
 import { handleEditProfileDetails, handleGenerateQuestion, handleJoinClassRoom, handleStartTest, handleSubmitTest, handleUploadLearnerBook, handleUploadTestPaper } from "../Actions/StudentAction";
-import { setClassroomCode, setUploadLearnerBook, setUploadTestPaper, updateGenerateQuestionFields } from "../Slices/StudentSlice";
+import { setClassroomCode, setErrors, setUploadLearnerBook, setUploadTestPaper, updateGenerateQuestionFields } from "../Slices/StudentSlice";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import JsonData from "./JsonData";
 import SpinnerComponent from "Components/Spinner/Spinner";
@@ -26,6 +26,7 @@ export function OverallModel() {
     const navigate = useCustomNavigate()
     const { jsonOnly, jsxJson } = JsonData()
     const { id } = useParams()
+    const { editProfileInputs } = studentState
 
     const handleUpload = (type) => {
         const formData = new FormData()
@@ -78,6 +79,28 @@ export function OverallModel() {
             test_language,
         }
         dispatch(handleGenerateQuestion(payload,navigate,targetRoute,type_of_question))
+    }
+
+
+    const handleProfile = (e) => {
+        e.preventDefault();
+        const newErrors = {}
+
+        if(!editProfileInputs?.first_name.trim()) newErrors.first_name = "First Name is required"
+        if(!editProfileInputs.last_name.trim()) newErrors.last_name = "Last Name is required"
+        // if(!editProfileInputs.email_id.trim()) newErrors.email = "Email Id is required"
+        // else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(edit_classroom_teacher.email)) newErrors.email = "Invalid email"
+        if(editProfileInputs.phone_number){
+            if(!/^\d{10}$/.test(editProfileInputs.phone_number.trim())) newErrors.phone_number = "Contact Number must be 10 digits"
+        }
+        // if(!editProfileInputs.address.trim()) newErrors.address = "Address is required"
+        
+        if(Object.keys(newErrors).length > 0 ){
+            dispatch(setErrors(newErrors))
+            return;
+        }
+
+        dispatch(handleEditProfileDetails(studentState?.editProfileInputs))
     }
 
 
@@ -465,7 +488,8 @@ export function OverallModel() {
                         return <div className="w-100">
                             {Inputfunctions(jsxJson?.student_profile)}
                             <ButtonComponent type="button"
-                                buttonName={studentState?.loading['edit_profile'] ? (
+                                btnDisable = {studentState?.loading?.edit_profile}
+                                buttonName={studentState?.loading?.edit_profile ? (
                                     <div className="d-flex justify-content-center align-items-center">
                                         <p className="m-0">Processing...</p> <SpinnerComponent className="p-0 my-0 ms-2 small-spinner" />
                                     </div>
@@ -473,7 +497,7 @@ export function OverallModel() {
                                     'Submit'
                                 }
                                 className="brand_color w-100 text-white"
-                                clickFunction={() => dispatch(handleEditProfileDetails(studentState?.editProfileInputs))}
+                                clickFunction={ handleProfile }
                             />
                         </div>
 

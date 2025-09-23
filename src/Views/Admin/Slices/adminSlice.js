@@ -601,6 +601,13 @@ const adminSlice = createSlice({
       const [key , value] = Object.entries(action.payload || {})?.[0]
       state.settings_password[key] = value || false
     },
+    resetSettingsPasswordEye(state) {
+      state.settings_password = {
+        show_old_password : false,
+        show_new_password : false,
+        show_confirm_password : false,
+      }
+    }
 
   },
 
@@ -621,6 +628,13 @@ const adminSlice = createSlice({
           teachers: [],
           student_file: null,
         };
+        state.editProfileInputs = {
+          first_name : state.profileInputs.first_name,
+          last_name : state.profileInputs.last_name,
+          email_id : state.profileInputs.email_id,
+          phone_number : state.profileInputs.phone_number,
+          address : state.profileInputs.address
+        }
       }
     });
   },
@@ -670,7 +684,7 @@ export const {
   getCreateClassroomModalTeachers,
   updateDeleteClassroomData,
   editClassroomData,
-  update_settings_eye
+  update_settings_eye, resetSettingsPasswordEye
 } = actions;
 
 export default reducer;

@@ -14,7 +14,7 @@ import {
 import { useParams } from "react-router-dom";
 import Icons from "Utils/Icons";
 import { Form, Button, Spinner } from "react-bootstrap";
-import { clear_form_fields, handle_attachment_books_upload } from "../Slice/teachersSlice";
+import { clear_form_fields, handle_attachment_books_upload, setErrors } from "../Slice/teachersSlice";
 import { deleteAttachment, handleDeleteBook, handleUploadBook, uploadBooks } from "../Actions/TeacherActions";
 import SpinnerComponent from "Components/Spinner/Spinner";
 import ButtonSpinner from "Components/Spinner/ButtonSpinner";
@@ -26,6 +26,7 @@ export function OverallModel() {
   const { jsxJson } = JsonData();
   const dispatch = useDispatch();
   const { teachersState, commonState, } = useCommonState();
+  const { editProfileInputs } = teachersState
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -42,6 +43,27 @@ export function OverallModel() {
 
 
   const handleDelete = () => { dispatch(deleteAttachment(teachersState?.delete_attachment_id?.id,teachersState?.delete_attachment_id?.subject_id)) };
+
+  const handleProfile = (e) => {
+    e.preventDefault();
+    const newErrors = {}
+
+    if(!editProfileInputs?.first_name.trim()) newErrors.first_name = "First Name is required"
+    if(!editProfileInputs.last_name.trim()) newErrors.last_name = "Last Name is required"
+    // if(!editProfileInputs.email_id.trim()) newErrors.email = "Email Id is required"
+    // else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(edit_classroom_teacher.email)) newErrors.email = "Invalid email"
+    if(editProfileInputs.phone_number){
+      if(!/^\d{10}$/.test(editProfileInputs.phone_number.trim())) newErrors.phone_number = "Contact Number must be 10 digits"
+    }
+    // if(!editProfileInputs.address.trim()) newErrors.address = "Address is required"
+    
+    if(Object.keys(newErrors).length > 0 ){
+      dispatch(setErrors(newErrors))
+      return;
+    }
+
+    dispatch(editProfileDetails(teachersState?.editProfileInputs))
+  }
 
   function modalHeaderFun() {
     switch (commonState?.modal?.from) {
@@ -253,7 +275,7 @@ export function OverallModel() {
               <ButtonComponent
                 type="button"
                 className="brand_color w-100 text-white"
-                clickFunction={() => dispatch(editProfileDetails(teachersState?.editProfileInputs))}
+                clickFunction={handleProfile}
                 btnDisable={teachersState?.placeholder}
                 children={
                   teachersState?.placeholder

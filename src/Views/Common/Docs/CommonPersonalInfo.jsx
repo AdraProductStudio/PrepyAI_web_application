@@ -1,6 +1,6 @@
 import ButtonComponent from "Components/Button/Button";
 import Input from "Components/Input/Input";
-import React, { useEffect } from "react";
+import React from "react";
 import { CiEdit } from "react-icons/ci";
 import { useDispatch } from "react-redux";
 import Img from "Components/Img/Img";
@@ -9,18 +9,11 @@ import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 
 const CommonPersonalInfo = ({
   profileDetailsJson,
-  fetchProfileAction,
   editProfileAction,
   modalConfig,
   openModalAction,
 }) => {
   const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   if (fetchProfileAction) {
-  //     dispatch(fetchProfileAction());
-  //   }
-  // }, [dispatch, fetchProfileAction]);
 
   return (
     <div className="h-100 p-xl-4 px-xl-5">

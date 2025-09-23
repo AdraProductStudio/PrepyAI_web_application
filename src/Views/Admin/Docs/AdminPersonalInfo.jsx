@@ -15,10 +15,6 @@ const AdminPersonalInfo = () => {
   const {jsxJson } = JsonData()
   const dispatch = useDispatch();
 
-  useEffect(()=>{
-    dispatch(getProfileDetails())
-  },[dispatch])
-
   return (
     <div className="h-100 p-xl-4 px-xl-5">
       <section className="d-flex justify-content-between align-items-center gap-3 gap-md-5">
