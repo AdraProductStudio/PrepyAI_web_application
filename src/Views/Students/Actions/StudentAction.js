@@ -44,6 +44,7 @@ import {
 
 } from "Views/Students/Slices/StudentSlice"
 import { IndexedDbDeleteFun } from "../IndexDbDeleteFun";
+import sha256 from "sha256";
 
 const validateUploadTestPaper = (values) => {
   
@@ -704,7 +705,13 @@ export const handleEditProfileDetails = (payload) => async (dispatch) => {
 export const changePassword = (payload) => async (dispatch) => {
   try {
     dispatch(handlechangePassword({type: "request"}))
-        const { data } = await axiosInstance.post('/students/update_password', payload)
+        const { data } = await axiosInstance.post('/students/update_password', 
+            {
+                old_password : sha256(payload?.old_password),
+                new_password : sha256(payload?.new_password),
+                confirm_password : sha256(payload?.confirm_password),
+            }
+        )
      if (data?.error_code === 0) {
         dispatch(handlechangePassword({type: "response"}))
         dispatch(update_error({ Err: data?.message, Toast_Type: "success" }));

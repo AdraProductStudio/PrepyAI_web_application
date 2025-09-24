@@ -356,15 +356,14 @@ export const changePassword = (payload) => async (dispatch) => {
     dispatch(handlechangePassword({type: "request"}))
     const { data } = await axiosInstance.post('/admin/update_password', 
         {
-            old_password : sha256(payload.old_password),
-            new_password : sha256(payload.new_password),
-            confirm_password : sha256(payload.confirm_password),
+            old_password : sha256(payload?.old_password),
+            new_password : sha256(payload?.new_password),
+            confirm_password : sha256(payload?.confirm_password),
         }
     )
      if (data?.error_code === 0) {
         dispatch(handlechangePassword({type: "response"}))
         dispatch(update_error({ Err: data?.message, Toast_Type: "success" }));
-        dispatch(updateModalShow({ show: false }))
     } else {
         dispatch(handlechangePassword({type: "failure"}))
         dispatch(update_error({ Err: data?.message, Toast_Type: "error" }));

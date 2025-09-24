@@ -2,7 +2,7 @@ import { useCommonState, useCustomNavigate, useDispatch } from 'Components/Custo
 import { handlePostNote, update_app_data, update_note_data } from 'Views/Common/Slices/Common_slice';
 import Icons from 'Utils/Icons';
 import Image from 'Utils/Image';
-import { clear_form_fields, update_overview_month_for_perfomance, resetStudentState, selected_students_in_schedule, edit_profile_Inputs, update_perfomance_by_classroom, update_perfomance_history_by_subject, update_selected_books, update_student_perfomance_dashboard, update_Students_classroom, updateSettingsInputs, updateStudentsListSortBy, clear_Classroom_Upload_fields } from '../Slice/teachersSlice';
+import { clear_form_fields, update_overview_month_for_perfomance, resetStudentState, selected_students_in_schedule, edit_profile_Inputs, update_perfomance_by_classroom, update_perfomance_history_by_subject, update_selected_books, update_student_perfomance_dashboard, update_Students_classroom, updateSettingsInputs, updateStudentsListSortBy, clear_Classroom_Upload_fields, setErrors, clearFieldError, update_settings_eye } from '../Slice/teachersSlice';
 import { get_bookmarks, get_student_details, handleGetSubjectAttachments } from '../Actions/TeacherActions';
 import { update_Create_student, update_Grade_by_classroom, updatePostClassroomsData, updatePostStudentData, updatePostSubjectsData } from '../Slice/teachersSlice';
 import { useLocation, useParams } from 'react-router-dom';
@@ -1307,78 +1307,84 @@ const JsonData = (params) => {
     settings_details: [
       {
         name: "Current Password",
-        type: "text",
+        type: teachersState?.settings_password?.show_old_password ? "text" : "password" ,
         title: " ",
         category: "input",
         placeholder: "Current Password",
         value: teachersState?.settingsInputs?.old_password || "",
-        change: (e) =>
-          dispatch(
-            updateSettingsInputs({
-              field: "old_password",
-              value: e.target.value,
-            })
-          ),
+        change: (e) => {
+          dispatch(updateSettingsInputs({field: "old_password", value: e.target.value}))
+          dispatch(clearFieldError("old_password"))
+        },
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
+        eyeFunction: () =>
+          dispatch(
+              update_settings_eye({
+                  show_old_password: !teachersState?.settings_password?.show_old_password,
+              })
+          ),
+        eyeIcon: teachersState?.settings_password?.show_old_password
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
         divClassName: "mb-3",
         isMandatory: true,
-        Err:
-          commonState?.app_data?.validated &&
-            !teachersState?.settingsInputs?.old_password
-            ? "First name required"
-            : null,
+        Err: teachersState.errors.old_password || null,
       },
       {
         name: "New Password",
-        type: "text",
+        type: teachersState?.settings_password?.show_new_password ? "text" : "password" ,
         title: " ",
         category: "input",
         placeholder: "Current Password",
-        value: teachersState?.settingsInputs?.confirm_password || "",
-        change: (e) =>
-          dispatch(
-            updateSettingsInputs({
-              field: "confirm_password",
-              value: e.target.value,
-            })
-          ),
+        value: teachersState?.settingsInputs?.new_password || "",
+        change: (e) => {
+          dispatch(updateSettingsInputs({field: "new_password", value: e.target.value}))
+          dispatch(clearFieldError("new_password"))
+        },
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
+        eyeFunction: () =>
+          dispatch(
+              update_settings_eye({
+                show_new_password: !teachersState?.settings_password?.show_new_password,
+              })
+          ),
+        eyeIcon: teachersState?.settings_password?.show_new_password
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
         divClassName: "mb-3",
         isMandatory: true,
-        Err:
-          commonState?.app_data?.validated &&
-            !teachersState?.settingsInputs?.confirm_password
-            ? "Confirm Password required"
-            : null,
+        Err: teachersState.errors.new_password || null,
       },
       {
         name: "Confirm Password",
-        type: "text",
+        type: teachersState?.settings_password?.show_confirm_password ? "text" : "password" ,
         title: " ",
         category: "input",
         placeholder: "Confirm Password",
-        value: teachersState?.settingsInputs?.new_password || "",
-        change: (e) =>
-          dispatch(
-            updateSettingsInputs({
-              field: "new_password",
-              value: e.target.value,
-            })
-          ),
+        value: teachersState?.settingsInputs?.confirm_password || "",
+        change: (e) => {
+          dispatch(updateSettingsInputs({field: "confirm_password", value: e.target.value}))
+          dispatch(clearFieldError("confirm_password"))
+        },
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
+        eyeFunction: () =>
+          dispatch(
+              update_settings_eye({
+                show_confirm_password: !teachersState?.settings_password?.show_confirm_password,
+              })
+          ),
+        eyeIcon: teachersState?.settings_password?.show_confirm_password
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
         divClassName: "mb-3",
         isMandatory: true,
-        Err:
-          commonState?.app_data?.validated &&
-            !teachersState?.settingsInputs?.new_password
-            ? "New password required"
-            : null,
+        Err: teachersState.errors.confirm_password || null,
       },
     ],
     teachers_profile: [
@@ -1389,20 +1395,18 @@ const JsonData = (params) => {
         category: "input",
         placeholder: "",
         value: teachersState?.editProfileInputs?.first_name || "",
-        change: (e) =>
-          dispatch(
-            edit_profile_Inputs({ field: "first_name", value: e.target.value })
-          ),
+        change: (e) =>{
+          if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+            dispatch(edit_profile_Inputs({ field: "first_name", value: e.target.value }))
+            dispatch(clearFieldError("first_name"))
+          }
+        },
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
         divClassName: "mb-3",
         isMandatory: false,
-        Err:
-          commonState?.app_data?.validated &&
-            !teachersState?.editProfileInputs?.first_name
-            ? "First name required"
-            : null,
+        Err: teachersState?.errors?.first_name || null,
       },
       {
         name: "Last Name",
@@ -1411,20 +1415,18 @@ const JsonData = (params) => {
         category: "input",
         placeholder: "",
         value: teachersState?.editProfileInputs?.last_name || "",
-        change: (e) =>
-          dispatch(
-            edit_profile_Inputs({ field: "last_name", value: e.target.value })
-          ),
+        change: (e) => {
+          if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+            dispatch(edit_profile_Inputs({ field: "last_name", value: e.target.value }))
+            dispatch(clearFieldError("last_name"))
+          }
+        },
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
         divClassName: "mb-3",
         isMandatory: false,
-        Err:
-          commonState?.app_data?.validated &&
-            !teachersState?.editProfileInputs?.last_name
-            ? "Last name required"
-            : null,
+        Err: teachersState?.errors?.last_name || null,
       },
       {
         name: "Email",
@@ -1433,22 +1435,19 @@ const JsonData = (params) => {
         category: "input",
         placeholder: "",
         value: teachersState?.editProfileInputs?.email_id || "",
-        change: (e) =>
-          dispatch(
-            edit_profile_Inputs({ field: "email_id", value: e.target.value })
-          ),
+        change: (e) => {
+          if (/^[A-Za-z0-9@._-]*$/.test(e.target.value)) {
+            dispatch(edit_profile_Inputs({ field: "email_id", value: e.target.value }))
+            dispatch(clearFieldError("email_id"))
+          }
+        },
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
         divClassName: "mb-3",
         isMandatory: false,
-        Err:
-          commonState?.app_data?.validated &&
-            !teachersState?.editProfileInputs?.email_id
-            ? "Email required"
-            : null,
+        // Err: teachersState?.errors?.first_name || null,
         disabled: true,
-        className: "bg-white",
       },
       {
         name: "Phone Number",
@@ -1457,23 +1456,19 @@ const JsonData = (params) => {
         category: "input",
         placeholder: "",
         value: teachersState?.editProfileInputs?.phone_number || "",
-        change: (e) =>
-          dispatch(
-            edit_profile_Inputs({
-              field: "phone_number",
-              value: e.target.value,
-            })
-          ),
+        change: (e) => {
+          const value = e.target.value.replace(/\D/g, "")
+          if(value.length <= 10){
+            dispatch(edit_profile_Inputs({field: "phone_number", value: e.target.value,}))
+            dispatch(clearFieldError("phone_number"))
+          }
+        },
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
         divClassName: "mb-3",
         isMandatory: false,
-        Err:
-          commonState?.app_data?.validated &&
-            !teachersState?.editProfileInputs?.phone_number
-            ? "Phone Number required"
-            : null,
+        Err: teachersState?.errors?.phone_number || null,
       },
       {
         name: "Address",
@@ -1481,20 +1476,17 @@ const JsonData = (params) => {
         category: "textbox",
         placeholder: "",
         value: teachersState?.editProfileInputs?.address || "",
-        change: (e) =>
-          dispatch(
-            edit_profile_Inputs({ field: "address", value: e.target.value })
-          ),
+        change: (e) => {
+          // if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+            dispatch(edit_profile_Inputs({ field: "address", value: e.target.value }))
+          // }
+        },
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
         divClassName: "mb-3",
         isMandatory: false,
-        Err:
-          commonState?.app_data?.validated &&
-            !teachersState?.editProfileInputs?.address
-            ? "Phone Number required"
-            : null,
+        // Err: teachersState?.errors?.first_name || null,
       },
     ],
   };

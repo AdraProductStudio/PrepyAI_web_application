@@ -1,6 +1,7 @@
 import axiosInstance from "Services/axiosInstance";
 import { handledAssignedStudentsTestData, updateSelfTestTotalPageCount, updateAssingnedTestTotalPageCount, handleSelfStudentsTestData, handlePerformanceModalData, updatePersonalInfoInputs, handleEditProfileDetails, handlechangePassword, resetSettingPasswordField } from "../Slice/teachersSlice";
 import { update_error, updateModalShow } from "Views/Common/Slices/Common_slice";
+import sha256 from "sha256";
 
 export const handleTeacherAssingnedTestResult = (params) => async (dispatch) => {
     try {
@@ -120,7 +121,13 @@ export const editProfileDetails = (payload) => async (dispatch) => {
 export const changePassword = (payload) => async (dispatch) => {
   try {
     dispatch(handlechangePassword({type: "request"}))
-    const { data } = await axiosInstance.post('/teachers/update_password', payload)
+    const { data } = await axiosInstance.post('/teachers/update_password', 
+        {
+            old_password : sha256(payload?.old_password),
+            new_password : sha256(payload?.new_password),
+            confirm_password : sha256(payload?.confirm_password),
+        }
+    )
      if (data?.error_code === 0) {
         dispatch(handlechangePassword({type: "response"}))
         dispatch(update_error({ Err: data?.message, Toast_Type: "success" }));
