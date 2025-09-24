@@ -274,7 +274,7 @@ const JsonData = (params) => {
         name: "Test Name",
         category: "input",
         type: "text",
-        placeholder: "Type Book Name",
+        placeholder: "Test Name",
         isMandatory: true,
         value: teachersState?.scheduleTest_values?.test_name || "",
         className: "modal-inputs",

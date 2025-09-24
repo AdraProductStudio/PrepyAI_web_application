@@ -4,11 +4,12 @@ import Img from "Components/Img/Img";
 import { Card } from "react-bootstrap";
 import Icons from "Utils/Icons";
 import Image from "Utils/Image";
-import { handleDeleteLearnerBook } from "Views/Students/Actions/StudentAction";
+import { updateModalShow } from "Views/Common/Slices/Common_slice";
+import { update_selected_book_to_delete } from "Views/Students/Slices/StudentSlice";
 
 const BookCard = ({
     data = {},
-    onClickDelete, className, viewFunction, previewFunction
+    className, viewFunction, previewFunction
 }) => {
     const navigate = useCustomNavigate();
      const dispatch = useDispatch()
@@ -39,7 +40,12 @@ const BookCard = ({
             <Card.Header className="bg-transparent border-0 border-bottom row align-items-center px-0">
                 <div className="col-10"><h6 className="mb-0">{data?.book_name || 'Book title'}</h6></div>
                 {data.owned && <div className="col-2 text-end">
-                    <ButtonComponent type="button" className="bg-transparent" clickFunction={onClickDelete} buttonName={Icons?.delete_icons} />
+                    <ButtonComponent type="button" className="bg-transparent" 
+                    clickFunction={()=>  {
+                        dispatch(updateModalShow({show:true,close_btn:true,modal_from:"dashboard",modal_type:"delete_book"}))
+                        dispatch(update_selected_book_to_delete({data:data}))
+                    }} 
+                    buttonName={Icons?.delete_icons} />
                 </div>}
             </Card.Header>
             <Card.Body className="row align-items-center pointer" onClick={viewFunction}>

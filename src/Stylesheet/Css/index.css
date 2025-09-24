@@ -627,8 +627,8 @@ td {
   width: auto;
   top: 0rem;
   right: 0rem;
-  background: #DDE2FF;
-  color: #4258D6;
+  /* background: #DDE2FF; */
+  color: #fff;
   font-size: 13px;
   padding: 0.2rem 0.5rem;
   border-radius: 0 .5rem 0 0;
@@ -1550,4 +1550,7 @@ input::placeholder {
   .custom_responsive_cards>section {
     width: 25%;
   }
+}
+.pagination_btn_active{
+  color: #fff !important;
 }

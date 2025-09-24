@@ -46,20 +46,22 @@ let initialState = {
         Err: null,
         Toast_Type: null
     },
-    teachernotesdata: {
+    usernotesdata: {
         glow: true,
-        data: []
+        data: [],
+        is_loading:false
     },
     notesdata: {
         title: "",
         content: "",
+        is_loading:false,
     },
     postNoteStatus: {
         glow: true,
         data: []
     },
     deleteNoteStatus: {
-        glow: true,
+        is_loading: false,
         data: []
     },
 }
@@ -69,17 +71,14 @@ const commonSlice = createSlice({
     initialState,
     reducers: {
         handleDeleteNote(state, action) {
-            const { type, message } = action.payload;
+            const { type } = action.payload;
 
             if (type === "request") {
-                state.deleteNoteStatus.loading = true;
-                state.deleteNoteStatus.error = null;
-            } else if (type === "success") {
-                state.deleteNoteStatus.loading = false;
-                state.deleteNoteStatus.error = null;
+                state.deleteNoteStatus.is_loading = true;
+            } else if (type === "response") {
+                state.deleteNoteStatus.is_loading = false;
             } else if (type === "failure") {
-                state.deleteNoteStatus.loading = false;
-                state.deleteNoteStatus.error = message;
+                state.deleteNoteStatus.is_loading = false;
             }
         },
         setNotes(state, action) {
@@ -90,12 +89,14 @@ const commonSlice = createSlice({
 
             switch (type) {
                 case "request":
-                    state.teachernotesdata["glow"] = true;
-                    state.teachernotesdata["data"] = [];
+                    state.usernotesdata["glow"] = true;
+                    state.usernotesdata.is_loading = true
+                    // state.usernotesdata["data"] = [];
                     break;
 
                 case "response":
-                    state.teachernotesdata["glow"] = false;
+                    state.usernotesdata["glow"] = false;
+                     state.usernotesdata.is_loading = false
                     state.modal.show = false;
                     state.modal.type = null;
                     state.modal.from = null;
@@ -107,37 +108,42 @@ const commonSlice = createSlice({
                     break;
 
                 case "failure":
-                    state.teachernotesdata["glow"] = false;
-                    state.teachernotesdata["data"] = [];
+                    state.usernotesdata["glow"] = false;
+                     state.usernotesdata.is_loading = false
+                    // state.usernotesdata["data"] = [];
                     break;
 
                 default:
                     break;
             }
         },
-        handleTeacherNotesData(state, action) {
+        handleusernotesdata(state, action) {
             const { type, data } = action.payload;
 
             switch (type) {
                 case "request":
-                    state.teachernotesdata["glow"] = true;
-                    state.teachernotesdata["data"] = [];
+                    state.usernotesdata["glow"] = true;
+                    // state.usernotesdata["data"] = [];
                     break;
 
                 case "response":
-                    state.teachernotesdata["glow"] = false;
-                    state.teachernotesdata["data"] = data;
+                    state.usernotesdata["glow"] = false;
+                    state.usernotesdata["data"] = data;
                     state.notesdata.edit = null;
                     break;
 
                 case "failure":
-                    state.teachernotesdata["glow"] = false;
-                    state.teachernotesdata["data"] = [];
+                    state.usernotesdata["glow"] = false;
+                    // state.usernotesdata["data"] = [];
                     break;
 
                 default:
                     break;
             }
+        },
+        add_fav_notes(state,action){
+            
+
         },
         updateModalShow(state, actions) {
             const { show, size, modal_from, modal_type, close_btn, data } = actions.payload;
@@ -235,6 +241,12 @@ const commonSlice = createSlice({
             state.modal.type = modal_type || null
             state.modal.close_btn = close_btn || false
         },
+        view_notes_data(state,action){
+            const {title,content,id } = action.payload
+            state.notesdata.title = title
+            state.notesdata.content = content
+            state.notesdata.id = id
+        }
 
     },
     extraReducers: (builder) => {
@@ -337,6 +349,8 @@ const commonSlice = createSlice({
                     "student_slice/convert_audio_to_text",
                     "admin_slice/edit_profile_Inputs_endpoint",
                     "admin_slice/dele_organisation_endpoint",
+                    "student_slice/delete_learner_book",
+                    'common_slice/handleDeleteNote'
 
                 ].includes(action.type),
 
@@ -378,6 +392,7 @@ const commonSlice = createSlice({
                     "admin_slice/edit_profile_Inputs_endpoint",
                     "admin_slice/change_password_endpoint",
                     "admin_slice/dele_organisation_endpoint",
+                    "student_slice/delete_learner_book"
                 ].includes(action.type),
 
                 (state, action) => {
@@ -433,8 +448,8 @@ const { actions, reducer } = commonSlice;
 
 export const {
     update_app_data, update_error, updateModalShow, update_search,
-    logout, handleTeacherNotesData, handlePostNote, handleDeleteNote,
-    update_note_data, edit_note_data
+    logout, handleusernotesdata, handlePostNote, handleDeleteNote,
+    update_note_data, edit_note_data,view_notes_data
 } = actions;
 
 export default reducer

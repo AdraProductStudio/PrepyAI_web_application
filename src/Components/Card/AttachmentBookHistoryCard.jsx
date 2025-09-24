@@ -1,10 +1,9 @@
 import Img from "Components/Img/Img";
 import PerformanceHistoryBookCard from "./PerformanceHistoryBookCard";
 import Image from "Utils/Image";
-import SpinnerComponent from "Components/Spinner/Spinner";
 import { useCommonState } from "Components/CustomHooks";
-
-const { Card } = require("react-bootstrap");
+import Spinner from "Components/Spinner/CustomSpinner";
+import { Card} from "react-bootstrap"
 
 const AttachmentBookHistoryCard = ({
     bookTestHistory,
@@ -21,8 +20,7 @@ const AttachmentBookHistoryCard = ({
                 {
                     studentState?.loading['book_test_history'] ? <div className="d-flex justify-content-center align-items-center" style={{minHeight: "300px"}}>
                         <div className="col-5 text-center">
-                            <SpinnerComponent />
-                            <p className="m-0">Loading...</p>
+                           <Spinner />
                         </div>
                     </div>
                         :

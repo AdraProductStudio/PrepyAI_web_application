@@ -52,6 +52,7 @@ const TeacherSlice = createSlice({
             register_number: null,
             test_file: null,
             loading: false,
+            test_id:null
         },
 
         question_type: "",
@@ -97,7 +98,15 @@ const TeacherSlice = createSlice({
             bookmarks_loading:false
 
         },
-        placeholder: false
+        placeholder: false,
+        selected_book_to_delete:{
+            is_loading:false,
+            data:{}
+        },
+        dashboard_pagination_inputs:{
+            page:0,
+            search_query:''
+        }
     },
     reducers: {
         caluculateRemainingTime: (state, action) => {
@@ -336,6 +345,8 @@ const TeacherSlice = createSlice({
                     state.upload_learner_book.loading = loading
                     state.upload_learner_book.book_name = ''
                     state.upload_learner_book.book_file = null
+                    state.dashboard_pagination_inputs.page = 0
+                    state.dashboard_pagination_inputs.search_query=''
                     break;
 
                 case "failure":
@@ -349,7 +360,7 @@ const TeacherSlice = createSlice({
             }
         },
         clear_learnerboook_upload_fields(state, action) {
-            state.upload_test_paper.test_file = null;
+            state.upload_learner_book.book_file = null;
         },
 
         setClassroomCode(state, action) {
@@ -608,6 +619,33 @@ const TeacherSlice = createSlice({
                     break;
             }
         },
+        update_selected_book_to_delete(state,action){
+             const data = action.payload
+            Object.entries(data).forEach(([key, value]) => {
+                state.selected_book_to_delete[key] = value
+            })
+        },
+        delete_learner_book(state,action){
+            const {type} = action.payload
+            switch(type){
+                case "request":
+                    state.selected_book_to_delete.is_loading = true
+                    break;
+                case "response":
+                     state.selected_book_to_delete.is_loading = false
+                     state.selected_book_to_delete.data = {}
+                    break;
+                case "failure":
+                     state.selected_book_to_delete.is_loading = false
+                    break;
+            }
+        },
+        update_dashboard_pagination_inputs(state,action){
+            const inputs = action?.payload
+            Object.entries(inputs).forEach(([key,value])=>{
+                state.dashboard_pagination_inputs[key] = value
+            })
+        }
     },
     extraReducers(builder) {
         builder
@@ -648,7 +686,8 @@ export const {
     updatePersonalInfoInputs, updateSettingsInputs, resetSettingsInputs, editProfileInputs, updateProfileEditing,
     updateGenerateQuestionFields, updateGenerateMcqQuestions, updateGenerateLongQuestions,
     updateMcqQuestionAnswer, updateLongQuestionAnswerValue, updateLongQuestionAnswer, updateGenerateQuestionCanvas,
-    handlechangePassword,get_bookmarks,update_generate_questions,submit_test,convert_audio_to_text, getBookUrl, clear_test_upload_fields, clear_learnerboook_upload_fields
+    handlechangePassword,get_bookmarks,update_generate_questions,submit_test,convert_audio_to_text, getBookUrl, clear_test_upload_fields, clear_learnerboook_upload_fields,
+    update_selected_book_to_delete,delete_learner_book,update_dashboard_pagination_inputs
 
 } = actions;
 

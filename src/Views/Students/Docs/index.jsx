@@ -8,12 +8,12 @@ import { useCommonState, useDispatch } from "Components/CustomHooks"
 import { handleGetAllTestHistory, handleGetAllTests, handleGetOfflineTests, handleGetOverallPerformance } from "../Actions/StudentAction"
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import { updateTestId } from "../Slices/StudentSlice";
-import '../../../Stylesheet/Css/Student.css'
+import 'Stylesheet/Css/Student.css'
 import ButtonComponent from "Components/Button/Button";
 import Icons from "Utils/Icons";
 import Img from "Components/Img/Img";
 import Image from "Utils/Image";
-import SpinnerComponent from "Components/Spinner/Spinner";
+import Spinner from "Components/Spinner/CustomSpinner";
 
 const StudentDashboard = () => {
     const dispatch = useDispatch();
@@ -45,8 +45,7 @@ const StudentDashboard = () => {
                                 {studentState?.loading['all_tests'] ?
                                     <div className="d-flex justify-content-center align-items-center h-100">
                                         <div className="col-5 text-center">
-                                            <SpinnerComponent />
-                                            <p className="m-0">Loading...</p>
+                                            <Spinner />
                                         </div>
                                     </div>
                                     :

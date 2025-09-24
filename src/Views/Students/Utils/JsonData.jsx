@@ -10,6 +10,15 @@ const JsonData = (params) => {
     const navigate = useCustomNavigate();
     const { commonState, studentState } = useCommonState();
 
+    const offlineTestData = studentState?.offline_tests?.map(test => ({
+        name: test?.test_name,
+        id: test?.test_id
+    }))
+
+
+        
+    
+
     const jsonOnly = {
         sidebar_data: [
             {
@@ -621,7 +630,7 @@ const JsonData = (params) => {
                 change: (e) => dispatch(setUploadLearnerBook({ type: 'set', book_name: e.target.value })),
                 divClassName: "mb-3",
                 isMandatory: true,
-                Err: commonState?.app_data?.validated ? commonState?.app_data?.validationMessage?.book_name : null,
+                Err: commonState?.app_data?.validated && !studentState?.upload_learner_book?.book_name ? "Book name is required": null,
             },
             {
                 name: "Upload File",
@@ -646,37 +655,37 @@ const JsonData = (params) => {
                     e.target.value = "";
                 },
                 isMandatory: true,
-                Err: commonState?.app_data?.validated ? commonState?.app_data?.validationMessage?.book_file : null,
+                Err: commonState?.app_data?.validated && !studentState?.upload_learner_book?.book_file ? "Book file is required" : null,
             },
         ],
         uploadTest: [
             {
                 name: "Test Name",
                 category: "select",
-                type: "normal_select",
-                options: studentState?.offline_tests?.map(test => ({
-                    value: test.test_id,
-                    name: test.test_name
-                })) || [],
-                isMandatory: true,
-                value: (() => {
-                    const selected = studentState?.offline_tests?.find(
-                        t => t.test_id === studentState?.upload_test_paper?.test_id
-                    );
-                    return selected?.test_id || ""
-                })(),
-                change: (e) => {
-                    const selectedTest = studentState?.offline_tests?.find(
-                        t => t.test_id === Number(e.target.value)
-                    )
+                type: "react_dropdown_select",
+                options: offlineTestData,
+                value: studentState?.upload_test_paper?.test_id
+                    ? [{
+                        id: studentState?.upload_test_paper?.test_id,
+                        name: studentState?.upload_test_paper?.test_name
+                    }]
+                    : [],
+                labelField: "name",
+                valueField: "id",
+                multi: false,
+                divClassName: "mt-3 p-2",
+                change: (values) => {
+                    const selected = values[0] || null
                     dispatch(setUploadTestPaper({
                         type: "set",
-                        test_id: selectedTest?.test_id ?? "",
-                        test_name: selectedTest?.test_name ?? ""
+                        test_id: selected?.id ?? "",
+                        test_name: selected?.name ?? ""
                     }))
                 },
-                divClassName: "m-2",
-                Err: commonState?.app_data?.validated ? commonState?.app_data?.validationMessage?.test_name : null,
+                Err: commonState?.app_data?.validated &&
+                    !studentState?.upload_test_paper?.test_name
+                    ? "Test Name is required"
+                    : null,
             },
             {
                 name: "Register Number",
@@ -687,7 +696,7 @@ const JsonData = (params) => {
                 change: (e) => dispatch(setUploadTestPaper({ type: 'set', register_number: e.target.value })),
                 divClassName: "m-2",
                 isMandatory: true,
-                Err: commonState?.app_data?.validated ? commonState?.app_data?.validationMessage?.register_number : null,
+                Err: commonState?.app_data?.validated &&  !studentState?.upload_test_paper?.register_number ? "Register number is required" : null,
 
             },
             {
@@ -713,10 +722,7 @@ const JsonData = (params) => {
                     e.target.value = "";
                 },
                 isMandatory: true,
-                Err:
-                    commonState?.app_data?.validated
-                        ? commonState?.app_data?.validationMessage?.test_file
-                        : null,
+                Err:commonState?.app_data?.validated && !studentState?.upload_test_paper.test_file ? "File is required": null,
             },
         ],
         notes_input: [
@@ -734,6 +740,7 @@ const JsonData = (params) => {
                 keyDown: (e) => {
                     if (e.key === "Enter") dispatch(handlePostNote(commonState?.notesdata));
                 },
+                Err:commonState?.app_data?.validated && !commonState?.notesdata?.title ? "Title is required": null,
             },
             {
                 name: "ADD CONTENT HERE",
@@ -747,6 +754,7 @@ const JsonData = (params) => {
                 keyDown: (e) => {
                     if (e.key === "Enter") dispatch(handlePostNote(commonState?.notesdata));
                 },
+                Err:commonState?.app_data?.validated && !commonState?.notesdata?.content ? "Content is required": null,
             }
         ],
         profile_details: [

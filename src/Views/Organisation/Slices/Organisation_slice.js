@@ -159,7 +159,7 @@ const OrganisationSlice = createSlice({
                 case "request":
                     state.createAdminInputs.is_sending = true
                     break;
-                case "success":
+                case "response":
                     state.createAdminInputs.is_sending = false
                     state.createAdminInputs.admin_name = ""
                     state.createAdminInputs.institute_name = ""

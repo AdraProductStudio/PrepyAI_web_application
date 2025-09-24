@@ -1,5 +1,5 @@
 import ButtonComponent from "Components/Button/Button"
-import { useDispatch } from "Components/CustomHooks"
+import { CustomUseLocationHook, useDispatch } from "Components/CustomHooks"
 import Img from "Components/Img/Img"
 import { Card } from "react-bootstrap"
 import Icons from "Utils/Icons"
@@ -14,11 +14,12 @@ const AttachmentCard = ({
 }) => {
  const dispatch = useDispatch();
  const deleteData = {id:data?.id,subject_id:data?.subject_id}
+ const path = CustomUseLocationHook()
     return (
         <Card className={`border-0 rounded-4 ${className}`} onClick={onClickViewBook}>
             <Card.Body className="position-relative">
                 <Img src={Image.book_image} alt="book image" className="book_image" />
-{/* 
+                {["student_dashboard"].includes(path) ? 
                 <div className="delete_icon">
                     <ButtonComponent
                         type="button"
@@ -30,8 +31,7 @@ const AttachmentCard = ({
                         }
                             
                     />
-                </div> */}
-
+                </div> : null }
                 <div className="download_icon">
                     <ButtonComponent
                         type="button"

@@ -289,6 +289,7 @@ function OrganisationDashboard() {
             breakLinkClassName="page-link rounded text-dark"
             marginPagesDisplayed={2}
             pageRangeDisplayed={1}
+            forcePage={searchInputs?.currentPage}
           />
         </div> : null
         }

@@ -6,18 +6,21 @@ import ModalComponent from "Components/Modal/Modal";
 import { useRef } from "react";
 import Icons from "Utils/Icons";
 import Image from "Utils/Image";
-import { update_error, updateModalShow } from "Views/Common/Slices/Common_slice";
-import { handleEditProfileDetails, handleGenerateQuestion, handleJoinClassRoom, handleStartTest, handleSubmitTest, handleUploadLearnerBook, handleUploadTestPaper } from "../Actions/StudentAction";
-import { setClassroomCode, setUploadLearnerBook, setUploadTestPaper, updateGenerateQuestionFields } from "../Slices/StudentSlice";
+import { update_app_data, update_error, updateModalShow } from "Views/Common/Slices/Common_slice";
+import { handleDeleteLearnerBook, handleEditProfileDetails, handleGenerateQuestion, handleJoinClassRoom, handleStartTest, handleSubmitTest, handleUploadLearnerBook, handleUploadTestPaper } from "../Actions/StudentAction";
+import { setClassroomCode, setUploadLearnerBook, setUploadTestPaper, update_selected_book_to_delete, updateGenerateQuestionFields } from "../Slices/StudentSlice";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import JsonData from "./JsonData";
 import SpinnerComponent from "Components/Spinner/Spinner";
 import { Card } from "react-bootstrap";
 import { updateAudioRecording, updateQuestionType } from "../Slices/StudentSlice";
 import StatusCard from "Components/Card/StatusCard";
-import { postTeacherNote } from "Views/Common/Actions/Common_action";
+import { deleteTeacherNote, postTeacherNote } from "Views/Common/Actions/Common_action";
 import AudioRecorder from "../Docs/AudioRecorder";
 import { useParams } from "react-router-dom";
+import ButtonSpinner from "Components/Spinner/ButtonSpinner";
+import Textbox from "Components/Input/textbox";
+import { type } from "@testing-library/user-event/dist/type";
 
 export function OverallModel() {
     const { commonState, studentState } = useCommonState();
@@ -40,12 +43,16 @@ export function OverallModel() {
         }
         
         if (type === 'test_paper') {
-            formData.append("test_name", studentState?.upload_test_paper?.test_name)
-            formData.append("test_id", studentState?.upload_test_paper?.test_id)
-            formData.append("register_number", studentState?.upload_test_paper?.register_number)
-            const files = studentState?.upload_test_paper?.test_file;
-            if (Array.isArray(files) && files.length > 0) {
-                formData.append("test_paper", files[0])
+            dispatch(update_app_data({ type: "validation", data: true }));
+            const {test_name,test_id,register_number,test_file } = studentState?.upload_test_paper
+            if(!test_name ||!test_id || !register_number,!test_file ) {
+                return 
+            }
+            formData.append("test_name",test_name)
+            formData.append("test_id",test_id)
+            formData.append("register_number",register_number)
+            if (Array.isArray(test_file) && test_file.length > 0) {
+                formData.append("test_paper", test_file[0])
             }
 
             dispatch(handleUploadTestPaper(formData))
@@ -91,6 +98,8 @@ export function OverallModel() {
                         return <h5 className="m-0">Upload test paper</h5>
                     case "start_test":
                         return <h5 className="m-0">Start test</h5>
+                    case "delete_book":
+                        return <h5 className="m-0">Delete Book</h5>
                     default:
                         break;
                 }
@@ -142,6 +151,10 @@ export function OverallModel() {
                 switch (commonState?.modal?.type) {
                     case "add_note":
                         return <h5 className="m-0 ps-4">Add  Notes</h5>
+                    case "view_note":
+                        return <h5 className="m-0 ps-2 fw-bold">Notes</h5>
+                     case "delete_note":
+                        return <h5 className="m-0 ps-2 fw-bold">Delete Note</h5>
 
                     default:
                         break;
@@ -182,17 +195,14 @@ export function OverallModel() {
                                     />
                                 </div>
                                 <div>
-                                    <ButtonComponent
-                                        type="button"
-                                        className="btn btn-brand-color px-5 py-2"
-                                        // buttonName={`${studentState?.upload_learner_book.loading ? 'Uploading...' : 'Upload'}`}
-                                        buttonName={studentState?.upload_learner_book?.loading ? (
-                                            <div className="d-flex justify-content-center align-items-center">
-                                                <p className="m-0">Uploading...</p> <SpinnerComponent className="my-0 ms-2 p-0 small-spinner" />
-                                            </div>)
-                                            : ('Upload')
-                                        }
-                                        clickFunction={() => handleUpload('learner_book')}
+                                    <ButtonSpinner
+                                    className="btn btn-brand-color px-5"
+                                    title="Upload"
+                                    is_spinner={studentState?.upload_learner_book?.loading}
+                                    clickFunction={() => {
+                                            handleUpload('learner_book')
+                                             dispatch(update_app_data({type:"validation",data:true}))
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -232,7 +242,7 @@ export function OverallModel() {
                         </div>
                     case "upload_test_paper":
                         return <div>
-                            {Inputfunctions(jsxJson.uploadTest)}
+                            {Inputfunctions(jsxJson?.uploadTest)}
                             <div className="d-flex justify-content-between align-items-center mt-5">
                                 <div className="">
                                     <ButtonComponent
@@ -243,22 +253,33 @@ export function OverallModel() {
                                     />
                                 </div>
                                 <div>
-                                    <ButtonComponent
-                                        type="button"
+                                    <ButtonSpinner
                                         className="btn btn-brand-color px-5 py-2"
-                                        // buttonName={`${studentState?.upload_test_paper.loading ? 'Uploading...' : 'Upload'}`}
-                                        buttonName={studentState?.upload_test_paper?.loading ? (
-                                            <div className="d-flex justify-content-center align-items-center">
-                                                <p className="m-0">Uploading...</p> <SpinnerComponent className="p-0 my-0 ms-2 small-spinner" />
-                                            </div>)
-                                            : ('Upload')
-                                        }
+                                        is_spinner={studentState?.upload_test_paper?.loading}
+                                        title="Upload"
                                         clickFunction={() => handleUpload('test_paper')}
                                     />
                                 </div>
                             </div>
                         </div>
+                    case "delete_book":
+                        return (<div className="w-100 p-3">
+                            <p className="mb-0 fs-5 text-muted">Are you want to delete {studentState?.selected_book_to_delete?.data?.book_name} Book?</p>
+                            <div className="d-flex mt-4 gap-3">
+                                <ButtonComponent type="button" buttonName="Cancel" className="btn-light w-100"
+                                    clickFunction={() => {
+                                        dispatch(updateModalShow({ show: false, close_btn: false, size: "", modal_from: "", modal_type: "" }))
+                                        dispatch(update_selected_book_to_delete({data:{}}))
+                                    }} />
+                                <ButtonSpinner
+                                    className="brand_color w-100 text-white border-0"
+                                    title="Confirm"
+                                    is_spinner={studentState?.selected_book_to_delete?.is_loading}
+                                    clickFunction={() => dispatch(handleDeleteLearnerBook(studentState?.selected_book_to_delete?.data?.book_id))}
+                                />
 
+                            </div>
+                        </div>)
                     default:
                         break;
                 }
@@ -432,7 +453,7 @@ export function OverallModel() {
                 switch (commonState?.modal?.type) {
                     case "add_note":
                         return <div className='p-2 w-100'>
-                            {Inputfunctions(jsxJson.notes_input)}
+                            {Inputfunctions(jsxJson?.notes_input)}
 
                             <div className="d-flex justify-content-between align-items-center">
                                 <div className="col p-1">
@@ -444,13 +465,42 @@ export function OverallModel() {
                                     />
                                 </div>
                                 <div className="col p-1">
-                                    <ButtonComponent
-                                        type="button"
-                                        className="btn btn-brand-color w-100 py-2"
-                                        buttonName={commonState?.notesdata?.id ? "Update" : "Add"}
-                                        clickFunction={() => dispatch(postTeacherNote(commonState?.notesdata?.id ? "students/edit_user_notes" : "students/create_user_notes", { title: commonState?.notesdata?.title || "", content: commonState?.notesdata?.content || "", id: commonState?.notesdata?.id || null }))}
-                                    />
+                                     <ButtonSpinner
+                                    className="btn btn-brand-color w-100 py-2"
+                                    title={commonState?.notesdata?.id ? "Update" : "Add"}
+                                    is_spinner={commonState?.usernotesdata?.is_loading}
+                                    clickFunction={() => {
+                                            dispatch(update_app_data({type:"validation",data:true}))
+                                            dispatch(postTeacherNote(commonState?.notesdata?.id ? "notes/edit_user_notes" : "notes/create_user_notes", { title: commonState?.notesdata?.title || "", content: commonState?.notesdata?.content || "", id: commonState?.notesdata?.id,priority:commonState?.notesdata?.priority || "low" || null }))
+                                        }}
+                                />
                                 </div>
+                            </div>
+                        </div>
+
+                        case "view_note":
+                        return <div className='w-100' style={{maxHeight:"10rem"}}>
+                            <p className="mb-0 brand-link-color px-2 fs-5"><span className="fw-bold me-1">Title:</span>{commonState?.notesdata?.title} </p>
+                            <div className="m-3 p-2 border border-muted rounded-3">
+                                <p>{commonState?.notesdata?.content}</p>
+                            </div>
+                        </div>
+                         case "delete_note":
+                        return <div className="w-100 p-3">
+                            <p className="mb-0 fs-5 text-muted">Are you want to delete {commonState?.notesdata?.title} ?</p>
+                            <div className="d-flex mt-4 gap-3">
+                                <ButtonComponent type="button" buttonName="Cancel" className="btn-light w-100"
+                                    clickFunction={() => {
+                                        dispatch(updateModalShow({ show: false, close_btn: false, size: "", modal_from: "", modal_type: "" }))
+
+                                    }} />
+                                <ButtonSpinner
+                                    className="brand_color w-100 text-white border-0"
+                                    title="Confirm"
+                                    is_spinner={commonState?.deleteNoteStatus?.is_loading}
+                                    clickFunction={() => dispatch(deleteTeacherNote(commonState?.notesdata?.id))}
+                                />
+
                             </div>
                         </div>
 

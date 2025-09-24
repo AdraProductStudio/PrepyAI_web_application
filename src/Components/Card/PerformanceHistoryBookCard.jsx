@@ -6,7 +6,16 @@ const PerformanceHistoryBookCard = ({
     className = '', data = {}
 }) => {
 
-
+ function dynamicColor(status){
+    switch(status){
+      case "emergent":
+        return "#4B3CFA"
+      case "developing":
+        return "#45D655"
+      case "exemplar":
+        return "#EC008C"
+    }
+  }
     return (
         <Card className={`border rounded-4 ${className} position-relative`}>
             <Card.Body className="row justify-content-between pb-1">
@@ -27,7 +36,7 @@ const PerformanceHistoryBookCard = ({
                     </div>
                 </div>
 
-                <div className="performance_history_badge">
+                <div className="performance_history_badge" style={{backgroundColor:dynamicColor(data?.performance_status)}}>
                    {data?.performance_status}
                 </div>
             </Card.Body>

@@ -90,6 +90,8 @@ const spendingHoursGlow = teachersState?.teacher_GetStudentOverviewSpendingHours
         return "#45D655"
       case "Exemplar":
         return "#EC008C"
+      case "not_attempted":
+        return "#FF8383"
     }
   }
 

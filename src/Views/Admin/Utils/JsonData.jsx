@@ -19,8 +19,8 @@ const JsonData = () => {
     .map(id => teacherOptions.find(opt => opt.id?.toString() === id?.toString()))
     .filter(Boolean);
 
-    const dashboardMonthlyGrowthDropDownOptions = adminState?.dashboard_chart_years.map(item => ({ id: item.years, year: item.years }))
-    const classroomMonthlyGrowthDropDownOptions = adminState?.classroom_chart_years.map(item => ({ id: item.year, year: item.year }))
+    const dashboardMonthlyGrowthDropDownOptions = adminState?.dashboard_chart_years?.map(item => ({ id: item.years, year: item.years }))
+    const classroomMonthlyGrowthDropDownOptions = adminState?.classroom_chart_years?.map(item => ({ id: item.year, year: item.year }))
 
     const jsonOnly = {
         sidebar_data: [
