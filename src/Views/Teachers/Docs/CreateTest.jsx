@@ -9,6 +9,7 @@ import { get_student_details, } from "../Actions/TeacherActions";
 import { useNavigate } from "react-router-dom";
 import SpinnerComponent from "Components/Spinner/Spinner";
 import { useCommonState } from "Components/CustomHooks";
+import Spinner from "Components/Spinner/CustomSpinner";
 
 const CreateTest = () => {
     const { jsxJson } = JsonData();
@@ -46,13 +47,12 @@ const CreateTest = () => {
             {teachersState?.books?.loading ? (
                 <div className="w-100 h-100 row align-items-center justify-content-center">
                     <div className="col-6 text-center">
-                        <SpinnerComponent />
-                        <p className="py-3">Getting Books...</p>
+                       <Spinner />
                     </div>
                 </div>
             ) : (
                 <>
-                    <div className="col" style={{ height: "80%" }}>
+                    <div className="col" >
                         <div className="h-100 overflowY">
                             <div className="row">
                                 {Inputfunctions(jsxJson?.create_test || [])}

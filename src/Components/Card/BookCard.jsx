@@ -39,14 +39,14 @@ const BookCard = ({
         <Card className={`${className?.includes("border") ? "border" : "border-0"} rounded-4 shadow-sm px-3 h-100 ${className}`}>
             <Card.Header className="bg-transparent border-0 border-bottom row align-items-center px-0">
                 <div className="col-10"><h6 className="mb-0">{data?.book_name || 'Book title'}</h6></div>
-                {data.owned && <div className="col-2 text-end">
+                {data.owned ? <div className="col-2 text-end">
                     <ButtonComponent type="button" className="bg-transparent" 
                     clickFunction={()=>  {
                         dispatch(updateModalShow({show:true,close_btn:true,modal_from:"dashboard",modal_type:"delete_book"}))
                         dispatch(update_selected_book_to_delete({data:data}))
                     }} 
                     buttonName={Icons?.delete_icons} />
-                </div>}
+                </div> : null}
             </Card.Header>
             <Card.Body className="row align-items-center pointer" onClick={viewFunction}>
                 <div className="col-3">

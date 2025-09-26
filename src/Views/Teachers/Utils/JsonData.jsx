@@ -89,14 +89,22 @@ const JsonData = (params) => {
       {
         name: "Upcoming",
         route: `/teachers_dashboard/classrooms/${params?.class_id}/${params?.subject_id}/test`,
+        value:'upcoming'
       },
       {
         name: "Ongoing",
         route: `/teachers_dashboard/classrooms/${params?.class_id}/${params?.subject_id}/test/ongoing_test`,
+         value:'ongoing'
+      },
+      {
+        name: "Completed",
+        route: `/teachers_dashboard/classrooms/${params?.class_id}/${params?.subject_id}/test/cancelled_test`,
+         value:'completed'
       },
       {
         name: "Cancelled",
         route: `/teachers_dashboard/classrooms/${params?.class_id}/${params?.subject_id}/test/cancelled_test`,
+         value:'cancelled'
       },
     ],
 
@@ -620,6 +628,7 @@ const JsonData = (params) => {
           if (e.key === "Enter")
             dispatch(handlePostNote(commonState?.notesdata));
         },
+        Err:commonState?.app_data?.validated && !commonState?.notesdata?.title ? "Title is required": null,
       },
       {
         name: "ADD CONTENT HERE",
@@ -633,6 +642,7 @@ const JsonData = (params) => {
           if (e.key === "Enter")
             dispatch(handlePostNote(commonState?.notesdata));
         },
+         Err:commonState?.app_data?.validated && !commonState?.notesdata?.content ? "Content is required": null,
       },
     ],
     classroomModal: [

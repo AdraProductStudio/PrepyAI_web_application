@@ -91,7 +91,7 @@ const handleAnswerChange = (Question_no, value) => {
       <hr className="text-secondary" />
       {generate_question?.test_status === "submitted" && <Row className='me-5'>
         <Col className='d-flex justify-content-end gap-5'>
-          <p className='long-question-test exemplar-text ' onClick={()=>dispatch(updateModalShow({show:true,close_btn:true,size:"lg",modal_from:"Generate_Question",modal_type:'test_result'}))}>Status: <span className='fw-bold exemplar-text' style={{textDecorationLine:"underline"}}>Emergent</span></p>
+          <p className='long-question-test exemplar-text ' onClick={()=>dispatch(updateModalShow({show:true,close_btn:true,size:"lg",modal_from:"Generate_Question",modal_type:'test_result'}))}>Status: <span className='fw-bold exemplar-text' style={{textDecorationLine:"underline"}}>{generate_question?.performance}</span></p>
         </Col>
       </Row>
       }
@@ -109,14 +109,17 @@ const handleAnswerChange = (Question_no, value) => {
                   <div className="mb-3">{question?.Question}</div>
                 </div>
                 <div className='col-4 d-flex justify-content-end'>
-                <ButtonComponent
-                  type="button"
-                  buttonName="Record Your Audio"
-                  className="brand_color text-white px-5 border-0"
-                  clickFunction={()=>{
-                    dispatch(updateGenerateQuestionFields({ recorded_que_no: question.Question_no }))
-                    dispatch(updateModalShow({show:true,close_btn:true,size:"md",modal_from:"Generate_Question",modal_type:"record_audio"}))}} 
-                />
+                  {generate_question?.test_status === "submitted" ? null :
+                    <ButtonComponent
+                      type="button"
+                      buttonName="Record Your Audio"
+                      className="brand_color text-white px-5 border-0"
+                      clickFunction={() => {
+                        dispatch(updateGenerateQuestionFields({ recorded_que_no: question.Question_no }))
+                        dispatch(updateModalShow({ show: true, close_btn: true, size: "md", modal_from: "Generate_Question", modal_type: "record_audio" }))
+                      }}
+                    />
+                  }
                 </div>
               </div>
 

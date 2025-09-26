@@ -41,9 +41,9 @@ const SubjectDetails = () => {
                     </LinkComponent>
                 </div>
             </div>
-            <div className="row pt-3">
-                {jsonOnly?.subject_options.map((item, index) => (
-                    <div className="col-2 p-1" key={index}>
+            <div className="row pt-3 d-flex flex-wrap">
+                {jsonOnly?.subject_options?.map((item, index) => (
+                    <div className="col-12 col-md-6 col-lg-4 col-xl-2 p-1" key={index}>
                         <SubjectOptionsCard icon={item?.icon} title={item?.title} onClickCard={item?.route ? item?.route : item?.onClick} />
                     </div>
                 ))}

@@ -10,8 +10,8 @@ const Tooltip = ({ tooltip_content }) => {
             key="top"
             placement="top"
             overlay={
-                <Popover id="popover-basic">
-                    <Popover.Body>{tooltip_content}</Popover.Body>
+                <Popover id="popover-basic" className="bg-dark">
+                    <Popover.Body className="text-white">{tooltip_content}</Popover.Body>
                 </Popover>
             }
         >

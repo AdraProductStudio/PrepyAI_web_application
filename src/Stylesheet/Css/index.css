@@ -469,8 +469,11 @@ td {
 .sechdule_test_layout {
   height: calc(var(--root-height) - (var(--header-height) + 4rem));
   padding: 2rem 0;
-  display: flex;
-  flex-wrap: wrap;
+}
+@media (max-width:768px) {
+  .sechdule_test_layout {
+    height: auto !important;
+  }
 }
 
 .schedule_option {
@@ -546,15 +549,16 @@ td {
 .test_page_options {
   text-decoration: none;
   color: #495057;
+  cursor: pointer;
 }
 
-.test_page_options.active {
-  color: black;
+.test_page_option_active {
+  color: black !important;
   font-weight: bold;
   padding-bottom: .6rem;
-  border-bottom: 2px solid black;
+  border-bottom: 2px solid black !important;
+  cursor: pointer;
 }
-
 .books_layout {
   height: calc(var(--root-height) - (var(--header-height) + 4rem));
 }

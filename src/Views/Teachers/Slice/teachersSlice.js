@@ -20,7 +20,7 @@ const initialState = {
     data: [],
   },
   test_records: {
-    glow: true,
+    glow: false,
     data: [],
   },
   test_dropDown_data: {

@@ -2,7 +2,7 @@ import ButtonComponent from "Components/Button/Button";
 import { useCommonState, useDispatch } from "Components/CustomHooks";
 import ModalComponent from "Components/Modal/Modal";
 import { update_app_data, updateModalShow } from "Views/Common/Slices/Common_slice";
-import { postTeacherNote } from "Views/Common/Actions/Common_action";
+import { deleteTeacherNote, postTeacherNote } from "Views/Common/Actions/Common_action";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import JsonData from "./JsonData";
 import {
@@ -90,6 +90,8 @@ export function OverallModel() {
         switch (commonState?.modal?.type) {
           case "createClassroom":
             return <h5 className="ms-3 mb-0 fw-bold">Create Class Room</h5>;
+           case "techaersdeletemodal":
+            return <h5 className="ms-3 mb-0 fw-bold">Delete Classroom</h5>;
           default:
             break;
         }
@@ -99,6 +101,10 @@ export function OverallModel() {
         switch (commonState?.modal?.type) {
           case "add_note":
             return <h5 className="m-0 ps-4">Add  Notes</h5>
+          case "view_note":
+            return <h5 className="m-0 ps-2 fw-bold">Notes</h5>
+          case "delete_note":
+            return <h5 className="m-0 ps-2 fw-bold">Delete Note</h5>
 
           default:
             break;
@@ -316,6 +322,39 @@ export function OverallModel() {
                 />
               </>
             );
+            case "techaersdeletemodal":
+            return (
+              <>
+                <div className="text-center w-100 p-4">
+                  <div
+                    style={{ fontSize: "40px", color: "#ff4d6d" }}
+                    className="mb-3"
+                  >
+                    {Icons.deleteIcon}
+                  </div>
+                  <p className="fs-5 d-flex justify-content-center fw-semibold">
+                    Are you sure you want to delete?
+                  </p>
+
+                  <div className="d-flex justify-content-center gap-3 mt-4 w-100">
+                    <ButtonComponent
+                      className="btn-md btn-light w-50"
+                      buttonName={"No"}
+                      clickFunction={() =>
+                        dispatch(updateModalShow({ show: false }))
+                      }
+                    />
+
+                    <ButtonSpinner
+                      className="btn-md w-50 button-spinner-modal-input-student text-white btn-brand-color"
+                      title={teachersState?.buttonSpinner ? "" : "Yes"}
+                      is_spinner={teachersState?.buttonSpinner}
+                      clickFunction={commonState?.modal?.modal_data}
+                    />
+                  </div>
+                </div>
+              </>
+            );
 
           default:
             break;
@@ -326,7 +365,7 @@ export function OverallModel() {
         switch (commonState?.modal?.type) {
           case "add_note":
             return <div className='p-2 w-100'>
-              {Inputfunctions(jsxJson.notes_input)}
+              {Inputfunctions(jsxJson?.notes_input)}
 
               <div className="d-flex justify-content-between align-items-center">
                 <div className="col p-1">
@@ -338,13 +377,41 @@ export function OverallModel() {
                   />
                 </div>
                 <div className="col p-1">
-                  <ButtonComponent
-                    type="button"
-                    className="btn btn-brand-color px-5 py-2 w-100"
-                    buttonName={commonState?.notesdata?.id ? "Update" : "Add"}
-                    clickFunction={() => dispatch(postTeacherNote(commonState?.notesdata?.id ? "teachers/edit_user_notes" : "teachers/create_user_notes", { title: commonState?.notesdata?.title || "", content: commonState?.notesdata?.content || "", id: commonState?.notesdata?.id || null }))}
+                  <ButtonSpinner
+                    className="btn btn-brand-color w-100 py-2"
+                    title={commonState?.notesdata?.id ? "Update" : "Add"}
+                    is_spinner={commonState?.usernotesdata?.is_loading}
+                    clickFunction={() => {
+                      dispatch(update_app_data({ type: "validation", data: true }))
+                      dispatch(postTeacherNote(commonState?.notesdata?.id ? "notes/edit_user_notes" : "notes/create_user_notes", { title: commonState?.notesdata?.title || "", content: commonState?.notesdata?.content || "", id: commonState?.notesdata?.id, priority: commonState?.notesdata?.priority || "low" || null }))
+                    }}
                   />
                 </div>
+              </div>
+            </div>
+          case "view_note":
+            return <div className='w-100' style={{ maxHeight: "10rem" }}>
+              <p className="mb-0 brand-link-color px-2 fs-5"><span className="fw-bold me-1">Title:</span>{commonState?.notesdata?.title} </p>
+              <div className="m-3 p-2 border border-muted rounded-3">
+                <p>{commonState?.notesdata?.content}</p>
+              </div>
+            </div>
+          case "delete_note":
+            return <div className="w-100 p-3">
+              <p className="mb-0 fs-5 text-muted">Are you want to delete {commonState?.notesdata?.title} ?</p>
+              <div className="d-flex mt-4 gap-3">
+                <ButtonComponent type="button" buttonName="Cancel" className="btn-light w-100"
+                  clickFunction={() => {
+                    dispatch(updateModalShow({ show: false, close_btn: false, size: "", modal_from: "", modal_type: "" }))
+
+                  }} />
+                <ButtonSpinner
+                  className="brand_color w-100 text-white border-0"
+                  title="Confirm"
+                  is_spinner={commonState?.deleteNoteStatus?.is_loading}
+                  clickFunction={() => dispatch(deleteTeacherNote(commonState?.notesdata?.id))}
+                />
+
               </div>
             </div>
 

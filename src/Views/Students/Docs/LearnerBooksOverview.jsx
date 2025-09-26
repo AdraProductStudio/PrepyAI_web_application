@@ -41,7 +41,8 @@ const LearnerBooksOverview = () => {
             <div className="d-flex justify-content-between w-100 border-bottom pb-3">
                 <LinkComponent to={`/student_dashboard`} className="brand-link-color">
                     <span>{Icons.back_button_icon_blue}</span>
-                    <span className="align-middle">{studentState?.book_url?.book_name}</span>
+                    {studentState?.loading['book_url'] ? null :
+                    <span className="align-middle">{studentState?.book_url?.book_name}</span>}
                 </LinkComponent>
 
                 <ButtonComponent

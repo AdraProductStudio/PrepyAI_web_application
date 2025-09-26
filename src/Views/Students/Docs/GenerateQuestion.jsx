@@ -18,13 +18,11 @@ const GenerateQuestion = () => {
       const { id } = useParams()
 
 
-    useEffect(()=>{
-        if(!id) return
-        if(!generate_question?.bookmarks?.bookmarks || generate_question?.bookmarks?.bookmarks.length === 0){
+    useEffect(() => {
+        if (!id) return
         dispatch(getBookmarks(id))
-        dispatch(updateGenerateQuestionFields({book_id:id}))
-        }
-    },[])
+        dispatch(updateGenerateQuestionFields({ book_id: id }))
+    }, [])
 
     useEffect(() => {
         if (generate_question?.bookmarks?.[0]?.title) {
@@ -56,7 +54,8 @@ const GenerateQuestion = () => {
                         className="brand-link-color d-flex align-items-center justify-content-center"
                     >
                         <span>{Icons.back_button_icon_blue}</span>
-                        <span className="chapter-title">{generate_question?.chapter_name ||generate_question?.bookmarks?.bookmarks?.[0]?.title}</span>
+                        {generate_question?.bookmarks_loading ? null :
+                            <span className="chapter-title">{generate_question?.chapter_name || generate_question?.bookmarks?.bookmarks?.[0]?.title}</span>}
                     </LinkComponent>
                 </Col>
                 <Col className="d-flex flex-wrap justify-content-center justify-content-lg-end gap-4" xs={12} md={6}>

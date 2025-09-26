@@ -1,13 +1,30 @@
+import TestDisplayCard from "Components/Card/TestDisplayCard"
+import Img from "Components/Img/Img"
 import LinkComponent from "Components/Router_components/LinkComponent"
-import NavLinkComp from "Components/Router_components/NavLink"
 import { Card } from "react-bootstrap"
-import { Outlet, useParams } from "react-router-dom"
+import {useParams } from "react-router-dom"
 import Icons from "Utils/Icons"
 import JsonData from "Views/Teachers/Utils/JsonData"
+import Image from "Utils/Image";
+import { useCommonState, useDispatch } from "Components/CustomHooks"
+import { getTestRecords } from "../Actions/TeacherActions"
+import { useEffect, useState } from "react"
+import Spinner from "Components/Spinner/CustomSpinner"
 
 const TestPageLayout = () => {
     const { class_id, subject_id } = useParams();
-    const { jsonOnly } = JsonData({ class_id, subject_id }); 
+    const { jsonOnly } = JsonData({ class_id, subject_id });
+    const dispatch = useDispatch() 
+    const { teachersState} = useCommonState()
+    const [value , setValue] = useState('upcoming')
+
+    useEffect(() => {
+        dispatch(getTestRecords({ subject_id, type: "upcoming" }));
+    }, [])
+
+    const filterTestRecords = (value) => {
+        dispatch(getTestRecords({ subject_id, type: value }));
+    }
 
     return (
         <div className="h-100">
@@ -22,15 +39,41 @@ const TestPageLayout = () => {
                     <div className="w-100 h-100 p-1">
                         <div className="row" style={{ height: "5%" }}>
                             {jsonOnly?.test_options.map((item, index) => (
-                                <div className="col-4 col-md-3 col-lg-2 col-xxl-1">
-                                    <NavLinkComp to={item.route} key={index} end={true} className="test_page_options">
+                                <div key={index} className="col-3 col-md-3 col-lg-2 col-xxl-1 text-center">
+                                    <p className={value === item?.value ? "test_page_option_active mb-0" : "test_page_options mb-0"}
+                                        onClick={() => {filterTestRecords(item?.value) 
+                                            setValue(item?.value)}}
+                                    >
                                         {item.name}
-                                    </NavLinkComp>
+                                    </p>
                                 </div>
                             ))}
+
                         </div>
-                        <Card className="border-0 rounded-3 bg-transparent overflowY" style={{ height: "95%" }}>
-                            <Outlet />
+                        <Card className="border-0 rounded-3 bg-transparents overflowY mt-3" style={{ height: "95%" }}>
+                            <div className="row py-3 h-100 align-content-start" style={{minHeight:'60vh'}}>
+                                {teachersState?.test_records?.glow ?
+                                    <div className="w-100 h-100 row align-items-center justify-content-center">
+                                        <div className="col-6 text-center my-5 my-lg-0">
+                                            <Spinner />
+                                        </div>
+                                    </div>
+                                    :
+                                    teachersState?.test_records?.data?.length ?
+                                        teachersState?.test_records?.data?.map((testdata, testindex) => (
+                                            <div className="col-md-6 col-lg-4 p-2" key={testindex}>
+                                                <TestDisplayCard data={testdata} />
+                                            </div>
+                                        ))
+                                        :
+                                        <div className="w-100 h-100 row align-items-center justify-content-center" style={{minHeight:'60vh'}}>
+                                            <div className="col-6 text-center">
+                                                <Img src={Image?.no_data_found} alt="No classes Found" className="no_data_found_image" />
+                                                <h6>No Data Found</h6>
+                                            </div>
+                                        </div>
+                                }
+                            </div>
                         </Card>
                     </div>
                 </div>

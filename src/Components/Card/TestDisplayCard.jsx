@@ -15,6 +15,22 @@ const TestDisplayCard = ({
     const navigate = useNavigate();
     const { class_id, subject_id } = useParams();
 
+    function canDeleteTest(data) {
+        if (!data?.owned) return false;
+        if (data?.status === "completed" || data?.status === "cancelled") return false;
+        if (data?.status === "ongoing") return false;
+        if (data?.time_stamp) {
+            const testTime = new Date(data.time_stamp).getTime();
+            const now = new Date().getTime();
+            const oneHour = 60 * 60 * 1000;
+            if (testTime - now <= oneHour) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
     function handleShowTable(status) {
         switch (status) {
             case "Completed":
@@ -62,7 +78,7 @@ const TestDisplayCard = ({
                         <div className="col-4">
                             <div className="upcoming_card_time">
                                 {Icons.upcoming_card_clock_icon}
-                                30 mins
+                                {data?.test_duration} mins
                             </div>
                         </div>
                     </div>
@@ -100,34 +116,22 @@ const TestDisplayCard = ({
                       </div>
                       <div className="col-4">
                         <div className="col-12 text-end">
-                          <ButtonComponent
-                            type="button"
-                            className="bg-transparent"
-                            buttonName={Icons.delete_icons}
-                            clickFunction={() => {
-                              dispatch(
-                                updateModalShow({
-                                  show: true,
-                                  close_btn: true,
-                                  modal_from: "techaersdeletemodal",
-                                  modal_type: "techaersdeletemodal",
-                                  data: () =>
-                                    dispatch(
-                                      deleteUpcomingTest({id:
-                                        data?.test_id,
-                                        subject_id,
-                                        classroom_id:class_id,
-                                        status:data?.status,
-                                      })
-                                    ),
-                                })
-                              );
-                            }}
-                          />
+                            {canDeleteTest(data) ?
+                                 <ButtonComponent   
+                                   type="button"
+                                    className="bg-transparent"
+                                    buttonName={Icons.delete_icons}
+                                    clickFunction={() => {
+                                        dispatch(updateModalShow({
+                                        show: true, close_btn: true, modal_from: "techaersdeletemodal", modal_type: "techaersdeletemodal",
+                                        data: () => dispatch(deleteUpcomingTest({ id: data?.test_id, subject_id, classroom_id: class_id, status: data?.status })),
+                                        }))}}
+                                        /> : null
+                            }
                         </div>
                         <div className="upcoming_card_time">
                           {Icons.upcoming_card_clock_icon}
-                          30 mins
+                          {data?.test_duration} mins
                         </div>
                       </div>
                     </div>

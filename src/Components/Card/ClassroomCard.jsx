@@ -20,12 +20,14 @@ export default function ClassroomCard({
                             <p className="text-secondary fs-13 mb-0">Created on: {data?.created_at || ''}</p>
                         </div>
                         <div className="col-2 text-end">
-                        <ButtonComponent
-                            type="button"
-                            className="btn"
-                            buttonName={Icons?.delete_icons}
-                            clickFunction={onClickDelete}
-                        />
+                            {data?.owned ?
+                                <ButtonComponent
+                                    type="button"
+                                    className="btn"
+                                    buttonName={Icons?.delete_icons}
+                                    clickFunction={onClickDelete}
+                                /> : null
+                            }
                         </div>
                     </div>
                 </Card.Title>
