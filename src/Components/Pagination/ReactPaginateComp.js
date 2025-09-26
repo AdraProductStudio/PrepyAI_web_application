@@ -10,7 +10,7 @@ const ReactPaginateComp = ({ totalPages, onClick, filter_options }) => {
 
   const handlePageClick = (e) => {
     const selectedPage = e.selected + 1;
-    if (typeof onClick === 'function') {
+    if (true) {
       dispatch(update_app_data({ type: "pagination", data: { currentPage: selectedPage } }));
       if (typeof filter_options === 'object') {
         onClick({ filter_options, page: selectedPage })

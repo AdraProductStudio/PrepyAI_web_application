@@ -88,7 +88,7 @@ export function Inputfunctions(funBy) {
 
                                     <div className={`border py-2 rounded-2 col-12 text-center ${ipVal?.className} ${ipVal?.disabled ? "bg-secondary bg-opacity-25" : ""}`}>
                                         <span className='me-2'>{Icons.fileUploadIcon}</span>
-                                        <span className='text-secondary fs-15'>{ipVal?.value?.length >= ipVal?.fileLength ? `Only ${ipVal?.fileLength} ${ipVal?.name} can be selectable` : ipVal?.fileUploadValue || `Click here to choose image`}</span>
+                                        <span className='text-secondary fs-15'>{ipVal?.value?.length >= ipVal?.fileLength ? `Only ${ipVal?.fileLength} ${ipVal?.name} can be selectable` : ipVal?.fileUploadValue || `Click here to choose`}</span>
                                     </div>
                                 </div>
 

@@ -82,18 +82,18 @@ const spendingHoursGlow = teachersState?.teacher_GetStudentOverviewSpendingHours
     }
   }
 
-  function dynamicColor(status){
-    switch(status){
+  function dynamicColor(status) {
+    switch (status) {
       case "Emergent":
-        return "#4B3CFA"
+        return "#4B3CFA";
       case "Developing":
-        return "#45D655"
+        return "#45D655";
       case "Exemplar":
         return "#EC008C"
       case "not_attempted":
         return "#FF8383"
     }
-  }
+  } 
 
   useEffect(() => {
     dispatch(

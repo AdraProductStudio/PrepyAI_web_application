@@ -50,7 +50,7 @@ const TestDisplayCard = ({
                     Completed
                 </div>
 
-            case "not completed":
+            case "not_completed":
                 return <div className="test_not_completed">
                     Not Completed
                 </div>

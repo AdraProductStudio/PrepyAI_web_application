@@ -422,6 +422,7 @@ const commonSlice = createSlice({
                     "teachersSlice/updatePostClassroomsData",
                     "teachersSlice/updatePostSubjectsData",
                     "organisation_slice/edit_organization",
+                    "teachersSlice/selected_students_in_schedule"
                 ].includes(action.type),
 
                 (state, action) => {

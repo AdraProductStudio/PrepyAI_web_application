@@ -32,7 +32,6 @@ const Classroom = () => {
 
   useEffect(() => {
     dispatch(getClassrooms());
-    dispatch(getTeachers());
   }, []);
 
   return (
@@ -46,7 +45,17 @@ const Classroom = () => {
             <ButtonComponent
               type="button"
               className="btn-brand-color border py-2"
-              clickFunction={() =>dispatch(updateModalShow({show: true,close_btn: true,modal_from: "TeacherClassroom",modal_type: "createClassroom",}))}
+              clickFunction={() => {
+                dispatch(
+                  updateModalShow({
+                    show: true,
+                    close_btn: true,
+                    modal_from: "TeacherClassroom",
+                    modal_type: "createClassroom",
+                  })
+                );
+                dispatch(getTeachers());
+              }}
             >
               {Icons.add_icon}
               <span className="lign-middle">Create Classroom</span>
@@ -55,46 +64,76 @@ const Classroom = () => {
         </div>
 
         <div className="w-100 row align-content-start small_header_content_main overflowY">
-          {glow ?
+          {glow ? (
             <div className="w-100 h-100 row align-items-center justify-content-center">
               <div className="col-6 text-center">
                 <Spinner />
               </div>
             </div>
-            :
-            data?.length == 0 ?
-              <div className="w-100 h-100 row align-items-center justify-content-center">
-                <div className="col-6 text-center">
-                  <Img src={Image?.no_data_found} alt="No classes Found" className="no_data_found_image" />
-                  <h6>No classes were added</h6>
-                  <p className="fs-15 text-secondary">Create and send the link to your students to join the classes.</p>
-                  <ButtonComponent type="button" className="btn-brand-color border py-2">
-                    {Icons.add_icon}
-                    <span className="lign-middle">Create Classroom</span>
-                  </ButtonComponent>
-                </div>
+          ) : data?.length === 0 ? (
+            <div className="w-100 h-100 row align-items-center justify-content-center">
+              <div className="col-6 text-center">
+                <Img
+                  src={Image?.no_data_found}
+                  alt="No classes Found"
+                  className="no_data_found_image"
+                />
+                <h6>No classes were added</h6>
+                <p className="fs-15 text-secondary">
+                  Create and send the link to your students to join the classes.
+                </p>
+                <ButtonComponent
+                  type="button"
+                  className="btn-brand-color border py-2"
+                  clickFunction={() => {
+                    dispatch(
+                      updateModalShow({
+                        show: true,
+                        close_btn: true,
+                        modal_from: "TeacherClassroom",
+                        modal_type: "createClassroom",
+                      })
+                    );
+                    dispatch(getTeachers());
+                  }}
+                >
+                  {Icons.add_icon}
+                  <span className="lign-middle">Create Classroom</span>
+                </ButtonComponent>
               </div>
-              :
-              data?.map((val, index) => (
-                <div className="col-12 col-md-6 col-lg-4 col-xl-3 p-2" key={index}>
-                  <ClassroomCard cardClassName="w-100 h-100" data={val} buttonName="View" onclick={() => navigate(`/teachers_dashboard/classrooms/${val?.classroom_id}`)} onClickDelete={()=>{
+            </div>
+          ) : (
+            data?.map((val, index) => (
+              <div className="col-3 p-2" key={index}>
+                <ClassroomCard
+                  cardClassName="w-100 h-100"
+                  data={val}
+                  buttonName="View"
+                  onclick={() =>
+                    navigate(
+                      `/teachers_dashboard/classrooms/${val?.classroom_id}`
+                    )
+                  }
+                  onClickDelete={() => {
                     dispatch(
                       updateModalShow({
                         show: true,
                         close_btn: true,
                         modal_from: "TeacherClassroom",
                         modal_type: "techaersdeletemodal",
-                        data:()=>dispatch(deleteClassrooms(val?.classroom_id)),
+                        data: () =>
+                          dispatch(deleteClassrooms(val?.classroom_id)),
                       })
                     );
-                  }} />
-                </div>
-              ))
-          }
+                  }}
+                />
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default Classroom;

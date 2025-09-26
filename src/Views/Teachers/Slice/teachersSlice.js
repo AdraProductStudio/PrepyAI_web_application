@@ -1167,6 +1167,9 @@ const teachersSlice = createSlice({
         show_new_password : false,
         show_confirm_password : false,
       }
+    },
+    clear_ScheduleTest_fields(state,action){
+      state.scheduleTest_values = {}
     }
   },
 
@@ -1214,8 +1217,14 @@ const teachersSlice = createSlice({
           state.teacher_GetStudentOverviewTestCount = {
             data: {},
           };
+          state.teachers_GetStudentsSortBy = {
+            sort_by: "",
+            sort_order: "",
+          }
+
         }
-      });
+      })
+      // .addMatcher([""])
   },
 });
 
@@ -1299,7 +1308,8 @@ export const {
   updateStudentsListSortBy,
   clear_Classroom_Upload_fields,
   update_button_spinner,
-  setErrors, clearFieldError, update_settings_eye, resetSettingsPasswordEye
+  setErrors, clearFieldError, update_settings_eye, resetSettingsPasswordEye,
+  clear_ScheduleTest_fields
 } = actions;
 
 export default reducer;

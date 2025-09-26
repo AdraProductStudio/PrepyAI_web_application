@@ -8,7 +8,7 @@ import {
 } from "Views/Common/Slices/Common_slice";
 
 import {
-  login_endpoint, update_admin_register, update_organization_register,
+  login_endpoint, reset_forget_details, update_admin_register, update_organization_register,
   update_spinner_loadning, update_student_register, update_teacher_register,
 
 } from "Views/Auth/Slices/authSlice";
@@ -38,12 +38,6 @@ const validateAdminForm = (values) => {
     errors.phone_number = "Contact number is required";
   } else if (!/^\d{10}$/.test(values.phone_number)) {
     errors.phone_number = "Must be exactly 10 digits";
-  }
-
-  if (!values.register_no) {
-    errors.register_no = "Register number is required";
-  } else if (!/^[A-Z0-9]+$/.test(values.register_no)) {
-    errors.register_no = "Only uppercase letters and numbers allowed";
   }
 
   if (!values.institute_name) {
@@ -310,6 +304,7 @@ export const handleRegister = (login_data, navigate, endpoint) => async (dispatc
     if (success) {
       dispatch(update_error({ Err: message, Toast_Type: "success" }));
       dispatch(update_spinner_loadning({ status: false }));
+      dispatch(reset_forget_details());
       navigate("/");
     }
   } catch (error) {
@@ -416,7 +411,8 @@ export const handleForgetPass = (forget_data, navigate, endpoint) => async (disp
     if (success) {
       dispatch(update_error({ Err: message, Toast_Type: "success" }));
       dispatch(update_spinner_loadning({ status: false }))
-      navigate("/otpverification", { state: data });
+      dispatch(reset_forget_details());
+      navigate("/otp_verification", { state: data });
     }
   } catch (error) {
     console.log(error);
@@ -431,8 +427,8 @@ export const handleOtpVerification = (forget_data, routeState, navigate, endpoin
 
   try {
     dispatch(update_spinner_loadning({ status: true }))
-    const api = process.env.REACT_APP_API_URL + endpoint
-    const response = await axios.post(api, filterData);
+    // const api = process.env.REACT_APP_API_URL + endpoint
+    const response = await axios.post(endpoint, filterData);
     const { data, message, success } = response?.data;
 
     if (!success) {
@@ -442,7 +438,8 @@ export const handleOtpVerification = (forget_data, routeState, navigate, endpoin
     if (success) {
       dispatch(update_error({ Err: message, Toast_Type: "success" }));
       dispatch(update_spinner_loadning({ status: false }))
-      navigate("/createpassword", { state: data })
+      dispatch(reset_forget_details())
+      navigate("/create_password", { state: data })
     }
   } catch (error) {
     console.log(error);
@@ -477,7 +474,8 @@ export const handleCreatePassword = (forget_data, routeState, navigate, endpoint
     if (success) {
       dispatch(update_error({ Err: message, Toast_Type: "success" }));
       dispatch(update_spinner_loadning({ status: false }))
-      navigate("/successmessage");
+      dispatch(reset_forget_details());
+      navigate("/success_message");
     }
   } catch (error) {
     console.log(error)
