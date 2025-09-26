@@ -350,7 +350,7 @@ const JsonData = (params) => {
                 value: teachersState?.scheduleTest_values?.selected_chapter,
               }
             
-          : null,
+          : [],
         change: (selected) => {
           const selectedValue = Array.isArray(selected)
             ? selected[0]?.value

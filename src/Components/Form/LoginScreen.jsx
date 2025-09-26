@@ -8,6 +8,7 @@ import { authVerification, handleOAuth } from "Views/Auth/Actions/authActions";
 import { useCustomNavigate, useDispatch } from "Components/CustomHooks";
 import LinkComponent from "Components/Router_components/LinkComponent";
 import Images from "Utils/Image"
+import { update_input_eye } from "Views/Auth/Slices/authSlice";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -27,8 +28,20 @@ const LoginScreen = ({
 
   useEffect(() => {
     if (auth) {
-      dispatch(authVerification(currenPath, navigate, `${process.env.REACT_APP_API_URL}/validate_invite?auth=${auth}`));
+      dispatch(
+        authVerification(
+          currenPath,
+          navigate,
+          `${process.env.REACT_APP_API_URL}/validate_invite?auth=${auth}`
+        )
+      );
     }
+    dispatch(
+      update_input_eye({
+        shownewPassword :false,
+        showConfirmPassword:false
+      })
+    );
   }, []);
 
   // const containerWidth =

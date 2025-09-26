@@ -800,6 +800,11 @@ const search_cancel_icon = <svg xmlns="http://www.w3.org/2000/svg" width="38" he
   <path d="M21.9211 36.057L36.5352 22.4004" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="gray" />
 </svg>
 
+const test_result_null = <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+<path d="M11.6864 8.99945C11.6864 10.4845 10.4864 11.6845 9.00141 11.6845C7.51641 11.6845 6.31641 10.4845 6.31641 8.99945C6.31641 7.51445 7.51641 6.31445 9.00141 6.31445C10.4864 6.31445 11.6864 7.51445 11.6864 8.99945Z" stroke="#8F8F8F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.99891 15.2016C11.6464 15.2016 14.1139 13.6416 15.8314 10.9416C16.5064 9.88406 16.5064 8.10656 15.8314 7.04906C14.1139 4.34906 11.6464 2.78906 8.99891 2.78906C6.35141 2.78906 3.88391 4.34906 2.16641 7.04906C1.49141 8.10656 1.49141 9.88406 2.16641 10.9416C3.88391 13.6416 6.35141 15.2016 8.99891 15.2016Z" stroke="#8F8F8F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
 
 const Icons = {
   menu_dot_icon, no_of_students, no_of_subjects, delete_icons,
@@ -827,7 +832,7 @@ const Icons = {
   menuIcon, uploadIcon, delete_model_icon, left_arrow, right_arrow, sortBy, filterIcon, deleteIcon, EyeClose, EyeOpen, studentUpload, studentUploadLarge,
   mcqIcon, longQueIcon, mcqActiveIcon, longQueActiveIcon, playIcon, pauseIcon,
   back_icon, close_icon, fileUploadIcon,
-  profile_icon, settings_icon, strokeImage, searchIconGray, search_cancel_icon
+  profile_icon, settings_icon, strokeImage, searchIconGray, search_cancel_icon,test_result_null
 }
 
 export default Icons;

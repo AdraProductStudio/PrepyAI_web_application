@@ -10,7 +10,7 @@ import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import Icons from "Utils/Icons";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import JsonData from "../Utils/JsonData";
-import { update_Students_classroom } from "../Slice/teachersSlice";
+import { update_Students_classroom, updateStudentsListSortBy } from "../Slice/teachersSlice";
 
 const Students = () => {
   const { jsxJson } = JsonData();
@@ -46,6 +46,12 @@ const Students = () => {
               classroom_id: ["all_classrooms"],
             })
           );
+          dispatch(updateStudentsListSortBy(
+            {
+              sort_by: "joined_at",
+              sort_order: "asc" ,
+            }
+          ))
       },[])
       
   return (

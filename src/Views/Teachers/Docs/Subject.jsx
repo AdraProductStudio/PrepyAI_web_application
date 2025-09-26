@@ -20,7 +20,6 @@ const Subject = () => {
     useEffect(()=>{
         if(class_id){
             dispatch(getSubjects({classroom_id:class_id}));
-            dispatch(getClassroomTeachers({classroom_id:class_id}))
         }
     },[])
 
@@ -46,7 +45,7 @@ const Subject = () => {
                 <ButtonComponent
                   type="button"
                   className="btn-brand-color border py-2"
-                  clickFunction={() =>
+                  clickFunction={() => {
                     dispatch(
                       updateModalShow({
                         show: true,
@@ -54,8 +53,9 @@ const Subject = () => {
                         modal_from: "subjects",
                         modal_type: "subjects",
                       })
-                    )
-                  }
+                    );
+                    dispatch(getClassroomTeachers({ classroom_id: class_id }));
+                  }}
                 >
                   {Icons.add_icon}
                   <span className="lign-middle">Add Subject</span>
@@ -89,7 +89,7 @@ const Subject = () => {
                   <p className="py-3">Geeting Subject Records</p>
                 </div>
               </div>
-            ) : ! data?.subjects?.length > 0 ? (
+            ) : !data?.subjects?.length > 0 ? (
               <div className="w-100 h-100 row align-items-center justify-content-center">
                 <div className="col-6 text-center">
                   <Img
@@ -105,7 +105,7 @@ const Subject = () => {
                   <ButtonComponent
                     type="button"
                     className="btn-brand-color border py-2"
-                    clickFunction={() =>
+                    clickFunction={() => {
                       dispatch(
                         updateModalShow({
                           show: true,
@@ -113,8 +113,9 @@ const Subject = () => {
                           modal_from: "subjects",
                           modal_type: "subjects",
                         })
-                      )
-                    }
+                      );
+                      dispatch(getClassroomTeachers({ classroom_id: class_id }));
+                    }}
                   >
                     {Icons.add_icon}
                     <span className="lign-middle">Add Subject</span>
@@ -141,7 +142,8 @@ const Subject = () => {
                           close_btn: true,
                           modal_from: "techaersdeletemodal",
                           modal_type: "techaersdeletemodal",
-                          data:()=>dispatch(deleteSubjects(val?.subject_id,class_id)),
+                          data: () =>
+                            dispatch(deleteSubjects(val?.subject_id, class_id)),
                         })
                       );
                     }}
