@@ -70,9 +70,9 @@ const Books = () => {
                             </div>
                             :
                             teachersState.books.data.length > 0 ?
-                                <div className="row">
+                                <div className="row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4">
                                     {teachersState?.books?.data.map((book, index) => (
-                                        <div className="col-3 p-2" key={book.id || index}>
+                                        <div className="p-2" key={book.id || index}>
                                             <BookCard data={book} onClickDelete={() => dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "books", modal_type: "delete_book", data: { book_id: book.book_id } }))} />
                                         </div>
                                     ))}

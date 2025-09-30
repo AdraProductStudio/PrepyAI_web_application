@@ -56,11 +56,11 @@ const Students = () => {
       
   return (
     <div className="container-fluid">
-      <div className="w-100 border-bottom row pb-3">
-        <div className="col">
-          <h5>All Student List</h5>
+      <div className="w-100 border-bottom row pb-3 align-items-center">
+        <div className="col-12 col-md-6 mb-2 mb-md-0">
+          <h5 className="mb-0">All Student List</h5>
         </div>
-        <div className="col justify-content-end align-items-center d-flex gap-1 ">
+        <div className="col-12 col-md-6 d-flex flex-wrap justify-content-md-end align-items-center gap-2 ">
           {/* <ButtonComponent
             type="button"
             className="btn btn-outline-dark border py-2 d-flex align-items-center gap-2"
@@ -78,8 +78,8 @@ const Students = () => {
             {Icons.sortBy}
             <span className="align-middle">Sort by</span>
           </ButtonComponent> */}
-           <div className="custom-select-wrapper">{Inputfunctions(jsxJson.sortForStudents)}</div>
-           <div className="custom-select-wrapper">{Inputfunctions(jsxJson.selectStudentsByClassRoom)}</div>
+           <div className="custom-select-wrapper flex-grow-1 flex-md-grow-0">{Inputfunctions(jsxJson.sortForStudents)}</div>
+           <div className="custom-select-wrapper flex-grow-1 flex-md-grow-0">{Inputfunctions(jsxJson.selectStudentsByClassRoom)}</div>
 
           <ButtonComponent
             type="button"
@@ -97,11 +97,11 @@ const Students = () => {
             }
           >
             {Icons.add_icon}
-            <span className="lign-middle">Add Students</span>
+            <span className="align-middle">Add Students</span>
           </ButtonComponent>
         </div>
       </div>
-      <div className="w-100 py-1 small_header_content_main pe-3">
+      <div className="w-100 py-1 small_header_content_main">
         <div className="mt-3">
           <StudentsTableCard
             className="student_table_height overflow-hidden"
