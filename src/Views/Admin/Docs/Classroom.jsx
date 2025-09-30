@@ -32,7 +32,7 @@ const Classroom = () => {
                         <div className="col text-end">
                             <ButtonComponent 
                                 type="button" 
-                                className="btn-brand-color border py-2"
+                                className="btn-brand-color border py-2 px-2 px-md-3"
                                 clickFunction={() => {
                                     dispatch(handleGetCreateClassroomModalTeachers())
                                     dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "admin", modal_type: "create_classroom" }))}
@@ -55,7 +55,7 @@ const Classroom = () => {
                             adminState?.classroomsJson.length > 0 
                                 ? 
                                 (adminState?.classroomsJson.map((item, index) => (
-                                    <div className="col-3 p-2" key={item.id}>
+                                    <div className="col-12 col-md-6 col-xl-4 col-xxl-3 p-2" key={item.id}>
                                         <ClassroomCard 
                                             cardClassName="w-100" 
                                             data={item} buttonName="View" 

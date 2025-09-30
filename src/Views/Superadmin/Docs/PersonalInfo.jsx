@@ -30,10 +30,10 @@ const PersonalInfo = () => {
         </div>
         :
         <React.Fragment>
-          <section className="d-flex justify-content-between align-items-center gap-3 gap-md-5">
+          <section className="d-flex justify-content-between align-items-center gap-5 gap-md-5">
             <article
               className="position-relative d-inline-block"
-              style={{ width: "100px", height: "100px" }}
+              style={{ width: "100px", height: "100%" }}
             >
               <Input
                 label={
@@ -42,7 +42,7 @@ const PersonalInfo = () => {
                       src={Images?.default_prfile_pic}
                       alt={"ProfileImage"}
                       fluid={"fluid"}
-                      width={"100px"}
+                      width={"70px"}
                       height={"100%"}
                       className={"rounded-circle"}
                     />

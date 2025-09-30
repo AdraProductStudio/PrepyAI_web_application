@@ -29,14 +29,14 @@ const AdminDashboard = () => {
     return (
         <>
             <section className="row h-100 ">
-                <div className="col-5 row">
+                <div className=" col-12 col-xl-5 row">
                     {jsonOnly?.card_data.map((item, index) => (
                         <div className="col-6 p-1" key={index}>
                             <CountShowingCard data={item} />
                         </div>
                     ))}
                 </div>
-                <div className="col-7 p-1">
+                <div className="col-12 col-xl-7 p-1">
                     <Card className="h-100 border-0 rounded-4 shadow-sm test_conducted_chart_height">
                         <Card.Header className="bg-transparent border-bottom pt-3 d-flex align-items-center justify-content-between">
                             <div>
@@ -45,7 +45,7 @@ const AdminDashboard = () => {
                             </div>
                             {Inputfunctions(jsxJson?.dashboard_chart_months)}
                         </Card.Header>
-                        <Card.Body>
+                        <Card.Body onMouseDown={(e)=> e.preventDefault()}>
                             <TestConductedChart data = {adminState?.dashboard_chart_data}/>
                         </Card.Body>
                     </Card>
@@ -55,11 +55,11 @@ const AdminDashboard = () => {
                     <Card className="h-100 border-0 rounded-4 shadow-sm h-100">
                         <Card.Header className="bg-transparent border-bottom pt-3">
                             <div className="row justify-content-between">
-                                <div className="col-3">
+                                <div className="col-12 col-md-3 pb-2 pb-md-0">
                                     <h6 className="mb-2">Teachers</h6>
                                     <p className="fs-15 text-secondary mb-0">{adminState?.dashboard_teachers_list?.length || 0} Teachers</p>
                                 </div>
-                                <div className="col-4 row justify-content-end">
+                                <div className="col-12 col-md-6 col-xl-4 row justify-content-end">
                                     <div className="col px-1">
                                         <SearchComponent
                                             className="form-control"

@@ -829,7 +829,7 @@ td {
 /* Teachers view - Students performance */
 .students-performance-option {
   text-decoration: none;
-  color: black;
+  color: #7F878F;
   padding-bottom: 4px;
   margin-right: 40px;
   border-bottom: 4px solid transparent;
@@ -837,6 +837,8 @@ td {
 
 .students-performance-option.active {
   border-bottom: 4px solid #0A1629;
+  color: #0A1629;
+  font-weight: 800;
   cursor: pointer;
   padding-bottom: 4px;
 }
@@ -1560,4 +1562,26 @@ input::placeholder {
 }
 .pagination_btn_active{
   color: #fff !important;
+}
+
+
+
+
+.responsive_profile_card{
+  width: 90vw;
+  height: 70vh;
+  overflow: auto;
+}
+
+@media (min-width: 1280px){
+  .responsive_profile_card{
+    width: 70vw;
+  }
+}
+
+
+@media (min-width: 768px) {
+  .performace_table_footer{
+    padding-left: 220px;
+  }
 }

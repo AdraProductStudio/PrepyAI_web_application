@@ -1332,8 +1332,8 @@ const JsonData = (params) => {
               })
           ),
         eyeIcon: teachersState?.settings_password?.show_old_password
-          ? Icons?.EyeOpen
-          : Icons?.EyeClose,
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
         Err: teachersState.errors.old_password || null,
@@ -1359,8 +1359,8 @@ const JsonData = (params) => {
               })
           ),
         eyeIcon: teachersState?.settings_password?.show_new_password
-          ? Icons?.EyeOpen
-          : Icons?.EyeClose,
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
         Err: teachersState.errors.new_password || null,
@@ -1386,8 +1386,8 @@ const JsonData = (params) => {
               })
           ),
         eyeIcon: teachersState?.settings_password?.show_confirm_password
-          ? Icons?.EyeOpen
-          : Icons?.EyeClose,
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
         Err: teachersState.errors.confirm_password || null,

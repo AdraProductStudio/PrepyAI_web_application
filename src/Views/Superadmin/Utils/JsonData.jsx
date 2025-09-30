@@ -1,6 +1,6 @@
 import { useCommonState, useDispatch } from "Components/CustomHooks"
 import Icons from "Utils/Icons"
-import { edit_profile_Inputs, updateCreateOrgInputs, updateSettingsInputs } from "../Slices/SuperAdmin_slice"
+import { edit_profile_Inputs, update_settings_eye, updateCreateOrgInputs, updateSettingsInputs } from "../Slices/SuperAdmin_slice"
 
 
 const JsonData = (params = {}) => {
@@ -271,36 +271,60 @@ const JsonData = (params = {}) => {
         settings_details: [
             {
                 name: "Current Password",
-                type: "text",
+                type: superadminState?.settings_password?.show_old_password ? "text" : "password" ,
                 title: " ",
                 category: "input",
                 placeholder: "Current Password",
                 value: superadminState?.settingsInputs?.old_password || '',
                 change: (e) => dispatch(updateSettingsInputs({ field: 'old_password', value: e.target.value })),
+                eyeFunction: () =>
+                    dispatch(
+                        update_settings_eye({
+                        show_old_password: !superadminState?.settings_password?.show_old_password,
+                    })),
+                eyeIcon: superadminState?.settings_password?.show_old_password
+                    ? Icons?.EyeClose
+                    : Icons?.EyeOpen,
                 divClassName: "mb-3",
                 isMandatory: false,
                 Err: commonState?.app_data?.validated && !superadminState?.settingsInputs?.old_password ? "First name required" : null
             },
             {
                 name: "New Password",
-                type: "text",
+                type: superadminState?.settings_password?.show_new_password ? "text" : "password" ,
                 title: " ",
                 category: "input",
                 placeholder: "Current Password",
                 value: superadminState?.settingsInputs?.new_password || '',
                 change: (e) => dispatch(updateSettingsInputs({ field: 'new_password', value: e.target.value })),
+                eyeFunction: () =>
+                    dispatch(
+                        update_settings_eye({
+                        show_new_password: !superadminState?.settings_password?.show_new_password,
+                    })),
+                eyeIcon: superadminState?.settings_password?.show_new_password
+                    ? Icons?.EyeClose
+                    : Icons?.EyeOpen,
                 divClassName: "mb-3",
                 isMandatory: false,
                 Err: commonState?.app_data?.validated && !superadminState?.settingsInputs?.new_password ? "New Password required" : null
             },
             {
                 name: "Confirm Password",
-                type: "text",
+                type: superadminState?.settings_password?.show_confirm_password ? "text" : "password" ,
                 title: " ",
                 category: "input",
                 placeholder: "Confirm Password",
                 value: superadminState?.settingsInputs?.confirm_password || '',
                 change: (e) => dispatch(updateSettingsInputs({ field: 'confirm_password', value: e.target.value })),
+                eyeFunction: () =>
+                    dispatch(
+                        update_settings_eye({
+                        show_confirm_password: !superadminState?.settings_password?.show_confirm_password,
+                    })),
+                eyeIcon: superadminState?.settings_password?.show_confirm_password
+                    ? Icons?.EyeClose
+                    : Icons?.EyeOpen,
                 divClassName: "mb-3",
                 isMandatory: false,
                 Err: commonState?.app_data?.validated && !superadminState?.settingsInputs?.confirm_password ? "Confirm password required" : null

@@ -15,6 +15,11 @@ let initialState = {
         show_entries: 10,
         search_query: '',
         filter_by: 'all_plans'
+    },
+    settings_password : {
+      show_old_password : false,
+      show_new_password : false,
+      show_confirm_password : false,
     }
 }
 
@@ -241,6 +246,10 @@ const adminSlice = createSlice({
                     break;
             }
         },
+        update_settings_eye(state, action) {
+            const [key , value] = Object.entries(action.payload || {})?.[0]
+            state.settings_password[key] = value || false
+        },
     },
     extraReducers(builder) {
         builder
@@ -278,7 +287,8 @@ export const {
     subscription_details, get_profile_details,
     monthly_report_details, get_organinsation_details,
     edit_profile_Inputs_endpoint, change_password_endpoint,
-    dele_organisation_endpoint
+    dele_organisation_endpoint,
+    update_settings_eye
 } = actions
 
 export default reducer

@@ -2,7 +2,7 @@ import { useCommonState, useDispatch } from "Components/CustomHooks";
 import Icons from "Utils/Icons";
 import { CiUser } from "react-icons/ci"
 import { CiSettings } from "react-icons/ci";
-import { edit_org_profile_Inputs, updateCreateAdminInputs, updateOrgSettingsInputs } from "../Slices/Organisation_slice";
+import { edit_org_profile_Inputs, update_settings_eye, updateCreateAdminInputs, updateOrgSettingsInputs } from "../Slices/Organisation_slice";
 
 const JsonData = () => {
   const dispatch = useDispatch()
@@ -373,7 +373,7 @@ const JsonData = () => {
         title: " ",
         category: "input",
         placeholder: "",
-        divClassName: "mb-3 col-12 col-lg-8",
+        divClassName: "mb-3 col-12 col-lg-6 p-1",
         readOnly:true
       },
       {
@@ -383,7 +383,7 @@ const JsonData = () => {
         title: " ",
         category: "input",
         placeholder: "",
-        divClassName: "mb-3 col-12 col-lg-8",
+        divClassName: "mb-3 col-12 col-lg-6 p-1",
         readOnly:true
       },
       {
@@ -393,7 +393,7 @@ const JsonData = () => {
         title: " ",
         category: "input",
         placeholder: "",
-        divClassName: "mb-3  col-12 col-lg-8",
+        divClassName: "mb-3  col-12 col-lg-6 p-1",
         readOnly:true
       },
       {
@@ -403,7 +403,7 @@ const JsonData = () => {
         title: " ",
         category: "input",
         placeholder: "",
-        divClassName: "mb-3  col-12 col-lg-8",
+        divClassName: "mb-3  col-12 col-lg-6 p-1",
         readOnly:true
       },
       {
@@ -412,7 +412,7 @@ const JsonData = () => {
         title: " ",
         category: "textbox",
         placeholder: "",
-        divClassName: "mb-3  col-12 col-lg-8",
+        divClassName: "mb-3  col-12 p-1",
         readOnly:true
       }
 
@@ -502,7 +502,7 @@ const JsonData = () => {
     settings_details: [
       {
         name: "Current Password",
-        type: "text",
+        type: organisationState?.settings_password?.show_old_password ? "text" : "password" ,
         title: " ",
         category: "input",
         placeholder: "Current Password",
@@ -511,13 +511,21 @@ const JsonData = () => {
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
+        eyeFunction: () =>
+          dispatch(
+              update_settings_eye({
+              show_old_password: !organisationState?.settings_password?.show_old_password,
+        })),
+        eyeIcon: organisationState?.settings_password?.show_old_password
+            ? Icons?.EyeClose
+            : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: false,
         Err: commonState?.app_data?.validated && !organisationState?.settingsInputs?.old_password ? "First name required" : null
       },
       {
         name: "New Password",
-        type: "text",
+        type: organisationState?.settings_password?.show_new_password ? "text" : "password" ,
         title: " ",
         category: "input",
         placeholder: "Current Password",
@@ -526,13 +534,21 @@ const JsonData = () => {
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
+        eyeFunction: () =>
+          dispatch(
+              update_settings_eye({
+              show_new_password: !organisationState?.settings_password?.show_new_password,
+        })),
+        eyeIcon: organisationState?.settings_password?.show_new_password
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: false,
         Err: commonState?.app_data?.validated && !organisationState?.settingsInputs?.confirm_password ? "Confirm Password required" : null
       },
       {
         name: "Confirm Password",
-        type: "text",
+        type: organisationState?.settings_password?.show_confirm_password ? "text" : "password" ,
         title: " ",
         category: "input",
         placeholder: "Confirm Password",
@@ -541,6 +557,14 @@ const JsonData = () => {
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
+        eyeFunction: () =>
+          dispatch(
+            update_settings_eye({
+            show_confirm_password: !organisationState?.settings_password?.show_confirm_password,
+        })),
+        eyeIcon: organisationState?.settings_password?.show_confirm_password
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: false,
         Err: commonState?.app_data?.validated && !organisationState?.settingsInputs?.new_password ? "New password required" : null

@@ -990,8 +990,8 @@ const JsonData = (params) => {
                         show_old_password: !studentState?.settings_password?.show_old_password,
                     })),
                 eyeIcon: studentState?.settings_password?.show_old_password
-                    ? Icons?.EyeOpen
-                    : Icons?.EyeClose,
+                    ? Icons?.EyeClose
+                    : Icons?.EyeOpen,
                 divClassName: "mb-3",
                 isMandatory: true,
                 Err: studentState?.errors?.old_password || null
@@ -1016,8 +1016,8 @@ const JsonData = (params) => {
                         show_new_password: !studentState?.settings_password?.show_new_password,
                     })),
                 eyeIcon: studentState?.settings_password?.show_new_password
-                    ? Icons?.EyeOpen
-                    : Icons?.EyeClose,
+                    ? Icons?.EyeClose
+                    : Icons?.EyeOpen,
                 divClassName: "mb-3",
                 isMandatory: true,
                 Err: studentState?.errors?.new_password || null
@@ -1042,8 +1042,8 @@ const JsonData = (params) => {
                         show_confirm_password: !studentState?.settings_password?.show_confirm_password,
                     })),
                 eyeIcon: studentState?.settings_password?.show_confirm_password
-                    ? Icons?.EyeOpen
-                    : Icons?.EyeClose,
+                    ? Icons?.EyeClose
+                    : Icons?.EyeOpen,
                 divClassName: "mb-3",
                 isMandatory: true,
                 Err: studentState?.errors?.confirm_password || null

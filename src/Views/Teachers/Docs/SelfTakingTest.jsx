@@ -38,7 +38,7 @@ const SelfTakingTest = () => {
                 studentsData={jsonStudentsData}
                 testType="self"
             />
-            <div className="mt-3">
+            <div className="mt-3 pb-1">
                 <ReactPaginate
                     breakLabel="..."
                     nextLabel=">"

@@ -514,8 +514,8 @@ const JsonData = () => {
                         })
                     ),
                 eyeIcon: adminState?.settings_password?.show_old_password
-                    ? Icons?.EyeOpen
-                    : Icons?.EyeClose,
+                    ? Icons?.EyeClose
+                    : Icons?.EyeOpen,
                 divClassName: "mb-3",
                 // className: "py-3",
                 isMandatory: false,
@@ -542,8 +542,8 @@ const JsonData = () => {
                         })
                     ),
                 eyeIcon: adminState?.settings_password?.show_new_password
-                    ? Icons?.EyeOpen
-                    : Icons?.EyeClose,
+                    ? Icons?.EyeClose
+                    : Icons?.EyeOpen,
                 divClassName: "mb-3",
                 // className: "py-3",
                 isMandatory: false,
@@ -570,8 +570,8 @@ const JsonData = () => {
                         })
                     ),
                 eyeIcon: adminState?.settings_password?.show_confirm_password
-                    ? Icons?.EyeOpen
-                    : Icons?.EyeClose,
+                    ? Icons?.EyeClose
+                    : Icons?.EyeOpen,
                 divClassName: "mb-3",
                 // className: "py-3",
                 isMandatory: false,

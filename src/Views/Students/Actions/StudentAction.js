@@ -666,13 +666,12 @@ export const handleUploadTestPaper = (formData) => async (dispatch, getState) =>
 
 export const getProfileDetails = () => async (dispatch) => {
     try {
-        const { data } = await axiosInstance.get('/students/get_profile')
-
+        const { data } = await axiosInstance.get('/profile')
         if (data.error_code === 0) {
-            const profile = Array.isArray(data?.data) ? data?.data[0] : data?.data
+            const profile = Array.isArray(data?.data) ? data?.data?.[0] : data?.data
             dispatch(updatePersonalInfoInputs(profile))
         } else {
-            return
+            dispatch(update_error({ Err: data?.message, Toast_Type: "error" }));
         }
     } catch (error) {
         dispatch(update_error({ Err: error?.response?.data?.message || error?.message || "Something went wrong", Toast_Type: "error" }))
@@ -683,7 +682,7 @@ export const handleEditProfileDetails = (payload) => async (dispatch) => {
     dispatch(setLoading({ key: "edit_profile", value: true }))
     try {
         dispatch(updateProfileEditing())
-        const { data } = await axiosInstance.post('/students/edit_profile', payload)
+        const { data } = await axiosInstance.put('/profile', payload)
 
         if (data.error_code === 0) {
             dispatch(updatePersonalInfoInputs(payload))
@@ -705,7 +704,7 @@ export const handleEditProfileDetails = (payload) => async (dispatch) => {
 export const changePassword = (payload) => async (dispatch) => {
   try {
     dispatch(handlechangePassword({type: "request"}))
-        const { data } = await axiosInstance.post('/students/update_password', 
+        const { data } = await axiosInstance.put('/change_password', 
             {
                 old_password : sha256(payload?.old_password),
                 new_password : sha256(payload?.new_password),

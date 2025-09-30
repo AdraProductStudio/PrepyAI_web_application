@@ -77,7 +77,7 @@ export const handleCreateAdmin = (payload) => async (dispatch) => {
 export const getOrganizationProfileDetails = () => async (dispatch) => {
     try {
         dispatch(updateOrgProfileInputs({type:"request"}))
-        const { data } = await axiosInstance.get('/organization/get_profile')
+        const { data } = await axiosInstance.get('/profile')
         if(data?.error_code === 0){
             let profileDetails = data?.data?.[0] || {}
             dispatch(updateOrgProfileInputs({type:"success",data:{ ...profileDetails,is_loading:false}}))
@@ -97,7 +97,7 @@ export const editOrgProfileDetails = (payload) => async (dispatch) => {
             return dispatch(edit_organization({ type: "failure", message:"All fields are required" }))
         } 
         dispatch(edit_organization({ type: "request" }))
-        const { data } = await axiosInstance.post('/organization/edit_profile', payload)
+        const { data } = await axiosInstance.put('/profile', payload)
         if (data?.error_code === 0) {
             dispatch(edit_organization({ type: "response" }))
             dispatch(getOrganizationProfileDetails())
@@ -137,7 +137,7 @@ export const changeOrgPassword = (payload,navigate) => async (dispatch) => {
                 return dispatch(change_password({ type: "failure", message: "New password and Confirm password must match" }))
             }
         dispatch(change_password({ type: "request" }))
-        const { data } = await axiosInstance.post('/organization/update_password', {
+        const { data } = await axiosInstance.put('/change_password', {
             old_password: sha256(old_password),
             new_password: sha256(new_password),
             confirm_password: sha256(confirm_password)
