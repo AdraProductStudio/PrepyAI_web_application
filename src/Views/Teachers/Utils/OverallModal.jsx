@@ -70,7 +70,7 @@ export function OverallModel() {
       case "teacher":
         switch (commonState?.modal?.type) {
           case "attachments":
-            return <h5>Upload Book</h5>
+            return <h5>Upload Attachments</h5>
           case "delete_attachments":
             return <h5 className="fw-bold">Delete</h5>;
           case "performance":
@@ -161,10 +161,10 @@ export function OverallModel() {
                 style={{ borderStyle: "dashed" }}
               >
                 <Form.Label className="fw-medium text-danger">
-                  Drag & drop Your book File or <span className="text-primary">Browse</span>
+                  Drag & drop Your File or <span className="text-primary">Browse</span>
                 </Form.Label>
                 <p className="small text-muted">
-                  Format: pdf, docx, doc | Max size: 1 GB
+                  Format: pdf, docx, doc | Max size: 30 MB
                 </p>
                 <Form.Control
                   type="file"
@@ -627,7 +627,7 @@ export function OverallModel() {
               <div className="col p-1">
                 <ButtonSpinner
                   className="btn-danger brand_color border-0 w-100"
-                  title={teachersState?.upload_attachment?.glow ? "Uploading..." : "Upload Book"}
+                  title={teachersState?.upload_attachment?.glow ? "Uploading..." : "Upload Attachment"}
                   is_spinner={teachersState?.upload_attachment?.glow}
                   clickFunction={handleSubmit}
                 />

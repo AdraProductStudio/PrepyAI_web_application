@@ -339,24 +339,27 @@ const JsonData = (params) => {
         category: "select",
         type: "react_dropdown_select",
         options: Array.isArray(teachersState?.test_records?.data)
-          ? teachersState?.test_records?.data?.map((chapter) => ({
-              label: chapter.title,
-              value: chapter.chapter_range,
-            }))
+          ? teachersState.test_records.data.map((chapter) => ({
+            label: chapter.title,
+            value: chapter.chapter_range,
+          }))
           : [],
         placeholder: "Select Chapter",
         isMandatory: true,
         value: teachersState?.scheduleTest_values?.chapters
-          ? {
-                label:teachersState?.test_records?.data?.find((b) => b.title === teachersState?.scheduleTest_values?.selected_chapter
-                  )?.title || "",
-                value: teachersState?.scheduleTest_values?.selected_chapter,
-              }
-            
+          ? [
+            {
+              label:
+                teachersState?.test_records?.data?.find(
+                  (b) => b.title === teachersState?.scheduleTest_values?.selected_chapter
+                )?.title || "",
+              value: teachersState?.scheduleTest_values?.selected_chapter,
+            },
+          ]
           : [],
         change: (selected) => {
-          const selectedValue = Array.isArray(selected) ? selected[0]?.value : selected?.value;
-          const selectedLabel = Array.isArray(selected) ? selected[0]?.label : selected?.label;
+          const selectedValue = selected?.[0]?.value;
+          const selectedLabel = selected?.[0]?.label;
           dispatch(selected_students_in_schedule({ chapters: [selectedLabel] }));
           dispatch(selected_students_in_schedule({ chapter_range: [selectedValue] }));
         },
@@ -366,6 +369,7 @@ const JsonData = (params) => {
           ? commonState?.app_data?.validationMessage?.chapter_range
           : null,
       },
+
       // {
       //     name: "Class",
       //     category: "select",

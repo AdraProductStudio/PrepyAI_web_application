@@ -21,10 +21,14 @@ const TestHistory = () => {
     useEffect(() => {
         if (searchParams.get("data")) {
             let decrypt_test_data = decryptData(searchParams.get("data"))
-            console.log(decrypt_test_data , 'decrypt_test_data')
             dispatch(getTestHistory(decrypt_test_data))
         }
     }, [])
+
+    const hasOnlineTest = () => {
+        const testData = teachersState?.test_history?.data || [];
+        return testData.some(test => test.mode_of_test === "Online");
+    };
 
     return (
         <div className='h-100'>
@@ -64,7 +68,7 @@ const TestHistory = () => {
                                             <th>Over all</th>
                                             <th>Score</th>
                                             <th>Status</th>
-                                            <th>View Test Paper</th>
+                                            <th>{hasOnlineTest() ? "Test Submitted" : "View Test Paper" }</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -79,15 +83,21 @@ const TestHistory = () => {
                                                 <td>{student?.score || ""}</td>
                                                 <td>{student.status}</td>
                                                 <td>
-                                                    <FaEye
-                                                        style={{ cursor: "pointer", color: "deeppink" }}
-                                                        onClick={() => {
-                                                            if (student?.obj_key) {
-                                                                window.open(student.obj_key, "_blank")
-                                                            }
-                                                        }}
-                                                    />
+                                                    {student?.mode_of_test === "Online" ? (
+                                                        student?.time_submitted
+                                                    ) : (
+                                                        student?.obj_key &&
+                                                        <FaEye
+                                                            style={{ cursor: "pointer", color: "deeppink" }}
+                                                            onClick={() => {
+                                                                if (student?.obj_key) {
+                                                                    window.open(student.obj_key, "_blank")
+                                                                }
+                                                            }}
+                                                        />
+                                                    )}
                                                 </td>
+
                                             </tr>
                                         ))}
                                     </tbody>
