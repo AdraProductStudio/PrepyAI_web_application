@@ -21,6 +21,7 @@ const TestHistory = () => {
     useEffect(() => {
         if (searchParams.get("data")) {
             let decrypt_test_data = decryptData(searchParams.get("data"))
+            console.log(decrypt_test_data , 'decrypt_test_data')
             dispatch(getTestHistory(decrypt_test_data))
         }
     }, [])
@@ -30,7 +31,7 @@ const TestHistory = () => {
             <div className='container-fluid h-100'>
                 <div className="w-100 row justify-content-between align-items-center border-bottom pb-3 mt-3">
                     <div className="col">
-                        <LinkComponent to={`/teachers_dashboard/classrooms/${class_id}/${subject_id}/test/ongoing_test`} className="brand-link-color">
+                        <LinkComponent to={`/teachers_dashboard/classrooms/${class_id}/${subject_id}/test`} className="brand-link-color">
                             <span>{Icons.back_button_icon_blue}</span>
                             <span className="align-middle">Back</span>
                         </LinkComponent>
@@ -78,7 +79,14 @@ const TestHistory = () => {
                                                 <td>{student?.score || ""}</td>
                                                 <td>{student.status}</td>
                                                 <td>
-                                                    <FaEye style={{ cursor: "pointer", color: "deeppink" }} />
+                                                    <FaEye
+                                                        style={{ cursor: "pointer", color: "deeppink" }}
+                                                        onClick={() => {
+                                                            if (student?.obj_key) {
+                                                                window.open(student.obj_key, "_blank")
+                                                            }
+                                                        }}
+                                                    />
                                                 </td>
                                             </tr>
                                         ))}

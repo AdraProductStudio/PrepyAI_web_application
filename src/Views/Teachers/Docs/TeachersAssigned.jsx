@@ -38,7 +38,7 @@ const TeachersAssigned = () => {
                 studentsData={jsonStudentsData}
                 testType="teachers_assigned"
             />
-            <div className="mt-3 pb-1">
+            {/* <div className="mt-3 pb-1">
                 <ReactPaginate
                     breakLabel="..."
                     nextLabel=">"
@@ -60,7 +60,7 @@ const TeachersAssigned = () => {
                     breakLinkClassName="page-link"
                     activeClassName="active"
                 />
-            </div>
+            </div> */}
         </div>
     )
 }

@@ -104,7 +104,7 @@ const Classroom = () => {
             </div>
           ) : (
             data?.map((val, index) => (
-              <div className="col-3 p-2" key={index}>
+              <div className="col-12 col-md-6 col-lg-4 col-xl-3 p-2" key={index}>
                 <ClassroomCard
                   cardClassName="w-100 h-100"
                   data={val}

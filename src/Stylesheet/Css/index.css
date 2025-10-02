@@ -1585,3 +1585,12 @@ input::placeholder {
     padding-left: 220px;
   }
 }
+
+.selected-card {
+  background: linear-gradient(90deg, #EC008C 0%, #FC6767 100%) !important;
+  color: white !important;
+}
+.selected-card .card-title,
+.selected-card strong {
+  color: white !important;
+}

@@ -18,6 +18,7 @@ import {
     handleScheduleTest,
     handleUploadAttachment,
     handleUploadBooks,
+    save_schedule,
     save_schedule_failure,
     save_schedule_request,
     save_schedule_success
@@ -124,46 +125,34 @@ export const get_student_details = (classroom_id) => async (dispatch) => {
 
 
     } catch (error) {
-
+        dispatch(get_student_details_slice({ type: "failure", message: error?.response?.data?.message || '' }))
     }
 
 }
 
 
 export const saveSchedule = (payload, navigate) => async (dispatch) => {
-//    return console.log(payload,"dasdd32")
-   const errors = validateScheduleTestForm(payload);
+    const errors = validateScheduleTestForm(payload);
 
-   if (Object.keys(errors).length > 0) {
-     dispatch(update_app_data({ type: "validation", data: true }));
-     dispatch(update_app_data({ type: "validationMessage", data: errors }));
-     return;
-   }
-   try {
-     dispatch(save_schedule_request());
-     const response = await axiosInstance.post(
-       "/teachers/save_schedule",
-       payload
-     );
+    if (Object.keys(errors).length > 0) {
+        dispatch(update_app_data({ type: "validation", data: true }));
+        dispatch(update_app_data({ type: "validationMessage", data: errors }));
+        return;
+    }
+    try {
+        dispatch(save_schedule({ type: 'request' }))
+        const { data } = await axiosInstance.post("/teachers/save_schedule", payload)
 
-     if (response.data?.error_code === 0) {
-       // const { test_id, ...rest } = response.data?.data;
-       // console.log(response?.data?.data,"tyrdftyfty")
-       dispatch(save_schedule_success(response.data?.data));
-       dispatch(clear_ScheduleTest_fields());
-       navigate(
-         `/teachers_dashboard/classrooms/${payload.classroom_id}/${
-           payload.subject_id
-         }/preview_test/${response.data?.data?.test_id || ""}`
-       );
-     } else {
-       dispatch(
-         save_schedule_failure(response.data?.message || "Unknown error")
-       );
-     }
-   } catch (error) {
-     dispatch(save_schedule_failure(error.message));
-   }
+        if (data?.error_code === 0) {
+            dispatch(save_schedule({ type: 'response', data: data?.data }))
+            dispatch(clear_ScheduleTest_fields());
+            navigate(`/teachers_dashboard/classrooms/${payload.classroom_id}/${payload.subject_id}/preview_test/${data?.data?.test_id || ""}`);
+        } else {
+            dispatch(save_schedule({ type: 'failure', message: data?.message || 'failed to schedule test' }))
+        }
+    } catch (error) {
+        dispatch(save_schedule({ type: 'failure', message: error?.response?.data?.data || 'failed to schedule test' }))
+    }
 };
 // preview
 export const get_test_questions = (test_id) => async (dispatch) => {

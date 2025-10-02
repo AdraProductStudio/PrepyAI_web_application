@@ -1,5 +1,4 @@
 import { Card } from "react-bootstrap";
-
 import CountShowingCard from "Components/Card/CountShowingCard";
 import TimeTableCard from "Components/Card/TimeTableCard";
 import ActivityCard from "Components/Card/ActivtyCard";
@@ -11,8 +10,8 @@ import JsonData from "../Utils/JsonData";
 import { useDispatch } from "react-redux";
 import { useCommonState } from "Components/CustomHooks";
 import { getAllClassRooms, GetAllsubjects, getGradeByClassroom, GetPerformanceBysubject, getSubjectByClassroom, getTeacherDashboardDatas } from "../Actions/teacherAction";
-import SpinnerComponent from "Components/Spinner/Spinner";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
+import Spinner from "Components/Spinner/CustomSpinner";
 
 
 
@@ -91,11 +90,11 @@ const TeacherDashboard = () => {
         <>
             {glow ? (
                 <div className="w-100 h-100 d-flex flex-column align-items-center justify-content-center py-4">
-                    <SpinnerComponent />
+                    <Spinner />
                     <p className="py-3">Getting Records</p>
                 </div>
             ) : <div className="d-flex flex-wrap pb-3 pe-3 overflowY h-100">
-                <div className="col-5 d-flex flex-wrap">
+                <div className="col-12 col-lg-5 d-flex flex-wrap">
                     {jsonOnly?.dashboard_count_details?.map((item, index) => (
                         <div className="col-6 px-2" key={index}>
                             <CountShowingCard data={item} className="border-1" />
@@ -109,8 +108,8 @@ const TeacherDashboard = () => {
                     </div>
                 </div>
 
-                <div className="col-7 row">
-                    <div className="col-7 px-2 pe-3">
+                <div className="col-12 col-lg-7 mt-3 mt-lg-0 row">
+                    <div className="col-12 col-lg-7 px-2 pe-lg-3">
                         <Card className='border-0 rounded-4 shadow-sm py-3 h-100'>
                             <Card.Header className="border-bottom bg-transparent d-flex justify-content-between align-items-center">
                                 <Card.Title className='fs-16'> Student Performance </Card.Title>
@@ -122,7 +121,7 @@ const TeacherDashboard = () => {
                         </Card>
                     </div>
 
-                    <div className="col-5">
+                    <div className="col-12 col-lg-5 px-2 mt-3 mt-lg-0">
                         <Card className='border-0 rounded-4 shadow-sm py-3 h-100'>
                             <Card.Header className="border-bottom bg-transparent">
                                 <Card.Title className='fs-16'> Activities </Card.Title>
@@ -136,14 +135,14 @@ const TeacherDashboard = () => {
                     </div>
                 </div>
 
-                <div className="col-7 mt-3 px-2">
+                <div className="col-12 col-lg-7 mt-3 px-2">
                     <Card className='border-0 rounded-4 shadow-sm py-2 h-100'>
                         <Card.Header className="border-bottom bg-transparent d-flex justify-content-between">
                             <Card.Title className='fs-16'> Grade by Classroom </Card.Title>
                             <div>{Inputfunctions(jsxJson.selectGradeByClassRoom)}</div>
                         </Card.Header>
                         <Card.Body className="row">
-                            <div className="col-4 px-2">
+                            <div className="col-12 col-lg-4 px-2">
                                 <Card className="border shadow-sm">
                                     <Card.Body>
                                         <div className="py-4 text-center">
@@ -155,7 +154,7 @@ const TeacherDashboard = () => {
                                 </Card>
                             </div>
 
-                            <div className="col-4 px-2">
+                            <div className="col-12 col-lg-4 px-2">
                                 <Card className="border shadow-sm">
                                     <Card.Body>
                                         <div className="py-4 text-center">
@@ -167,7 +166,7 @@ const TeacherDashboard = () => {
                                 </Card>
                             </div>
 
-                            <div className="col-4 px-2">
+                            <div className="col-12 col-lg-4 px-2">
                                 <Card className="border shadow-sm">
                                     <Card.Body>
                                         <div className="py-4 text-center">
@@ -182,7 +181,7 @@ const TeacherDashboard = () => {
                     </Card>
                 </div>
 
-                <div className="col-5 mt-3 px-2">
+                <div className="col-12 col-lg-5 mt-3 px-2">
                     <Card className='border-0 rounded-4 shadow-sm py-2 h-100'>
                         <Card.Header className="border-bottom bg-transparent">
                             <Card.Title className='fs-16'> Notes </Card.Title>

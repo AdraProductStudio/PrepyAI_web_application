@@ -392,7 +392,8 @@ const commonSlice = createSlice({
                     "admin_slice/edit_profile_Inputs_endpoint",
                     "admin_slice/change_password_endpoint",
                     "admin_slice/dele_organisation_endpoint",
-                    "student_slice/delete_learner_book"
+                    "student_slice/delete_learner_book",    
+                    "teachersSlice/save_schedule"
                 ].includes(action.type),
 
                 (state, action) => {

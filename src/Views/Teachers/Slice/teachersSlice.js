@@ -188,7 +188,6 @@ const initialState = {
     error: null,
     glow: false,
   },
-
   profileInputs: {
     first_name: "",
     last_name: "",
@@ -209,6 +208,10 @@ const initialState = {
     show_old_password : false,
     show_new_password : false,
     show_confirm_password : false,
+  },
+  schedule_test_data:{
+    is_loading:false,
+    data:{}
   }
 };
 
@@ -396,13 +399,32 @@ const teachersSlice = createSlice({
           break;
       }
     },
+    save_schedule(state, action) {
+      const { type, data } = action.payload
+      switch (type) {
+        case "request":
+          state.save_schedule_status = "loading";
+          state.save_schedule_error = null;
+          break;
+        case "response":
+          state.save_schedule_status = "";
+          state.schedule_test_data.data = data
+          state.save_schedule_error = null;
+          break;
+        case "failure":
+          state.save_schedule_status = "failed";
+          state.save_schedule_error = action.payload;
+          break;
+      }
+    },
+
     save_schedule_request(state) {
       state.save_schedule_status = "loading";
       state.save_schedule_error = null;
     },
     save_schedule_success(state, action) {
-      state.save_schedule_status = "succeeded";
-      state.create_test = {};
+      state.save_schedule_status = "";
+      state.save_schedule_error = null;
     },
     save_schedule_failure(state, action) {
       state.save_schedule_status = "failed";
@@ -1309,7 +1331,7 @@ export const {
   clear_Classroom_Upload_fields,
   update_button_spinner,
   setErrors, clearFieldError, update_settings_eye, resetSettingsPasswordEye,
-  clear_ScheduleTest_fields
+  clear_ScheduleTest_fields,save_schedule
 } = actions;
 
 export default reducer;

@@ -18,7 +18,7 @@ const TestDisplayCard = ({
     function canDeleteTest(data) {
         if (!data?.owned) return false;
         if (data?.status === "completed" || data?.status === "cancelled") return false;
-        if (data?.status === "ongoing") return false;
+        // if (data?.status === "ongoing") return false;
         if (data?.time_stamp) {
             const testTime = new Date(data.time_stamp).getTime();
             const now = new Date().getTime();
@@ -64,11 +64,10 @@ const TestDisplayCard = ({
         }
     }
 
-    function displayCard() {
-        const path = window.location.pathname;
-        switch (true) {
-            case /test\/ongoing_test/.test(path):
-                return <div className="p-2 pointer" onClick={() => handleShowTable("Completed")}>
+    function displayCard(status) {
+        switch (status) {
+            case "ongoing":
+                return <div className="p-2 pointer" onClick={() => {handleShowTable("Completed")}}>
                     <div className="w-100 row align-items-end">
                         <div className="col-8">
                             <h6 className="">{data?.test_name || 'heading'}</h6>
@@ -76,6 +75,21 @@ const TestDisplayCard = ({
                             <p className="fs-13 text-secondary mb-1">{data?.mode}</p>
                         </div>
                         <div className="col-4">
+                            <div className="col-12 text-end">
+                                {canDeleteTest(data) ?
+                                    <ButtonComponent
+                                        type="button"
+                                        className="bg-transparent"
+                                        buttonName={Icons.delete_icons}
+                                        clickFunction={() => {
+                                            dispatch(updateModalShow({
+                                                show: true, close_btn: true, modal_from: "techaersdeletemodal", modal_type: "techaersdeletemodal",
+                                                data: () => dispatch(deleteUpcomingTest({ id: data?.test_id, subject_id, classroom_id: class_id, status: data?.status })),
+                                            }))
+                                        }}
+                                    /> : null
+                                }
+                            </div>
                             <div className="upcoming_card_time">
                                 {Icons.upcoming_card_clock_icon}
                                 {data?.test_duration} mins
@@ -85,15 +99,15 @@ const TestDisplayCard = ({
                    <div className="cursor-pointer text-success mt-2" >
                         {ongoingStatus(data?.status)}
                     </div>
-                    {/* <div
+                    <div
                         className="cursor-pointer text-danger mt-2"
                         onClick={() => handleShowTable("not_completed")}>
                         {ongoingStatus("not_completed")}
-                    </div> */}
+                    </div>
                 </div>
 
-            case /test\/completed_test/.test(path):
-                return <div className="p-2">
+            case "completed":
+                return <div className="p-2"  onClick={() => {handleShowTable("Completed")} } >
                     <div className="w-100">
                         <h6 className="">{data?.test_name || ''}</h6>
                         <p className="fs-13 text-secondary mb-1">{data?.test_date || ''} | {data?.test_time || ''}</p>
@@ -101,7 +115,7 @@ const TestDisplayCard = ({
                     </div>
                 </div>
 
-            case /test/.test(path):
+            case  "upcoming":
                 return (
                   <div className="p-2">
                     <div className="w-100 row">
@@ -137,6 +151,14 @@ const TestDisplayCard = ({
                     </div>
                   </div>
                 );
+             case "cancelled":
+                return <div className="p-2">
+                    <div className="w-100">
+                        <h6 className="">{data?.test_name || ''}</h6>
+                        <p className="fs-13 text-secondary mb-1">{data?.test_date || ''} | {data?.test_time || ''}</p>
+                        <p className="fs-13 text-secondary mb-1">{data?.mode}</p>
+                    </div>
+                </div>
 
             default:
                 return null
@@ -146,7 +168,7 @@ const TestDisplayCard = ({
     return (
         <Card className="border-0 shadow-sm rounded-4 position-relative">
             <Card.Body className="test_card_color">
-                {displayCard()}
+                {displayCard(data?.status)}
             </Card.Body>
         </Card>
     )

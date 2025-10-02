@@ -39,7 +39,6 @@ const Students = () => {
       // },[data])
 
       useEffect(()=>{
-        console.log(teachersState?.teacher_CreateStudents?.data,"DasdasdsadA")
           dispatch(getAllClassRooms())
           dispatch(
             update_Students_classroom({
@@ -57,10 +56,10 @@ const Students = () => {
   return (
     <div className="container-fluid">
       <div className="w-100 border-bottom row pb-3">
-        <div className="col">
+        <div className="col-12 col-lg-4">
           <h5>All Student List</h5>
         </div>
-        <div className="col justify-content-end align-items-center d-flex gap-1 ">
+        <div className="col-12 col-lg-8 justify-content-lg-end align-items-center d-flex flex-wrap gap-1 ">
           {/* <ButtonComponent
             type="button"
             className="btn btn-outline-dark border py-2 d-flex align-items-center gap-2"
@@ -78,8 +77,8 @@ const Students = () => {
             {Icons.sortBy}
             <span className="align-middle">Sort by</span>
           </ButtonComponent> */}
-           <div className="custom-select-wrapper">{Inputfunctions(jsxJson.sortForStudents)}</div>
-           <div className="custom-select-wrapper">{Inputfunctions(jsxJson.selectStudentsByClassRoom)}</div>
+           <div className="custom-select-wrapper">{Inputfunctions(jsxJson?.sortForStudents)}</div>
+           <div className="custom-select-wrapper">{Inputfunctions(jsxJson?.selectStudentsByClassRoom)}</div>
 
           <ButtonComponent
             type="button"
@@ -112,7 +111,7 @@ const Students = () => {
         </div>
 
         <div className="mt-3">
-          <ReactPaginateComp totalPages={data?.total_pages} />
+          <ReactPaginateComp totalPages={Number(data?.total_pages)} />
         </div>
       </div>
     </div>

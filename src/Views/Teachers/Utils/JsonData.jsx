@@ -323,11 +323,11 @@ const JsonData = (params) => {
             ]
           : [],
         change: (selected) => {
-          const selectedValue = Array.isArray(selected)
-            ? selected[0]?.value
-            : selected?.value;
-          dispatch(selected_students_in_schedule({ book_id: selectedValue }));
-          dispatch(get_bookmarks({ book_id: selectedValue }));
+          const selectedValue = Array.isArray(selected)? selected[0]?.value: selected?.value;
+          if(selectedValue){
+            dispatch(selected_students_in_schedule({ book_id: selectedValue }));
+            dispatch(get_bookmarks({ book_id: selectedValue }));
+          }
         },
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated
@@ -347,31 +347,18 @@ const JsonData = (params) => {
         placeholder: "Select Chapter",
         isMandatory: true,
         value: teachersState?.scheduleTest_values?.chapters
-          ? 
-              {
-                label:
-                  teachersState?.test_records?.data?.find(
-                    (b) =>
-                      b.title ===
-                      teachersState?.scheduleTest_values?.selected_chapter
+          ? {
+                label:teachersState?.test_records?.data?.find((b) => b.title === teachersState?.scheduleTest_values?.selected_chapter
                   )?.title || "",
                 value: teachersState?.scheduleTest_values?.selected_chapter,
               }
             
           : [],
         change: (selected) => {
-          const selectedValue = Array.isArray(selected)
-            ? selected[0]?.value
-            : selected?.value;
-          const selectedLabel = Array.isArray(selected)
-            ? selected[0]?.label
-            : selected?.label;
-          dispatch(
-            selected_students_in_schedule({ chapters: [selectedLabel] })
-          );
-          dispatch(
-            selected_students_in_schedule({ chapter_range: [selectedValue] })
-          );
+          const selectedValue = Array.isArray(selected) ? selected[0]?.value : selected?.value;
+          const selectedLabel = Array.isArray(selected) ? selected[0]?.label : selected?.label;
+          dispatch(selected_students_in_schedule({ chapters: [selectedLabel] }));
+          dispatch(selected_students_in_schedule({ chapter_range: [selectedValue] }));
         },
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
         className: "modal-inputs",
@@ -1085,12 +1072,12 @@ const JsonData = (params) => {
       {
         category: "select",
         type: "react_dropdown_select",
-        options: Array.isArray(teachersState?.teacher_GetAllClassRooms?.data)
+        options: [{ label: "All Classrooms", value: "all_classrooms" },...Array.isArray(teachersState?.teacher_GetAllClassRooms?.data)
           ? teachersState.teacher_GetAllClassRooms.data.map((classroom) => ({
               label: classroom.classroom_name,
               value: classroom.classroom_id,
             }))
-          : [],
+          : [] ],
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
         className: "custom-dropdownss",
@@ -1107,12 +1094,12 @@ const JsonData = (params) => {
       {
         category: "select",
         type: "react_dropdown_select",
-        options: Array.isArray(teachersState?.teacher_GetAllClassRooms?.data)
+        options: [{ label: "All Classrooms", value: "all_classrooms" },...Array.isArray(teachersState?.teacher_GetAllClassRooms?.data)
           ? teachersState.teacher_GetAllClassRooms.data.map((classroom) => ({
               label: classroom.classroom_name,
               value: classroom.classroom_id,
             }))
-          : [],
+          : [] ],
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
         className: "studentsSelectClasses",

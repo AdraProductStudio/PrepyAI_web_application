@@ -1,13 +1,24 @@
+import { CustomUseLocationHook, useCommonState, useCustomNavigate } from "Components/CustomHooks"
 import LinkComponent from "Components/Router_components/LinkComponent"
 import NavLinkComp from "Components/Router_components/NavLink"
+import { useEffect } from "react"
 import { Card, Container, Row } from "react-bootstrap"
 import { Outlet, useParams } from "react-router-dom"
 import Icons from "Utils/Icons"
 import JsonData from "Views/Teachers/Utils/JsonData"
 
 const ScheduleTestLayout = () => {
-    const { class_id, subject_id } = useParams();
+    const { class_id, subject_id,test_id } = useParams();
     const { jsonOnly } = JsonData({ class_id, subject_id });
+    const location = CustomUseLocationHook()
+    const { schedule_test_data} = useCommonState()?.teachersState
+    const navigate = useCustomNavigate()
+  
+    useEffect(()=>{
+        if(location.includes('preview_test') && !test_id && !schedule_test_data?.data?.test_id){
+            navigate(`/teachers_dashboard/classrooms/${class_id}/${subject_id}/create_test`)
+        }
+    },[test_id,schedule_test_data,location])
 
     return (
             <Container fluid className="h-100">
