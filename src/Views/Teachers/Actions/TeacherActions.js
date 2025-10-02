@@ -14,6 +14,7 @@ import {
     get_test_questions_success,
     getSubjectAttachments,
     handleGetBooks,
+    handleGetchapters,
     handleGetTestRecords,
     handleScheduleTest,
     handleUploadAttachment,
@@ -98,16 +99,16 @@ export const getTestRecords = (params) => async (dispatch) => {
 export const get_bookmarks = (params) => async (dispatch) => {
     try {
         dispatch(create_test_onchange(params))
-        dispatch(create_test_onchange({ type: "request" }))
+        dispatch(handleGetchapters({ type: "request" }))
         const { data } = await axiosInstance.post("/teachers/get_bookmarks", params || {})
         if (data?.error_code === 0) {
-            dispatch(handleGetTestRecords({ type: "response", data: data?.data?.bookmarks || [] }))
+            dispatch(handleGetchapters({ type: "response", data: data?.data?.bookmarks || [] }))
         }
         else {
-            dispatch(handleGetTestRecords({ type: "failure", message: data?.message || '' }))
+            dispatch(handleGetchapters({ type: "failure", message: data?.message || '' }))
         }
     } catch (err) {
-        dispatch(handleGetTestRecords({ type: "failure", message: err?.message || '' }))
+        dispatch(handleGetchapters({ type: "failure", message: err?.message || '' }))
     }
 }
 

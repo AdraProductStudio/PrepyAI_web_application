@@ -1,6 +1,5 @@
 import LinkComponent from "Components/Router_components/LinkComponent";
 import { useParams } from "react-router-dom";
-import PdfViewer from "ResuableFunctions/PdfViewer";
 import Icons from "Utils/Icons";
 import { Card } from "react-bootstrap";
 import IndividualBookTestPerformance from "Components/Card/IndividualBookTestPerformance";
@@ -14,13 +13,13 @@ import ButtonComponent from "Components/Button/Button";
 import SpinnerComponent from "Components/Spinner/Spinner";
 
 const BooksOverviewLayout = () => {
-    const { subject_id, book_idx } = useParams()
+    const { subject_id, book_id } = useParams()
     const { studentState } = useCommonState()
     const [called, setCalled] = useState(false)
     const dispatch = useDispatch()
     const navigate = useCustomNavigate()
 
-    const book = studentState?.subject_books[book_idx]
+    const book = studentState?.subject_books?.find(b=> b.book_id == book_id)
     const book_url = studentState?.book_url
     
     useEffect(() => {
@@ -28,10 +27,10 @@ const BooksOverviewLayout = () => {
     }, [])
 
     useEffect(() => {
-        if (!called && book?.book_id) {
-            dispatch(handleGetBookUrl(book.book_id, book.owned))
-            dispatch(handleGetBookTestHistory(book.book_id, book.owned))
-            dispatch(handleGetBookPerformance(book.book_id, book.owned))
+        if (!called && book_id) {
+            dispatch(handleGetBookUrl(book_id, book.owned))
+            dispatch(handleGetBookTestHistory(book_id, book.owned))
+            dispatch(handleGetBookPerformance(book_id, book.owned))
             setCalled(true)
         }
     }, [ called, dispatch])
