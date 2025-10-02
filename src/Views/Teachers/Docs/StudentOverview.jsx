@@ -19,7 +19,7 @@ import {
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import Img from "Components/Img/Img";
 import Image from "Utils/Image";
-import SpinnerComponent from "Components/Spinner/Spinner";
+import Spinner from "Components/Spinner/CustomSpinner";
 
 const StudentOverview = () => {
   const { class_id, student_id, subject_id } = useParams();
@@ -73,43 +73,30 @@ const spendingHoursGlow = teachersState?.teacher_GetStudentOverviewSpendingHours
     switch (true) {
       case window.location.pathname.includes("/teachers_dashboard/classrooms"):
         return `/teachers_dashboard/classrooms/${class_id}/${subject_id}`;
-      case window.location.pathname.includes(
-        "/teachers_dashboard/students_details"
-      ):
+      case window.location.pathname.includes("/teachers_dashboard/students_details"):
         return "/teachers_dashboard/students_details";
       default:
         return "";
     }
   }
 
-  function dynamicColor(status){
-    switch(status){
+  function dynamicColor(status) {
+    switch (status) {
       case "Emergent":
-        return "#4B3CFA"
+        return "#4B3CFA";
       case "Developing":
-        return "#45D655"
+        return "#45D655";
       case "Exemplar":
         return "#EC008C"
+      case "Not Attempted":
+        return "#FF8383"
     }
-  }
+  } 
 
   useEffect(() => {
-    dispatch(
-      GetStudentOverviewPerfomance({ subject_id: subject_id, student_id })
-    );
-    // dispatch(
-    //   GetStudentOverviewOverallPerfomance({
-    //     subject_id: subject_id,
-    //     student_id,
-    //     month:currentMonth,
-    //   })
-    // );
-    dispatch(
-      GetStudentOverviewTestCount({ subject_id: subject_id, student_id })
-    );
-    dispatch(
-      GetStudentOverviewSpendingHours({ subject_id: subject_id, student_id })
-    );
+    dispatch(GetStudentOverviewPerfomance({ subject_id: subject_id, student_id }));
+    dispatch(GetStudentOverviewTestCount({ subject_id: subject_id, student_id }));
+    dispatch(GetStudentOverviewSpendingHours({ subject_id: subject_id, student_id }));
     dispatch(GetAllsubjects());
   
   }, []);
@@ -117,16 +104,12 @@ const spendingHoursGlow = teachersState?.teacher_GetStudentOverviewSpendingHours
 
 
   useEffect(() => {
-    dispatch(
-      GetStudentOverviewPerfomance({ subject_id: currentSubject, student_id })
-    );
-  }, [
-    teachersState?.teacher_Current_perfomance_history_subject?.data?.subject_id,
-  ]);
+    dispatch(GetStudentOverviewPerfomance({ subject_id: currentSubject, student_id }));
+     dispatch(GetStudentOverviewSpendingHours({ subject_id: currentSubject, student_id }));
+  }, [teachersState?.teacher_Current_perfomance_history_subject?.data?.subject_id,]);
 
   useEffect(()=>{
-    dispatch(
-        GetStudentOverviewOverallPerfomance({
+    dispatch(GetStudentOverviewOverallPerfomance({
           subject_id: subject_id,
           student_id,
           month:teachersState?.teacher_overview_perfomance_date?.data?.subject_date ||new Date().toISOString().slice(0, 7),
@@ -148,7 +131,7 @@ const spendingHoursGlow = teachersState?.teacher_GetStudentOverviewSpendingHours
           <Card.Body className="p-2">
             {testCardDetails?.glow ? (
               <div className="w-100 h-100 d-flex flex-column align-items-center justify-content-center py-4">
-                <SpinnerComponent />
+                <Spinner />
                 <p className="py-3">Getting Overview Records</p>
               </div>
             ) : (
@@ -215,7 +198,7 @@ const spendingHoursGlow = teachersState?.teacher_GetStudentOverviewSpendingHours
                         </Card.Header>
                         {book_data?.glow ? (
                           <div className="w-100 h-100 d-flex flex-column align-items-center justify-content-center py-4">
-                            <SpinnerComponent />
+                           <Spinner />
                             <p className="py-3">Getting Overview Records</p>
                           </div>
                         ) : (
@@ -285,7 +268,7 @@ const spendingHoursGlow = teachersState?.teacher_GetStudentOverviewSpendingHours
                         <Card.Body className="p-2 row justify-content-center">
                           {spendingHoursGlow ? (
                             <div className="w-100 h-100 d-flex flex-column align-items-center justify-content-center py-4">
-                              <SpinnerComponent />
+                              <Spinner />
                               <p className="py-3">Getting Overview Records</p>
                             </div>
                           ) : spendingHours?.length > 0 ? (

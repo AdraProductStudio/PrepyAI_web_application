@@ -7,7 +7,7 @@ import Image from "Utils/Image";
 import { handleGetAllSubjects } from "../Actions/StudentAction"
 import { useEffect } from "react"
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
-import SpinnerComponent from "Components/Spinner/Spinner";
+import Spinner from "Components/Spinner/CustomSpinner";
 
 const StudentSubject = () => {
     const navigate = useCustomNavigate();
@@ -30,8 +30,7 @@ const StudentSubject = () => {
                     {studentState?.loading['all_subjects'] ?
                         <div className="d-flex justify-content-center align-items-center h-100">
                             <div className="col-5 text-center">
-                                <p>Getting subjects...</p>
-                                <SpinnerComponent />
+                               <Spinner />
                             </div>
                         </div>
                         :

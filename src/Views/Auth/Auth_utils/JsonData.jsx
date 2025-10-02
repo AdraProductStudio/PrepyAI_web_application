@@ -25,7 +25,7 @@ const JsonData = () => {
         placeholder: "mail@abc",
         value: authState?.logindata?.username || "",
         change: (e) => {
-          if (/^[A-Za-z0-9@._-]*$/.test(e.target.value)) {
+          if (/^[A-Za-z0-9._@-]*$/.test(e.target.value)) {
             dispatch(update_login_data({ username: e.target.value }));
           }
         },
@@ -62,8 +62,8 @@ const JsonData = () => {
             })
           ),
         eyeIcon: authState?.app_data?.shownewPassword
-          ? Icons?.EyeClose
-          : Icons?.EyeOpen,
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
         divClassName: "mb-1",
         isMandatory: false,
         Err:
@@ -156,8 +156,8 @@ const JsonData = () => {
             })
           ),
         eyeIcon: authState?.app_data?.shownewPassword
-          ? Icons?.EyeClose
-          : Icons?.EyeOpen,
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
         divClassName: "mb-3",
         isMandatory: true,
 
@@ -183,8 +183,8 @@ const JsonData = () => {
             })
           ),
         eyeIcon: authState?.app_data?.showConfirmPassword
-          ? Icons?.EyeClose
-          : Icons?.EyeOpen,
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
         divClassName: "mb-3",
         isMandatory: true,
         Err: commonState?.app_data?.validated
@@ -333,8 +333,8 @@ const JsonData = () => {
             })
           ),
         eyeIcon: authState?.app_data?.shownewPassword
-          ? Icons?.EyeClose
-          : Icons?.EyeOpen,
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
         divClassName: "mb-3",
         isMandatory: true,
         Err: commonState?.app_data?.validated
@@ -359,8 +359,8 @@ const JsonData = () => {
             })
           ),
         eyeIcon: authState?.app_data?.showConfirmPassword
-          ? Icons?.EyeClose
-          : Icons?.EyeOpen,
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
         divClassName: "mb-3",
         isMandatory: true,
         Err: commonState?.app_data?.validated
@@ -500,8 +500,8 @@ const JsonData = () => {
             })
           ),
         eyeIcon: authState?.app_data?.shownewPassword
-          ? Icons?.EyeClose
-          : Icons?.EyeOpen,
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
         divClassName: "mb-3",
         isMandatory: true,
         Err: commonState?.app_data?.validated
@@ -524,8 +524,8 @@ const JsonData = () => {
             })
           ),
         eyeIcon: authState?.app_data?.showConfirmPassword
-          ? Icons?.EyeClose
-          : Icons?.EyeOpen,
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
         divClassName: "mb-3",
         isMandatory: true,
         Err: commonState?.app_data?.validated
@@ -650,8 +650,8 @@ const JsonData = () => {
             })
           ),
         eyeIcon: authState?.app_data?.shownewPassword
-          ? Icons?.EyeClose
-          : Icons?.EyeOpen,
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
         divClassName: "mb-3",
         isMandatory: true,
         Err: commonState?.app_data?.validated
@@ -676,8 +676,8 @@ const JsonData = () => {
             })
           ),
         eyeIcon: authState?.app_data?.showConfirmPassword
-          ? Icons?.EyeClose
-          : Icons?.EyeOpen,
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
         divClassName: "mb-3",
         isMandatory: true,
         Err: commonState?.app_data?.validated
@@ -805,8 +805,8 @@ const JsonData = () => {
             })
           ),
         eyeIcon: authState?.app_data?.shownewPassword
-          ? Icons?.EyeClose
-          : Icons?.EyeOpen,
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
         divClassName: "mb-3",
         isMandatory: true,
         Err: commonState?.app_data?.validated
@@ -831,8 +831,8 @@ const JsonData = () => {
             })
           ),
         eyeIcon: authState?.app_data?.showConfirmPassword
-          ? Icons?.EyeClose
-          : Icons?.EyeOpen,
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
         divClassName: "mb-3",
         isMandatory: true,
         Err: commonState?.app_data?.validated
@@ -890,8 +890,8 @@ const JsonData = () => {
             })
           ),
         eyeIcon: authState?.app_data?.shownewPassword
-          ? Icons?.EyeClose
-          : Icons?.EyeOpen,
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
         divClassName: "mb-3",
         isMandatory: true,
         Err: commonState?.app_data?.validated
@@ -916,8 +916,8 @@ const JsonData = () => {
             })
           ),
         eyeIcon: authState?.app_data?.showConfirmPassword
-          ? Icons?.EyeClose
-          : Icons?.EyeOpen,
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
         divClassName: "mb-3",
         isMandatory: true,
         Err: commonState?.app_data?.validated
@@ -1069,3 +1069,4 @@ const JsonData = () => {
 };
 
 export default JsonData;
+

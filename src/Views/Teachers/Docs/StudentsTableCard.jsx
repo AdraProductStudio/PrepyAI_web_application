@@ -5,12 +5,11 @@ import { useDispatch } from "react-redux";
 import Icons from "Utils/Icons";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import JsonData from "Views/Teachers/Utils/JsonData";
-import { OverallModel } from "../Utils/OverallModal";
 import { update_edit_student } from "../Slice/teachersSlice";
-import SpinnerComponent from "Components/Spinner/Spinner";
 import Img from "Components/Img/Img";
 import Image from "Utils/Image";
 import { deleteStudents } from "../Actions/teacherAction";
+import Spinner from "Components/Spinner/CustomSpinner";
 
 const StudentsTableCard = ({ className, navigate_to, data, glow }) => {
   const { jsonOnly } = JsonData();
@@ -69,8 +68,7 @@ const StudentsTableCard = ({ className, navigate_to, data, glow }) => {
       <Card.Body className="p-0" style={{ maxHeight: "600px", overflow: "auto" }}>
         {glow ? (
           <div className="w-100 h-100 d-flex flex-column align-items-center justify-content-center py-4">
-            <SpinnerComponent />
-            <p className="py-3">Getting Students Records</p>
+            <Spinner />
           </div>
         ) : data?.students?.length > 0 ? (
           <div className="table-responsive">

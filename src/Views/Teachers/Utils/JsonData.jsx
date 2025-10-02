@@ -2,7 +2,7 @@ import { useCommonState, useCustomNavigate, useDispatch } from 'Components/Custo
 import { handlePostNote, update_app_data, update_note_data } from 'Views/Common/Slices/Common_slice';
 import Icons from 'Utils/Icons';
 import Image from 'Utils/Image';
-import { clear_form_fields, update_overview_month_for_perfomance, resetStudentState, selected_students_in_schedule, edit_profile_Inputs, update_perfomance_by_classroom, update_perfomance_history_by_subject, update_selected_books, update_student_perfomance_dashboard, update_Students_classroom, updateSettingsInputs, updateStudentsListSortBy, clear_Classroom_Upload_fields } from '../Slice/teachersSlice';
+import { clear_form_fields, update_overview_month_for_perfomance, resetStudentState, selected_students_in_schedule, edit_profile_Inputs, update_perfomance_by_classroom, update_perfomance_history_by_subject, update_selected_books, update_student_perfomance_dashboard, update_Students_classroom, updateSettingsInputs, updateStudentsListSortBy, clear_Classroom_Upload_fields, setErrors, clearFieldError, update_settings_eye } from '../Slice/teachersSlice';
 import { get_bookmarks, get_student_details, handleGetSubjectAttachments } from '../Actions/TeacherActions';
 import { update_Create_student, update_Grade_by_classroom, updatePostClassroomsData, updatePostStudentData, updatePostSubjectsData } from '../Slice/teachersSlice';
 import { useLocation, useParams } from 'react-router-dom';
@@ -89,14 +89,22 @@ const JsonData = (params) => {
       {
         name: "Upcoming",
         route: `/teachers_dashboard/classrooms/${params?.class_id}/${params?.subject_id}/test`,
+        value:'upcoming'
       },
       {
         name: "Ongoing",
         route: `/teachers_dashboard/classrooms/${params?.class_id}/${params?.subject_id}/test/ongoing_test`,
+         value:'ongoing'
+      },
+      {
+        name: "Completed",
+        route: `/teachers_dashboard/classrooms/${params?.class_id}/${params?.subject_id}/test/cancelled_test`,
+         value:'completed'
       },
       {
         name: "Cancelled",
         route: `/teachers_dashboard/classrooms/${params?.class_id}/${params?.subject_id}/test/cancelled_test`,
+         value:'cancelled'
       },
     ],
 
@@ -274,7 +282,7 @@ const JsonData = (params) => {
         name: "Test Name",
         category: "input",
         type: "text",
-        placeholder: "Type Book Name",
+        placeholder: "Test Name",
         isMandatory: true,
         value: teachersState?.scheduleTest_values?.test_name || "",
         className: "modal-inputs",
@@ -284,7 +292,9 @@ const JsonData = (params) => {
           );
         },
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
-        // Err: commonState?.app_data?.validated ? "Please enter a book name" : "",
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.test_name
+          : null,
       },
       {
         name: "Books",
@@ -294,40 +304,42 @@ const JsonData = (params) => {
         multi: false,
         options: Array.isArray(teachersState?.books?.data)
           ? teachersState?.books?.data?.map((book) => ({
-            label: book.book_name,
-            value: book.book_id,
-          }))
+              label: book.book_name,
+              value: book.book_id,
+            }))
           : [],
         placeholder: "Select Book",
         isMandatory: true,
         value: teachersState?.scheduleTest_values?.book_id
           ? [
-            {
-              label:
-                teachersState?.books?.data?.find(
-                  (b) =>
-                    b.book_id === teachersState?.scheduleTest_values?.book_id
-                )?.book_name || "",
-              value: teachersState?.scheduleTest_values?.book_id,
-            },
-          ]
+              {
+                label:
+                  teachersState?.books?.data?.find(
+                    (b) =>
+                      b.book_id === teachersState?.scheduleTest_values?.book_id
+                  )?.book_name || "",
+                value: teachersState?.scheduleTest_values?.book_id,
+              },
+            ]
           : [],
         change: (selected) => {
-          const selectedValue = Array.isArray(selected)
-            ? selected[0]?.value
-            : selected?.value;
-          dispatch(selected_students_in_schedule({ book_id: selectedValue }));
-          dispatch(get_bookmarks({ book_id: selectedValue }));
+          const selectedValue = Array.isArray(selected)? selected[0]?.value: selected?.value;
+          if(selectedValue){
+            dispatch(selected_students_in_schedule({ book_id: selectedValue }));
+            dispatch(get_bookmarks({ book_id: selectedValue }));
+          }
         },
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
-        Err: commonState?.app_data?.validated ? "Please select a book" : "",
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.book_id
+          : null,
       },
       {
         name: "Chapter",
         category: "select",
         type: "react_dropdown_select",
         options: Array.isArray(teachersState?.test_records?.data)
-          ? teachersState?.test_records?.data?.map((chapter) => ({
+          ? teachersState.test_records.data.map((chapter) => ({
             label: chapter.title,
             value: chapter.chapter_range,
           }))
@@ -339,32 +351,25 @@ const JsonData = (params) => {
             {
               label:
                 teachersState?.test_records?.data?.find(
-                  (b) =>
-                    b.title ===
-                    teachersState?.scheduleTest_values?.selected_chapter
+                  (b) => b.title === teachersState?.scheduleTest_values?.selected_chapter
                 )?.title || "",
               value: teachersState?.scheduleTest_values?.selected_chapter,
             },
           ]
           : [],
         change: (selected) => {
-          const selectedValue = Array.isArray(selected)
-            ? selected[0]?.value
-            : selected?.value;
-          const selectedLabel = Array.isArray(selected)
-            ? selected[0]?.label
-            : selected?.label;
-          dispatch(
-            selected_students_in_schedule({ chapters: [selectedLabel] })
-          );
-          dispatch(
-            selected_students_in_schedule({ chapter_range: [selectedValue] })
-          );
+          const selectedValue = selected?.[0]?.value;
+          const selectedLabel = selected?.[0]?.label;
+          dispatch(selected_students_in_schedule({ chapters: [selectedLabel] }));
+          dispatch(selected_students_in_schedule({ chapter_range: [selectedValue] }));
         },
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
         className: "modal-inputs",
-        Err: commonState?.app_data?.validated ? "Please select a chapter" : "",
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.chapter_range
+          : null,
       },
+
       // {
       //     name: "Class",
       //     category: "select",
@@ -402,8 +407,8 @@ const JsonData = (params) => {
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
         className: "modal-inputs",
         Err: commonState?.app_data?.validated
-          ? "Please select type of questions"
-          : "",
+          ? commonState?.app_data?.validationMessage?.type_of_questions
+          : null,
       },
       {
         name: "Number of Questions",
@@ -422,8 +427,8 @@ const JsonData = (params) => {
           ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated
-          ? "Please enter number of questions"
-          : "",
+          ? commonState?.app_data?.validationMessage?.no_of_questions
+          : null,
       },
       // {
       //   name: "Students",
@@ -458,11 +463,11 @@ const JsonData = (params) => {
               teachersState?.studentsPerformance?.assignedTest?.jsonStudentsData
             )
               ? teachersState?.studentsPerformance?.assignedTest?.jsonStudentsData.map(
-                (student) => ({
-                  label: student.student_name,
-                  value: student.student_id,
-                })
-              )
+                  (student) => ({
+                    label: student.student_name,
+                    value: student.student_id,
+                  })
+                )
               : [];
           } else {
             return [
@@ -472,11 +477,11 @@ const JsonData = (params) => {
                   ?.jsonStudentsData
               )
                 ? teachersState?.studentsPerformance?.assignedTest?.jsonStudentsData.map(
-                  (student) => ({
-                    label: student.student_name,
-                    value: student.student_id,
-                  })
-                )
+                    (student) => ({
+                      label: student.student_name,
+                      value: student.student_id,
+                    })
+                  )
                 : []),
             ];
           }
@@ -514,8 +519,8 @@ const JsonData = (params) => {
         },
         divClassName: "col-12 col-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated
-          ? "Please select at least one student"
-          : "",
+          ? commonState?.app_data?.validationMessage?.students
+          : null,
       },
       {
         name: "Date",
@@ -532,7 +537,9 @@ const JsonData = (params) => {
             })
           ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
-        Err: commonState?.app_data?.validated ? "Please select a date" : "",
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.start_date
+          : null,
       },
       {
         name: "Time",
@@ -548,7 +555,9 @@ const JsonData = (params) => {
             selected_students_in_schedule({ start_time: e.target.value })
           ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
-        Err: commonState?.app_data?.validated ? "Please select a date" : "",
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.start_time
+          : null,
       },
       {
         name: "Test Duration",
@@ -565,8 +574,8 @@ const JsonData = (params) => {
           ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated
-          ? "Please select test duration"
-          : "",
+          ? commonState?.app_data?.validationMessage?.total_duration
+          : null,
       },
       {
         name: "Set Questions",
@@ -583,27 +592,27 @@ const JsonData = (params) => {
           ),
         divClassName: "col-12 com-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated
-          ? "Please select Set Questions"
-          : "",
+          ? commonState?.app_data?.validationMessage?.set_questions
+          : null,
       },
-      {
-        name: "Mode of Test",
-        category: "select",
-        type: "normal_select",
-        options: ["Online", "Offline"],
-        placeholder: "Select Mode of Test",
-        isMandatory: true,
-        className: "modal-inputs",
-        value: teachersState?.scheduleTest_values?.mode_of_test || "",
-        change: (e) =>
-          dispatch(
-            selected_students_in_schedule({ mode_of_test: e.target.value })
-          ),
-        divClassName: "col-12 com-sm-6 col-xl-4 p-2",
-        Err: commonState?.app_data?.validated
-          ? "Please select Mode of Test"
-          : "",
-      },
+      // {
+      //   name: "Mode of Test",
+      //   category: "select",
+      //   type: "normal_select",
+      //   options: ["Online", "Offline"],
+      //   placeholder: "Select Mode of Test",
+      //   isMandatory: true,
+      //   className: "modal-inputs",
+      //   value: teachersState?.scheduleTest_values?.mode_of_test || "",
+      //   change: (e) =>
+      //     dispatch(
+      //       selected_students_in_schedule({ mode_of_test: e.target.value })
+      //     ),
+      //   divClassName: "col-12 com-sm-6 col-xl-4 p-2",
+      //   Err: commonState?.app_data?.validated
+      //     ? "Please select Mode of Test"
+      //     : "",
+      // },
     ],
     notes_input: [
       {
@@ -620,6 +629,7 @@ const JsonData = (params) => {
           if (e.key === "Enter")
             dispatch(handlePostNote(commonState?.notesdata));
         },
+        Err:commonState?.app_data?.validated && !commonState?.notesdata?.title ? "Title is required": null,
       },
       {
         name: "ADD CONTENT HERE",
@@ -633,6 +643,7 @@ const JsonData = (params) => {
           if (e.key === "Enter")
             dispatch(handlePostNote(commonState?.notesdata));
         },
+         Err:commonState?.app_data?.validated && !commonState?.notesdata?.content ? "Content is required": null,
       },
     ],
     classroomModal: [
@@ -650,9 +661,9 @@ const JsonData = (params) => {
         divClassName: "col-12 mb-4 mt-2",
         isMandatory: true,
         className: "modal-inputs",
-        Err:
-          commonState?.app_data?.validated ? commonState?.app_data?.validationMessage?.classroom_name
-            : null,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.classroom_name
+          : null,
       },
       {
         name: "Select Teachers",
@@ -660,9 +671,9 @@ const JsonData = (params) => {
         type: "react_dropdown_select",
         options: Array.isArray(teachersState?.teacher_GetTeachers?.data)
           ? teachersState.teacher_GetTeachers.data.map((teacher) => ({
-            label: teacher.teacher_name,
-            value: teacher.user_id,
-          }))
+              label: teacher.teacher_name,
+              value: teacher.user_id,
+            }))
           : [],
         multi: true,
         placeholder: "Select Teachers",
@@ -673,12 +684,12 @@ const JsonData = (params) => {
           teachersState?.teacher_PostClassrooms?.data?.teachers
         )
           ? teachersState.teacher_PostClassrooms.data.teachers.map((id) => ({
-            label:
-              teachersState.teacher_GetTeachers.data.find(
-                (t) => t.user_id === id
-              )?.teacher_name || "",
-            value: id,
-          }))
+              label:
+                teachersState.teacher_GetTeachers.data.find(
+                  (t) => t.user_id === id
+                )?.teacher_name || "",
+              value: id,
+            }))
           : [],
         change: (selectedOptions) =>
           dispatch(
@@ -686,10 +697,9 @@ const JsonData = (params) => {
               teachers: selectedOptions.map((opt) => opt.value),
             })
           ),
-        Err:
-          commonState?.app_data?.validated
-            ? commonState?.app_data?.validationMessage?.teachers
-            : null,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.teachers
+          : null,
       },
       {
         name: "Upload File",
@@ -705,8 +715,8 @@ const JsonData = (params) => {
           teachersState?.teacher_PostClassrooms?.data?.student_file
         )
           ? teachersState?.teacher_PostClassrooms?.data?.student_file?.map(
-            (val) => val
-          )
+              (val) => val
+            )
           : [],
         change: (e) => {
           const files = Array.from(e.target.files);
@@ -714,10 +724,9 @@ const JsonData = (params) => {
           e.target.value = "";
         },
         isMandatory: true,
-        Err:
-          commonState?.app_data?.validated
-            ? commonState?.app_data?.validationMessage?.student_file
-            : null,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.student_file
+          : null,
       },
     ],
     addSubjects: [
@@ -732,10 +741,9 @@ const JsonData = (params) => {
         divClassName: "col-12 mb-4 mt-2",
         className: "modal-inputs",
         isMandatory: true,
-        Err:
-          commonState?.app_data?.validated
-            ? commonState?.app_data?.validationMessage?.subject_name
-            : null,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.subject_name
+          : null,
       },
       {
         name: "Staff Name",
@@ -745,9 +753,9 @@ const JsonData = (params) => {
           teachersState?.teacher_GetClassroomTeachers?.data
         )
           ? teachersState.teacher_GetClassroomTeachers.data.map((teacher) => ({
-            label: teacher.teacher_name,
-            value: teacher.user_id,
-          }))
+              label: teacher.teacher_name,
+              value: teacher.user_id,
+            }))
           : [],
         multi: false,
         placeholder: "Select Teachers",
@@ -756,16 +764,16 @@ const JsonData = (params) => {
         className: "modal-inputs",
         value: teachersState?.teacher_PostSubjects?.data?.teachers
           ? [
-            {
-              label:
-                teachersState.teacher_GetClassroomTeachers.data.find(
-                  (t) =>
-                    t.user_id ===
-                    teachersState.teacher_PostSubjects.data.teachers
-                )?.teacher_name || "",
-              value: teachersState.teacher_PostSubjects.data.teachers,
-            },
-          ]
+              {
+                label:
+                  teachersState.teacher_GetClassroomTeachers.data.find(
+                    (t) =>
+                      t.user_id ===
+                      teachersState.teacher_PostSubjects.data.teachers
+                  )?.teacher_name || "",
+                value: teachersState.teacher_PostSubjects.data.teachers,
+              },
+            ]
           : [],
         change: (selected) => {
           const selectedValue = Array.isArray(selected)
@@ -773,10 +781,9 @@ const JsonData = (params) => {
             : selected?.value;
           dispatch(updatePostSubjectsData({ teachers: selectedValue }));
         },
-        Err:
-          commonState?.app_data?.validated
-            ? commonState?.app_data?.validationMessage?.teachers
-            : null,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.teachers
+          : null,
       },
     ],
     editStudent: [
@@ -795,18 +802,16 @@ const JsonData = (params) => {
         divClassName: "col-12 mb-4 mt-2",
         className: "modal-inputs",
         isMandatory: true,
-        Err:
-          commonState?.app_data?.validated
-            ? commonState?.app_data?.validationMessage?.first_name
-            : null,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.first_name
+          : null,
       },
       {
         name: "Enter Last Name",
         type: "text",
         category: "input",
         placeholder: "Student last name",
-        value:
-          teachersState?.teacher_PostStudents?.data?.data?.last_name || "",
+        value: teachersState?.teacher_PostStudents?.data?.data?.last_name || "",
         change: (e) => {
           if (/^[A-Za-z]*$/.test(e.target.value)) {
             dispatch(updatePostStudentData({ last_name: e.target.value }));
@@ -815,10 +820,9 @@ const JsonData = (params) => {
         divClassName: "col-12 mb-4 mt-2",
         className: "modal-inputs",
         isMandatory: true,
-        Err:
-          commonState?.app_data?.validated
-            ? commonState?.app_data?.validationMessage?.last_name
-            : null,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.last_name
+          : null,
       },
       {
         name: "Enter a Contact Number",
@@ -828,7 +832,6 @@ const JsonData = (params) => {
         value:
           teachersState?.teacher_PostStudents?.data?.data?.contact_no || "",
         change: (e) => {
-
           if (/^\d{0,10}$/.test(e.target.value)) {
             dispatch(updatePostStudentData({ contact_no: e.target.value }));
           }
@@ -836,10 +839,9 @@ const JsonData = (params) => {
         divClassName: "col-12 mb-4",
         className: "modal-inputs",
         isMandatory: true,
-        Err:
-          commonState?.app_data?.validated ?
-            commonState?.app_data?.validationMessage?.contact_no
-            : null,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.contact_no
+          : null,
       },
       {
         name: "Enter a Email id",
@@ -854,9 +856,9 @@ const JsonData = (params) => {
         className: "modal-inputs",
         isMandatory: true,
         disabled: true,
-        Err:
-          commonState?.app_data?.validated ? commonState?.app_data?.validationMessage?.student_email
-            : null,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.student_email
+          : null,
       },
       {
         name: "Enter a Register Number",
@@ -875,9 +877,9 @@ const JsonData = (params) => {
         divClassName: "col-12 mb-4",
         className: "modal-inputs",
         isMandatory: true,
-        Err:
-          commonState?.app_data?.validated ? commonState?.app_data?.validationMessage?.student_reg_no
-            : null,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.student_reg_no
+          : null,
       },
     ],
     createStudent: [
@@ -897,12 +899,12 @@ const JsonData = (params) => {
         isMandatory: true,
         disabled:
           teachersState?.teacher_CreateStudents?.data?.student_file &&
-            teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0
+          teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0
             ? true
             : false,
-        Err:
-          commonState?.app_data?.validated ? commonState?.app_data?.validationMessage?.name
-            : null,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.name
+          : null,
       },
       {
         name: "Enter a Contact Number",
@@ -911,7 +913,6 @@ const JsonData = (params) => {
         placeholder: "Contact Number",
         value: teachersState?.teacher_CreateStudents?.data?.contact_no || "",
         change: (e) => {
-
           if (/^\d{0,10}$/.test(e.target.value)) {
             dispatch(update_Create_student({ contact_no: e.target.value }));
           }
@@ -921,13 +922,12 @@ const JsonData = (params) => {
         isMandatory: true,
         disabled:
           teachersState?.teacher_CreateStudents?.data?.student_file &&
-            teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0
+          teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0
             ? true
             : false,
-        Err:
-          commonState?.app_data?.validated
-            ? commonState?.app_data?.validationMessage?.contact_no
-            : null,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.contact_no
+          : null,
       },
       {
         name: "Enter a Email id",
@@ -945,13 +945,12 @@ const JsonData = (params) => {
         isMandatory: true,
         disabled:
           teachersState?.teacher_CreateStudents?.data?.student_file &&
-            teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0
+          teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0
             ? true
             : false,
-        Err:
-          commonState?.app_data?.validated
-            ? commonState?.app_data?.validationMessage?.email_id
-            : null,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.email_id
+          : null,
       },
       {
         name: "Enter a Register Number",
@@ -971,13 +970,12 @@ const JsonData = (params) => {
         isMandatory: true,
         disabled:
           teachersState?.teacher_CreateStudents?.data?.student_file &&
-            teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0
+          teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0
             ? true
             : false,
-        Err:
-          commonState?.app_data?.validated
-            ? commonState?.app_data?.validationMessage?.register_no
-            : null,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.register_no
+          : null,
       },
       {
         name: "Select Classroom",
@@ -985,9 +983,9 @@ const JsonData = (params) => {
         type: "react_dropdown_select",
         options: Array.isArray(teachersState?.teacher_GetAllClassRooms?.data)
           ? teachersState.teacher_GetAllClassRooms.data.map((classroom) => ({
-            label: classroom.classroom_name,
-            value: classroom.classroom_name,
-          }))
+              label: classroom.classroom_name,
+              value: classroom.classroom_name,
+            }))
           : [],
         multi: false,
         placeholder: "Select Classroom",
@@ -996,11 +994,11 @@ const JsonData = (params) => {
         className: "modal-inputs ms-1",
         value: teachersState?.teacher_CreateStudents?.data?.classroom_name
           ? [
-            {
-              label: teachersState.teacher_CreateStudents.data.classroom_name,
-              value: teachersState.teacher_CreateStudents.data.classroom_name,
-            },
-          ]
+              {
+                label: teachersState.teacher_CreateStudents.data.classroom_name,
+                value: teachersState.teacher_CreateStudents.data.classroom_name,
+              },
+            ]
           : [],
         change: (selected) => {
           const selectedValue = Array.isArray(selected)
@@ -1010,13 +1008,12 @@ const JsonData = (params) => {
         },
         disabled:
           teachersState?.teacher_CreateStudents?.data?.student_file &&
-            teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0
+          teachersState?.teacher_CreateStudents?.data?.student_file?.length > 0
             ? true
             : false,
-        Err:
-          commonState?.app_data?.validated
-            ? commonState?.app_data?.validationMessage?.classroom_name
-            : null,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.classroom_name
+          : null,
       },
     ],
     createMultiStudets: [
@@ -1033,8 +1030,8 @@ const JsonData = (params) => {
           teachersState?.teacher_CreateStudents?.data?.student_file
         )
           ? teachersState?.teacher_CreateStudents?.data?.student_file?.map(
-            (val) => val
-          )
+              (val) => val
+            )
           : [],
         deleteImg: () => dispatch(clear_form_fields()),
         change: (e) => {
@@ -1059,9 +1056,9 @@ const JsonData = (params) => {
         type: "react_dropdown_select",
         options: Array.isArray(teachersState?.teacher_GetAllClassRooms?.data)
           ? teachersState.teacher_GetAllClassRooms.data.map((classroom) => ({
-            label: classroom.classroom_name,
-            value: classroom.classroom_id,
-          }))
+              label: classroom.classroom_name,
+              value: classroom.classroom_id,
+            }))
           : [],
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
@@ -1079,12 +1076,12 @@ const JsonData = (params) => {
       {
         category: "select",
         type: "react_dropdown_select",
-        options: Array.isArray(teachersState?.teacher_GetAllClassRooms?.data)
+        options: [{ label: "All Classrooms", value: "all_classrooms" },...Array.isArray(teachersState?.teacher_GetAllClassRooms?.data)
           ? teachersState.teacher_GetAllClassRooms.data.map((classroom) => ({
-            label: classroom.classroom_name,
-            value: classroom.classroom_id,
-          }))
-          : [],
+              label: classroom.classroom_name,
+              value: classroom.classroom_id,
+            }))
+          : [] ],
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
         className: "custom-dropdownss",
@@ -1101,12 +1098,12 @@ const JsonData = (params) => {
       {
         category: "select",
         type: "react_dropdown_select",
-        options: Array.isArray(teachersState?.teacher_GetAllClassRooms?.data)
+        options: [{ label: "All Classrooms", value: "all_classrooms" },...Array.isArray(teachersState?.teacher_GetAllClassRooms?.data)
           ? teachersState.teacher_GetAllClassRooms.data.map((classroom) => ({
-            label: classroom.classroom_name,
-            value: classroom.classroom_id,
-          }))
-          : [],
+              label: classroom.classroom_name,
+              value: classroom.classroom_id,
+            }))
+          : [] ],
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
         className: "studentsSelectClasses",
@@ -1125,17 +1122,17 @@ const JsonData = (params) => {
         type: "react_dropdown_select",
         options: Array.isArray(
           teachersState?.teacher_GetAllSubjects?.data[
-          teachersState?.teacher_Current_perfomance_Classroom?.data
-            ?.classroom_id
+            teachersState?.teacher_Current_perfomance_Classroom?.data
+              ?.classroom_id
           ]
         )
           ? teachersState.teacher_GetAllSubjects.data[
-            teachersState?.teacher_Current_perfomance_Classroom?.data
-              ?.classroom_id
-          ]?.map((subject) => ({
-            label: subject.subject_name,
-            value: subject.subject_id,
-          }))
+              teachersState?.teacher_Current_perfomance_Classroom?.data
+                ?.classroom_id
+            ]?.map((subject) => ({
+              label: subject.subject_name,
+              value: subject.subject_id,
+            }))
           : [],
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
@@ -1180,11 +1177,11 @@ const JsonData = (params) => {
           teachersState?.teacher_GetAllSubjects?.data[routeState?.classroom_id]
         )
           ? teachersState.teacher_GetAllSubjects.data[
-            routeState?.classroom_id
-          ]?.map((subject) => ({
-            label: subject.subject_name,
-            value: subject.subject_id,
-          }))
+              routeState?.classroom_id
+            ]?.map((subject) => ({
+              label: subject.subject_name,
+              value: subject.subject_id,
+            }))
           : [],
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
@@ -1195,16 +1192,16 @@ const JsonData = (params) => {
             ?.subject_id
         )
           ? teachersState.teacher_Current_perfomance_history_subject.data.subject_id.map(
-            (id) => {
-              const subject = teachersState?.teacher_GetAllSubjects?.data[
-                routeState?.classroom_id
-              ]?.find((s) => s.subject_id === id);
-              return {
-                label: subject ? subject.subject_name : "",
-                value: id,
-              };
-            }
-          )
+              (id) => {
+                const subject = teachersState?.teacher_GetAllSubjects?.data[
+                  routeState?.classroom_id
+                ]?.find((s) => s.subject_id === id);
+                return {
+                  label: subject ? subject.subject_name : "",
+                  value: id,
+                };
+              }
+            )
           : [{ label: "All Subjects", value: "all_subjects" }],
 
         change: (selectedOptions) =>
@@ -1307,78 +1304,84 @@ const JsonData = (params) => {
     settings_details: [
       {
         name: "Current Password",
-        type: "text",
+        type: teachersState?.settings_password?.show_old_password ? "text" : "password" ,
         title: " ",
         category: "input",
         placeholder: "Current Password",
         value: teachersState?.settingsInputs?.old_password || "",
-        change: (e) =>
-          dispatch(
-            updateSettingsInputs({
-              field: "old_password",
-              value: e.target.value,
-            })
-          ),
+        change: (e) => {
+          dispatch(updateSettingsInputs({field: "old_password", value: e.target.value}))
+          dispatch(clearFieldError("old_password"))
+        },
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
+        eyeFunction: () =>
+          dispatch(
+              update_settings_eye({
+                  show_old_password: !teachersState?.settings_password?.show_old_password,
+              })
+          ),
+        eyeIcon: teachersState?.settings_password?.show_old_password
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
-        Err:
-          commonState?.app_data?.validated &&
-            !teachersState?.settingsInputs?.old_password
-            ? "First name required"
-            : null,
+        Err: teachersState.errors.old_password || null,
       },
       {
         name: "New Password",
-        type: "text",
+        type: teachersState?.settings_password?.show_new_password ? "text" : "password" ,
         title: " ",
         category: "input",
         placeholder: "Current Password",
-        value: teachersState?.settingsInputs?.confirm_password || "",
-        change: (e) =>
-          dispatch(
-            updateSettingsInputs({
-              field: "confirm_password",
-              value: e.target.value,
-            })
-          ),
+        value: teachersState?.settingsInputs?.new_password || "",
+        change: (e) => {
+          dispatch(updateSettingsInputs({field: "new_password", value: e.target.value}))
+          dispatch(clearFieldError("new_password"))
+        },
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
+        eyeFunction: () =>
+          dispatch(
+              update_settings_eye({
+                show_new_password: !teachersState?.settings_password?.show_new_password,
+              })
+          ),
+        eyeIcon: teachersState?.settings_password?.show_new_password
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
-        Err:
-          commonState?.app_data?.validated &&
-            !teachersState?.settingsInputs?.confirm_password
-            ? "Confirm Password required"
-            : null,
+        Err: teachersState.errors.new_password || null,
       },
       {
         name: "Confirm Password",
-        type: "text",
+        type: teachersState?.settings_password?.show_confirm_password ? "text" : "password" ,
         title: " ",
         category: "input",
         placeholder: "Confirm Password",
-        value: teachersState?.settingsInputs?.new_password || "",
-        change: (e) =>
-          dispatch(
-            updateSettingsInputs({
-              field: "new_password",
-              value: e.target.value,
-            })
-          ),
+        value: teachersState?.settingsInputs?.confirm_password || "",
+        change: (e) => {
+          dispatch(updateSettingsInputs({field: "confirm_password", value: e.target.value}))
+          dispatch(clearFieldError("confirm_password"))
+        },
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
+        eyeFunction: () =>
+          dispatch(
+              update_settings_eye({
+                show_confirm_password: !teachersState?.settings_password?.show_confirm_password,
+              })
+          ),
+        eyeIcon: teachersState?.settings_password?.show_confirm_password
+          ? Icons?.EyeClose
+          : Icons?.EyeOpen,
         divClassName: "mb-3",
         isMandatory: true,
-        Err:
-          commonState?.app_data?.validated &&
-            !teachersState?.settingsInputs?.new_password
-            ? "New password required"
-            : null,
+        Err: teachersState.errors.confirm_password || null,
       },
     ],
     teachers_profile: [
@@ -1389,20 +1392,18 @@ const JsonData = (params) => {
         category: "input",
         placeholder: "",
         value: teachersState?.editProfileInputs?.first_name || "",
-        change: (e) =>
-          dispatch(
-            edit_profile_Inputs({ field: "first_name", value: e.target.value })
-          ),
+        change: (e) =>{
+          if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+            dispatch(edit_profile_Inputs({ field: "first_name", value: e.target.value }))
+            dispatch(clearFieldError("first_name"))
+          }
+        },
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
         divClassName: "mb-3",
         isMandatory: false,
-        Err:
-          commonState?.app_data?.validated &&
-            !teachersState?.editProfileInputs?.first_name
-            ? "First name required"
-            : null,
+        Err: teachersState?.errors?.first_name || null,
       },
       {
         name: "Last Name",
@@ -1411,20 +1412,18 @@ const JsonData = (params) => {
         category: "input",
         placeholder: "",
         value: teachersState?.editProfileInputs?.last_name || "",
-        change: (e) =>
-          dispatch(
-            edit_profile_Inputs({ field: "last_name", value: e.target.value })
-          ),
+        change: (e) => {
+          if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+            dispatch(edit_profile_Inputs({ field: "last_name", value: e.target.value }))
+            dispatch(clearFieldError("last_name"))
+          }
+        },
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
         divClassName: "mb-3",
         isMandatory: false,
-        Err:
-          commonState?.app_data?.validated &&
-            !teachersState?.editProfileInputs?.last_name
-            ? "Last name required"
-            : null,
+        Err: teachersState?.errors?.last_name || null,
       },
       {
         name: "Email",
@@ -1433,22 +1432,19 @@ const JsonData = (params) => {
         category: "input",
         placeholder: "",
         value: teachersState?.editProfileInputs?.email_id || "",
-        change: (e) =>
-          dispatch(
-            edit_profile_Inputs({ field: "email_id", value: e.target.value })
-          ),
+        change: (e) => {
+          if (/^[A-Za-z0-9@._-]*$/.test(e.target.value)) {
+            dispatch(edit_profile_Inputs({ field: "email_id", value: e.target.value }))
+            dispatch(clearFieldError("email_id"))
+          }
+        },
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
         divClassName: "mb-3",
         isMandatory: false,
-        Err:
-          commonState?.app_data?.validated &&
-            !teachersState?.editProfileInputs?.email_id
-            ? "Email required"
-            : null,
+        // Err: teachersState?.errors?.first_name || null,
         disabled: true,
-        className: "bg-white",
       },
       {
         name: "Phone Number",
@@ -1457,23 +1453,19 @@ const JsonData = (params) => {
         category: "input",
         placeholder: "",
         value: teachersState?.editProfileInputs?.phone_number || "",
-        change: (e) =>
-          dispatch(
-            edit_profile_Inputs({
-              field: "phone_number",
-              value: e.target.value,
-            })
-          ),
+        change: (e) => {
+          const value = e.target.value.replace(/\D/g, "")
+          if(value.length <= 10){
+            dispatch(edit_profile_Inputs({field: "phone_number", value: e.target.value,}))
+            dispatch(clearFieldError("phone_number"))
+          }
+        },
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
         divClassName: "mb-3",
         isMandatory: false,
-        Err:
-          commonState?.app_data?.validated &&
-            !teachersState?.editProfileInputs?.phone_number
-            ? "Phone Number required"
-            : null,
+        Err: teachersState?.errors?.phone_number || null,
       },
       {
         name: "Address",
@@ -1481,20 +1473,17 @@ const JsonData = (params) => {
         category: "textbox",
         placeholder: "",
         value: teachersState?.editProfileInputs?.address || "",
-        change: (e) =>
-          dispatch(
-            edit_profile_Inputs({ field: "address", value: e.target.value })
-          ),
+        change: (e) => {
+          // if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+            dispatch(edit_profile_Inputs({ field: "address", value: e.target.value }))
+          // }
+        },
         // keyDown: (e) => {
         //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
         // },
         divClassName: "mb-3",
         isMandatory: false,
-        Err:
-          commonState?.app_data?.validated &&
-            !teachersState?.editProfileInputs?.address
-            ? "Phone Number required"
-            : null,
+        // Err: teachersState?.errors?.first_name || null,
       },
     ],
   };

@@ -19,8 +19,8 @@ const JsonData = () => {
     .map(id => teacherOptions.find(opt => opt.id?.toString() === id?.toString()))
     .filter(Boolean);
 
-    const dashboardMonthlyGrowthDropDownOptions = adminState?.dashboard_chart_years.map(item => ({ id: item.years, year: item.years }))
-    const classroomMonthlyGrowthDropDownOptions = adminState?.classroom_chart_years.map(item => ({ id: item.year, year: item.year }))
+    const dashboardMonthlyGrowthDropDownOptions = adminState?.dashboard_chart_years?.map(item => ({ id: item.years, year: item.years }))
+    const classroomMonthlyGrowthDropDownOptions = adminState?.classroom_chart_years?.map(item => ({ id: item.year, year: item.year }))
 
     const jsonOnly = {
         sidebar_data: [
@@ -70,8 +70,10 @@ const JsonData = () => {
                 labelClassName: "input-colur text-primary-emphasis",
                 value: adminState?.edit_dashboard_teacher.first_name || '',
                 change: (e) => {
-                    dispatch(onChangeEditDashboardTeacher({field: "first_name", data: e.target.value}))
-                    dispatch(clearFieldError("first_name"))
+                    if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+                        dispatch(onChangeEditDashboardTeacher({field: "first_name", data: e.target.value}))
+                        dispatch(clearFieldError("first_name"))
+                    }
                 },
                 Err: adminState?.errors.first_name || ''
             },
@@ -82,8 +84,10 @@ const JsonData = () => {
                 labelClassName: "input-colur text-primary-emphasis",
                 value: adminState?.edit_dashboard_teacher.last_name || '',
                 change: (e) => {
-                    dispatch(onChangeEditDashboardTeacher({field: "last_name", data: e.target.value}))
-                    dispatch(clearFieldError("last_name"))
+                    if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+                        dispatch(onChangeEditDashboardTeacher({field: "last_name", data: e.target.value}))
+                        dispatch(clearFieldError("last_name"))
+                    }
                 },
                 Err: adminState?.errors.last_name || ''
             },
@@ -94,8 +98,10 @@ const JsonData = () => {
                 labelClassName: "input-colur text-primary-emphasis mt-3",
                 value: adminState?.edit_dashboard_teacher.institute_name || '',
                 change: (e) => {
-                    dispatch(onChangeEditDashboardTeacher({field: "institute_name", data: e.target.value}))
-                    dispatch(clearFieldError("institute_name"))
+                    if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+                        dispatch(onChangeEditDashboardTeacher({field: "institute_name", data: e.target.value}))
+                        dispatch(clearFieldError("institute_name"))
+                    }
                 },
                 Err: adminState?.errors.institute_name || ''
             },
@@ -118,8 +124,11 @@ const JsonData = () => {
                 labelClassName: "input-colur text-primary-emphasis mt-3",
                 value: adminState?.edit_dashboard_teacher.contact_no || '',
                 change: (e) => {
-                    dispatch(onChangeEditDashboardTeacher({field: "contact_no", data: e.target.value}))
-                    dispatch(clearFieldError('contact_no'))
+                    const value = e.target.value.replace(/\D/g, "");
+                    if(value.length <= 10){
+                        dispatch(onChangeEditDashboardTeacher({field: "contact_no", data: e.target.value}))
+                        dispatch(clearFieldError('contact_no'))
+                    }
                 },
                 Err: adminState?.errors.contact_no || ''
             },
@@ -131,8 +140,10 @@ const JsonData = () => {
                 disabled: true,
                 value: adminState?.edit_dashboard_teacher.email || '',
                 change: (e) => {
-                    dispatch(onChangeEditDashboardTeacher({field: "email", data: e.target.value}))
-                    dispatch(clearFieldError('email'))
+                    if (/^[A-Za-z0-9@._-]*$/.test(e.target.value)) {
+                        dispatch(onChangeEditDashboardTeacher({field: "email", data: e.target.value}))
+                        dispatch(clearFieldError('email'))
+                    }
                 },
                 Err: adminState?.errors.email || ''
             },
@@ -143,8 +154,10 @@ const JsonData = () => {
                 labelClassName: "input-colur text-primary-emphasis mt-3",
                 value: adminState?.edit_dashboard_teacher.qualification || '',
                 change: (e) => {
-                    dispatch(onChangeEditDashboardTeacher({field: "qualification", data: e.target.value}))
-                    dispatch(clearFieldError('qualification'))
+                    if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+                        dispatch(onChangeEditDashboardTeacher({field: "qualification", data: e.target.value}))
+                        dispatch(clearFieldError('qualification'))
+                    }
                 },
                 Err: adminState?.errors.qualification || ''
             },
@@ -158,10 +171,12 @@ const JsonData = () => {
                 labelClassName: "input-colur text-primary-emphasis",
                 value: adminState?.edit_classroom_teacher.first_name || '',
                 change: (e) => {
-                    dispatch(onChangeEditClassroomTeacher({field: "first_name", data: e.target.value}))
-                    dispatch(clearFieldError('first_name'))
+                    if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+                        dispatch(onChangeEditClassroomTeacher({field: "first_name", data: e.target.value}))
+                        dispatch(clearFieldError('first_name'))
+                    }
                 },
-                Err: adminState?.errors.first_name || ''
+                Err: adminState?.errors.first_name || null
             },
             {
                 category: "input",
@@ -170,10 +185,12 @@ const JsonData = () => {
                 labelClassName: "input-colur text-primary-emphasis",
                 value: adminState?.edit_classroom_teacher.last_name || '',
                 change: (e) => {
-                    dispatch(onChangeEditClassroomTeacher({field: "last_name", data: e.target.value}))
-                    dispatch(clearFieldError('last_name'))
+                    if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+                        dispatch(onChangeEditClassroomTeacher({field: "last_name", data: e.target.value}))
+                        dispatch(clearFieldError('last_name'))
+                    }
                 },
-                Err: adminState?.errors.last_name || ''
+                Err: adminState?.errors.last_name || null
             },
             {
                 category: "input",
@@ -182,10 +199,12 @@ const JsonData = () => {
                 labelClassName: "input-colur text-primary-emphasis mt-3",
                 value: adminState?.edit_classroom_teacher.subject_name || '',
                 change: (e) => {
-                    dispatch(onChangeEditClassroomTeacher({field: "subject_name", data: e.target.value}))
-                    dispatch(clearFieldError('subject_name'))
+                    if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+                        dispatch(onChangeEditClassroomTeacher({field: "subject_name", data: e.target.value}))
+                        dispatch(clearFieldError('subject_name'))
+                    }
                 },
-                Err: adminState?.errors.subject_name || ''
+                Err: adminState?.errors.subject_name || null
             },
             {
                 category: "input",
@@ -194,10 +213,13 @@ const JsonData = () => {
                 labelClassName: "input-colur text-primary-emphasis mt-3",
                 value: adminState?.edit_classroom_teacher.contact_no || '',
                 change: (e) => {
-                    dispatch(onChangeEditClassroomTeacher({field: "contact_no", data: e.target.value}))
-                    dispatch(clearFieldError('contact_no'))
+                    const value = e.target.value.replace(/\D/g, "");
+                    if(value.length <= 10){
+                        dispatch(onChangeEditClassroomTeacher({field: "contact_no", data: e.target.value}))
+                        dispatch(clearFieldError('contact_no'))
+                    }
                 },
-                Err: adminState?.errors.contact_no || ''
+                Err: adminState?.errors.contact_no || null
             },
             {
                 category: "input",
@@ -207,10 +229,12 @@ const JsonData = () => {
                 disabled: true,
                 value: adminState?.edit_classroom_teacher.email || '',
                 change: (e) => {
-                    dispatch(onChangeEditClassroomTeacher({field: "email", data: e.target.value}))
-                    dispatch(clearFieldError('email'))
+                    if (/^[A-Za-z0-9@._-]*$/.test(e.target.value)) {
+                        dispatch(onChangeEditClassroomTeacher({field: "email", data: e.target.value}))
+                        dispatch(clearFieldError('email'))
+                    }
                 },
-                Err: adminState?.errors.email || ''
+                Err: adminState?.errors.email || null
             },
             {
                 category: "input",
@@ -219,10 +243,12 @@ const JsonData = () => {
                 labelClassName: "input-colur text-primary-emphasis mt-3",
                 value: adminState?.edit_classroom_teacher.qualification || '',
                 change: (e) => {
-                    dispatch(onChangeEditClassroomTeacher({field: "qualification", data: e.target.value}))
-                    dispatch(clearFieldError('qualification'))
+                    if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+                        dispatch(onChangeEditClassroomTeacher({field: "qualification", data: e.target.value}))
+                        dispatch(clearFieldError('qualification'))
+                    }
                 },
-                Err: adminState?.errors.qualification || ''
+                Err: adminState?.errors.qualification || null
             },
         ],
 
@@ -323,8 +349,10 @@ const JsonData = () => {
                 labelClassName: "input-colur text-primary-emphasis mt-2",
                 value: adminState?.file ? '' : adminState?.staffForm.name || '',
                 change: (e) => { 
-                    dispatch(onChangeStaffForm({field: "name", data: e.target.value}))
-                    dispatch(clearFieldError('name'))
+                    if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+                        dispatch(onChangeStaffForm({field: "name", data: e.target.value}))
+                        dispatch(clearFieldError('name'))
+                    }
                 },
                 Err: adminState?.errors.name || '',
                 disabled: adminState?.file
@@ -336,8 +364,10 @@ const JsonData = () => {
                 labelClassName: "input-colur text-primary-emphasis mt-3",
                 value: adminState?.file ? '' : adminState?.staffForm.email_id || '',
                 change: (e) => { 
-                    dispatch(onChangeStaffForm({field: "email_id", data: e.target.value}))
-                    dispatch(clearFieldError('email_id'))
+                    if (/^[A-Za-z0-9@._-]*$/.test(e.target.value)) {
+                        dispatch(onChangeStaffForm({field: "email_id", data: e.target.value}))
+                        dispatch(clearFieldError('email_id'))
+                    }
                 },
                 Err: adminState?.errors.email_id || '',
                 disabled: adminState?.file
@@ -349,8 +379,10 @@ const JsonData = () => {
                 labelClassName: "input-colur text-primary-emphasis mt-3",
                 value: adminState?.file ? '' : adminState?.staffForm.subject_name || '',
                 change: (e) => { 
-                    dispatch(onChangeStaffForm({field: "subject_name", data: e.target.value}))
-                    dispatch(clearFieldError('subject_name'))
+                    if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+                        dispatch(onChangeStaffForm({field: "subject_name", data: e.target.value}))
+                        dispatch(clearFieldError('subject_name'))
+                    }
                 },
                 Err: adminState?.errors.subject_name || '',
                 disabled: adminState?.file
@@ -362,8 +394,10 @@ const JsonData = () => {
                 labelClassName: "input-colur text-primary-emphasis mt-3",
                 value: adminState?.file ? '' : adminState?.staffForm.institute_name || '',
                 change: (e) => { 
-                    dispatch(onChangeStaffForm({field: "institute_name", data: e.target.value}))
-                    dispatch(clearFieldError('institute_name'))
+                    if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+                        dispatch(onChangeStaffForm({field: "institute_name", data: e.target.value}))
+                        dispatch(clearFieldError('institute_name'))
+                    }
                 },
                 Err: adminState?.errors.institute_name || '',
                 disabled: adminState?.file
@@ -378,8 +412,10 @@ const JsonData = () => {
                 labelClassName: "input-colur text-primary-emphasis mt-2",
                 value: adminState?.classroomForm.class_name || '',
                 change: (e) => { 
-                    dispatch(onChangeClassroomForm({field: "class_name", data: e.target.value}))
-                    dispatch(clearFieldError('class_name'))
+                    if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) { 
+                        dispatch(onChangeClassroomForm({field: "class_name", data: e.target.value}))
+                        dispatch(clearFieldError('class_name'))
+                    }
                 },
                 Err: adminState?.errors.class_name || ''
             },
@@ -478,8 +514,8 @@ const JsonData = () => {
                         })
                     ),
                 eyeIcon: adminState?.settings_password?.show_old_password
-                    ? Icons?.EyeOpen
-                    : Icons?.EyeClose,
+                    ? Icons?.EyeClose
+                    : Icons?.EyeOpen,
                 divClassName: "mb-3",
                 // className: "py-3",
                 isMandatory: false,
@@ -506,8 +542,8 @@ const JsonData = () => {
                         })
                     ),
                 eyeIcon: adminState?.settings_password?.show_new_password
-                    ? Icons?.EyeOpen
-                    : Icons?.EyeClose,
+                    ? Icons?.EyeClose
+                    : Icons?.EyeOpen,
                 divClassName: "mb-3",
                 // className: "py-3",
                 isMandatory: false,
@@ -534,8 +570,8 @@ const JsonData = () => {
                         })
                     ),
                 eyeIcon: adminState?.settings_password?.show_confirm_password
-                    ? Icons?.EyeOpen
-                    : Icons?.EyeClose,
+                    ? Icons?.EyeClose
+                    : Icons?.EyeOpen,
                 divClassName: "mb-3",
                 // className: "py-3",
                 isMandatory: false,
@@ -553,8 +589,10 @@ const JsonData = () => {
                 placeholder: "",
                 value: adminState?.editProfileInputs?.first_name || '',
                 change: (e) => {
-                    dispatch(edit_profile_Inputs({ field: 'first_name', value: e.target.value }))
-                    dispatch(clearFieldError('first_name'))
+                    if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+                        dispatch(edit_profile_Inputs({ field: 'first_name', value: e.target.value }))
+                        dispatch(clearFieldError('first_name'))
+                    }
                 },
                 // keyDown: (e) => {
                 //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
@@ -571,8 +609,12 @@ const JsonData = () => {
                 placeholder: "",
                 value: adminState?.editProfileInputs?.last_name || '',
                 change:(e) => {
-                    dispatch(edit_profile_Inputs({ field: 'last_name', value: e.target.value }))
-                    dispatch(clearFieldError('last_name'))
+                    if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+                        dispatch(edit_profile_Inputs({ field: 'last_name', value: e.target.value }))
+                        dispatch(clearFieldError('last_name'))
+
+                    }
+
                 },
                 // keyDown: (e) => {
                 //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
@@ -589,8 +631,10 @@ const JsonData = () => {
                 placeholder: "",
                 value: adminState?.editProfileInputs?.email_id || '',
                 change:(e) => {
-                    dispatch(edit_profile_Inputs({ field: 'email_id', value: e.target.value }))
-                    dispatch(clearFieldError('email_id'))
+                    if (/^[A-Za-z0-9@._-]*$/.test(e.target.value)) {
+                        dispatch(edit_profile_Inputs({ field: 'email_id', value: e.target.value }))
+                        dispatch(clearFieldError('email_id'))
+                    }
                 },
                 // keyDown: (e) => {
                 //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
@@ -608,7 +652,8 @@ const JsonData = () => {
                 placeholder: "",
                 value: adminState?.editProfileInputs?.phone_number ||'',
                 change:(e) => {
-                    if(!/^\d{11}$/.test(e.target.value)){
+                    const value = e.target.value.replace(/\D/g, "");
+                    if(value.length <= 10){
                         dispatch(edit_profile_Inputs({ field: 'phone_number', value: e.target.value }))
                         dispatch(clearFieldError('phone_number'))
                     }
@@ -626,7 +671,11 @@ const JsonData = () => {
                 category: "textbox",
                 placeholder: "",
                 value: adminState?.editProfileInputs?.address ||'',
-                change:(e) => dispatch(edit_profile_Inputs({ field: 'address', value: e.target.value })),
+                change:(e) => {
+                    // if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+                        dispatch(edit_profile_Inputs({ field: 'address', value: e.target.value }))
+                    // }
+                },
                 // keyDown: (e) => {
                 //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
                 // },

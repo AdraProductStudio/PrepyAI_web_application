@@ -20,7 +20,7 @@ export default function Layout() {
             <div className="d-flex flex-wrap">
                 <Sidebar menuOptions={jsonOnly.sidebar_data} responsiveOn="lg" logoutOnClick={() => dispatch(logout())} />
 
-                <main className="col layout_main_content overflow-hidden">
+                <main className="col layout_main_content overflow-scroll">
                     <div className="container-fluid h-100">
                         <header className="py-2">
                             <Header offcanvasOn="lg" profileOnClick={profileOnClick} offcanvasOnButton={() => dispatch(update_app_data({ type: 'canvas', data: { show: true, from: 'sidebar', type: 'data', placement: 'start', close_btn: true, sidebar_data: jsonOnly.sidebar_data, extraClass: 'offcanvas_sidebar' } }))} />

@@ -1,6 +1,5 @@
 import CommonPersonalInfo from "Views/Common/Docs/CommonPersonalInfo";
 import JsonData from "../Utils/JsonData";
-import { getProfileDetails } from "../Actions/Teachers_action";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import { updateProfileEditing } from "../Slice/teachersSlice";
 
@@ -10,7 +9,6 @@ const TeachersPersonalInfo = () => {
   return (
     <CommonPersonalInfo
         profileDetailsJson={jsxJson?.profile_details}
-        fetchProfileAction={getProfileDetails}
         editProfileAction={updateProfileEditing}
         openModalAction={updateModalShow}
         modalConfig={{

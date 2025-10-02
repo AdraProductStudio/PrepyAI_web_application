@@ -101,6 +101,16 @@ const authSlice = createSlice({
       const [key, value] = Object.entries(action.payload)[0] || [];
       state.createPassworddata[key] = value || "";
     },
+    reset_forget_details(state,action){
+      state.otpVerificationdata={};
+      state.forgotPassworddata = {};
+      state.createPassworddata={};
+      state.organizationRegisterdata = {};
+      state.adminRegisterdata = {};
+      state.teacherRegisterdata = {};
+      state.studentRegisterdata = {};
+      state.learnersregisterdata = {};
+    },
 
     // Login api 
     login_endpoint(state, action) {
@@ -133,6 +143,6 @@ export default reducer;
 export const {
   update_login_data, update_learners_register, update_organization_register, update_admin_register,
   update_spinner_loadning, update_teacher_register, update_student_register, update_input_eye,
-  update_forgot_password, update_otp_verification, update_create_password, update_validation,
+  update_forgot_password, update_otp_verification, update_create_password, update_validation,reset_forget_details,
   login_endpoint
 } = actions;

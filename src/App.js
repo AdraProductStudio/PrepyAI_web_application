@@ -40,9 +40,6 @@ import ScheduleTestLayout from "Views/Teachers/Layout/ScheduleTestLayout";
 import CreateTest from "Views/Teachers/Docs/CreateTest";
 import PreviewTest from "Views/Teachers/Docs/PreviewTest";
 import TestPageLayout from "Views/Teachers/Layout/TestPageLayout";
-import UpcomingTest from "Views/Teachers/Docs/UpcomingTest";
-import OngoingTest from "Views/Teachers/Docs/OngoingTest";
-import CompletedTest from "Views/Teachers/Docs/CompletedTest";
 import TeachersAssigned from "Views/Teachers/Docs/TeachersAssigned";
 import SelfTakingTest from "Views/Teachers/Docs/SelfTakingTest";
 import StudentsPerformanceLayout from "Views/Teachers/Layout/StudentsPerformanceLayout";
@@ -156,12 +153,7 @@ function App() {
                     <Route path="create_test" element={<CreateTest />} />
                     <Route path="preview_test/:test_id?" element={<PreviewTest />} />
                   </Route>
-  
-                <Route path="test" element={<TestPageLayout />}>
-                    <Route index element={<UpcomingTest />} />
-                    <Route path="ongoing_test" element={<OngoingTest />} />
-                    <Route path="cancelled_test" element={<CompletedTest />} />
-                  </Route>
+                    <Route path="test" element={<TestPageLayout />} />
                   <Route path="test_history" element={<TestHistory />} />
 
                 <Route element={<StudentsPerformanceLayout />} >

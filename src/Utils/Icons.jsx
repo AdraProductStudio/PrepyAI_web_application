@@ -128,6 +128,10 @@ const NoteStarIcon = <svg width="22" height="22" viewBox="0 0 22 22" fill="none"
   <path d="M10.9998 15.8357L7.19565 18.1273C7.02759 18.2343 6.8519 18.2801 6.66856 18.2648C6.48523 18.2496 6.32481 18.1885 6.18731 18.0815C6.04981 17.9746 5.94287 17.841 5.86648 17.6809C5.79009 17.5208 5.77481 17.3412 5.82065 17.1419L6.82898 12.8107L3.46023 9.90026C3.30745 9.76276 3.21212 9.60601 3.17423 9.43001C3.13634 9.25401 3.14765 9.08229 3.20815 8.91484C3.26865 8.7474 3.36031 8.6099 3.48315 8.50234C3.60598 8.39479 3.77404 8.32604 3.98731 8.29609L8.43315 7.90651L10.1519 3.82734C10.2283 3.64401 10.3468 3.50651 10.5076 3.41484C10.6683 3.32318 10.8324 3.27734 10.9998 3.27734C11.1673 3.27734 11.3313 3.32318 11.4921 3.41484C11.6528 3.50651 11.7713 3.64401 11.8477 3.82734L13.5665 7.90651L18.0123 8.29609C18.2262 8.32665 18.3943 8.3954 18.5165 8.50234C18.6387 8.60929 18.7304 8.74679 18.7915 8.91484C18.8526 9.0829 18.8642 9.25493 18.8263 9.43093C18.7884 9.60693 18.6928 9.76337 18.5394 9.90026L15.1706 12.8107L16.179 17.1419C16.2248 17.3405 16.2095 17.5202 16.1331 17.6809C16.0568 17.8417 15.9498 17.9752 15.8123 18.0815C15.6748 18.1878 15.5144 18.249 15.3311 18.2648C15.1477 18.2807 14.972 18.2349 14.804 18.1273L10.9998 15.8357Z" fill="#EC008C" />
 </svg>
 
+const NotesStarOutlineIcon = <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+<path d="M11.0007 14.1082L8.76832 15.4559C8.31439 15.7299 7.75416 15.3236 7.87365 14.807L8.38011 12.6175C8.43017 12.401 8.35653 12.1746 8.18871 12.029L6.49191 10.5571C6.09105 10.2094 6.30579 9.55067 6.83457 9.506L9.07228 9.31697C9.29421 9.29822 9.4875 9.15808 9.57432 8.95297L10.4481 6.88857C10.6547 6.4004 11.3466 6.4004 11.5532 6.88857L12.427 8.95297C12.5138 9.15808 12.7071 9.29822 12.929 9.31697L15.1667 9.506C15.6955 9.55067 15.9103 10.2094 15.5094 10.5571L13.8126 12.029C13.6448 12.1746 13.5711 12.401 13.6212 12.6175L14.4473 16.189M19.0925 9.40178C19.4936 9.05426 19.2792 8.3953 18.7503 8.35043L13.937 7.94207C13.7153 7.92326 13.5221 7.78326 13.4353 7.57836L11.5531 3.13741C11.3463 2.64959 10.655 2.64959 10.4482 3.13741L8.56601 7.57836C8.47916 7.78326 8.28605 7.92326 8.0643 7.94207L3.24917 8.35059C2.72057 8.39543 2.50597 9.05386 2.90662 9.40158L6.55701 12.5697C6.72485 12.7154 6.79842 12.9419 6.74823 13.1584L5.65623 17.868C5.53644 18.3847 6.0967 18.7913 6.55076 18.5173L10.6906 16.0186C10.8813 15.9035 11.12 15.9035 11.3107 16.0186L15.4483 18.5159C15.9026 18.7901 16.4632 18.3827 16.3426 17.8659L15.2446 13.1592C15.194 12.9423 15.2677 12.7152 15.436 12.5694L19.0925 9.40178Z" fill="#717171"/>
+</svg>
+
 const NoteDeleteIcon = <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M14.75 3H12.425C12.2509 2.15356 11.7904 1.39301 11.1209 0.846539C10.4515 0.300068 9.61415 0.00109089 8.75 0L7.25 0C6.38585 0.00109089 5.54849 0.300068 4.87906 0.846539C4.20964 1.39301 3.74907 2.15356 3.575 3H1.25C1.05109 3 0.860322 3.07902 0.71967 3.21967C0.579018 3.36032 0.5 3.55109 0.5 3.75C0.5 3.94891 0.579018 4.13968 0.71967 4.28033C0.860322 4.42098 1.05109 4.5 1.25 4.5H2V14.25C2.00119 15.2442 2.39666 16.1973 3.09966 16.9003C3.80267 17.6033 4.7558 17.9988 5.75 18H10.25C11.2442 17.9988 12.1973 17.6033 12.9003 16.9003C13.6033 16.1973 13.9988 15.2442 14 14.25V4.5H14.75C14.9489 4.5 15.1397 4.42098 15.2803 4.28033C15.421 4.13968 15.5 3.94891 15.5 3.75C15.5 3.55109 15.421 3.36032 15.2803 3.21967C15.1397 3.07902 14.9489 3 14.75 3ZM7.25 1.5H8.75C9.21521 1.50057 9.66885 1.64503 10.0487 1.91358C10.4286 2.18213 10.7161 2.56162 10.8717 3H5.12825C5.28394 2.56162 5.57143 2.18213 5.95129 1.91358C6.33115 1.64503 6.78479 1.50057 7.25 1.5ZM12.5 14.25C12.5 14.8467 12.2629 15.419 11.841 15.841C11.419 16.2629 10.8467 16.5 10.25 16.5H5.75C5.15326 16.5 4.58097 16.2629 4.15901 15.841C3.73705 15.419 3.5 14.8467 3.5 14.25V4.5H12.5V14.25Z" fill="black" />
 </svg>
@@ -478,11 +482,11 @@ const filterIcon = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16
 </svg>
 
 const deleteIcon = <svg width="49" height="49" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M42.875 12.2103C36.0763 11.5365 29.2367 11.1895 22.4175 11.1895C18.375 11.1895 14.3325 11.3936 10.29 11.802L6.125 12.2103" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path opacity="0.34" d="M17.3535 10.1477L17.8027 7.47315C18.1293 5.53357 18.3743 4.08398 21.8248 4.08398H27.1739C30.6244 4.08398 30.8898 5.61523 31.196 7.49357L31.6452 10.1477" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M38.4865 18.6621L37.1594 39.2217C36.9348 42.4271 36.751 44.9179 31.0548 44.9179H17.9473C12.251 44.9179 12.0673 42.4271 11.8427 39.2217L10.5156 18.6621" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path opacity="0.34" d="M21.0898 33.6875H27.8886" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path opacity="0.34" d="M19.3965 25.5215H29.6048" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M42.875 12.2103C36.0763 11.5365 29.2367 11.1895 22.4175 11.1895C18.375 11.1895 14.3325 11.3936 10.29 11.802L6.125 12.2103" stroke="#F63E3E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path opacity="0.34" d="M17.3535 10.1477L17.8027 7.47315C18.1293 5.53357 18.3743 4.08398 21.8248 4.08398H27.1739C30.6244 4.08398 30.8898 5.61523 31.196 7.49357L31.6452 10.1477" stroke="#F63E3E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M38.4865 18.6621L37.1594 39.2217C36.9348 42.4271 36.751 44.9179 31.0548 44.9179H17.9473C12.251 44.9179 12.0673 42.4271 11.8427 39.2217L10.5156 18.6621" stroke="#F63E3E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path opacity="0.34" d="M21.0898 33.6875H27.8886" stroke="#F63E3E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path opacity="0.34" d="M19.3965 25.5215H29.6048" stroke="#F63E3E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 
 const DotSVG = ({ fill }) => {
@@ -600,9 +604,9 @@ const logoutIcon = <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24
 </svg>
 
 const studentUpload = <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
-  <path d="M13.0645 17.8737V12.457" stroke="url(#paint0_linear_2787_9452)" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M15.7077 15.168H10.291" stroke="url(#paint1_linear_2787_9452)" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M23.8327 11.918V18.418C23.8327 22.7513 22.7493 23.8346 18.416 23.8346H7.58268C3.24935 23.8346 2.16602 22.7513 2.16602 18.418V7.58464C2.16602 3.2513 3.24935 2.16797 7.58268 2.16797H9.20768C10.8327 2.16797 11.1902 2.64464 11.8077 3.46797L13.4327 5.63464C13.8443 6.1763 14.0827 6.5013 15.166 6.5013H18.416C22.7493 6.5013 23.8327 7.58464 23.8327 11.918Z" stroke="url(#paint2_linear_2787_9452)" stroke-width="1.5" stroke-miterlimit="10" />
+  <path d="M13.0645 17.8737V12.457" stroke="url(#paint0_linear_2787_9452)" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M15.7077 15.168H10.291" stroke="url(#paint1_linear_2787_9452)" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M23.8327 11.918V18.418C23.8327 22.7513 22.7493 23.8346 18.416 23.8346H7.58268C3.24935 23.8346 2.16602 22.7513 2.16602 18.418V7.58464C2.16602 3.2513 3.24935 2.16797 7.58268 2.16797H9.20768C10.8327 2.16797 11.1902 2.64464 11.8077 3.46797L13.4327 5.63464C13.8443 6.1763 14.0827 6.5013 15.166 6.5013H18.416C22.7493 6.5013 23.8327 7.58464 23.8327 11.918Z" stroke="url(#paint2_linear_2787_9452)" strokeWidth="1.5" strokeMiterlimit="10" />
   <defs>
     <linearGradient id="paint0_linear_2787_9452" x1="13.0645" y1="15.1654" x2="14.0645" y2="15.1654" gradientUnits="userSpaceOnUse">
       <stop stopColor="#EC008C" />
@@ -620,9 +624,9 @@ const studentUpload = <svg xmlns="http://www.w3.org/2000/svg" width="26" height=
 </svg>
 
 const studentUploadLarge = <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 45 45" fill="none">
-  <path d="M22.6133 30.9375V21.5625" stroke="url(#paint0_linear_2787_12303)" stroke-width="2.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M27.1875 26.25H17.8125" stroke="url(#paint1_linear_2787_12303)" stroke-width="2.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M41.25 20.625V31.875C41.25 39.375 39.375 41.25 31.875 41.25H13.125C5.625 41.25 3.75 39.375 3.75 31.875V13.125C3.75 5.625 5.625 3.75 13.125 3.75H15.9375C18.75 3.75 19.3687 4.575 20.4375 6L23.25 9.75C23.9625 10.6875 24.375 11.25 26.25 11.25H31.875C39.375 11.25 41.25 13.125 41.25 20.625Z" stroke="url(#paint2_linear_2787_12303)" stroke-width="2.5" stroke-miterlimit="10" />
+  <path d="M22.6133 30.9375V21.5625" stroke="url(#paint0_linear_2787_12303)" strokeWidth="2.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M27.1875 26.25H17.8125" stroke="url(#paint1_linear_2787_12303)" strokeWidth="2.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M41.25 20.625V31.875C41.25 39.375 39.375 41.25 31.875 41.25H13.125C5.625 41.25 3.75 39.375 3.75 31.875V13.125C3.75 5.625 5.625 3.75 13.125 3.75H15.9375C18.75 3.75 19.3687 4.575 20.4375 6L23.25 9.75C23.9625 10.6875 24.375 11.25 26.25 11.25H31.875C39.375 11.25 41.25 13.125 41.25 20.625Z" stroke="url(#paint2_linear_2787_12303)" strokeWidth="2.5" strokeMiterlimit="10" />
   <defs>
     <linearGradient id="paint0_linear_2787_12303" x1="22.6133" y1="26.25" x2="23.6133" y2="26.25" gradientUnits="userSpaceOnUse">
       <stop stopColor="#EC008C" />
@@ -640,38 +644,38 @@ const studentUploadLarge = <svg xmlns="http://www.w3.org/2000/svg" width="45" he
 </svg>
 
 const mcqIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-  <path d="M12.3711 8.87891H17.6211" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M6.37891 8.87891L7.12891 9.62891L9.37891 7.37891" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M12.3711 15.8789H17.6211" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M6.37891 15.8789L7.12891 16.6289L9.37891 14.3789" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M12.3711 8.87891H17.6211" stroke="#909090" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M6.37891 8.87891L7.12891 9.62891L9.37891 7.37891" stroke="#909090" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M12.3711 15.8789H17.6211" stroke="#909090" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M6.37891 15.8789L7.12891 16.6289L9.37891 14.3789" stroke="#909090" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#909090" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 
 const longQueIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-  <path d="M8 12.1992H15" stroke="#909090" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M8 16.1992H12.38" stroke="#909090" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M10 6H14C16 6 16 5 16 4C16 2 15 2 14 2H10C9 2 8 2 8 4C8 6 9 6 10 6Z" stroke="#909090" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M16 4.01953C19.33 4.19953 21 5.42953 21 9.99953V15.9995C21 19.9995 20 21.9995 15 21.9995H9C4 21.9995 3 19.9995 3 15.9995V9.99953C3 5.43953 4.67 4.19953 8 4.01953" stroke="#909090" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M8 12.1992H15" stroke="#909090" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M8 16.1992H12.38" stroke="#909090" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M10 6H14C16 6 16 5 16 4C16 2 15 2 14 2H10C9 2 8 2 8 4C8 6 9 6 10 6Z" stroke="#909090" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M16 4.01953C19.33 4.19953 21 5.42953 21 9.99953V15.9995C21 19.9995 20 21.9995 15 21.9995H9C4 21.9995 3 19.9995 3 15.9995V9.99953C3 5.43953 4.67 4.19953 8 4.01953" stroke="#909090" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 
 const mcqActiveIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-  <path d="M12.3711 8.87891H17.6211" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M6.37891 8.87891L7.12891 9.62891L9.37891 7.37891" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M12.3711 15.8789H17.6211" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M6.37891 15.8789L7.12891 16.6289L9.37891 14.3789" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M12.3711 8.87891H17.6211" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M6.37891 8.87891L7.12891 9.62891L9.37891 7.37891" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M12.3711 15.8789H17.6211" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M6.37891 15.8789L7.12891 16.6289L9.37891 14.3789" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 const longQueActiveIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-  <path d="M8 12.1992H15" stroke="#fff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M8 16.1992H12.38" stroke="#fff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M10 6H14C16 6 16 5 16 4C16 2 15 2 14 2H10C9 2 8 2 8 4C8 6 9 6 10 6Z" stroke="#fff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M16 4.01953C19.33 4.19953 21 5.42953 21 9.99953V15.9995C21 19.9995 20 21.9995 15 21.9995H9C4 21.9995 3 19.9995 3 15.9995V9.99953C3 5.43953 4.67 4.19953 8 4.01953" stroke="#fff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M8 12.1992H15" stroke="#fff" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M8 16.1992H12.38" stroke="#fff" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M10 6H14C16 6 16 5 16 4C16 2 15 2 14 2H10C9 2 8 2 8 4C8 6 9 6 10 6Z" stroke="#fff" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M16 4.01953C19.33 4.19953 21 5.42953 21 9.99953V15.9995C21 19.9995 20 21.9995 15 21.9995H9C4 21.9995 3 19.9995 3 15.9995V9.99953C3 5.43953 4.67 4.19953 8 4.01953" stroke="#fff" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 
 const pauseIcon = <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 30 30" fill="none">
-  <path d="M14.9609 27.5C21.8645 27.5 27.4609 21.9036 27.4609 15C27.4609 8.09644 21.8645 2.5 14.9609 2.5C8.05738 2.5 2.46094 8.09644 2.46094 15C2.46094 21.9036 8.05738 27.5 14.9609 27.5Z" stroke="url(#paint0_linear_3097_2749)" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M13.4 18.1625V11.8375C13.4 11.2375 13.15 11 12.5125 11H10.8875C10.25 11 10 11.2375 10 11.8375V18.1625C10 18.7625 10.25 19 10.8875 19H12.5C13.15 19 13.4 18.7625 13.4 18.1625Z" stroke="url(#paint1_linear_3097_2749)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M20.0008 18.1625V11.8375C20.0008 11.2375 19.7508 11 19.1133 11H17.5008C16.8633 11 16.6133 11.2375 16.6133 11.8375V18.1625C16.6133 18.7625 16.8633 19 17.5008 19H19.1133C19.7508 19 20.0008 18.7625 20.0008 18.1625Z" stroke="url(#paint2_linear_3097_2749)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M14.9609 27.5C21.8645 27.5 27.4609 21.9036 27.4609 15C27.4609 8.09644 21.8645 2.5 14.9609 2.5C8.05738 2.5 2.46094 8.09644 2.46094 15C2.46094 21.9036 8.05738 27.5 14.9609 27.5Z" stroke="url(#paint0_linear_3097_2749)" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M13.4 18.1625V11.8375C13.4 11.2375 13.15 11 12.5125 11H10.8875C10.25 11 10 11.2375 10 11.8375V18.1625C10 18.7625 10.25 19 10.8875 19H12.5C13.15 19 13.4 18.7625 13.4 18.1625Z" stroke="url(#paint1_linear_3097_2749)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M20.0008 18.1625V11.8375C20.0008 11.2375 19.7508 11 19.1133 11H17.5008C16.8633 11 16.6133 11.2375 16.6133 11.8375V18.1625C16.6133 18.7625 16.8633 19 17.5008 19H19.1133C19.7508 19 20.0008 18.7625 20.0008 18.1625Z" stroke="url(#paint2_linear_3097_2749)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   <defs>
     <linearGradient id="paint0_linear_3097_2749" x1="2.46094" y1="15" x2="27.4609" y2="15" gradientUnits="userSpaceOnUse">
       <stop stopColor="#EC008C" />
@@ -689,8 +693,8 @@ const pauseIcon = <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50"
 </svg>
 
 const playIcon = <svg width="50" height="50" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M14.9629 27.5C21.8664 27.5 27.4629 21.9036 27.4629 15C27.4629 8.09644 21.8664 2.5 14.9629 2.5C8.05933 2.5 2.46289 8.09644 2.46289 15C2.46289 21.9036 8.05933 27.5 14.9629 27.5Z" stroke="url(#paint0_linear_3114_12351)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M10.9258 15.2863V13.1988C10.9258 10.5988 12.7633 9.53631 15.0133 10.8363L16.8258 11.8863L18.6383 12.9363C20.8883 14.2363 20.8883 16.3613 18.6383 17.6613L16.8258 18.7113L15.0133 19.7613C12.7633 21.0613 10.9258 19.9988 10.9258 17.3988V15.2863Z" stroke="url(#paint1_linear_3114_12351)" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M14.9629 27.5C21.8664 27.5 27.4629 21.9036 27.4629 15C27.4629 8.09644 21.8664 2.5 14.9629 2.5C8.05933 2.5 2.46289 8.09644 2.46289 15C2.46289 21.9036 8.05933 27.5 14.9629 27.5Z" stroke="url(#paint0_linear_3114_12351)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M10.9258 15.2863V13.1988C10.9258 10.5988 12.7633 9.53631 15.0133 10.8363L16.8258 11.8863L18.6383 12.9363C20.8883 14.2363 20.8883 16.3613 18.6383 17.6613L16.8258 18.7113L15.0133 19.7613C12.7633 21.0613 10.9258 19.9988 10.9258 17.3988V15.2863Z" stroke="url(#paint1_linear_3114_12351)" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
   <defs>
     <linearGradient id="paint0_linear_3114_12351" x1="2.46289" y1="15" x2="27.4629" y2="15" gradientUnits="userSpaceOnUse">
       <stop stopColor="#EC008C" />
@@ -704,24 +708,24 @@ const playIcon = <svg width="50" height="50" viewBox="0 0 30 30" fill="none" xml
 </svg>
 
 const close_icon = <svg xmlns="http://www.w3.org/2000/svg" width="59" height="59" viewBox="0 0 59 59" fill="none">
-  <path d="M21.918 22.4004L36.532 36.057" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M21.9211 36.057L36.5352 22.4004" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M21.918 22.4004L36.532 36.057" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M21.9211 36.057L36.5352 22.4004" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 
 
-const EyeOpen = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+const EyeOpen = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-eye" viewBox="0 0 16 16">
   <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
   <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
 </svg>
 
-const EyeClose = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye-slash" viewBox="0 0 16 16">
+const EyeClose = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-eye-slash" viewBox="0 0 16 16">
   <path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755q-.247.248-.517.486z" />
   <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829" />
   <path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z" />
 </svg>
 
 const fileUploadIcon = <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none">
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M7.22728 2.83398L7.17538 2.84068L6.3885 2.94113L5.43252 3.06168C4.85001 3.1299 4.30934 3.39852 3.90311 3.82155C3.49688 4.24457 3.25037 4.79568 3.2058 5.38048C2.85848 10.2178 2.85848 15.0737 3.2058 19.911C3.24686 20.5002 3.49726 21.0552 3.91176 21.4758C4.32627 21.8965 4.87754 22.155 5.466 22.2047C9.94622 22.5798 14.0481 22.5798 18.5266 22.2047C19.1151 22.155 19.6663 21.8965 20.0808 21.4758C20.4953 21.0552 20.7457 20.5002 20.7868 19.911C21.1341 15.0737 21.1341 10.2178 20.7868 5.38048C20.7423 4.79593 20.496 4.24503 20.0901 3.82203C19.6842 3.39904 19.144 3.13026 18.5618 3.06168L17.6075 2.94113L16.8206 2.84068L16.767 2.83398H7.22728Z" fill="#F3E7EC" />
+  <path fillRule="evenodd" clipRule="evenodd" d="M7.22728 2.83398L7.17538 2.84068L6.3885 2.94113L5.43252 3.06168C4.85001 3.1299 4.30934 3.39852 3.90311 3.82155C3.49688 4.24457 3.25037 4.79568 3.2058 5.38048C2.85848 10.2178 2.85848 15.0737 3.2058 19.911C3.24686 20.5002 3.49726 21.0552 3.91176 21.4758C4.32627 21.8965 4.87754 22.155 5.466 22.2047C9.94622 22.5798 14.0481 22.5798 18.5266 22.2047C19.1151 22.155 19.6663 21.8965 20.0808 21.4758C20.4953 21.0552 20.7457 20.5002 20.7868 19.911C21.1341 15.0737 21.1341 10.2178 20.7868 5.38048C20.7423 4.79593 20.496 4.24503 20.0901 3.82203C19.6842 3.39904 19.144 3.13026 18.5618 3.06168L17.6075 2.94113L16.8206 2.84068L16.767 2.83398H7.22728Z" fill="#F3E7EC" />
   <path d="M7.81417 3.15166C7.81373 2.86322 7.87019 2.57752 7.98032 2.31093C8.09045 2.04434 8.25208 1.80209 8.45596 1.59805C8.65985 1.39401 8.90197 1.2322 9.16848 1.12187C9.43498 1.01154 9.72064 0.954858 10.0091 0.955079H13.987C14.5698 0.955079 15.1287 1.18659 15.5408 1.59869C15.9529 2.01078 16.1844 2.5697 16.1844 3.1525C16.1844 3.73529 15.9529 4.29421 15.5408 4.7063C15.1287 5.1184 14.5698 5.34991 13.987 5.34991H10.0108C9.72201 5.35013 9.43606 5.29342 9.16926 5.18303C8.90245 5.07263 8.66003 4.91072 8.45586 4.70655C8.25169 4.50238 8.08978 4.25996 7.97938 3.99315C7.86899 3.72635 7.81395 3.4404 7.81417 3.15166Z" fill="url(#paint0_linear_1135_17827)" />
   <defs>
     <linearGradient id="paint0_linear_1135_17827" x1="7.8125" y1="3.15249" x2="16.1844" y2="3.15249" gradientUnits="userSpaceOnUse">
@@ -732,7 +736,7 @@ const fileUploadIcon = <svg xmlns="http://www.w3.org/2000/svg" width="34" height
 </svg>
 
 const uploadIcon = <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none">
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M7.22728 2.83398L7.17538 2.84068L6.3885 2.94113L5.43252 3.06168C4.85001 3.1299 4.30934 3.39852 3.90311 3.82155C3.49688 4.24457 3.25037 4.79568 3.2058 5.38048C2.85848 10.2178 2.85848 15.0737 3.2058 19.911C3.24686 20.5002 3.49726 21.0552 3.91176 21.4758C4.32627 21.8965 4.87754 22.155 5.466 22.2047C9.94622 22.5798 14.0481 22.5798 18.5266 22.2047C19.1151 22.155 19.6663 21.8965 20.0808 21.4758C20.4953 21.0552 20.7457 20.5002 20.7868 19.911C21.1341 15.0737 21.1341 10.2178 20.7868 5.38048C20.7423 4.79593 20.496 4.24503 20.0901 3.82203C19.6842 3.39904 19.144 3.13026 18.5618 3.06168L17.6075 2.94113L16.8206 2.84068L16.767 2.83398H7.22728Z" fill="#F3E7EC" />
+  <path fillRule="evenodd" clipRule="evenodd" d="M7.22728 2.83398L7.17538 2.84068L6.3885 2.94113L5.43252 3.06168C4.85001 3.1299 4.30934 3.39852 3.90311 3.82155C3.49688 4.24457 3.25037 4.79568 3.2058 5.38048C2.85848 10.2178 2.85848 15.0737 3.2058 19.911C3.24686 20.5002 3.49726 21.0552 3.91176 21.4758C4.32627 21.8965 4.87754 22.155 5.466 22.2047C9.94622 22.5798 14.0481 22.5798 18.5266 22.2047C19.1151 22.155 19.6663 21.8965 20.0808 21.4758C20.4953 21.0552 20.7457 20.5002 20.7868 19.911C21.1341 15.0737 21.1341 10.2178 20.7868 5.38048C20.7423 4.79593 20.496 4.24503 20.0901 3.82203C19.6842 3.39904 19.144 3.13026 18.5618 3.06168L17.6075 2.94113L16.8206 2.84068L16.767 2.83398H7.22728Z" fill="#F3E7EC" />
   <path d="M7.81417 3.15166C7.81373 2.86322 7.87019 2.57752 7.98032 2.31093C8.09045 2.04434 8.25208 1.80209 8.45596 1.59805C8.65985 1.39401 8.90197 1.2322 9.16848 1.12187C9.43498 1.01154 9.72064 0.954858 10.0091 0.955079H13.987C14.5698 0.955079 15.1287 1.18659 15.5408 1.59869C15.9529 2.01078 16.1844 2.5697 16.1844 3.1525C16.1844 3.73529 15.9529 4.29421 15.5408 4.7063C15.1287 5.1184 14.5698 5.34991 13.987 5.34991H10.0108C9.72201 5.35013 9.43606 5.29342 9.16926 5.18303C8.90245 5.07263 8.66003 4.91072 8.45586 4.70655C8.25169 4.50238 8.08978 4.25996 7.97938 3.99315C7.86899 3.72635 7.81395 3.4404 7.81417 3.15166Z" fill="url(#paint0_linear_1135_17827)" />
   <defs>
     <linearGradient id="paint0_linear_1135_17827" x1="7.8125" y1="3.15249" x2="16.1844" y2="3.15249" gradientUnits="userSpaceOnUse">
@@ -743,11 +747,11 @@ const uploadIcon = <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34
 </svg>
 
 const delete_model_icon = <svg width="49" height="49" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M42.875 12.2103C36.0763 11.5365 29.2367 11.1895 22.4175 11.1895C18.375 11.1895 14.3325 11.3936 10.29 11.802L6.125 12.2103" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path opacity="0.34" d="M17.3535 10.1477L17.8027 7.47315C18.1293 5.53357 18.3743 4.08398 21.8248 4.08398H27.1739C30.6244 4.08398 30.8898 5.61523 31.196 7.49357L31.6452 10.1477" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M38.4865 18.6621L37.1594 39.2217C36.9348 42.4271 36.751 44.9179 31.0548 44.9179H17.9473C12.251 44.9179 12.0673 42.4271 11.8427 39.2217L10.5156 18.6621" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path opacity="0.34" d="M21.0898 33.6875H27.8886" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path opacity="0.34" d="M19.3965 25.5215H29.6048" stroke="#F63E3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M42.875 12.2103C36.0763 11.5365 29.2367 11.1895 22.4175 11.1895C18.375 11.1895 14.3325 11.3936 10.29 11.802L6.125 12.2103" stroke="#F63E3E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path opacity="0.34" d="M17.3535 10.1477L17.8027 7.47315C18.1293 5.53357 18.3743 4.08398 21.8248 4.08398H27.1739C30.6244 4.08398 30.8898 5.61523 31.196 7.49357L31.6452 10.1477" stroke="#F63E3E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M38.4865 18.6621L37.1594 39.2217C36.9348 42.4271 36.751 44.9179 31.0548 44.9179H17.9473C12.251 44.9179 12.0673 42.4271 11.8427 39.2217L10.5156 18.6621" stroke="#F63E3E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path opacity="0.34" d="M21.0898 33.6875H27.8886" stroke="#F63E3E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path opacity="0.34" d="M19.3965 25.5215H29.6048" stroke="#F63E3E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 
 const left_arrow = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -781,7 +785,7 @@ const strokeImage = ({ active = false }) => {
   return (
     <svg width="151" height="102" viewBox="0 0 151 102" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M32.696 43.1063C18.6223 45.3385 1.36408 70.7355 1.36408 70.7355L1.24146 101.642L150.463 102.234L150.724 36.6363C150.724 36.6363 139.126 44.4478 131.412 43.498C115.738 41.568 117.717 5.49883 102.192 1.75189C81.5719 -3.22466 81.4938 50.3546 60.6653 52.931C49.4774 54.3149 43.8609 41.3356 32.696 43.1063Z" fill={`url(#${fillId})`} />
-      <path d="M1.36408 70.7355C1.36408 70.7355 18.6223 45.3385 32.696 43.1063C43.8609 41.3356 49.4774 54.3149 60.6653 52.931C81.4938 50.3546 81.5719 -3.22466 102.192 1.75189C117.717 5.49883 115.738 41.568 131.412 43.498C139.126 44.4478 150.724 36.6363 150.724 36.6363" stroke={strokeColor} stroke-linecap="round" />
+      <path d="M1.36408 70.7355C1.36408 70.7355 18.6223 45.3385 32.696 43.1063C43.8609 41.3356 49.4774 54.3149 60.6653 52.931C81.4938 50.3546 81.5719 -3.22466 102.192 1.75189C117.717 5.49883 115.738 41.568 131.412 43.498C139.126 44.4478 150.724 36.6363 150.724 36.6363" stroke={strokeColor} strokeLinecap="round" />
       <defs>
         <linearGradient id="paint0_linear_614_15204" x1="76.2516" y1="1.33314" x2="75.8524" y2="101.938" gradientUnits="userSpaceOnUse">
           <stop stop-color="#FF6C95" />
@@ -796,8 +800,8 @@ const strokeImage = ({ active = false }) => {
 }
 
 const search_cancel_icon = <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 59 59" fill="none">
-  <path d="M21.918 22.4004L36.532 36.057" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="gray" />
-  <path d="M21.9211 36.057L36.5352 22.4004" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="gray" />
+  <path d="M21.918 22.4004L36.532 36.057" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="gray" />
+  <path d="M21.9211 36.057L36.5352 22.4004" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="gray" />
 </svg>
 
 
@@ -827,7 +831,7 @@ const Icons = {
   menuIcon, uploadIcon, delete_model_icon, left_arrow, right_arrow, sortBy, filterIcon, deleteIcon, EyeClose, EyeOpen, studentUpload, studentUploadLarge,
   mcqIcon, longQueIcon, mcqActiveIcon, longQueActiveIcon, playIcon, pauseIcon,
   back_icon, close_icon, fileUploadIcon,
-  profile_icon, settings_icon, strokeImage, searchIconGray, search_cancel_icon
+  profile_icon, settings_icon, strokeImage, searchIconGray, search_cancel_icon,NotesStarOutlineIcon
 }
 
 export default Icons;

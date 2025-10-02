@@ -20,7 +20,7 @@ const initialState = {
     data: [],
   },
   test_records: {
-    glow: true,
+    glow: false,
     data: [],
   },
   test_dropDown_data: {
@@ -87,7 +87,7 @@ const initialState = {
     glow: true,
     data: [],
   },
-  buttonSpinner:false,
+  buttonSpinner: false,
   teachers_GetStudentsSortBy: {
     sort_by: "",
     sort_order: "",
@@ -188,7 +188,6 @@ const initialState = {
     error: null,
     glow: false,
   },
-
   profileInputs: {
     first_name: "",
     last_name: "",
@@ -204,6 +203,16 @@ const initialState = {
     new_password: "",
   },
   placeholder: false,
+  errors: {},
+  settings_password : {
+    show_old_password : false,
+    show_new_password : false,
+    show_confirm_password : false,
+  },
+  schedule_test_data:{
+    is_loading:false,
+    data:{}
+  }
 };
 
 const teachersSlice = createSlice({
@@ -390,13 +399,32 @@ const teachersSlice = createSlice({
           break;
       }
     },
+    save_schedule(state, action) {
+      const { type, data } = action.payload
+      switch (type) {
+        case "request":
+          state.save_schedule_status = "loading";
+          state.save_schedule_error = null;
+          break;
+        case "response":
+          state.save_schedule_status = "";
+          state.schedule_test_data.data = data
+          state.save_schedule_error = null;
+          break;
+        case "failure":
+          state.save_schedule_status = "failed";
+          state.save_schedule_error = action.payload;
+          break;
+      }
+    },
+
     save_schedule_request(state) {
       state.save_schedule_status = "loading";
       state.save_schedule_error = null;
     },
     save_schedule_success(state, action) {
-      state.save_schedule_status = "succeeded";
-      state.create_test = {};
+      state.save_schedule_status = "";
+      state.save_schedule_error = null;
     },
     save_schedule_failure(state, action) {
       state.save_schedule_status = "failed";
@@ -811,8 +839,8 @@ const teachersSlice = createSlice({
       const { data, getdata } = action.payload;
       state.teacher_PostStudents.data = { data, getdata };
     },
-    update_button_spinner(state,action) {
-      state.buttonSpinner = action.payload.status || false 
+    update_button_spinner(state, action) {
+      state.buttonSpinner = action.payload.status || false;
     },
     update_Create_student(state, action) {
       const [key, value] = Object.entries(action.payload)[0] || [];
@@ -1137,6 +1165,34 @@ const teachersSlice = createSlice({
     clear_Classroom_Upload_fields(state, action) {
       state.teacher_PostClassrooms.data.student_file = null;
     },
+
+    setErrors(state, action) {
+      state.errors = action.payload;
+    },
+    clearFieldError: (state, action) => {
+      const fields = Array.isArray(action.payload)
+        ? action.payload
+        : [action.payload];
+      fields.forEach((fieldName) => {
+        if (state.errors[fieldName]) {
+          delete state.errors[fieldName];
+        }
+      });
+    },
+    update_settings_eye(state, action) {
+      const [key , value] = Object.entries(action.payload || {})?.[0]
+      state.settings_password[key] = value || false
+    },
+    resetSettingsPasswordEye(state) {
+      state.settings_password = {
+        show_old_password : false,
+        show_new_password : false,
+        show_confirm_password : false,
+      }
+    },
+    clear_ScheduleTest_fields(state,action){
+      state.scheduleTest_values = {}
+    }
   },
 
   extraReducers(builder) {
@@ -1148,6 +1204,16 @@ const teachersSlice = createSlice({
           state.teacher_PostSubjects.data = {};
           state.teacher_PostStudents.data = {};
           state.teacher_CreateStudents.data = {};
+
+          state.editProfileInputs = {
+            first_name: state.profileInputs.first_name,
+            last_name: state.profileInputs.last_name,
+            email_id: state.profileInputs.email_id,
+            phone_number: state.profileInputs.phone_number,
+            address: state.profileInputs.address,
+          };
+
+          state.errors = {}
         }
       })
 
@@ -1173,8 +1239,14 @@ const teachersSlice = createSlice({
           state.teacher_GetStudentOverviewTestCount = {
             data: {},
           };
+          state.teachers_GetStudentsSortBy = {
+            sort_by: "",
+            sort_order: "",
+          }
+
         }
-      });
+      })
+      // .addMatcher([""])
   },
 });
 
@@ -1257,7 +1329,9 @@ export const {
   edit_profile_Inputs,
   updateStudentsListSortBy,
   clear_Classroom_Upload_fields,
-  update_button_spinner
+  update_button_spinner,
+  setErrors, clearFieldError, update_settings_eye, resetSettingsPasswordEye,
+  clear_ScheduleTest_fields,save_schedule
 } = actions;
 
 export default reducer;

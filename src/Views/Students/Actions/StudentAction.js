@@ -40,9 +40,11 @@ import {
     updateGenerateMcqQuestions,
     submit_test,
     convert_audio_to_text,
+    delete_learner_book,
 
 } from "Views/Students/Slices/StudentSlice"
 import { IndexedDbDeleteFun } from "../IndexDbDeleteFun";
+import sha256 from "sha256";
 
 const validateUploadTestPaper = (values) => {
   
@@ -290,11 +292,11 @@ export const handleCloseTestAutomatic = (test_id, candidate_answers, navigate) =
     }
 }
 
-export const handleGetLearnerBooks = () => async (dispatch) => {
+export const handleGetLearnerBooks = (payload) => async (dispatch) => {
     dispatch(setLoading({ key: "learner_books", value: true }))
 
     try {
-        const { data } = await axiosInstance.get("students/get_learner_books")
+        const { data } = await axiosInstance.post("students/get_learner_books",payload)
 
         if (data?.error_code === 0) {
             dispatch(getLearnerBooks(data?.data))
@@ -590,7 +592,7 @@ export const handleUploadLearnerBook = (formData) => async (dispatch, getState) 
         if (data?.error_code === 0) {
             dispatch(setUploadLearnerBook({ type: "response", loading: false }))
             dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
-            dispatch(handleGetLearnerBooks())
+            dispatch(handleGetLearnerBooks({page:1}))
             dispatch(update_error({ Err: data.message, Toast_Type: "success" }))
         } else {
             dispatch(setUploadLearnerBook({ type: "failure", loading: false }))
@@ -664,13 +666,12 @@ export const handleUploadTestPaper = (formData) => async (dispatch, getState) =>
 
 export const getProfileDetails = () => async (dispatch) => {
     try {
-        const { data } = await axiosInstance.get('/students/get_profile')
-
+        const { data } = await axiosInstance.get('/profile')
         if (data.error_code === 0) {
-            const profile = Array.isArray(data?.data) ? data?.data[0] : data?.data
+            const profile = Array.isArray(data?.data) ? data?.data?.[0] : data?.data
             dispatch(updatePersonalInfoInputs(profile))
         } else {
-            return
+            dispatch(update_error({ Err: data?.message, Toast_Type: "error" }));
         }
     } catch (error) {
         dispatch(update_error({ Err: error?.response?.data?.message || error?.message || "Something went wrong", Toast_Type: "error" }))
@@ -681,7 +682,7 @@ export const handleEditProfileDetails = (payload) => async (dispatch) => {
     dispatch(setLoading({ key: "edit_profile", value: true }))
     try {
         dispatch(updateProfileEditing())
-        const { data } = await axiosInstance.post('/students/edit_profile', payload)
+        const { data } = await axiosInstance.put('/profile', payload)
 
         if (data.error_code === 0) {
             dispatch(updatePersonalInfoInputs(payload))
@@ -703,7 +704,13 @@ export const handleEditProfileDetails = (payload) => async (dispatch) => {
 export const changePassword = (payload) => async (dispatch) => {
   try {
     dispatch(handlechangePassword({type: "request"}))
-        const { data } = await axiosInstance.post('/students/update_password', payload)
+        const { data } = await axiosInstance.put('/change_password', 
+            {
+                old_password : sha256(payload?.old_password),
+                new_password : sha256(payload?.new_password),
+                confirm_password : sha256(payload?.confirm_password),
+            }
+        )
      if (data?.error_code === 0) {
         dispatch(handlechangePassword({type: "response"}))
         dispatch(update_error({ Err: data?.message, Toast_Type: "success" }));
@@ -733,18 +740,20 @@ export const getBookmarks = (book_id) => async (dispatch) => {
     }
 }
 
-export const handleDeleteLearnerBook = (book_id)=> async(dispatch)=> {
-    
+export const handleDeleteLearnerBook = (book_id) => async (dispatch,getState) => {
     try {
-        const { data } = await axiosInstance.delete("students/delete_learner_book", {data: { book_id }})
+        const payload = getState()?.studentState?.dashboard_pagination_inputs
+        dispatch(delete_learner_book({ type: "request" }))
+        const { data } = await axiosInstance.delete(`students/delete_learner_book?book_id=${book_id}`,)
 
-        if(data.error_code === 0){
-            dispatch(update_error({Err:data?.message, Toast_Type:"success"}))
-        }else{
-            dispatch(update_error({Err:data?.message, Toast_Type:"error"}))
+        if (data.error_code === 0) {
+            dispatch(delete_learner_book({ type: "response" }))
+            dispatch(handleGetLearnerBooks({...payload,page:payload.page+1}))
+        } else {
+            dispatch(delete_learner_book({ type: "failure", message: data?.message || "Failed to delete book" }))
         }
     } catch (error) {
-        dispatch(update_error({ Err: 'Something went wrong', Toast_Type: "error" }))
+        dispatch(delete_learner_book({ type: "failure", message: error?.response?.data?.message || "Failed to delete book" }))
     }
 }
 

@@ -85,7 +85,7 @@ export const getProfileDetails = () => async (dispatch) => {
 
   try {
     dispatch(get_profile_details({ type: "request" }))
-    const { data } = await axiosInstance.get('/super_admin/get_profile')
+    const { data } = await axiosInstance.get('/profile')
 
     if (data?.error_code === 0) {
       dispatch(get_profile_details({ type: "response", data: data?.data[0] }))
@@ -104,7 +104,7 @@ export const editProfileDetails = (payload) => async (dispatch) => {
   try {
     dispatch(edit_profile_Inputs_endpoint({ type: "request" }))
 
-    const { data } = await axiosInstance.post('/super_admin/edit_profile', payload)
+    const { data } = await axiosInstance.put('/profile', payload)
     if (data?.error_code === 0) {
       dispatch(edit_profile_Inputs_endpoint({ type: "response" }))
       dispatch(getProfileDetails())
@@ -151,7 +151,7 @@ export const changePassword = (payload, navigate) => async (dispatch) => {
 
   try {
     dispatch(change_password_endpoint({ type: "request" }))
-    const { data } = await axiosInstance.post('/super_admin/update_password', hash_payload)
+    const { data } = await axiosInstance.put('/change_password', hash_payload)
     if (data?.error_code === 0) {
       dispatch(change_password_endpoint({ type: "response" }))
       navigate('/superadmin_dashboard/profile')

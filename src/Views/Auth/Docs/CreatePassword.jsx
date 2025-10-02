@@ -20,7 +20,7 @@ const CreatePassword = () => {
   const Button = (
     <ButtonSpinner
       type="button"
-      className="forgot-button fw-semibold"
+      className="forgot-button fw-semibold" 
       clickFunction={() => dispatch(handleCreatePassword(authState?.createPassworddata, routeState, navigate, "/reset_password"))}
       title={"Reset Password"}
       is_spinner={authState?.app_data?.buttonSpinner}
@@ -39,7 +39,7 @@ const CreatePassword = () => {
       Formfor={"forgotForm"}
       subTitle={subTitle}
       img={Images?.ForgotPassword}
-      navigateBack={"/otp_verification"}
+      navigateBack={"/forgot_password"}
     />
   );
 };

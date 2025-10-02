@@ -14,7 +14,7 @@ import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import { updateTestId } from "../Slices/StudentSlice";
 import Img from "Components/Img/Img";
 import Image from "Utils/Image";
-import SpinnerComponent from "Components/Spinner/Spinner";
+import Spinner from "Components/Spinner/CustomSpinner";
 
 
 const BooksAndAttachmentsLayout = () => {
@@ -25,6 +25,7 @@ const BooksAndAttachmentsLayout = () => {
     const location = CustomUseLocationHook();
     
     useEffect(() => {
+        if(!subject_id) return 
         dispatch(handleGetSubjectBooks(subject_id))
         dispatch(handleGetSubjectAttachments(subject_id))
         dispatch(handleGetUpcomingTests(subject_id))
@@ -86,8 +87,7 @@ const BooksAndAttachmentsLayout = () => {
                                 { studentState?.loading['upcoming_tests'] ? 
                                     <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "200px" }}>
                                         <div className="col-5 text-center">
-                                            <SpinnerComponent />
-                                            <p className="m-0">Loading...</p>
+                                            <Spinner />
                                         </div>
                                     </div> 
                                     :

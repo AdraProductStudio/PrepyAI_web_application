@@ -46,8 +46,12 @@ let initialState = {
     searchInputs:{
         currentPage:0,
         searchValue:""
+    },
+    settings_password : {
+      show_old_password : false,
+      show_new_password : false,
+      show_confirm_password : false,
     }
-
 
 }
 
@@ -159,7 +163,7 @@ const OrganisationSlice = createSlice({
                 case "request":
                     state.createAdminInputs.is_sending = true
                     break;
-                case "success":
+                case "response":
                     state.createAdminInputs.is_sending = false
                     state.createAdminInputs.admin_name = ""
                     state.createAdminInputs.institute_name = ""
@@ -200,7 +204,11 @@ const OrganisationSlice = createSlice({
                 state.searchInputs[key]=value
 
             })
-        }
+        },
+        update_settings_eye(state, action) {
+            const [key , value] = Object.entries(action.payload || {})?.[0]
+            state.settings_password[key] = value || false
+        },
     },
    extraReducers(builder) {
         builder
@@ -247,7 +255,8 @@ export const {
     delete_admin,
     updateSearchInputs,
     edit_organization,
-    change_password 
+    change_password ,
+    update_settings_eye
 } = actions
 
 export default reducer

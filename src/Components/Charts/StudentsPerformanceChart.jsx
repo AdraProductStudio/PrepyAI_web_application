@@ -44,7 +44,7 @@ const StudentsPerformanceChart = ({data}) => {
     return (
         <div className="d-flex flex-column h-100 justify-content-between">
             {/* Legend */}
-            <div className='d-flex justify-content-center gap-4 col'>
+            <div className='row row-cols-1 row-cols-md-2 row-cols-xxl-3'>
                 <LegendPayload color="#4B3CFA" value="Emergent" />
                 <LegendPayload color="#45D655" value="Developing" />
                 <LegendPayload color="#EC008C" value="Exemplar" />
@@ -52,7 +52,7 @@ const StudentsPerformanceChart = ({data}) => {
 
             {/* Chart */}
             <div className="col">
-                <ResponsiveContainer width="100%" height={300}>
+                <ResponsiveContainer width="100%" height={400}>
                     <LineChart data={data}>
                         {/* Grid */}
                         <CartesianGrid vertical={false} strokeDasharray="3 3" />

@@ -8,9 +8,8 @@ import Icons from "Utils/Icons";
 import Image from "Utils/Image";
 import { deleteClassrooms, getClassrooms, getTeachers } from "../Actions/teacherAction";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
-import { OverallModel } from "../Utils/OverallModal";
-import SpinnerComponent from "Components/Spinner/Spinner";
 import { update_edit_classroom } from "../Slice/teachersSlice";
+import Spinner from "Components/Spinner/CustomSpinner";
 
 const Classroom = () => {
   const navigate = useCustomNavigate();
@@ -33,21 +32,20 @@ const Classroom = () => {
 
   useEffect(() => {
     dispatch(getClassrooms());
-    dispatch(getTeachers());
   }, []);
 
   return (
     <div className="h-100">
       <div className="container-fluid">
-        <div className="w-100 row justify-content-between align-items-center border-bottom pb-3 mt-3">
+        <div className="w-100 row d-flex justify-content-center align-items-center border-bottom py-2 mt-2">
           <div className="col">
             <h5 className="mb-0">Classrooms</h5>
           </div>
           <div className="col text-end">
             <ButtonComponent
               type="button"
-              className="btn-brand-color border py-2"
-              clickFunction={() =>
+              className="btn-brand-color border py-2 px-2 px-md-3"
+              clickFunction={() => {
                 dispatch(
                   updateModalShow({
                     show: true,
@@ -55,8 +53,9 @@ const Classroom = () => {
                     modal_from: "TeacherClassroom",
                     modal_type: "createClassroom",
                   })
-                )
-              }
+                );
+                dispatch(getTeachers());
+              }}
             >
               {Icons.add_icon}
               <span className="lign-middle">Create Classroom</span>
@@ -65,47 +64,76 @@ const Classroom = () => {
         </div>
 
         <div className="w-100 row align-content-start small_header_content_main overflowY">
-          {glow ?
+          {glow ? (
             <div className="w-100 h-100 row align-items-center justify-content-center">
               <div className="col-6 text-center">
-                <SpinnerComponent />
-                <p className="py-3">Geeting Classrooms Records</p>
+                <Spinner />
               </div>
             </div>
-            :
-            data?.length < 0 ?
-              <div className="w-100 h-100 row align-items-center justify-content-center">
-                <div className="col-6 text-center">
-                  <Img src={Image?.no_data_found} alt="No classes Found" className="no_data_found_image" />
-                  <h6>No classes were added</h6>
-                  <p className="fs-15 text-secondary">Create and send the link to your students to join the classes.</p>
-                  <ButtonComponent type="button" className="btn-brand-color border py-2">
-                    {Icons.add_icon}
-                    <span className="lign-middle">Create Classroom</span>
-                  </ButtonComponent>
-                </div>
-              </div>
-              :
-              data?.map((val, index) => (
-                <div className="col-3 p-2" key={index}>
-                  <ClassroomCard cardClassName="w-100 h-100" data={val} buttonName="View" onclick={() => navigate(`/teachers_dashboard/classrooms/${val?.classroom_id}`)} onClickDelete={()=>{
+          ) : data?.length === 0 ? (
+            <div className="w-100 h-100 row align-items-center justify-content-center">
+              <div className="col-6 text-center">
+                <Img
+                  src={Image?.no_data_found}
+                  alt="No classes Found"
+                  className="no_data_found_image"
+                />
+                <h6>No classes were added</h6>
+                <p className="fs-15 text-secondary">
+                  Create and send the link to your students to join the classes.
+                </p>
+                <ButtonComponent
+                  type="button"
+                  className="btn-brand-color border py-2"
+                  clickFunction={() => {
                     dispatch(
                       updateModalShow({
                         show: true,
                         close_btn: true,
-                        modal_from: "techaersdeletemodal",
-                        modal_type: "techaersdeletemodal",
-                        data:()=>dispatch(deleteClassrooms(val?.classroom_id)),
+                        modal_from: "TeacherClassroom",
+                        modal_type: "createClassroom",
                       })
                     );
-                  }} />
-                </div>
-              ))
-          }
+                    dispatch(getTeachers());
+                  }}
+                >
+                  {Icons.add_icon}
+                  <span className="lign-middle">Create Classroom</span>
+                </ButtonComponent>
+              </div>
+            </div>
+          ) : (
+            data?.map((val, index) => (
+              <div className="col-12 col-md-6 col-xl-4 col-xxl-3 p-2" key={index}>
+                <ClassroomCard
+                  cardClassName="w-100 h-100"
+                  data={val}
+                  buttonName="View"
+                  onclick={() =>
+                    navigate(
+                      `/teachers_dashboard/classrooms/${val?.classroom_id}`
+                    )
+                  }
+                  onClickDelete={() => {
+                    dispatch(
+                      updateModalShow({
+                        show: true,
+                        close_btn: true,
+                        modal_from: "TeacherClassroom",
+                        modal_type: "techaersdeletemodal",
+                        data: () =>
+                          dispatch(deleteClassrooms(val?.classroom_id)),
+                      })
+                    );
+                  }}
+                />
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default Classroom;

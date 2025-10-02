@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import Img from "Components/Img/Img";
-import Images from "Utils/Image"
+import Images from "Utils/Image";
 
 const AdminProfileLayout = ({ navItems, profileInputs }) => {
   const location = useLocation();
@@ -10,11 +10,8 @@ const AdminProfileLayout = ({ navItems, profileInputs }) => {
     <div className="h-100">
       <h3 className="pt-3 ms-3 border-bottom pb-3">My Profile</h3>
       <section className="d-flex justify-content-center align-items-center">
-        <Card
-          className="mt-2 mt-md-3 p-3 p-md-4 shadow custom-scroll border-0"
-          style={{ width: "70vw", height: "70vh", overflow: "auto" }}
-        >
-          <ul className="d-xl-none list-inline d-flex justify-content-around align-items-center rounded py-2 py-md-3 border border-secondary-subtle shadow">
+        <Card className="mt-2 mt-md-3 p-3 p-md-4 shadow custom-scroll border-0 pb-0 responsive_profile_card">
+          <ul className="d-xl-none list-inline d-flex justify-content-around align-items-center rounded py-2 py-md-3 shadow">
             {navItems?.map((item) => (
               <NavLink
                 to={item.to}
@@ -45,7 +42,10 @@ const AdminProfileLayout = ({ navItems, profileInputs }) => {
           </ul>
 
           <Card.Body className="d-flex gap-5">
-            <Card className="pt-2 d-none d-xl-block col-xl-1 d-none d-xl-block shadow rounded-4 border-0" style={{width: "17rem", height: "30rem"}}>
+            <Card
+              className="pt-2 d-none d-xl-block col-xl-1 d-none d-xl-block shadow rounded-4 border-0"
+              style={{ width: "17rem", height: "30rem" }}
+            >
               <div className="d-flex justify-content-start align-items-center gap-2 p-1 p-xxl-2 ps-xxl-4 border-bottom">
                 <Img
                   src={Images?.default_prfile_pic}
@@ -56,8 +56,12 @@ const AdminProfileLayout = ({ navItems, profileInputs }) => {
                   className={"rounded-circle"}
                 />
                 <div className="">
-                  <h4 className="fs-6 fs-xxl-6">Hello &#x1F44B;</h4>
-                  <h3 className="fw-bold fs-5 fs-xxl-5"> {profileInputs?.first_name || "User"} {profileInputs?.last_name || ""} </h3>
+                  <h4 className="fs-6">Hello &#x1F44B;</h4>
+                  <h3 className="fw-bold fs-5">
+                    {" "}
+                    {profileInputs?.first_name || "User"}{" "}
+                    {profileInputs?.last_name || ""}{" "}
+                  </h3>
                 </div>
               </div>
 
@@ -76,7 +80,9 @@ const AdminProfileLayout = ({ navItems, profileInputs }) => {
                         }`
                       }
                     >
-                      <span className="fs-3 mb-1 me-3">{item.icon(location.pathname === item.to)}</span>
+                      <span className="fs-3 mb-1 me-3">
+                        {item.icon(location.pathname === item.to)}
+                      </span>
                       <span className="fs-6">{item.name}</span>
                     </NavLink>
                   </li>
@@ -84,10 +90,8 @@ const AdminProfileLayout = ({ navItems, profileInputs }) => {
               </ul>
             </Card>
 
-            <article >
-              {/* <div> */}
-                <Outlet />
-              {/* </div> */}
+            <article>
+              <Outlet />
             </article>
           </Card.Body>
         </Card>

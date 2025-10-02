@@ -35,7 +35,7 @@ const ClassroomDetailsLayout = () => {
                     </LinkComponent>
                 </div>
                 <div className="w-100 row py-3">
-                    <div className="col-4">
+                    <div className="col-12 col-xl-4">
                         <Card className="shadow-sm border-0 rounded-4 h-100">
                             <Card.Header className="py-3 border-0 bg-transparent">
                                 Classroom Overview
@@ -45,13 +45,13 @@ const ClassroomDetailsLayout = () => {
                             </Card.Body>
                         </Card>
                     </div>
-                    <div className="col-8 p-1">
+                    <div className="col-12 col-xl-8 p-1">
                         <Card className="h-100 border-0 rounded-4 shadow-sm test_conducted_chart_height">
-                            <Card.Header className="bg-transparent border-0 pt-3 d-flex align-items-start justify-content-between">
-                                <h6 className="mb-2">Test Conducted</h6>
+                            <Card.Header className="bg-transparent border-0 pt-3 d-flex align-items-center align-items-md-start justify-content-between">
+                                <h6 className="mb-">Test Conducted</h6>
                                 {Inputfunctions(jsxJson?.classroom_chart_months)}
                             </Card.Header>
-                            <Card.Body>
+                            <Card.Body onMouseDown={(e) => e.preventDefault()}>
                                 <TestPerformanceChart data={adminState?.classroom_chart_data} loading={adminState?.overall_loading} />
                             </Card.Body>
                         </Card>

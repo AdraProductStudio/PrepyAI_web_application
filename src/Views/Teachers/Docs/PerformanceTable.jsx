@@ -7,6 +7,7 @@ import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import { useDispatch } from "react-redux";
 import { handlePerformanceModal } from "../Actions/Teachers_action";
 import Icons from "Utils/Icons";
+import { Card } from "react-bootstrap";
 
 
 const PerformanceTable = ({ studentsData, testType }) => {
@@ -67,46 +68,54 @@ const PerformanceTable = ({ studentsData, testType }) => {
 
     return (
         <>
-            <div
-                className="card rounded-4 d-flex flex-column border border-light-subtle bg-succes ms-2 "
+            <Card
+                className="rounded-4 border border-light-subtle"
                 style={{ height: "65vh", overflow: "hidden", boxShadow: "0px 6px 58px 0px rgba(196, 203, 214, 0.10)" }}
             >
-
-                <div className="row d-flex justify-content-start  m-2">
-                    <div className="col-12 d-flex justify-content-between align-items-center gap-2" style={{ paddingLeft: '220px' }}>
-                        <div className="fw-bolder" >
-                            {currentMonth.toFormat("MMMM")}
-                        </div>
-
-                        <div className="ms-4">
-                            <button
-                                onClick={goToPreviousMonth}
-                                className="btn border-0 "
-                                style={{ fontSize: "1.2rem" }}
-                            >
-                                {Icons.left_arrow}
-                            </button>
+                <table>
+                    <tr>
+                        <td style={{width: "220px"}}>
                             &nbsp;
-                            <button
-                                onClick={goToNextMonth}
-                                className="btn border-0 "
-                                style={{ fontSize: "1.2rem" }}
-                            >
-                                {Icons.right_arrow}
-                            </button>
-                        </div>
+                        </td>
+                        <td>
+                            <div className="d-flex justify-content-start m-2">
+                                <div className="w-100 d-flex justify-content-between align-items-center">
+                                    <div className="fw-bolder" >
+                                        {currentMonth.toFormat("MMMM")}
+                                    </div>
 
-                    </div>
+                                    <div className="ms-4">
+                                        <button
+                                            onClick={goToPreviousMonth}
+                                            className="btn border-0 "
+                                            style={{ fontSize: "1.2rem" }}
+                                        >
+                                            {Icons.left_arrow}
+                                        </button>
+                                        &nbsp;
+                                        <button
+                                            onClick={goToNextMonth}
+                                            className="btn border-0 "
+                                            style={{ fontSize: "1.2rem" }}
+                                        >
+                                            {Icons.right_arrow}
+                                        </button>
+                                    </div>
 
-                </div>
+                                </div>
+                            </div>
+
+                        </td>
+                    </tr>
+                </table>
 
                 <div style={{ flex: 1, overflow: "auto", width: "100%" }} className="position-relative">
                     <table className="table table-hover mb-0" style={{ minWidth: "800px", marginLeft: '-1px' }}>
-                        <thead className="position-sticky top-0 bg-white" style={{ zIndex: 10 }}>
-                            <tr className="p-2 bg-white ">
+                        <thead className="position-sticky top-0 " style={{ zIndex: 10 }}>
+                            <tr>
                                 <th
-                                    className="text-center align-middle "
-                                    style={{ position: "sticky", top: "-2px", left: '-1px', zIndex: 11, width: "220px" }}
+                                    className="text-center align-middle"
+                                    style={{ position: "sticky", top: "-2px", left: '-1px', zIndex: 11, width: "220px"}}
                                 >
                                     Students List
                                 </th>
@@ -130,13 +139,18 @@ const PerformanceTable = ({ studentsData, testType }) => {
                                     {studentsData?.map((std, idx) => {
                                         const colorInfo = studentsWithColors.find((obj) => obj.name === std.student_name);
                                         return (
-                                            <tr key={idx} className="border border-white bg-white">
+                                            <tr key={idx} className="border border-white">
                                                 <td
-                                                    className="bg-white d-flex justify-content-start align-items-center "
-                                                    style={{ position: "sticky", left: 0, zIndex: 9, width: "220px" }}
+                                                    className=" sticky-left"
+                                                    style={{ position: "sticky", left: "-1px", zIndex: 9, width: "220px"}}
                                                 >
-                                                    <CgProfile className="me-2" />
-                                                    <span style={{ fontSize: "0.9rem" }}>{(std.student_name).length <= 12 ? std.student_name : `${(std.student_name).slice(0, 12)}...`}</span>
+                                                    <div className="d-flex align-items-center gap-2 p-1">
+                                                        <CgProfile size={25} className="flex-shrink-0" style={{width: "25px", height: "25px"}}/>
+                                                        <div className="text-truncate" style={{maxWidth: "120px"}}>
+                                                            {/* {std?.student_name?.length <= 12 ? std.student_name : `${std?.student_name.slice(0, 12)}...`} */}
+                                                            {std?.student_name}
+                                                        </div>
+                                                    </div>
                                                 </td>
                                                 {monthDates?.map((date) => {
                                                     let bg = "#E3F3FF";
@@ -180,8 +194,8 @@ const PerformanceTable = ({ studentsData, testType }) => {
 
 
 
-                <div className="row flex-wrap  m-2 mx-0" style={{ paddingLeft: '220px' }}>
-                    <div className="col-12 col-md-3 ">
+                <div className="row flex-wrap  m-2 mx-0 performace_table_footer">
+                    <div className="col-6 col-md-3">
                         <p className="text-secondary ms-2 mb-0" style={{ fontSize: "0.8rem" }}>
                             Status
                         </p>
@@ -192,7 +206,7 @@ const PerformanceTable = ({ studentsData, testType }) => {
                             <span>Emergent</span>
                         </div>
                     </div>
-                    <div className="col-12 col-md-3 ">
+                    <div className="col-6 col-md-3">
                         <p className="text-secondary ms-2 mb-0" style={{ fontSize: "0.8rem" }}>
                             Status
                         </p>
@@ -203,7 +217,7 @@ const PerformanceTable = ({ studentsData, testType }) => {
                             <span>Developing</span>
                         </div>
                     </div>
-                    <div className="col-12 col-md-3 ">
+                    <div className="col-6 col-md-3">
                         <p className="text-secondary ms-2 mb-0" style={{ fontSize: "0.8rem" }}>
                             Status
                         </p>
@@ -214,7 +228,7 @@ const PerformanceTable = ({ studentsData, testType }) => {
                             <span>Exemplar</span>
                         </div>
                     </div>
-                    <div className="col-12 col-md-3 ">
+                    <div className="col-6 col-md-3">
                         <p className="text-secondary ms-2 mb-0" style={{ fontSize: "0.8rem" }}>
                             Status
                         </p>
@@ -227,7 +241,7 @@ const PerformanceTable = ({ studentsData, testType }) => {
                     </div>
 
                 </div>
-            </div>
+            </Card>
         </>
 
     );

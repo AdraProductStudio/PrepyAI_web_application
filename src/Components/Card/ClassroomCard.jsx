@@ -20,19 +20,21 @@ export default function ClassroomCard({
                             <p className="text-secondary fs-13 mb-0">Created on: {data?.created_at || ''}</p>
                         </div>
                         <div className="col-2 text-end">
-                        <ButtonComponent
-                            type="button"
-                            className="btn"
-                            buttonName={Icons?.delete_icons}
-                            clickFunction={onClickDelete}
-                        />
+                            {data?.owned ?
+                                <ButtonComponent
+                                    type="button"
+                                    className="btn"
+                                    buttonName={Icons?.delete_icons}
+                                    clickFunction={onClickDelete}
+                                /> : null
+                            }
                         </div>
                     </div>
                 </Card.Title>
 
                 <div className="px-4 pb-4">
-                    {items?.map((item) => (
-                        <div className="w-100 d-flex align-items-end py-2">
+                    {items?.map((item ,ind) => (
+                        <div className="w-100 d-flex align-items-end py-2" key={ind}>
                             <div className="col-10 fs-15 text-secondary">
                                 <span className="pe-3">{item.icons}</span>
                                 {item.content}

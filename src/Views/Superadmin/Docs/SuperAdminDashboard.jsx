@@ -30,8 +30,7 @@ function SuperAdminDashboard() {
     dispatch(getOrganizationList(superadminState?.filter_params))
   }, [])
 
-  const monthlyGrowthDropDownOptions = superadminState?.monthlyReports?.year?.map(year => ({ id: year, name: year.toString() }))
-
+  const monthlyGrowthDropDownOptions = superadminState?.monthlyReports?.data?.year?.map(year => ({ id: year, name: year.toString() }))
   return (
     <div className="h-100 overflowY">
       <article className="custom_responsive_cards p-2">

@@ -1,7 +1,7 @@
 import { useCommonState, useCustomNavigate, useDispatch } from "Components/CustomHooks";
 import Icons from "Utils/Icons"
 import Image from "Utils/Image"
-import { clear_learnerboook_upload_fields, clear_test_upload_fields, editProfileInputs, setClassroomCode, setUploadLearnerBook, setUploadTestPaper, updateSettingsInputs } from "../Slices/StudentSlice";
+import { clear_learnerboook_upload_fields, clear_test_upload_fields, clearFieldError, editProfileInputs, setClassroomCode, setUploadLearnerBook, setUploadTestPaper, update_settings_eye, updateSettingsInputs } from "../Slices/StudentSlice";
 import { handlePostNote, update_note_data } from "Views/Common/Slices/Common_slice";
 
 const JsonData = (params) => {
@@ -9,6 +9,15 @@ const JsonData = (params) => {
     const dispatch = useDispatch();
     const navigate = useCustomNavigate();
     const { commonState, studentState } = useCommonState();
+
+    const offlineTestData = studentState?.offline_tests?.map(test => ({
+        name: test?.test_name,
+        id: test?.test_id
+    }))
+
+
+        
+    
 
     const jsonOnly = {
         sidebar_data: [
@@ -621,7 +630,7 @@ const JsonData = (params) => {
                 change: (e) => dispatch(setUploadLearnerBook({ type: 'set', book_name: e.target.value })),
                 divClassName: "mb-3",
                 isMandatory: true,
-                Err: commonState?.app_data?.validated ? commonState?.app_data?.validationMessage?.book_name : null,
+                Err: commonState?.app_data?.validated && !studentState?.upload_learner_book?.book_name ? "Book name is required": null,
             },
             {
                 name: "Upload File",
@@ -646,37 +655,37 @@ const JsonData = (params) => {
                     e.target.value = "";
                 },
                 isMandatory: true,
-                Err: commonState?.app_data?.validated ? commonState?.app_data?.validationMessage?.book_file : null,
+                Err: commonState?.app_data?.validated && !studentState?.upload_learner_book?.book_file ? "Book file is required" : null,
             },
         ],
         uploadTest: [
             {
                 name: "Test Name",
                 category: "select",
-                type: "normal_select",
-                options: studentState?.offline_tests?.map(test => ({
-                    value: test.test_id,
-                    name: test.test_name
-                })) || [],
-                isMandatory: true,
-                value: (() => {
-                    const selected = studentState?.offline_tests?.find(
-                        t => t.test_id === studentState?.upload_test_paper?.test_id
-                    );
-                    return selected?.test_id || ""
-                })(),
-                change: (e) => {
-                    const selectedTest = studentState?.offline_tests?.find(
-                        t => t.test_id === Number(e.target.value)
-                    )
+                type: "react_dropdown_select",
+                options: offlineTestData,
+                value: studentState?.upload_test_paper?.test_id
+                    ? [{
+                        id: studentState?.upload_test_paper?.test_id,
+                        name: studentState?.upload_test_paper?.test_name
+                    }]
+                    : [],
+                labelField: "name",
+                valueField: "id",
+                multi: false,
+                divClassName: "mt-3 p-2",
+                change: (values) => {
+                    const selected = values[0] || null
                     dispatch(setUploadTestPaper({
                         type: "set",
-                        test_id: selectedTest?.test_id ?? "",
-                        test_name: selectedTest?.test_name ?? ""
+                        test_id: selected?.id ?? "",
+                        test_name: selected?.name ?? ""
                     }))
                 },
-                divClassName: "m-2",
-                Err: commonState?.app_data?.validated ? commonState?.app_data?.validationMessage?.test_name : null,
+                Err: commonState?.app_data?.validated &&
+                    !studentState?.upload_test_paper?.test_name
+                    ? "Test Name is required"
+                    : null,
             },
             {
                 name: "Register Number",
@@ -687,7 +696,7 @@ const JsonData = (params) => {
                 change: (e) => dispatch(setUploadTestPaper({ type: 'set', register_number: e.target.value })),
                 divClassName: "m-2",
                 isMandatory: true,
-                Err: commonState?.app_data?.validated ? commonState?.app_data?.validationMessage?.register_number : null,
+                Err: commonState?.app_data?.validated &&  !studentState?.upload_test_paper?.register_number ? "Register number is required" : null,
 
             },
             {
@@ -713,10 +722,7 @@ const JsonData = (params) => {
                     e.target.value = "";
                 },
                 isMandatory: true,
-                Err:
-                    commonState?.app_data?.validated
-                        ? commonState?.app_data?.validationMessage?.test_file
-                        : null,
+                Err:commonState?.app_data?.validated && !studentState?.upload_test_paper.test_file ? "File is required": null,
             },
         ],
         notes_input: [
@@ -734,6 +740,7 @@ const JsonData = (params) => {
                 keyDown: (e) => {
                     if (e.key === "Enter") dispatch(handlePostNote(commonState?.notesdata));
                 },
+                Err:commonState?.app_data?.validated && !commonState?.notesdata?.title ? "Title is required": null,
             },
             {
                 name: "ADD CONTENT HERE",
@@ -747,6 +754,7 @@ const JsonData = (params) => {
                 keyDown: (e) => {
                     if (e.key === "Enter") dispatch(handlePostNote(commonState?.notesdata));
                 },
+                Err:commonState?.app_data?.validated && !commonState?.notesdata?.content ? "Content is required": null,
             }
         ],
         profile_details: [
@@ -830,13 +838,18 @@ const JsonData = (params) => {
                 category: "input",
                 placeholder: "",
                 value: studentState?.editProfileInputs?.first_name || '',
-                change: (e) => dispatch(editProfileInputs({ field: 'first_name', value: e.target.value })),
+                change: (e) => {
+                    if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+                        dispatch(clearFieldError("first_name"))
+                        dispatch(editProfileInputs({ field: 'first_name', value: e.target.value }))
+                    }
+                },
                 // keyDown: (e) => {
                 //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
                 // },
                 divClassName: "mb-3",
                 isMandatory: false,
-                Err: commonState?.app_data?.validated && !studentState?.editProfileInputs?.first_name ? "First name required" : null
+                Err: studentState?.errors?.first_name || null
             },
             {
                 name: "Last Name",
@@ -845,13 +858,18 @@ const JsonData = (params) => {
                 category: "input",
                 placeholder: "",
                 value: studentState?.editProfileInputs?.last_name || '',
-                change: (e) => dispatch(editProfileInputs({ field: 'last_name', value: e.target.value })),
+                change: (e) => {
+                    if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+                        dispatch(clearFieldError("last_name"))
+                        dispatch(editProfileInputs({ field: 'last_name', value: e.target.value }))
+                    }
+                },
                 // keyDown: (e) => {
                 //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
                 // },
                 divClassName: "mb-3",
                 isMandatory: false,
-                Err: commonState?.app_data?.validated && !studentState?.editProfileInputs?.last_name ? "Last name required" : null
+                Err: studentState?.errors?.last_name || null
             },
             {
                 name: "Email",
@@ -860,29 +878,40 @@ const JsonData = (params) => {
                 category: "input",
                 placeholder: "",
                 value: studentState?.editProfileInputs?.email_id || '',
-                change: (e) => dispatch(editProfileInputs({ field: 'email_id', value: e.target.value })),
+                change: (e) => {
+                    if (/^[A-Za-z0-9@._-]*$/.test(e.target.value)) {
+                        dispatch(editProfileInputs({ field: 'email_id', value: e.target.value }))
+                    }
+                },
                 // keyDown: (e) => {
                 //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
                 // },
                 divClassName: "mb-3",
                 isMandatory: false,
-                Err: commonState?.app_data?.validated && !studentState?.editProfileInputs?.email_id ? "Email required" : null,
-                readOnly: true
+                // Err: commonState?.app_data?.validated && !studentState?.editProfileInputs?.email_id ? "Email required" : null,
+                disabled: true
             },
             {
                 name: "Phone Number",
-                type: "text",
+                type: "number",
                 title: " ",
                 category: "input",
                 placeholder: "",
                 value: studentState?.editProfileInputs?.phone_number || '',
-                change: (e) => dispatch(editProfileInputs({ field: 'phone_number', value: e.target.value })),
+                change: (e) => {
+                    const value = e.target.value.replace(/\D/g, "");
+                    if(value.length <= 10){
+                        dispatch(clearFieldError("phone_number"))
+                        dispatch(editProfileInputs({ field: 'phone_number', value: e.target.value }))
+                    }
+                },
                 // keyDown: (e) => {
                 //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
                 // },
                 divClassName: "mb-3",
                 isMandatory: false,
-                Err: commonState?.app_data?.validated && !studentState?.editProfileInputs?.phone_number ? "Phone Number required" : null
+                Err: studentState?.errors?.phone_number || null
+
             },
             {
                 name: "Register Number",
@@ -897,8 +926,8 @@ const JsonData = (params) => {
                 // },
                 divClassName: "mb-3",
                 isMandatory: false,
-                Err: commonState?.app_data?.validated && !studentState?.editProfileInputs?.reg_no ? "Register Number required" : null,
-                readOnly: true
+                // Err: commonState?.app_data?.validated && !studentState?.editProfileInputs?.reg_no ? "Register Number required" : null,
+                disabled: true
             },
             {
                 name: "Class",
@@ -907,13 +936,17 @@ const JsonData = (params) => {
                 category: "input",
                 placeholder: "",
                 value: studentState?.editProfileInputs?.class_name || '',
-                change: (e) => dispatch(editProfileInputs({ field: 'class_name', value: e.target.value })),
+                change: (e) => {
+                    if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+                        dispatch(editProfileInputs({ field: 'class_name', value: e.target.value }))
+                    }
+                },
                 // keyDown: (e) => {
                 //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
                 // },
                 divClassName: "mb-3",
                 isMandatory: false,
-                Err: commonState?.app_data?.validated && !studentState?.editProfileInputs?.class_name ? "Class required" : null
+                // Err: commonState?.app_data?.validated && !studentState?.editProfileInputs?.class_name ? "Class required" : null
             },
             {
                 name: "Address",
@@ -921,13 +954,17 @@ const JsonData = (params) => {
                 category: "textbox",
                 placeholder: "",
                 value: studentState?.editProfileInputs?.address || '',
-                change: (e) => dispatch(editProfileInputs({ field: 'address', value: e.target.value })),
+                change: (e) => {
+                    // if (/^[A-Za-z0-9@._\- ]*$/.test(e.target.value)) {
+                        dispatch(editProfileInputs({ field: 'address', value: e.target.value }))
+                    // }
+                },
                 // keyDown: (e) => {
                 //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
                 // },
                 divClassName: "mb-3",
                 isMandatory: false,
-                Err: commonState?.app_data?.validated && !studentState?.editProfileInputs?.address ? "Address required" : null
+                // Err: commonState?.app_data?.validated && !studentState?.editProfileInputs?.address ? "Address required" : null
             },
         ],
 
@@ -935,48 +972,81 @@ const JsonData = (params) => {
         [
             {
                 name: "Current Password",
-                type: "text",
+                type: studentState?.settings_password?.show_old_password ? "text" : "password" ,
                 title: " ",
                 category: "input",
                 placeholder: "Current Password",
                 value: studentState?.settingsInputs?.old_password || '',
-                change: (e) => dispatch(updateSettingsInputs({ field: 'old_password', value: e.target.value })),
+                change: (e) => {
+                    dispatch(updateSettingsInputs({ field: 'old_password', value: e.target.value }))
+                    dispatch(clearFieldError("old_password"))
+                },
                 // keyDown: (e) => {
                 //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
                 // },
+                eyeFunction: () =>
+                    dispatch(
+                        update_settings_eye({
+                        show_old_password: !studentState?.settings_password?.show_old_password,
+                    })),
+                eyeIcon: studentState?.settings_password?.show_old_password
+                    ? Icons?.EyeClose
+                    : Icons?.EyeOpen,
                 divClassName: "mb-3",
                 isMandatory: true,
-                Err: commonState?.app_data?.validated && !studentState?.settingsInputs?.old_password ? "First name required" : null
+                Err: studentState?.errors?.old_password || null
             },
             {
                 name: "New Password",
-                type: "text",
+                type: studentState?.settings_password?.show_new_password ? "text" : "password" ,
                 title: " ",
                 category: "input",
-                placeholder: "Current Password",
-                value: studentState?.settingsInputs?.confirm_password || '',
-                change: (e) => dispatch(updateSettingsInputs({ field: 'confirm_password', value: e.target.value })),
+                placeholder: "New Password",
+                value: studentState?.settingsInputs?.new_password || '',
+                change: (e) => {
+                    dispatch(updateSettingsInputs({ field: 'new_password', value: e.target.value }))
+                    dispatch(clearFieldError("new_password"))
+                },
                 // keyDown: (e) => {
                 //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
                 // },
+                 eyeFunction: () =>
+                    dispatch(
+                        update_settings_eye({
+                        show_new_password: !studentState?.settings_password?.show_new_password,
+                    })),
+                eyeIcon: studentState?.settings_password?.show_new_password
+                    ? Icons?.EyeClose
+                    : Icons?.EyeOpen,
                 divClassName: "mb-3",
                 isMandatory: true,
-                Err: commonState?.app_data?.validated && !studentState?.settingsInputs?.confirm_password ? "Confirm Password required" : null
+                Err: studentState?.errors?.new_password || null
             },
             {
                 name: "Confirm Password",
-                type: "text",
+                type: studentState?.settings_password?.show_confirm_password ? "text" : "password" ,
                 title: " ",
                 category: "input",
                 placeholder: "Confirm Password",
-                value: studentState?.settingsInputs?.new_password || '',
-                change: (e) => dispatch(updateSettingsInputs({ field: 'new_password', value: e.target.value })),
+                value: studentState?.settingsInputs?.confirm_password || '',
+                change: (e) => {
+                    dispatch(updateSettingsInputs({ field: 'confirm_password', value: e.target.value }))
+                    dispatch(clearFieldError("confirm_password"))
+                },
                 // keyDown: (e) => {
                 //     if (e.key === 'Enter') dispatch(handleLogin(commonState?.login_data, navigate))
                 // },
+                 eyeFunction: () =>
+                    dispatch(
+                        update_settings_eye({
+                        show_confirm_password: !studentState?.settings_password?.show_confirm_password,
+                    })),
+                eyeIcon: studentState?.settings_password?.show_confirm_password
+                    ? Icons?.EyeClose
+                    : Icons?.EyeOpen,
                 divClassName: "mb-3",
                 isMandatory: true,
-                Err: commonState?.app_data?.validated && !studentState?.settingsInputs?.new_password ? "New password required" : null
+                Err: studentState?.errors?.confirm_password || null
             },
 
         ],

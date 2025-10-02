@@ -19,10 +19,12 @@ const Textbox = ({
 
     return (
         <Form.Group className={`${className ? className : ''}`} controlId={controlId}>
-            <Form.Label className={labelClassName}>
-                {label}
-                {mandatory ? <span className='text-danger ms-1'>*</span> : null}
-            </Form.Label>
+            {label ?
+                <Form.Label className={labelClassName}>
+                    {label}
+                    {mandatory ? <span className='text-danger ms-1'>*</span> : null}
+                </Form.Label> : null
+            }
             
             <Form.Control as="textarea" rows={rows} cols={cols} onChange={change} value={value} disabled={disabled} className={textBoxClassName} readOnly={readOnly} />
         </Form.Group>

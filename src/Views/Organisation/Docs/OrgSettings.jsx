@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import JsonData from "../Utils/JsonData";
 import { useDispatch } from "react-redux";
@@ -7,6 +7,7 @@ import ButtonSpinner from "Components/Spinner/ButtonSpinner";
 import { useCommonState, useCustomNavigate } from "Components/CustomHooks";
 import { changeOrgPassword } from "../Actions/organisationAction";
 import { update_app_data } from "Views/Common/Slices/Common_slice";
+import { clearSettingsInputs } from "../Slices/Organisation_slice";
 
 
 const OrgSettings = () => {
@@ -14,6 +15,10 @@ const OrgSettings = () => {
   const dispatch = useDispatch();
   const navigate = useCustomNavigate()
   const {settingsInputs } = useCommonState()?.organisationState
+
+  useEffect(()=>{
+    dispatch(clearSettingsInputs())
+  },[])
 
   return (
     <div className="container h-100 pt-xl-4 pe-xxl-5">

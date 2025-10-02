@@ -1,7 +1,7 @@
 import BookCard from "Components/Card/BookCard";
 import { useCommonState, useCustomNavigate } from "Components/CustomHooks";
 import Img from "Components/Img/Img";
-import SpinnerComponent from "Components/Spinner/Spinner";
+import Spinner from "Components/Spinner/CustomSpinner";
 import { useParams } from "react-router-dom";
 import Image from "Utils/Image";
 
@@ -16,8 +16,7 @@ const StudentsBooks = () => {
             {studentState?.loading['subject_books'] ? 
                 <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "500px" }}>
                     <div className="col-5 text-center">
-                        <SpinnerComponent />
-                        <p className="m-0">Loading...</p>
+                        <Spinner />
                     </div>
                 </div> 
                 :

@@ -469,8 +469,11 @@ td {
 .sechdule_test_layout {
   height: calc(var(--root-height) - (var(--header-height) + 4rem));
   padding: 2rem 0;
-  display: flex;
-  flex-wrap: wrap;
+}
+@media (max-width:768px) {
+  .sechdule_test_layout {
+    height: auto !important;
+  }
 }
 
 .schedule_option {
@@ -521,7 +524,8 @@ td {
   background-color: rgba(70, 185, 78, 0.33);
   font-size: 10px;
   padding: 0.2rem 1.8rem;
-  border-radius: 0 1rem 0 0
+  border-radius: 0 1rem 0 0;
+  color: #080707;
 }
 
 .test_not_completed {
@@ -531,7 +535,8 @@ td {
   background-color: #FFBABA;
   font-size: 10px;
   padding: 0.2rem 1.8rem;
-  border-radius: 0 1rem 0 0
+  border-radius: 0 1rem 0 0;
+  color: #080707;
 }
 .test_ongoing {
   position: absolute;
@@ -540,21 +545,23 @@ td {
   background-color: #a2c2f4;
   font-size: 10px;
   padding: 0.2rem 1.8rem;
-  border-radius: 0 1rem 0 0
+  border-radius: 0 1rem 0 0;
+  color: #080707;
 }
 
 .test_page_options {
   text-decoration: none;
   color: #495057;
+  cursor: pointer;
 }
 
-.test_page_options.active {
-  color: black;
+.test_page_option_active {
+  color: black !important;
   font-weight: bold;
   padding-bottom: .6rem;
-  border-bottom: 2px solid black;
+  border-bottom: 2px solid black !important;
+  cursor: pointer;
 }
-
 .books_layout {
   height: calc(var(--root-height) - (var(--header-height) + 4rem));
 }
@@ -627,8 +634,8 @@ td {
   width: auto;
   top: 0rem;
   right: 0rem;
-  background: #DDE2FF;
-  color: #4258D6;
+  /* background: #DDE2FF; */
+  color: #fff;
   font-size: 13px;
   padding: 0.2rem 0.5rem;
   border-radius: 0 .5rem 0 0;
@@ -822,7 +829,7 @@ td {
 /* Teachers view - Students performance */
 .students-performance-option {
   text-decoration: none;
-  color: black;
+  color: #7F878F;
   padding-bottom: 4px;
   margin-right: 40px;
   border-bottom: 4px solid transparent;
@@ -830,6 +837,8 @@ td {
 
 .students-performance-option.active {
   border-bottom: 4px solid #0A1629;
+  color: #0A1629;
+  font-weight: 800;
   cursor: pointer;
   padding-bottom: 4px;
 }
@@ -1550,4 +1559,38 @@ input::placeholder {
   .custom_responsive_cards>section {
     width: 25%;
   }
+}
+.pagination_btn_active{
+  color: #fff !important;
+}
+
+
+
+
+.responsive_profile_card{
+  width: 90vw;
+  height: 70vh;
+  overflow: auto;
+}
+
+@media (min-width: 1280px){
+  .responsive_profile_card{
+    width: 70vw;
+  }
+}
+
+
+@media (min-width: 768px) {
+  .performace_table_footer{
+    padding-left: 220px;
+  }
+}
+
+.selected-card {
+  background: linear-gradient(90deg, #EC008C 0%, #FC6767 100%) !important;
+  color: white !important;
+}
+.selected-card .card-title,
+.selected-card strong {
+  color: white !important;
 }

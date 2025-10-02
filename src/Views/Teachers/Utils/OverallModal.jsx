@@ -2,7 +2,7 @@ import ButtonComponent from "Components/Button/Button";
 import { useCommonState, useDispatch } from "Components/CustomHooks";
 import ModalComponent from "Components/Modal/Modal";
 import { update_app_data, updateModalShow } from "Views/Common/Slices/Common_slice";
-import { postTeacherNote } from "Views/Common/Actions/Common_action";
+import { deleteTeacherNote, postTeacherNote } from "Views/Common/Actions/Common_action";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import JsonData from "./JsonData";
 import {
@@ -14,7 +14,7 @@ import {
 import { useParams } from "react-router-dom";
 import Icons from "Utils/Icons";
 import { Form, Button, Spinner } from "react-bootstrap";
-import { clear_form_fields, handle_attachment_books_upload } from "../Slice/teachersSlice";
+import { clear_form_fields, handle_attachment_books_upload, setErrors } from "../Slice/teachersSlice";
 import { deleteAttachment, handleDeleteBook, handleUploadBook, uploadBooks } from "../Actions/TeacherActions";
 import SpinnerComponent from "Components/Spinner/Spinner";
 import ButtonSpinner from "Components/Spinner/ButtonSpinner";
@@ -26,6 +26,7 @@ export function OverallModel() {
   const { jsxJson } = JsonData();
   const dispatch = useDispatch();
   const { teachersState, commonState, } = useCommonState();
+  const { editProfileInputs } = teachersState
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -43,12 +44,33 @@ export function OverallModel() {
 
   const handleDelete = () => { dispatch(deleteAttachment(teachersState?.delete_attachment_id?.id,teachersState?.delete_attachment_id?.subject_id)) };
 
+  const handleProfile = (e) => {
+    e.preventDefault();
+    const newErrors = {}
+
+    if(!editProfileInputs?.first_name.trim()) newErrors.first_name = "First Name is required"
+    if(!editProfileInputs.last_name.trim()) newErrors.last_name = "Last Name is required"
+    // if(!editProfileInputs.email_id.trim()) newErrors.email = "Email Id is required"
+    // else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(edit_classroom_teacher.email)) newErrors.email = "Invalid email"
+    if(editProfileInputs.phone_number){
+      if(!/^\d{10}$/.test(editProfileInputs.phone_number.trim())) newErrors.phone_number = "Contact Number must be 10 digits"
+    }
+    // if(!editProfileInputs.address.trim()) newErrors.address = "Address is required"
+    
+    if(Object.keys(newErrors).length > 0 ){
+      dispatch(setErrors(newErrors))
+      return;
+    }
+
+    dispatch(editProfileDetails(teachersState?.editProfileInputs))
+  }
+
   function modalHeaderFun() {
     switch (commonState?.modal?.from) {
       case "teacher":
         switch (commonState?.modal?.type) {
           case "attachments":
-            return <h5>Upload Book</h5>
+            return <h5>Upload Attachments</h5>
           case "delete_attachments":
             return <h5 className="fw-bold">Delete</h5>;
           case "performance":
@@ -68,6 +90,8 @@ export function OverallModel() {
         switch (commonState?.modal?.type) {
           case "createClassroom":
             return <h5 className="ms-3 mb-0 fw-bold">Create Class Room</h5>;
+           case "techaersdeletemodal":
+            return <h5 className="ms-3 mb-0 fw-bold">Delete Classroom</h5>;
           default:
             break;
         }
@@ -77,6 +101,10 @@ export function OverallModel() {
         switch (commonState?.modal?.type) {
           case "add_note":
             return <h5 className="m-0 ps-4">Add  Notes</h5>
+          case "view_note":
+            return <h5 className="m-0 ps-2 fw-bold">Notes</h5>
+          case "delete_note":
+            return <h5 className="m-0 ps-2 fw-bold">Delete Note</h5>
 
           default:
             break;
@@ -133,10 +161,10 @@ export function OverallModel() {
                 style={{ borderStyle: "dashed" }}
               >
                 <Form.Label className="fw-medium text-danger">
-                  Drag & drop Your book File or <span className="text-primary">Browse</span>
+                  Drag & drop Your File or <span className="text-primary">Browse</span>
                 </Form.Label>
                 <p className="small text-muted">
-                  Format: pdf, docx, doc | Max size: 1 GB
+                  Format: pdf, docx, doc | Max size: 30 MB
                 </p>
                 <Form.Control
                   type="file"
@@ -253,7 +281,7 @@ export function OverallModel() {
               <ButtonComponent
                 type="button"
                 className="brand_color w-100 text-white"
-                clickFunction={() => dispatch(editProfileDetails(teachersState?.editProfileInputs))}
+                clickFunction={handleProfile}
                 btnDisable={teachersState?.placeholder}
                 children={
                   teachersState?.placeholder
@@ -294,6 +322,39 @@ export function OverallModel() {
                 />
               </>
             );
+            case "techaersdeletemodal":
+            return (
+              <>
+                <div className="text-center w-100 p-4">
+                  <div
+                    style={{ fontSize: "40px", color: "#ff4d6d" }}
+                    className="mb-3"
+                  >
+                    {Icons.deleteIcon}
+                  </div>
+                  <p className="fs-5 d-flex justify-content-center fw-semibold">
+                    Are you sure you want to delete?
+                  </p>
+
+                  <div className="d-flex justify-content-center gap-3 mt-4 w-100">
+                    <ButtonComponent
+                      className="btn-md btn-light w-50"
+                      buttonName={"No"}
+                      clickFunction={() =>
+                        dispatch(updateModalShow({ show: false }))
+                      }
+                    />
+
+                    <ButtonSpinner
+                      className="btn-md w-50 button-spinner-modal-input-student text-white btn-brand-color"
+                      title={teachersState?.buttonSpinner ? "" : "Yes"}
+                      is_spinner={teachersState?.buttonSpinner}
+                      clickFunction={commonState?.modal?.modal_data}
+                    />
+                  </div>
+                </div>
+              </>
+            );
 
           default:
             break;
@@ -304,7 +365,7 @@ export function OverallModel() {
         switch (commonState?.modal?.type) {
           case "add_note":
             return <div className='p-2 w-100'>
-              {Inputfunctions(jsxJson.notes_input)}
+              {Inputfunctions(jsxJson?.notes_input)}
 
               <div className="d-flex justify-content-between align-items-center">
                 <div className="col p-1">
@@ -316,13 +377,41 @@ export function OverallModel() {
                   />
                 </div>
                 <div className="col p-1">
-                  <ButtonComponent
-                    type="button"
-                    className="btn btn-brand-color px-5 py-2 w-100"
-                    buttonName={commonState?.notesdata?.id ? "Update" : "Add"}
-                    clickFunction={() => dispatch(postTeacherNote(commonState?.notesdata?.id ? "teachers/edit_user_notes" : "teachers/create_user_notes", { title: commonState?.notesdata?.title || "", content: commonState?.notesdata?.content || "", id: commonState?.notesdata?.id || null }))}
+                  <ButtonSpinner
+                    className="btn btn-brand-color w-100 py-2"
+                    title={commonState?.notesdata?.id ? "Update" : "Add"}
+                    is_spinner={commonState?.usernotesdata?.is_loading}
+                    clickFunction={() => {
+                      dispatch(update_app_data({ type: "validation", data: true }))
+                      dispatch(postTeacherNote(commonState?.notesdata?.id ? "notes/edit_user_notes" : "notes/create_user_notes", { title: commonState?.notesdata?.title || "", content: commonState?.notesdata?.content || "", id: commonState?.notesdata?.id, priority: commonState?.notesdata?.priority || "low" || null }))
+                    }}
                   />
                 </div>
+              </div>
+            </div>
+          case "view_note":
+            return <div className='w-100' style={{ maxHeight: "10rem" }}>
+              <p className="mb-0 brand-link-color px-2 fs-5"><span className="fw-bold me-1">Title:</span>{commonState?.notesdata?.title} </p>
+              <div className="m-3 p-2 border border-muted rounded-3">
+                <p>{commonState?.notesdata?.content}</p>
+              </div>
+            </div>
+          case "delete_note":
+            return <div className="w-100 p-3">
+              <p className="mb-0 fs-5 text-muted">Are you want to delete {commonState?.notesdata?.title} ?</p>
+              <div className="d-flex mt-4 gap-3">
+                <ButtonComponent type="button" buttonName="Cancel" className="btn-light w-100"
+                  clickFunction={() => {
+                    dispatch(updateModalShow({ show: false, close_btn: false, size: "", modal_from: "", modal_type: "" }))
+
+                  }} />
+                <ButtonSpinner
+                  className="brand_color w-100 text-white border-0"
+                  title="Confirm"
+                  is_spinner={commonState?.deleteNoteStatus?.is_loading}
+                  clickFunction={() => dispatch(deleteTeacherNote(commonState?.notesdata?.id))}
+                />
+
               </div>
             </div>
 
@@ -538,7 +627,7 @@ export function OverallModel() {
               <div className="col p-1">
                 <ButtonSpinner
                   className="btn-danger brand_color border-0 w-100"
-                  title={teachersState?.upload_attachment?.glow ? "Uploading..." : "Upload Book"}
+                  title={teachersState?.upload_attachment?.glow ? "Uploading..." : "Upload Attachment"}
                   is_spinner={teachersState?.upload_attachment?.glow}
                   clickFunction={handleSubmit}
                 />

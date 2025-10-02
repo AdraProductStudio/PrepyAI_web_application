@@ -1,17 +1,23 @@
 import ButtonComponent from "Components/Button/Button";
-import React from "react";
+import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import JsonData from "../Utils/JsonData";
 import { useDispatch } from "react-redux";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import { useCommonState } from "Components/CustomHooks";
 import { changePassword } from "../Actions/Admin_action";
-import { setErrors } from "../Slices/adminSlice";
+import { handlechangePassword, resetSettingsPasswordEye, setErrors } from "../Slices/adminSlice";
 
 const AdminSettings = () => {
   const { jsxJson } = JsonData();
   const dispatch = useDispatch();
   const { settingsInputs } = useCommonState()?.adminState;
+
+  useEffect(() => {
+    dispatch(handlechangePassword({type: "response"}))
+    dispatch(setErrors({}));
+    dispatch(resetSettingsPasswordEye())
+  }, []);
 
   const handleSettings = (e) => {
     e.preventDefault();
