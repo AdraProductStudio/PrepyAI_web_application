@@ -262,16 +262,18 @@ export const getBooks = (params) => async (dispatch) => {
 };
 
 // books api
-export const handleDeleteBook = (params) => async (dispatch) => {
-    if (!params?.book_id) dispatch(deleteBook({ type: "failure", message: "book id missing" }));
+export const handleDeleteBook = (book_id,params) => async (dispatch) => {
+    if (!book_id) return dispatch(deleteBook({ type: "failure", message: "book id missing" }));
 
     try {
 
         dispatch(deleteBook({ type: "request" }));
-        const { data } = await axiosInstance.delete(`/teachers/delete_book?book_id=${params?.book_id}`);
+        const { data } = await axiosInstance.delete(`/teachers/delete_book?book_id=${book_id}`);
 
         if (data?.error_code === 0) {
-            dispatch(deleteBook({ type: "response", data: params }));
+            dispatch(deleteBook({ type: "response"}));
+            dispatch(getBooks(params))
+
         } else {
             dispatch(deleteBook({ type: "failure", message: data?.message || "Failed to delete books" }));
         }

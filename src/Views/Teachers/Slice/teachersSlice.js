@@ -1032,10 +1032,6 @@ const teachersSlice = createSlice({
           state.delete_book_spinner = true;
           break;
         case "response":
-          state.books.data =
-            state.books?.data?.filter(
-              (book) => book.book_id !== data.book_id
-            ) || [];
           state.delete_book_spinner = false;
           break;
         case "failure":

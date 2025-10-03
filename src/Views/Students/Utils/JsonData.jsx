@@ -2,7 +2,7 @@ import { useCommonState, useCustomNavigate, useDispatch } from "Components/Custo
 import Icons from "Utils/Icons"
 import Image from "Utils/Image"
 import { clear_learnerboook_upload_fields, clear_test_upload_fields, clearFieldError, editProfileInputs, setClassroomCode, setUploadLearnerBook, setUploadTestPaper, update_settings_eye, updateSettingsInputs } from "../Slices/StudentSlice";
-import { handlePostNote, update_note_data } from "Views/Common/Slices/Common_slice";
+import { handlePostNote, update_error, update_note_data } from "Views/Common/Slices/Common_slice";
 
 const JsonData = (params) => {
     //main selectors
@@ -15,6 +15,33 @@ const JsonData = (params) => {
         id: test?.test_id
     }))
 
+    const handleFileChange = (e) => {
+        const files = Array.from(e.target.files);
+        if (files.length > 0) {
+            for (const file of files) {
+                if (file.type !== "application/pdf") {
+                    dispatch(update_error({
+                        Err: "Only PDF files are allowed",
+                        Toast_Type: "error"
+                    }))
+                    e.target.value = ""
+                    return
+                }
+
+                if (file.size > 120 * 1024 * 1024) {
+                    dispatch(update_error({
+                        Err: `File exceeds the maximum size of 120 MB`,
+                        Toast_Type: "error"
+                    }))
+                    e.target.value = ""
+                    return
+                }
+            }
+            dispatch(setUploadLearnerBook({ type: "set", book_file: files }))
+        }
+
+        e.target.value = ""
+    }
 
         
     
@@ -649,11 +676,7 @@ const JsonData = (params) => {
                         (val) => val
                     )
                     : [],
-                change: (e) => {
-                    const files = Array.from(e.target.files);
-                    dispatch(setUploadLearnerBook({ type: 'set', book_file: files }));
-                    e.target.value = "";
-                },
+                change: (e) => {handleFileChange(e)},
                 isMandatory: true,
                 Err: commonState?.app_data?.validated && !studentState?.upload_learner_book?.book_file ? "Book file is required" : null,
             },

@@ -4,12 +4,12 @@ import Icons from "Utils/Icons";
 import LinkComponent from "Components/Router_components/LinkComponent";
 import BookCard from "Components/Card/BookCard";
 import { useCommonState, useDispatch } from "Components/CustomHooks";
-import SpinnerComponent from "Components/Spinner/Spinner";
 import Img from "Components/Img/Img";
 import Image from "Utils/Image";
 import { updateModalShow } from "../Slices/Common_slice";
 import { getBooks } from "Views/Teachers/Actions/TeacherActions";
 import ButtonComponent from "Components/Button/Button";
+import Spinner from "Components/Spinner/CustomSpinner";
 
 
 const Books = () => {
@@ -64,7 +64,7 @@ const Books = () => {
                         {teachersState?.books?.loading ?
                             <div className="w-100 h-100 row align-items-center justify-content-center">
                                 <div className="col-6 text-center">
-                                    <SpinnerComponent />
+                                    <Spinner />
                                     <p className="py-3">Getting Books...</p>
                                 </div>
                             </div>
