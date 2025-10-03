@@ -29,7 +29,7 @@ const StudentAttachments = () => {
                             <p>{key}</p>
                         </div>
                         {value.map((item, index) => (
-                            <div className="col-2 mt-4 mx-3" key={index}>
+                            <div className="col-12 col-sm-6 col-md-4 col-xl-3 col-xxl-2 mt-4 mx-3" key={index}>
                                 {/* <AttachmentCard className="student_attachment" onClickViewBook={() => navigate(`/student_dashboard/subjects/${subject_id}/attachments/${index}`)} delete_function={() => console.log("Delete function called")} download_function={() => console.log("Download function called")} /> */}
                                <AttachmentCard className="student_attachment" delete_function={() => console.log("Delete function called")}
                                     download_function={() => {

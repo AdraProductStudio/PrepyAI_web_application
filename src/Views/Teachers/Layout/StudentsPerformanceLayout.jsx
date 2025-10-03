@@ -17,7 +17,7 @@ const StudentsPerformanceLayout = () => {
     }, [])
     
     return (
-        <div>
+        <div className="pb-4">
             <div className="w-100 border-bottom pb-3 mt-3">
                 <div className="col">
                     <LinkComponent to={`/teachers_dashboard/classrooms/${class_id}/${subject_id}`} className="brand-link-color">

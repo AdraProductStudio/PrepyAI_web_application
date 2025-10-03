@@ -9,7 +9,6 @@ import CopyToClipboard from "ResuableFunctions/CopyToClipboard";
 import Icons from "Utils/Icons";
 import Image from "Utils/Image";
 import { deleteSubjects, getClassroomTeachers, getSubjects } from "../Actions/teacherAction";
-import SpinnerComponent from "Components/Spinner/Spinner";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import { Row,Col } from "react-bootstrap";
 import Spinner from "Components/Spinner/CustomSpinner";
@@ -33,40 +32,38 @@ const Subject = () => {
       <div className="h-100">
         <div className="container-fluid">
           <Row  className="d-flex justify-content-between border-bottom pb-3 mt-3">
-            <Col xs={1} md={3} lg={4}  className="d-flex align-items-center" >
+            <Col xs={12} md={4} lg={3}  className="d-flex align-items-center mb-2 mb-md-0">
               <Link
                 to="/teachers_dashboard/classrooms"
-                className="brand-link-color"
+                className="brand-link-color d-flex align-items-center"
               >
                 <span>{Icons.back_button_icon_blue}</span>
-                <span className="align-middle d-none d-md-inline-block">Back to Classroom</span>
+                <span className="align-middle">Back to Classroom</span>
               </Link>
             </Col>
-            <Col className="col-11 col-md-9 col-lg-6  h-100 d-flex align-items-center" >
-              <div className="h-100 col d-flex align-items-center justify-content-end me-4">
-                <ButtonComponent type="button"
-                  className="btn-brand-color border py-2"
-                  clickFunction={() => {
-                    dispatch(
-                      updateModalShow({
-                        show: true,
-                        close_btn: true,
-                        modal_from: "subjects",
-                        modal_type: "subjects",
-                      })
-                    );
-                    dispatch(getClassroomTeachers({ classroom_id: class_id }));
-                  }}
-                >
-                  {Icons.add_icon}
-                  <span className="lign-middle">Add Subject</span>
-                </ButtonComponent>
-              </div>
-              <div className="h-100 col d-flex align-items-center justify-content-end">
+            <Col xs={12} md={8} lg={9} className="d-flex flex-wrap justify-content-md-end align-items-center gap-2 gap-xl-4" >
+              <ButtonComponent type="button"
+                className="btn-brand-color border py-2 d-flex align-items-center"
+                clickFunction={() => {
+                  dispatch(
+                    updateModalShow({
+                      show: true,
+                      close_btn: true,
+                      modal_from: "subjects",
+                      modal_type: "subjects",
+                    })
+                  );
+                  dispatch(getClassroomTeachers({ classroom_id: class_id }));
+                }}
+              >
+                {Icons.add_icon}
+                <span className="align-middle ms-2">Add Subject</span>
+              </ButtonComponent>
+              <div className="d-flex align-items-center flex-wrap">
                 <span className="brand-link-color me-3">Class Room ID :</span>
                 <ButtonComponent
                   type="button"
-                  className="col-6 bg-transparent border me-2"
+                  className="bg-transparent border px-2 py-1 d-flex align-items-center"
                   clickFunction={() =>
                     CopyToClipboard(data?.classroom_code, dispatch)
                   }

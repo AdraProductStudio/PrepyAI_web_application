@@ -15,7 +15,7 @@ import Img from "Components/Img/Img";
 import Image from "Utils/Image";
 import Spinner from "Components/Spinner/CustomSpinner";
 
-const StudentDashboard = () => {
+const   StudentDashboard = () => {
     const dispatch = useDispatch();
     const { studentState } = useCommonState()
 

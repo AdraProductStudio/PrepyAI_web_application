@@ -171,7 +171,7 @@ export function OverallCanvas() {
                     case "attachments":
                         return (
                             <div className="shadow-sm w-100 py-3">
-                                <div className="col-3 ms-auto">
+                                <div className="col-6 col-sm-4 col-md-3 col-lg-4 col-xxl-3 ms-auto">
                                     <ButtonComponent type="button" className="btn-brand-color px-4 py-2" buttonName="Add Attachment"
                                         clickFunction={() => dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "teacher", modal_type: "attachments" }))} />
                                 </div>

@@ -1,7 +1,7 @@
 import TestDisplayCard from "Components/Card/TestDisplayCard"
 import Img from "Components/Img/Img"
 import LinkComponent from "Components/Router_components/LinkComponent"
-import { Card } from "react-bootstrap"
+import { Card, Row } from "react-bootstrap"
 import {useParams } from "react-router-dom"
 import Icons from "Utils/Icons"
 import JsonData from "Views/Teachers/Utils/JsonData"
@@ -38,16 +38,18 @@ const TestPageLayout = () => {
                 <div className="sechdule_test_layout">
                     <div className="w-100 h-100 p-1">
                         <div className="row" style={{ height: "5%" }}>
-                            {jsonOnly?.test_options.map((item, index) => (
-                                <div key={index} className="col-3 col-md-3 col-lg-2 col-xxl-1 text-center">
-                                    <p className={value === item?.value ? "test_page_option_active mb-0" : "test_page_options mb-0"}
-                                        onClick={() => {filterTestRecords(item?.value) 
-                                            setValue(item?.value)}}
-                                    >
-                                        {item.name}
-                                    </p>
-                                </div>
-                            ))}
+                            <Row className="gx-2 gy-3">
+                                {jsonOnly?.test_options.map((item, index) => (
+                                        <div key={index} className="col-6 col-md-3 col-lg-2 col-xxl-1 d-flex justify-content-center align-items-center">
+                                            <p className={value === item?.value ? "test_page_option_active mb-0" : "test_page_options mb-0"}
+                                                onClick={() => {filterTestRecords(item?.value) 
+                                                    setValue(item?.value)}}
+                                            >
+                                                {item.name}
+                                            </p>
+                                        </div>
+                                ))}
+                            </Row>
 
                         </div>
                         <Card className="border-0 rounded-3 bg-transparents overflowY mt-3" style={{ height: "95%" }}>

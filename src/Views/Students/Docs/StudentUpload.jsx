@@ -43,14 +43,14 @@ const StudentUpload = () => {
           </ButtonComponent>
         </div>
 
-        <div className="col-md-5 col-lg-4">
+        <div className="col-md-5 col-lg-5">
           <div className="w-100 w-md-auto position-relative">
             <form>
               <input
                 type="text"
                 className="form-control"
                 placeholder="Search..."
-                style={{ minWidth: "200px" }}
+                // style={{ minWidth: "200px" }}
                 value={studentState?.dashboard_pagination_inputs?.search_query}
                 onChange={(e) => {
                   dispatch(update_dashboard_pagination_inputs({search_query:e.target.value}))

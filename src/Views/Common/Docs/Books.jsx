@@ -40,7 +40,7 @@ const Books = () => {
                         <span className="align-middle">Back to classroom</span>
                     </LinkComponent>
                     <ButtonComponent
-                        className="btn-brand-color px-4"
+                        className="btn-brand-color px-3 px-md-4"
                         type="button"
                         buttonName={<div>
                             {Icons.add_icon}

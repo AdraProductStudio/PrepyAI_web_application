@@ -620,7 +620,7 @@ export function OverallModel() {
           case "attachments":
             return <div className="w-100 row">
               <div className="col p-1">
-                <Button variant="outline-secondary w-100" onClick={() => dispatch(updateModalShow({ show: false, close_btn: false, modal_from: "", modal_type: "" }))}>
+                <Button variant="outline-secondary w-100 h-100" onClick={() => dispatch(updateModalShow({ show: false, close_btn: false, modal_from: "", modal_type: "" }))}>
                   Cancel
                 </Button>
               </div>

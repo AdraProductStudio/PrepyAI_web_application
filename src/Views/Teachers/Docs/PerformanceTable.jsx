@@ -194,7 +194,7 @@ const PerformanceTable = ({ studentsData, testType }) => {
 
 
 
-                <div className="row flex-wrap  m-2 mx-0 performace_table_footer">
+                <div className="row flex-wrap  m-2 mx-0 performace_table_footer ms-4 ms-md-0">
                     <div className="col-6 col-md-3">
                         <p className="text-secondary ms-2 mb-0" style={{ fontSize: "0.8rem" }}>
                             Status

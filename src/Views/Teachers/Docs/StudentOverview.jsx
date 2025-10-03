@@ -135,7 +135,7 @@ const spendingHoursGlow = teachersState?.teacher_GetStudentOverviewSpendingHours
                 <p className="py-3">Getting Overview Records</p>
               </div>
             ) : (
-              <div className="row h-100">
+              <div className="row">
                 {testCardDetails?.data?.length > 0 ? (
                   <>
                     {data?.map((item, index) => (
@@ -178,8 +178,8 @@ const spendingHoursGlow = teachersState?.teacher_GetStudentOverviewSpendingHours
                       </Card>
                     </div>
 
-                    <div className="col-6 pt-3 px-2">
-                      <Card className="student_overview_table_height border-0 rounded-4 shadow">
+                    <div className="col-12 col-md-6 pt-3 px-2">
+                      <Card className="student_overview_table_height border-0 rounded-4 shadow h-100">
                         <Card.Header className="row align-items-center bg-transparent pt-3 border-0">
                           <div className="col">
                             <h5 className="mb-0 brand-heading-color">
@@ -256,7 +256,7 @@ const spendingHoursGlow = teachersState?.teacher_GetStudentOverviewSpendingHours
                       </Card>
                     </div>
 
-                    <div className="col-6 pt-3 px-2">
+                    <div className="col-12 col-md-6 pt-3 px-2">
                       <Card className="h-100 border-0 rounded-4 shadow">
                         <Card.Header className="row align-items-center bg-transparent pt-3 border-0">
                           <div className="col">

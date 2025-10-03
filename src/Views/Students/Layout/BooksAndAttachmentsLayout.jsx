@@ -41,13 +41,13 @@ const BooksAndAttachmentsLayout = () => {
                 </LinkComponent>
             </div>
 
-            <div className="w-100 small_header_content_main d-flex overflowY">
-                <div className="col-8 p-1">
+            <div className="w-100 h-100 small_header_content_main d-flex flex-column flex-xxl-row overflowY">
+                <div className="col-12 col-xxl-8 p-1">
                     <Card className="border-0 rounded-3 shadow-sm px-3 h-100">
                         <Card.Header className="bg-transparent border-0 border-bottom d-flex flex-wrap align-items-center">
-                            <div className="col-9 d-flex flex-wrap">
+                            <div className="col-9 d-flex flex-wrap w-100">
                                 {jsonOnly.book_attachment_navlink?.map((link, link_index) => (
-                                    <div className="col-2" key={link_index}>
+                                    <div className="col-6 col-md-2" key={link_index}>
                                         <NavLinkComp to={link.route} className="text-decoration-none book_attachment_navlink" end={true}>
                                             <span className="text-secondary">{link.name}</span>
                                         </NavLinkComp>
@@ -55,7 +55,7 @@ const BooksAndAttachmentsLayout = () => {
                                 ))}
                             </div>
 
-                            <div className={`col-3 text-end ${location.includes("attachments") ? "invisible" : ""}`}>
+                            <div className={`col-12 col-md-3 text-end ${location.includes("attachments") ? "invisible" : "mt-4"}`}>
                                 <SearchComponent placeholder="Search..." />
                             </div>
 
@@ -66,7 +66,7 @@ const BooksAndAttachmentsLayout = () => {
                     </Card>
                 </div>
 
-                <div className="col-4">
+                <div className="col-12 col-xxl-4">
                     <div className="col p-2">
                         <Card className="rounded-4 shadow-sm border-0">
                             <Card.Header className="bg-transparent border-0 py-2">
