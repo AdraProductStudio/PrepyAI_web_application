@@ -212,6 +212,10 @@ const initialState = {
   schedule_test_data:{
     is_loading:false,
     data:{}
+  },
+  seleted_books_chapter:{
+    is_loading:false,
+    data:[]
   }
 };
 
@@ -339,6 +343,29 @@ const teachersSlice = createSlice({
         default:
           break;
       }
+    },
+    handleGetchapters(state,action){
+      const { type, data } = action.payload;
+      switch (type) {
+        case "request":
+          state.seleted_books_chapter.is_loading = true
+          state.seleted_books_chapter.data = []
+          break;
+
+        case "response":
+          state.seleted_books_chapter.is_loading = false
+          state.seleted_books_chapter.data = data
+          break;
+
+        case "failure":
+          state.seleted_books_chapter.is_loading = false
+          state.seleted_books_chapter.data = []
+          break;
+
+        default:
+          break;
+      }
+
     },
     handelGetCreate(state, action) {
       const { type, data } = action.payload;
@@ -1005,10 +1032,6 @@ const teachersSlice = createSlice({
           state.delete_book_spinner = true;
           break;
         case "response":
-          state.books.data =
-            state.books?.data?.filter(
-              (book) => book.book_id !== data.book_id
-            ) || [];
           state.delete_book_spinner = false;
           break;
         case "failure":
@@ -1331,7 +1354,7 @@ export const {
   clear_Classroom_Upload_fields,
   update_button_spinner,
   setErrors, clearFieldError, update_settings_eye, resetSettingsPasswordEye,
-  clear_ScheduleTest_fields,save_schedule
+  clear_ScheduleTest_fields,save_schedule,handleGetchapters
 } = actions;
 
 export default reducer;

@@ -46,12 +46,12 @@ const StudentsBooks = () => {
                 })()
             ) : (
                 studentState?.subject_books?.length > 0 ? (
-                    studentState?.subject_books?.toReversed().map((book, idx) => (
+                    studentState?.subject_books?.map((book, idx) => (
                         <div className="col-12 col-md-6 col-lg-4 p-1" key={idx}>
                             <BookCard
                                 className="border"
                                 data={book}
-                                previewFunction={() =>navigate(`/student_dashboard/subjects/${subject_id}/books/${idx}`)}
+                                previewFunction={() =>navigate(`/student_dashboard/subjects/${subject_id}/books/${book?.book_id}`)}
                                 generateFunction={() => navigate(`/student_dashboard/generate_question/${book.book_id}`)}
                             />
                         </div>

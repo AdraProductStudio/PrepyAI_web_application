@@ -14,6 +14,7 @@ import {
     get_test_questions_success,
     getSubjectAttachments,
     handleGetBooks,
+    handleGetchapters,
     handleGetTestRecords,
     handleScheduleTest,
     handleUploadAttachment,
@@ -98,16 +99,16 @@ export const getTestRecords = (params) => async (dispatch) => {
 export const get_bookmarks = (params) => async (dispatch) => {
     try {
         dispatch(create_test_onchange(params))
-        dispatch(create_test_onchange({ type: "request" }))
+        dispatch(handleGetchapters({ type: "request" }))
         const { data } = await axiosInstance.post("/teachers/get_bookmarks", params || {})
         if (data?.error_code === 0) {
-            dispatch(handleGetTestRecords({ type: "response", data: data?.data?.bookmarks || [] }))
+            dispatch(handleGetchapters({ type: "response", data: data?.data?.bookmarks || [] }))
         }
         else {
-            dispatch(handleGetTestRecords({ type: "failure", message: data?.message || '' }))
+            dispatch(handleGetchapters({ type: "failure", message: data?.message || '' }))
         }
     } catch (err) {
-        dispatch(handleGetTestRecords({ type: "failure", message: err?.message || '' }))
+        dispatch(handleGetchapters({ type: "failure", message: err?.message || '' }))
     }
 }
 
@@ -261,16 +262,18 @@ export const getBooks = (params) => async (dispatch) => {
 };
 
 // books api
-export const handleDeleteBook = (params) => async (dispatch) => {
-    if (!params?.book_id) dispatch(deleteBook({ type: "failure", message: "book id missing" }));
+export const handleDeleteBook = (book_id,params) => async (dispatch) => {
+    if (!book_id) return dispatch(deleteBook({ type: "failure", message: "book id missing" }));
 
     try {
 
         dispatch(deleteBook({ type: "request" }));
-        const { data } = await axiosInstance.delete(`/teachers/delete_book?book_id=${params?.book_id}`);
+        const { data } = await axiosInstance.delete(`/teachers/delete_book?book_id=${book_id}`);
 
         if (data?.error_code === 0) {
-            dispatch(deleteBook({ type: "response", data: params }));
+            dispatch(deleteBook({ type: "response"}));
+            dispatch(getBooks(params))
+
         } else {
             dispatch(deleteBook({ type: "failure", message: data?.message || "Failed to delete books" }));
         }

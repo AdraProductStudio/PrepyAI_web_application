@@ -338,8 +338,8 @@ const JsonData = (params) => {
         name: "Chapter",
         category: "select",
         type: "react_dropdown_select",
-        options: Array.isArray(teachersState?.test_records?.data)
-          ? teachersState.test_records.data.map((chapter) => ({
+        options: Array.isArray(teachersState?.seleted_books_chapter?.data)
+          ? teachersState.seleted_books_chapter.data.map((chapter) => ({
             label: chapter.title,
             value: chapter.chapter_range,
           }))
@@ -350,7 +350,7 @@ const JsonData = (params) => {
           ? [
             {
               label:
-                teachersState?.test_records?.data?.find(
+                teachersState?.seleted_books_chapter?.data?.find(
                   (b) => b.title === teachersState?.scheduleTest_values?.selected_chapter
                 )?.title || "",
               value: teachersState?.scheduleTest_values?.selected_chapter,
@@ -369,7 +369,6 @@ const JsonData = (params) => {
           ? commonState?.app_data?.validationMessage?.chapter_range
           : null,
       },
-
       // {
       //     name: "Class",
       //     category: "select",

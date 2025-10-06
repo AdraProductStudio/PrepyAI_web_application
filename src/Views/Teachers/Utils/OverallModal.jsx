@@ -1,7 +1,7 @@
 import ButtonComponent from "Components/Button/Button";
 import { useCommonState, useDispatch } from "Components/CustomHooks";
 import ModalComponent from "Components/Modal/Modal";
-import { update_app_data, updateModalShow } from "Views/Common/Slices/Common_slice";
+import { update_app_data, update_error, updateModalShow } from "Views/Common/Slices/Common_slice";
 import { deleteTeacherNote, postTeacherNote } from "Views/Common/Actions/Common_action";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import JsonData from "./JsonData";
@@ -19,21 +19,50 @@ import { deleteAttachment, handleDeleteBook, handleUploadBook, uploadBooks } fro
 import SpinnerComponent from "Components/Spinner/Spinner";
 import ButtonSpinner from "Components/Spinner/ButtonSpinner";
 import { editProfileDetails } from "../Actions/Teachers_action";
+import { handleDeleteLearnerBook } from "Views/Students/Actions/StudentAction";
+import { update_selected_book_to_delete } from "Views/Students/Slices/StudentSlice";
 
 
 export function OverallModel() {
   const { class_id, subject_id, book_id } = useParams();
   const { jsxJson } = JsonData();
   const dispatch = useDispatch();
-  const { teachersState, commonState, } = useCommonState();
+  const { teachersState, commonState,studentState } = useCommonState();
   const { editProfileInputs } = teachersState
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
+const handleFileChange = (e, type) => {
+  const file = e.target.files[0]
+  if (!file) return
+  switch (type) {
+    case "attachment":
+      if (file.size > 30 * 1024 * 1024) {
+        dispatch(update_error({Err: "Format: PDF, DOC, DOCX | Maximum size: 30 MB",Toast_Type: "error"}))
+        e.target.value = ""
+        return;
+      }
+      dispatch(handle_attachment_books_upload(file))
+      break
+
+    case "book":
+      if (file.type !== "application/pdf") {
+        dispatch(update_error({Err: "Only PDF files are allowed for books",Toast_Type: "error"}))
+        e.target.value = ""
+        return;
+      }
+
+      if (file.size > 120 * 1024 * 1024) {
+        dispatch(update_error({Err: "Format: PDF | Maximum size: 120 MB",Toast_Type: "error"}))
+        e.target.value = ""
+        return
+      }
       dispatch(handle_attachment_books_upload(file));
-    }
-  };
+      break;
+
+    default:
+     break
+  }
+};
+
 
 
   const handleSubmit = () => {
@@ -132,7 +161,7 @@ export function OverallModel() {
             break;
         }
 
-      case "books":
+      case "dashboard":
         switch (commonState?.modal?.type) {
           case "delete_book":
             return <h5 className="ms-3">Delete Book</h5>
@@ -169,7 +198,7 @@ export function OverallModel() {
                 <Form.Control
                   type="file"
                   accept=".pdf,.doc,.docx"
-                  onChange={handleFileChange}
+                  onChange={(e)=>handleFileChange(e,'attachment')}
                 />
 
                 {teachersState?.attachment_books_upload?.filename && <p className="small text-success mt-2">📘 {teachersState?.attachment_books_upload?.filename}</p>}
@@ -263,15 +292,13 @@ export function OverallModel() {
                   Drag & drop Your book File or <span className="text-primary">Browse</span>
                 </Form.Label>
                 <p className="small text-muted">
-                  Format: pdf, docx, doc | Max size: 1 GB
+                  Format: pdf, docx, doc | Max size: 120 MB
                 </p>
                 <Form.Control
                   type="file"
                   accept=".pdf,.doc,.docx"
-                  onChange={handleFileChange}
+                  onChange={(e)=>handleFileChange(e,'book')}
                 />
-
-                {teachersState?.uploadBooks?.filename && <p className="small text-success mt-2">📘 {teachersState?.uploadBooks?.filename}</p>}
               </div>
             </div>
 
@@ -569,38 +596,28 @@ export function OverallModel() {
         }
         break;
 
-      case "books":
+      case "dashboard":
         switch (commonState?.modal?.type) {
           case "delete_book":
-            return <div className="text-center w-100 p-4">
-              <div
-                style={{ fontSize: "40px", color: "#ff4d6d" }}
-                className="mb-3"
-              >
-                {Icons.deleteIcon}
-              </div>
-              <p className="fs-5 d-flex justify-content-center fw-semibold">
-                Are you sure you want to delete?
-              </p>
+                        return (<div className="w-100 p-3">
+                            <p className="mb-0 fs-5 text-muted">Are you want to delete {studentState?.selected_book_to_delete?.data?.book_name} Book?</p>
+                            <div className="d-flex mt-4 gap-3">
+                                <ButtonComponent type="button" buttonName="Cancel" className="btn-light w-100"
+                                    clickFunction={() => {
+                                        dispatch(updateModalShow({ show: false, close_btn: false, size: "", modal_from: "", modal_type: "" }))
+                                        dispatch(update_selected_book_to_delete({data:{}}))
+                                    }} />
+                            <ButtonSpinner
+                              className="brand_color w-100 text-white border-0"
+                              title="Confirm"
+                              is_spinner={teachersState?.delete_book_spinner}
+                              clickFunction={() => dispatch(handleDeleteBook(studentState?.selected_book_to_delete?.data?.book_id, {classroom_id: class_id,
+                                subject_id: subject_id
+                              }))}
+                            />
 
-              <div className="d-flex justify-content-center gap-3 mt-4 w-100">
-                <ButtonComponent
-                  className="btn-md btn-light w-50"
-                  buttonName={"No"}
-                  clickFunction={() =>
-                    dispatch(updateModalShow({ show: false }))
-                  }
-                />
-
-                <ButtonSpinner
-                  className="btn-md w-50 text-white btn-brand-color"
-                  title={teachersState?.delete_book_spinner ? "Deleting..." : "Yes"}
-                  is_spinner={teachersState?.delete_book_spinner}
-                  clickFunction={() => dispatch(handleDeleteBook(commonState?.modal?.modal_data || {}))}
-                />
-              </div>
-            </div>
-
+                            </div>
+                        </div>)
           default:
             break;
         }
@@ -643,6 +660,7 @@ export function OverallModel() {
                     className="btn border px-5 w-100"
                     type="button"
                     buttonName="Cancel"
+                    clickFunction={()=>dispatch(updateModalShow({show:false, close_btn: false,modal_from: "",modal_type: ""}))}
                   />
                 </div>
                 <div className="col p-1">
