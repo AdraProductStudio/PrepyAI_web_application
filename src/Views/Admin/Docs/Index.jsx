@@ -11,8 +11,8 @@ import { getDashboardChartData, getDashboardTeachersList, handleDashboardOvervie
 import { useEffect } from "react";
 import { useCommonState } from "Components/CustomHooks";
 import { updateEditDashboardTeacher } from "../Slices/adminSlice";
-import SpinnerComponent from "Components/Spinner/Spinner";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
+import Spinner from "Components/Spinner/CustomSpinner";
 
 const AdminDashboard = () => {
     const dispatch = useDispatch();
@@ -104,7 +104,7 @@ const AdminDashboard = () => {
                                         {   
                                             adminState?.placeholder ? 
                                             <tr>
-                                                <td colSpan={8}> <SpinnerComponent/> </td>
+                                                <td colSpan={8} className="py-5"> <Spinner/> </td>
                                             </tr>
                                             :
                                             adminState?.dashboard_teachers_list.length > 0 

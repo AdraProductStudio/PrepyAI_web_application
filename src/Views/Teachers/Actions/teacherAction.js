@@ -1,5 +1,6 @@
 import axiosInstance from "Services/axiosInstance";
 import {
+  get_teacher_timetable,
   handldeGetAllSubjects,
   handldeGetPerfomanceBySubject,
   handleAllClassRooms,
@@ -832,3 +833,27 @@ export const getTestHistory = (params) => async (dispatch) => {
     );
   }
 };
+
+export const getTeacherTimetable = () => async (dispatch) => {
+  try {
+    dispatch(get_teacher_timetable({ type: "request" }))
+    const { data } = await axiosInstance.get('teachers/timetable')
+    if (data?.error_code === 0) {
+      let { timetable, timing } = data?.data
+      const dayOrder = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+      const sortedTimetable = Object.keys(timetable).sort((a, b) =>
+        (dayOrder.indexOf(a.toLowerCase()) === -1 ? 99 : dayOrder.indexOf(a.toLowerCase())) -
+        (dayOrder.indexOf(b.toLowerCase()) === -1 ? 99 : dayOrder.indexOf(b.toLowerCase()))
+      ).reduce((acc, key) => {
+        acc[key] = timetable[key]
+        return acc
+      }, {})
+      dispatch(get_teacher_timetable({ type: "response",data:{timetable:sortedTimetable,timing} }))
+    } else {
+      dispatch(get_teacher_timetable({ type: "failure", message: data?.message || "Failed to get timetable" }))
+    }
+
+  } catch (error) {
+    dispatch(get_teacher_timetable({ type: "failure", message: error?.response?.data?.message || "Failed to get timetable" }))
+  }
+}

@@ -73,18 +73,6 @@ const JsonData = (params) => {
       "Reg.No",
       "Action",
     ],
-
-    timeSlots: [
-      "8.30AM - 9.15AM",
-      "9.15AM - 10AM",
-      "10.30AM - 11.15AM",
-      "11.15AM - 12PM",
-      "1PM - 1.45PM",
-      "1.45PM - 2.30PM",
-      "2.30PM - 3.15PM",
-      "3.15PM - 4PM",
-    ],
-
     test_options: [
       {
         name: "Upcoming",

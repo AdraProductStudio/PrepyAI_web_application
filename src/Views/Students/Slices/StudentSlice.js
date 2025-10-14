@@ -111,7 +111,11 @@ const TeacherSlice = createSlice({
       show_old_password : false,
       show_new_password : false,
       show_confirm_password : false,
-    }
+    },
+    student_timetable:{
+    is_loading:false,
+    data:null
+  }
     },
     reducers: {
         caluculateRemainingTime: (state, action) => {
@@ -699,7 +703,22 @@ const TeacherSlice = createSlice({
             Object.entries(inputs).forEach(([key,value])=>{
                 state.dashboard_pagination_inputs[key] = value
             })
+        },
+      get_student_timetable(state, action) {
+        const { type, data } = action.payload
+        switch (type) {
+          case "request":
+            state.student_timetable.is_loading = true
+            break;
+          case "response":
+            state.student_timetable.is_loading = false
+            state.student_timetable.data = data
+            break;
+          case "failure":
+            state.student_timetable.is_loading = false
+            break;
         }
+      }
   },
   extraReducers(builder) {
     builder.addCase("common_slice/updateModalShow", (state, action) => {
@@ -793,7 +812,7 @@ export const {
   clear_test_upload_fields,
   clear_learnerboook_upload_fields,
     update_selected_book_to_delete,delete_learner_book,update_dashboard_pagination_inputs,
-  setErrors, clearFieldError, update_settings_eye, resetSettingsPasswordEye
+  setErrors, clearFieldError, update_settings_eye, resetSettingsPasswordEye,get_student_timetable
 } = actions;
 
 export default reducer;

@@ -1,7 +1,7 @@
 // import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks';
 import { useCommonState } from 'Components/CustomHooks';
 import Icons from 'Utils/Icons';
-import { clearFieldError, edit_profile_Inputs, onChangeClassroomForm, onChangeEditClassroomStudent, onChangeEditClassroomTeacher, onChangeEditDashboardTeacher, onChangeStaffForm, update_settings_eye, updateSettingsInputs } from '../Slices/adminSlice';
+import { clearFieldError, edit_profile_Inputs, onChangeClassroomForm, onChangeEditClassroomStudent, onChangeEditClassroomTeacher, onChangeEditDashboardTeacher, onChangeStaffForm, update_settings_eye, update_time_table, updateSettingsInputs } from '../Slices/adminSlice';
 import { useDispatch } from 'react-redux';
 import { getDashboardChartData, handleClassroomChart } from '../Actions/Admin_action';
 
@@ -35,6 +35,12 @@ const JsonData = () => {
                 icon: Icons.sidebar_classroom_icon,
                 active_icon: Icons.sidebar_classroom_active_icon,
                 route: '/admin_dashboard/classrooms'
+            },
+             {
+                name: "Time Table",
+                icon: Icons.time_table_icon,
+                active_icon: Icons.time_table_active_icon,
+                route: '/admin_dashboard/timetable'
             }
         ],
         staff_table_headers: ['S.No', 'Staff Name', 'Institute Name', 'Contact No', 'Email', 'Qualification', 'Action'],
@@ -723,6 +729,41 @@ const JsonData = () => {
                     dispatch(handleClassroomChart({classroom_id: adminState?.classroom_id?.id, year: selectedId}))
                 },
             }
+        ],
+        create_timetable:[
+            {
+                name: "Select days",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "No of days",
+                value: adminState?.time_table?.days || '',
+                change: (e) => {
+                    const value = e.target.value
+                    if (/^[0-9]*$/.test(value)) {
+                        dispatch(update_time_table({ days: value }))
+                    }
+                },
+                divClassName: "mb-1",
+                isMandatory: true,
+                Err: commonState?.app_data?.validated && !adminState?.time_table?.days? "Required" : null,
+            },{
+                name: "Select Period",
+                type: "text",
+                title: " ",
+                category: "input",
+                placeholder: "No of period",
+                value: adminState?.time_table?.period || '',
+                change: (e) => {
+                    const value = e.target.value
+                    if (/^[0-9]*$/.test(value)) {
+                        dispatch(update_time_table({ period: value }))
+                    }                  
+                },
+                divClassName: "mb-1",
+                isMandatory: true,
+                Err: commonState?.app_data?.validated && !adminState?.time_table?.period ? "Required" : null,
+            },
         ]
     }
 

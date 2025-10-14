@@ -77,6 +77,27 @@ let initialState = {
     show_old_password : false,
     show_new_password : false,
     show_confirm_password : false,
+  },
+  time_table: {
+    is_loading: false,
+    is_editing: false,
+    is_deleting:false,
+    period: null,
+    days: null,
+    data: null,
+    subjects:[],
+    classrooms:[]
+  },
+  timetable_templete:{
+    is_loading:false,
+    is_editing:false,
+    created:false,
+    data:[],
+    timing:[]
+  },
+  timetable_list:{
+    is_loading:false,
+    data:[]
   }
 };
 
@@ -607,6 +628,121 @@ const adminSlice = createSlice({
         show_new_password : false,
         show_confirm_password : false,
       }
+    },
+    update_time_table(state, action) {
+      const data = action.payload
+      Object.entries(data)?.forEach(([key, value]) => {
+        state.time_table[key] = value
+      })
+    },
+    get_classroom_timetable(state, action) {
+      const { type, data } = action.payload;
+      switch (type) {
+        case "request":
+          state.time_table.is_loading = true;
+          break;
+
+        case "response":
+          state.time_table.data = data.timetable;
+          state.time_table.periodsTime = data.timing;
+          state.time_table.is_loading = false;
+          break;
+
+        case "failure":
+          state.time_table.is_loading = false;
+          break;
+      }
+    },
+
+    create_template(state,action){
+      const {type,data} = action.payload
+      switch (type){
+        case "request":
+          state.timetable_templete.is_loading =true
+          break;
+        case"response":
+          state.timetable_templete.is_loading =false
+          state.timetable_templete.is_editing = false
+          state.timetable_templete.data = data?.template
+          state.timetable_templete.timing = data?.timing
+          state.timetable_templete.created = data?.created || false
+          break;
+        case "failure":
+          state.timetable_templete.is_loading =false
+          break
+      }
+    },
+    get_template(state,action){
+      const { type,data} = action.payload
+      switch(type){
+        case "request":
+          state.timetable_templete.is_loading = true
+          break;
+        case "response":
+          state.timetable_templete.data = data?.template
+          state.timetable_templete.timing = data?.timing
+          state.timetable_templete.is_loading = false
+          state.timetable_templete.created = data?.created || false
+          state.time_table.days = data?.no_of_days
+          state.time_table.period = data?.no_of_periods
+          break;
+        case "failure":
+           state.timetable_templete.is_loading = false
+          break;
+      }
+    },
+    update_template(state, action) {
+      const data = action.payload
+      Object.entries(data)?.forEach(([key, value]) => {
+        state.timetable_templete[key] = value
+      })
+    },
+    get_timetable_list(state, action) {
+      const { type, data } = action.payload
+      switch (type) {
+        case "request":
+          state.timetable_list.is_loading = true
+          state.timetable_list.data = []
+          break;
+        case "response":
+          state.timetable_list.is_loading = false
+          state.timetable_list.data = data || []
+          break;
+        case "failure":
+          state.timetable_list.is_loading = false
+          state.timetable_list.data = []
+          break;
+      }
+    },
+    create_timetable(state,action){
+      const {type} = action.payload 
+      switch(type){
+        case "request":
+          state.time_table.is_loading = true
+          break;
+        case "response":
+           state.time_table.is_loading = false
+          break;
+        case "failure" :
+           state.time_table.is_loading = false
+          break
+
+      }
+    },
+    delete_timetable(state,action){
+      const {type} = action.payload 
+      switch(type){
+        case "request":
+          state.time_table.is_deleting = true
+          break;
+        case "response":
+           state.time_table.is_deleting = false
+          break;
+        case "failure" :
+           state.time_table.is_deleting = false
+          break
+
+      }
     }
 
   },
@@ -684,7 +820,15 @@ export const {
   getCreateClassroomModalTeachers,
   updateDeleteClassroomData,
   editClassroomData,
-  update_settings_eye, resetSettingsPasswordEye
+  update_settings_eye, resetSettingsPasswordEye,
+  update_time_table,
+  get_classroom_timetable,
+  create_template,
+  update_template,
+  get_template,
+  get_timetable_list,
+  create_timetable,
+  delete_timetable
 } = actions;
 
 export default reducer;

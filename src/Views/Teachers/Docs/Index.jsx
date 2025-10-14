@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import JsonData from "../Utils/JsonData";
 import { useDispatch } from "react-redux";
 import { useCommonState } from "Components/CustomHooks";
-import { getAllClassRooms, GetAllsubjects, getGradeByClassroom, GetPerformanceBysubject, getSubjectByClassroom, getTeacherDashboardDatas } from "../Actions/teacherAction";
+import { getAllClassRooms, GetAllsubjects, getGradeByClassroom, GetPerformanceBysubject, getSubjectByClassroom, getTeacherDashboardDatas, getTeacherTimetable } from "../Actions/teacherAction";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
 import Spinner from "Components/Spinner/CustomSpinner";
 
@@ -76,6 +76,7 @@ const TeacherDashboard = () => {
         dispatch(getGradeByClassroom())
         dispatch(GetPerformanceBysubject())
         dispatch(GetAllsubjects())
+        dispatch(getTeacherTimetable())
     }, [])
 
     useEffect(() => {
@@ -102,8 +103,8 @@ const TeacherDashboard = () => {
                     ))}
 
                     <div className="col-12 mt-3 px-2 pb-2 pb-md-0">
-                        <div className="w-100">
-                            <TimeTableCard />
+                        <div className="w-100">                      
+                             <TimeTableCard data={teachersState?.teacher_timetable?.data} loading={teachersState?.teacher_timetable?.is_loading} />                           
                         </div>
                     </div>
                 </div>

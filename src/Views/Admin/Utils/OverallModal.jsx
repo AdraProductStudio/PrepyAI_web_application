@@ -5,12 +5,13 @@ import JsonData from "./JsonData";
 import ButtonComponent from "Components/Button/Button";
 import { useDispatch } from "react-redux";
 import { clearClassroomForm, clearFieldError, clearForm, onChangeClassroomForm, setClassroomErrors, setErrors, setFile } from "../Slices/adminSlice";
-import { createClassroom, editProfileDetails, handleClassroomTeacherEdit, handleDashboardTeacherEdit, handleDeleteClassroom, handleDeleteClassroomStudent, handleDeleteClassroomTeacher, handleDeleteDashboardTeacher, submitStaffFile, submitStaffManual } from "../Actions/Admin_action";
+import { createClassroom, createTimetaleTemplate, deleteTimetable, editProfileDetails, handleClassroomTeacherEdit, handleDashboardTeacherEdit, handleDeleteClassroom, handleDeleteClassroomStudent, handleDeleteClassroomTeacher, handleDeleteDashboardTeacher, submitStaffFile, submitStaffManual } from "../Actions/Admin_action";
 import React, { useRef } from "react";
 import Icons from "Utils/Icons";
 import { Inputfunctions } from "ResuableFunctions/Inputfunctions";
-import { updateModalShow } from "Views/Common/Slices/Common_slice";
+import { update_app_data, updateModalShow } from "Views/Common/Slices/Common_slice";
 import SpinnerComponent from "Components/Spinner/Spinner";
+import ButtonSpinner from "Components/Spinner/ButtonSpinner";
 
 export function OverallModel() {
   const { commonState } = useCommonState();
@@ -156,6 +157,7 @@ export function OverallModel() {
   }
 
 
+
   function modalHeaderFun() {
     switch (commonState?.modal?.from) {
       case "admin":
@@ -178,6 +180,11 @@ export function OverallModel() {
           case "edit_profile":
             return <h5>Edit Profile</h5>;
 
+          case "create_timetable":
+            return <h5>Create Timetable</h5>;
+
+          case "delete_timetable":
+            return <h5>Create Timetable</h5>;
           default:
             break;
         }
@@ -551,6 +558,41 @@ export function OverallModel() {
                 />
             </div>
 
+          case "create_timetable":
+            return <div className="w-100">
+              {Inputfunctions(jsxJson?.create_timetable)}
+              <ButtonSpinner
+                type="button"
+                className="brand_color text-white mt-3"
+                clickFunction={() => {
+                  dispatch(update_app_data({ type: "validation", data: true }))
+                  dispatch(createTimetaleTemplate({
+                    no_of_days: adminState?.time_table?.days,
+                    no_of_periods: adminState?.time_table?.period
+                  }))
+                }}
+                is_spinner={false}
+                title='Create'
+              />
+            </div>
+
+            case "delete_timetable":
+            return <div className="w-100">
+              <p className="mb-0 fs-5 text-muted">Do you want to delete Time Table ?</p>
+              <div className="d-flex mt-4 gap-3">
+                <ButtonComponent type="button" buttonName="Cancel" className="btn-light w-100"
+                  clickFunction={() => {
+                    dispatch(updateModalShow({ show: false, close_btn: false, size: "", modal_from: "", modal_type: "" }))
+                  }} />
+                <ButtonSpinner
+                  className="brand_color w-100 text-white border-0"
+                  title="Confirm"
+                  is_spinner={adminState?.time_table?.is_deleting}
+                  clickFunction={()=> dispatch(deleteTimetable(commonState?.modal?.modal_data)) }
+                />
+
+              </div>
+            </div>
 
           default:
             break;

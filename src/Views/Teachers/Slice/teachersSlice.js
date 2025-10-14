@@ -216,6 +216,10 @@ const initialState = {
   seleted_books_chapter:{
     is_loading:false,
     data:[]
+  },
+  teacher_timetable:{
+    is_loading:false,
+    data:null
   }
 };
 
@@ -1215,6 +1219,21 @@ const teachersSlice = createSlice({
     },
     clear_ScheduleTest_fields(state,action){
       state.scheduleTest_values = {}
+    },
+    get_teacher_timetable(state,action){
+      const {type,data} = action.payload
+      switch(type){
+        case "request":
+          state.teacher_timetable.is_loading = true
+          break;
+        case "response":
+           state.teacher_timetable.is_loading = false
+           state.teacher_timetable.data = data
+          break;
+        case "failure":
+           state.teacher_timetable.is_loading = false
+          break;
+      }
     }
   },
 
@@ -1354,7 +1373,8 @@ export const {
   clear_Classroom_Upload_fields,
   update_button_spinner,
   setErrors, clearFieldError, update_settings_eye, resetSettingsPasswordEye,
-  clear_ScheduleTest_fields,save_schedule,handleGetchapters
+  clear_ScheduleTest_fields,save_schedule,handleGetchapters,
+  get_teacher_timetable
 } = actions;
 
 export default reducer;

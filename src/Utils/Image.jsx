@@ -21,12 +21,13 @@ const record = require("Assets/Image/record.png")
 const record_isolation = require("Assets/Image/record_Isolation.png")
 const recording = require("Assets/Image/recording.png")
 const smile = require("Assets/Image/smile.png");
+const timetable = require("Assets/Image/timetable.png")
 
 const Image = {
   pdfImage, logo, no_data_found, book_image, no_subjects_added,
   loginImage, learnersImage, OrganizationImage, LoginCenterCircle,
   ForgotPassword, SuccessImage, stdProfile, default_prfile_pic, stroke, rocket,
-  start_test_pic, Task_empty, record, record_isolation, recording, smile
+  start_test_pic, Task_empty, record, record_isolation, recording, smile,timetable
 };
 
 export default Image;

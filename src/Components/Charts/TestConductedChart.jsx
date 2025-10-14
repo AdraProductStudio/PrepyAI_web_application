@@ -1,5 +1,5 @@
 import { useCommonState } from "Components/CustomHooks";
-import SpinnerComponent from "Components/Spinner/Spinner";
+import Spinner from "Components/Spinner/CustomSpinner";
 import {
     ResponsiveContainer,
     BarChart,
@@ -55,7 +55,7 @@ export default function TestConductedChart({data}) {
                 adminState?.overall_loading.includes("dashboard_chart_data")
                 ?
                     <div className="position-absolute top-50 start-50 translate-middle">
-                        <SpinnerComponent />
+                        <Spinner />
                     </div>
                 :
                 <ResponsiveContainer width="100%" height={340}>

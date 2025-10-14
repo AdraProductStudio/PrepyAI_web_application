@@ -1594,3 +1594,16 @@ input::placeholder {
 .selected-card strong {
   color: white !important;
 }
+
+.timetable_btn {
+  cursor: pointer;
+  font-weight: 400;
+
+}
+
+.timetable_btn_active {
+  cursor: pointer;
+  font-weight: 700 !important;
+  border-bottom: 3px solid #EC008C !important;
+  padding-bottom: 3px !important;
+}

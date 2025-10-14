@@ -350,7 +350,8 @@ const commonSlice = createSlice({
                     "admin_slice/edit_profile_Inputs_endpoint",
                     "admin_slice/dele_organisation_endpoint",
                     "student_slice/delete_learner_book",
-                    'common_slice/handleDeleteNote'
+                    'common_slice/handleDeleteNote',
+                    "adminSlice/delete_timetable",
 
                 ].includes(action.type),
 
@@ -393,7 +394,15 @@ const commonSlice = createSlice({
                     "admin_slice/change_password_endpoint",
                     "admin_slice/dele_organisation_endpoint",
                     "student_slice/delete_learner_book",    
-                    "teachersSlice/save_schedule"
+                    "teachersSlice/save_schedule",
+                    "adminSlice/delete_timetable",
+                    "adminSlice/get_timetable_list",
+                    "adminSlice/create_template",
+                    "adminSlice/get_template",
+                    "adminSlice/get_classroom_timetable",
+                    "adminSlice/create_timetable",
+                    "student_slice/get_student_timetable",
+                    "teachersSlice/get_teacher_timetable"
                 ].includes(action.type),
 
                 (state, action) => {

@@ -2,12 +2,12 @@ import React, { useMemo, useState } from "react";
 import { DateTime } from "luxon";
 import { CgProfile } from "react-icons/cg";
 import { useCommonState } from "Components/CustomHooks";
-import SpinnerComponent from "Components/Spinner/Spinner";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import { useDispatch } from "react-redux";
 import { handlePerformanceModal } from "../Actions/Teachers_action";
 import Icons from "Utils/Icons";
 import { Card } from "react-bootstrap";
+import Spinner from "Components/Spinner/CustomSpinner";
 
 
 const PerformanceTable = ({ studentsData, testType }) => {
@@ -132,7 +132,7 @@ const PerformanceTable = ({ studentsData, testType }) => {
                         {
                             teachersState?.studentsPerformance.placeholder ?
                                 <div className="position-absolute top-50 start-50 translate-middle">
-                                    <SpinnerComponent />
+                                    <Spinner />
                                 </div>
                                 :
                                 <tbody>

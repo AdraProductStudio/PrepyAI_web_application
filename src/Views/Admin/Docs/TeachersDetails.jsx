@@ -1,13 +1,13 @@
 import ButtonComponent from "Components/Button/Button";
 import { useCommonState } from "Components/CustomHooks";
 import Icons from "Utils/Icons";
-import SpinnerComponent from "Components/Spinner/Spinner";
 import { updateEditClassroomTeacher } from "../Slices/adminSlice";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { handleGetTeachersTableData } from "../Actions/Admin_action";
 import { useParams } from "react-router-dom";
+import Spinner from "Components/Spinner/CustomSpinner";
 
 const TeachersDetails = () => {
     const { id } = useParams()
@@ -33,7 +33,7 @@ const TeachersDetails = () => {
                         adminState?.placeholder 
                             ?
                             <tr>
-                                <td colSpan={7}> <SpinnerComponent /> </td>
+                                <td colSpan={7} className="py-4" > <Spinner /> </td>
                             </tr>
                             :
                             adminState?.teachersTableData.length > 0 

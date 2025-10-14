@@ -4,9 +4,9 @@ import Icons from "Utils/Icons";
 import { handleGetStudentsTableData } from "../Actions/Admin_action";
 import { useCommonState } from "Components/CustomHooks";
 import { useEffect } from "react";
-import SpinnerComponent from "Components/Spinner/Spinner";
 import { updateEditClassroomStudent } from "../Slices/adminSlice";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
+import Spinner from "Components/Spinner/CustomSpinner";
 
 const StudentDetails = () => {
     const { adminState } = useCommonState();
@@ -30,7 +30,7 @@ const StudentDetails = () => {
                         adminState?.placeholder 
                             ?
                             <tr>
-                                <td colSpan={8}> <SpinnerComponent /> </td>
+                                <td colSpan={8} className="py-4"> <Spinner /> </td>
                             </tr>
                             :
                             adminState?.studentsTableData.length > 0 

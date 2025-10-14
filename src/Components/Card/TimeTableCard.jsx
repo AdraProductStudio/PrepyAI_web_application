@@ -1,58 +1,57 @@
+import Spinner from "Components/Spinner/CustomSpinner";
 import React from "react";
 import { Card } from 'react-bootstrap';
-import JsonData from 'Views/Teachers/Utils/JsonData';
 
-const TimeTableCard = () => {
-    const { jsonOnly } = JsonData();
+const TimeTableCard = ({ data, loading }) => {
 
-    const schedule = {
-        Monday: {
-            "8.30AM - 9.15AM": "Math 10A",
-            "9.15AM - 10AM": "English",
-            "10.30AM - 11.15AM": "Science",
-            "11.15AM - 12PM": "History",
-            "1PM - 1.45PM": "Geography",
-            "1.45PM - 2.30PM": "Physical Education"
-        },
-        Wednesday: {
-            "11.15AM - 12PM": "History",
-            "2.30PM - 3.15PM": "Physical Education"
-        },
-        Friday: {
-            "10.30AM - 11.15AM": "Science",
-            "11.15AM - 12PM": "History",
-            "2.30PM - 3.15PM": "Physical Education"
-        }
-    };
+    const format12Hour = (time24) => {
+        if (!time24) return "";
+        const [hourStr, min] = time24.split(":");
+        let hour = parseInt(hourStr, 10);
+        const ampm = hour >= 12 ? "PM" : "AM";
+        hour = hour % 12;
+        if (hour === 0) hour = 12;
+        return `${hour}:${min} ${ampm}`;
+    }
+    let days = []
+    if (data) {
+        days = Object.keys(data?.timetable) || []
+    }
 
     return (
         <Card className='border-0 rounded-4 shadow-sm py-3'>
             <Card.Title className='ps-3 fs-16'> Time Table </Card.Title>
             <Card.Body>
-                <div className="table-responsive">
-                    <table className="table text-center align-middle timetable">
-                        <tbody>
-                            {jsonOnly.days.map((day) => (
-                                <tr key={day}>
-                                    <td className="timetable_heading">{day}</td>
-                                    {jsonOnly.timeSlots.map((slot) => (
-                                        <td key={slot} className="text-nowrap periods">
-                                            {schedule[day]?.[slot] || "-"}
-                                        </td>
+                {loading ? <div className="d-flex justify-content-center align-items-center h-100">
+                    <div className="col-5 text-center">
+                        <Spinner />
+                    </div>
+                </div> :
+                    <div className="table-responsive">
+                        <table className="table text-center align-middle timetable">
+                            <tbody>
+                                {days?.map((day) => (
+                                    <tr key={day}>
+                                        <td className="timetable_heading">{day}</td>
+                                        {data?.timetable?.[day]?.map((period, index) => (
+                                            <td key={period?.period_id} className="text-nowrap periods">
+                                                {period?.classroom_name || period?.subject_name || "-"}
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+                            <tfoot className="">
+                                <tr>
+                                    <th className='border-0'>Day / Time</th>
+                                    {data?.timing.map((slot) => (
+                                        <th key={slot?.period_id} className="timetable_heading">{format12Hour(slot?.start_time)}{'-'}{format12Hour(slot?.end_time)}</th>
                                     ))}
                                 </tr>
-                            ))}
-                        </tbody>
-                        <tfoot className="">
-                            <tr>
-                                <th className='border-0'>Day / Time</th>
-                                {jsonOnly?.timeSlots.map((slot) => (
-                                    <th key={slot} className="timetable_heading">{slot}</th>
-                                ))}
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
+                            </tfoot>
+                        </table>
+                    </div>
+                }
             </Card.Body>
         </Card>
     );

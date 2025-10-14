@@ -5,7 +5,7 @@ import PerformanceHistoryCard from 'Components/Card/PerformanceHistoryCard';
 import TimeTableCard from 'Components/Card/TimeTableCard';
 import ActivityCard from 'Components/Card/ActivtyCard';
 import { useCommonState, useDispatch } from "Components/CustomHooks"
-import { handleGetAllTestHistory, handleGetAllTests, handleGetOfflineTests, handleGetOverallPerformance } from "../Actions/StudentAction"
+import { getStudentTimetable, handleGetAllTestHistory, handleGetAllTests, handleGetOfflineTests, handleGetOverallPerformance } from "../Actions/StudentAction"
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
 import { updateTestId } from "../Slices/StudentSlice";
 import 'Stylesheet/Css/Student.css'
@@ -24,6 +24,7 @@ const   StudentDashboard = () => {
         dispatch(handleGetOverallPerformance())
         dispatch(handleGetAllTestHistory())
         dispatch(handleGetOfflineTests())
+        dispatch(getStudentTimetable())
     }, [])
     return (
         <Row className="g-3">
@@ -73,8 +74,8 @@ const   StudentDashboard = () => {
                             </Card.Footer>
                         </Card>
                     </Col>
-                    <Col xs={12} className='p-2'>
-                        <TimeTableCard />
+                    <Col xs={12} className='p-2'>    
+                    <TimeTableCard data={studentState?.student_timetable?.data} loading={studentState?.student_timetable?.is_loading} />
                     </Col>
                 </Row>
             </Col >

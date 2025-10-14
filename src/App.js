@@ -98,6 +98,11 @@ import SuperadminAuth from "Views/Superadmin/Docs/SuperadminAuth";
 import OrganisationAuth from "Views/Organisation/Docs/OrganisationAuth";
 import TestHistory from "Views/Teachers/Docs/TestHistory";
 import { UpdateDynamic_Class_Subject_id } from "Views/Teachers/Docs/UpdateDynamic_Class_Subject_id";
+import TimeTable from "Views/Admin/Docs/TimeTable";
+import TimetableTemplate from "Views/Admin/Docs/TimetableTemplate";
+import TimetableReord from "Views/Admin/Docs/TimetableReord";
+import EditClasroomTimetable from "Views/Admin/Docs/EditClasroomTimetable";
+import EditTeacherTimetable from "Views/Admin/Docs/EditTeacherTimetable";
 
 
 
@@ -135,6 +140,13 @@ function App() {
               <Route path="profile" element={<AdminProfile />} >
                 <Route index element={<AdminPersonalInfo/>} />
                 <Route path="settings" element={<AdminSettings/>} />
+              </Route>
+              <Route path="timetable" >
+                <Route index element={<TimeTable />} />
+                 <Route path="templete" element={<TimetableTemplate />} />
+                  <Route path="record" element={<TimetableReord />} />
+                  <Route path="record/classroom/:id" element={<EditClasroomTimetable />} />
+                  <Route path="record/teacher/:id" element={<EditTeacherTimetable />} />
               </Route>
             </Route>
           </Route>

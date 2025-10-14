@@ -8,9 +8,9 @@ import Icons from "Utils/Icons";
 import Image from "Utils/Image";
 import { handleGetCreateClassroomModalTeachers, handleGetAllClassrooms } from "../Actions/Admin_action";
 import { handleUpdateClassroomName, updateDeleteClassroomData } from "../Slices/adminSlice";
-import SpinnerComponent from "Components/Spinner/Spinner";
 import { OverallModel } from "../Utils/OverallModal";
 import { updateModalShow } from "Views/Common/Slices/Common_slice";
+import Spinner from "Components/Spinner/CustomSpinner";
 
 const Classroom = () => {
     const navigate = useCustomNavigate();
@@ -49,7 +49,7 @@ const Classroom = () => {
                             adminState.placeholder 
                             ? 
                             <div className="d-flex justify-content-center align-items-center w-100">
-                                <SpinnerComponent />
+                                <Spinner />
                             </div> 
                             :
                             adminState?.classroomsJson.length > 0 

@@ -1,4 +1,4 @@
-import SpinnerComponent from "Components/Spinner/Spinner";
+import Spinner from "Components/Spinner/CustomSpinner";
 import {
     ResponsiveContainer,
     BarChart,
@@ -55,7 +55,7 @@ export default function TestPerformanceChart({data, loading}) {
                 loading.includes("classroom_chart_data")
                 ?
                     <div className="start-50 top-50 position-absolute translate-middle">
-                        <SpinnerComponent />
+                        <Spinner />
                     </div>
                 :
                     <ResponsiveContainer width="100%" height="100%">
