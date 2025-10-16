@@ -39,7 +39,7 @@ const CreateTest = () => {
 
 
     return (
-        <div className="p-5 h-100 overflow-y-auto">
+        <div className="p-1 p-md-5 h-100 overflow-y-auto">
             {teachersState?.books?.loading ? (
                 <div className="w-100 h-100 row align-items-center justify-content-center">
                     <div className="col-6 text-center">

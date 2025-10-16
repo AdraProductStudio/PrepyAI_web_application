@@ -279,7 +279,7 @@ const JsonData = (params) => {
             selected_students_in_schedule({ test_name: e.target.value })
           );
         },
-        divClassName: "col-12 com-sm-6 col-xl-4 p-2",
+        divClassName: "col-12 col-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated
           ? commonState?.app_data?.validationMessage?.test_name
           : null,
@@ -317,7 +317,7 @@ const JsonData = (params) => {
             dispatch(get_bookmarks({ book_id: selectedValue }));
           }
         },
-        divClassName: "col-12 com-sm-6 col-xl-4 p-2",
+        divClassName: "col-12 col-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated
           ? commonState?.app_data?.validationMessage?.book_id
           : null,
@@ -351,7 +351,7 @@ const JsonData = (params) => {
           dispatch(selected_students_in_schedule({ chapters: [selectedLabel] }));
           dispatch(selected_students_in_schedule({ chapter_range: [selectedValue] }));
         },
-        divClassName: "col-12 com-sm-6 col-xl-4 p-2",
+        divClassName: "col-12 col-sm-6 col-xl-4 p-2",
         className: "modal-inputs",
         Err: commonState?.app_data?.validated
           ? commonState?.app_data?.validationMessage?.chapter_range
@@ -391,7 +391,7 @@ const JsonData = (params) => {
                 : selected?.value,
             })
           ),
-        divClassName: "col-12 com-sm-6 col-xl-4 p-2",
+        divClassName: "col-12 col-sm-6 col-xl-4 p-2",
         className: "modal-inputs",
         Err: commonState?.app_data?.validated
           ? commonState?.app_data?.validationMessage?.type_of_questions
@@ -412,7 +412,7 @@ const JsonData = (params) => {
               no_of_questions: e.target.value,
             })
           ),
-        divClassName: "col-12 com-sm-6 col-xl-4 p-2",
+        divClassName: "col-12 col-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated
           ? commonState?.app_data?.validationMessage?.no_of_questions
           : null,
@@ -475,7 +475,7 @@ const JsonData = (params) => {
         })(),
         placeholder: "Select Students",
         isMandatory: true,
-        className: "modal-inputs col-12 com-sm-6 col-xl-4",
+        className: "modal-inputs col-12 col-sm-6 col-xl-4",
         value:
           teachersState?.scheduleTest_values?.students
             ?.map((id) => {
@@ -523,7 +523,7 @@ const JsonData = (params) => {
               start_date: e.target.value,
             })
           ),
-        divClassName: "col-12 com-sm-6 col-xl-4 p-2",
+        divClassName: "col-12 col-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated
           ? commonState?.app_data?.validationMessage?.start_date
           : null,
@@ -541,7 +541,7 @@ const JsonData = (params) => {
           dispatch(
             selected_students_in_schedule({ start_time: e.target.value })
           ),
-        divClassName: "col-12 com-sm-6 col-xl-4 p-2",
+        divClassName: "col-12 col-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated
           ? commonState?.app_data?.validationMessage?.start_time
           : null,
@@ -559,7 +559,7 @@ const JsonData = (params) => {
           dispatch(
             selected_students_in_schedule({ total_duration: e.target.value })
           ),
-        divClassName: "col-12 com-sm-6 col-xl-4 p-2",
+        divClassName: "col-12 col-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated
           ? commonState?.app_data?.validationMessage?.total_duration
           : null,
@@ -577,7 +577,7 @@ const JsonData = (params) => {
           dispatch(
             selected_students_in_schedule({ set_questions: e.target.value })
           ),
-        divClassName: "col-12 com-sm-6 col-xl-4 p-2",
+        divClassName: "col-12 col-sm-6 col-xl-4 p-2",
         Err: commonState?.app_data?.validated
           ? commonState?.app_data?.validationMessage?.set_questions
           : null,
@@ -1071,14 +1071,10 @@ const JsonData = (params) => {
           : [] ],
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
-        className: "custom-dropdownss",
+        className: "custom-dropdown w-100",
         value: [{ label: "All Classrooms", value: "all_classrooms" }],
         change: (selectedOptions) =>
-          dispatch(
-            update_perfomance_by_classroom({
-              classroom_id: selectedOptions.map((opt) => opt.value),
-            })
-          ),
+          dispatch(update_perfomance_by_classroom({classroom_id: selectedOptions.map((opt) => opt.value)})),
       },
     ],
     selectStudentsByClassRoom: [
@@ -1096,11 +1092,7 @@ const JsonData = (params) => {
         className: "studentsSelectClasses",
         value: [{ label: "All Classrooms", value: "all_classrooms" }],
         change: (selectedOptions) =>
-          dispatch(
-            update_Students_classroom({
-              classroom_id: selectedOptions.map((opt) => opt.value),
-            })
-          ),
+          dispatch(update_Students_classroom({classroom_id: selectedOptions.map((opt) => opt.value)})),
       },
     ],
     selectStudentPerfomance: [
@@ -1123,7 +1115,7 @@ const JsonData = (params) => {
           : [],
         multi: false,
         divClassName: "grade-dashboard-teacher-input",
-        className: "custom-dropdownss",
+        className: "custom-dropdown",
         value: [{ label: "All Subjects", value: "all_subjects" }],
         change: (selectedOptions) =>
           dispatch(

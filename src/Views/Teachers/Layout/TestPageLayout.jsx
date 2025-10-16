@@ -8,18 +8,18 @@ import JsonData from "Views/Teachers/Utils/JsonData"
 import Image from "Utils/Image";
 import { useCommonState, useDispatch } from "Components/CustomHooks"
 import { getTestRecords } from "../Actions/TeacherActions"
-import { useEffect, useState } from "react"
+import { useEffect} from "react"
 import Spinner from "Components/Spinner/CustomSpinner"
+import { update_testrecord_tab } from "../Slice/teachersSlice"
 
 const TestPageLayout = () => {
     const { class_id, subject_id } = useParams();
     const { jsonOnly } = JsonData({ class_id, subject_id });
     const dispatch = useDispatch() 
     const { teachersState} = useCommonState()
-    const [value , setValue] = useState('upcoming')
 
     useEffect(() => {
-        dispatch(getTestRecords({ subject_id, type: "upcoming" }));
+        dispatch(getTestRecords({ subject_id, type: teachersState?.test_records?.test_tab}));
     }, [])
 
     const filterTestRecords = (value) => {
@@ -41,9 +41,9 @@ const TestPageLayout = () => {
                             <Row className="gx-2 gy-3">
                                 {jsonOnly?.test_options.map((item, index) => (
                                         <div key={index} className="col-6 col-md-3 col-lg-2 col-xxl-1 d-flex justify-content-center align-items-center">
-                                            <p className={value === item?.value ? "test_page_option_active mb-0" : "test_page_options mb-0"}
+                                            <p className={teachersState?.test_records?.test_tab === item?.value ? "test_page_option_active mb-0" : "test_page_options mb-0"}
                                                 onClick={() => {filterTestRecords(item?.value) 
-                                                    setValue(item?.value)}}
+                                                    dispatch(update_testrecord_tab(item?.value))}}
                                             >
                                                 {item.name}
                                             </p>

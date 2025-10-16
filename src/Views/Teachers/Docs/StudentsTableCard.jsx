@@ -88,13 +88,13 @@ const StudentsTableCard = ({ className, navigate_to, data, glow }) => {
               <tbody className="staff_table_data">
                 {data?.students?.map((student, index) => (
                   <tr key={index}>
-                    <td className="border-end">{index + 1}</td>
-                    <td className="border-end">{student.first_name+" "+student.last_name}</td>
-                    <td className="border-end">{student.contact_no}</td>
-                    <td className="border-end">{student.student_email}</td>
-                    <td className="border-end">{student.status}</td>
-                    <td className="border-end">{student.number_of_attempts}</td>
-                    <td className="border-end">{student.student_reg_no}</td>
+                    <td className="border-end">{student?.s_no}</td>
+                    <td className="border-end">{student?.first_name+" "+student?.last_name}</td>
+                    <td className="border-end">{student?.contact_no}</td>
+                    <td className="border-end">{student?.student_email}</td>
+                    <td className="border-end">{student?.status}</td>
+                    <td className="border-end">{student?.number_of_attempts}</td>
+                    <td className="border-end">{student?.student_reg_no}</td>
                     <td className="text-center">
                       <ButtonComponent
                         type="button"

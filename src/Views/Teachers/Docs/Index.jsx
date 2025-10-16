@@ -114,8 +114,8 @@ const TeacherDashboard = () => {
                         <Card className='border-0 rounded-4 shadow-sm py-3 h-100'>
                             <Card.Header className="row border-bottom bg-transparent">
                                 <Card.Title className='col-12 fs-16'> Student Performance </Card.Title>
-                                <div className="col-12 col-xxl-6">{Inputfunctions(jsxJson.selectClassRoomForPerfomance)}</div>
-                                <div className="col-12 col-xxl-6">{Inputfunctions(jsxJson?.selectStudentPerfomance)}</div>
+                                <div className="col-xs-12 col-sm-6 mb-2 mb-sm-0">{Inputfunctions(jsxJson.selectClassRoomForPerfomance)}</div>
+                                <div className="col-xs-12 col-sm-6">{Inputfunctions(jsxJson?.selectStudentPerfomance)}</div>
                             </Card.Header>
                             <Card.Body className="pe-none">
                                 <StudentsPerformanceChart data={Array.isArray(studentPerfomancedata) ? studentPerfomancedata : []} />

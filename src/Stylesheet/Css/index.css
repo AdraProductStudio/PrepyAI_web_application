@@ -558,8 +558,8 @@ td {
 .test_page_option_active {
   color: black !important;
   font-weight: bold;
-  padding-bottom: .6rem;
-  border-bottom: 2px solid black !important;
+  padding-bottom: .3rem;
+  border-bottom: 3px solid #EC008C !important;
   cursor: pointer;
 }
 .books_layout {
@@ -1605,5 +1605,21 @@ input::placeholder {
   cursor: pointer;
   font-weight: 700 !important;
   border-bottom: 3px solid #EC008C !important;
-  padding-bottom: 3px !important;
+  padding-bottom: .3rem !important;
 }
+
+.timetable_edit_btn:hover svg path {
+  fill: white !important;
+}
+
+
+.timetable_delete_btn:hover svg path:not(.inner-line) {
+  stroke: white !important;
+  fill: white !important; 
+}
+
+
+.timetable_delete_btn:hover svg path.inner-line {
+  stroke: red !important;
+}
+

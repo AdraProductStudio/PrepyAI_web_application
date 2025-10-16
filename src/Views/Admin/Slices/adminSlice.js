@@ -97,6 +97,7 @@ let initialState = {
   },
   timetable_list:{
     is_loading:false,
+    tab:"teacher",
     data:[]
   }
 };
@@ -743,6 +744,9 @@ const adminSlice = createSlice({
           break
 
       }
+    },
+    update_timetable_tab(state,action){
+      state.timetable_list.tab = action.payload
     }
 
   },
@@ -828,7 +832,8 @@ export const {
   get_template,
   get_timetable_list,
   create_timetable,
-  delete_timetable
+  delete_timetable,
+  update_timetable_tab
 } = actions;
 
 export default reducer;

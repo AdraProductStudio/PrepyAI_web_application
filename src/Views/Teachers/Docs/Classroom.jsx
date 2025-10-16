@@ -41,7 +41,7 @@ const Classroom = () => {
           <div className="col">
             <h5 className="mb-0">Classrooms</h5>
           </div>
-          <div className="col text-end">
+          {/* <div className="col text-end">
             <ButtonComponent
               type="button"
               className="btn-brand-color border py-2 px-2 px-md-3"
@@ -60,7 +60,7 @@ const Classroom = () => {
               {Icons.add_icon}
               <span className="lign-middle">Create Classroom</span>
             </ButtonComponent>
-          </div>
+          </div> */}
         </div>
 
         <div className="w-100 row align-content-start small_header_content_main overflowY">

@@ -21,6 +21,7 @@ const initialState = {
   },
   test_records: {
     glow: false,
+    test_tab:"upcoming",
     data: [],
   },
   test_dropDown_data: {
@@ -1234,6 +1235,9 @@ const teachersSlice = createSlice({
            state.teacher_timetable.is_loading = false
           break;
       }
+    },
+    update_testrecord_tab(state,action){
+      state.test_records.test_tab = action.payload
     }
   },
 
@@ -1374,7 +1378,7 @@ export const {
   update_button_spinner,
   setErrors, clearFieldError, update_settings_eye, resetSettingsPasswordEye,
   clear_ScheduleTest_fields,save_schedule,handleGetchapters,
-  get_teacher_timetable
+  get_teacher_timetable,update_testrecord_tab
 } = actions;
 
 export default reducer;

@@ -22,33 +22,25 @@ const PreviewTest = () => {
   const [selectedSet, setSelectedSet] = useState(null);
 
   useEffect(() => {
-    dispatch(
-      get_test_questions({
-        test_id: test_id || teachersState?.schedule_test_data?.data?.test_id,
-      })
-    );
-  }, []);
+    dispatch(get_test_questions({test_id: test_id || teachersState?.schedule_test_data?.data?.test_id}))
+  }, [])
 
 
   const handleDownload = () => {
     if (!selectedSet) {
-      alert("Please select a question set first!");
-      return;
+      alert("Please select a question set first!")
+      return
     }
     const questions =
-      teachersState?.test_questions?.question_with_answer?.[selectedSet] || [];
+      teachersState?.test_questions?.question_with_answer?.[selectedSet] || []
 
     if (!questions.length) {
-      alert("No questions with answers found!");
-      return;
+      alert("No questions with answers found!")
+      return
     }
 
-    generateQuestionPaperPDF(
-      questions,
-      `${selectedSet}_questions_with_answers.pdf`,
-      true
-    );
-  };
+    generateQuestionPaperPDF(questions,`${selectedSet}_questions_with_answers.pdf`,true)
+  }
 
 
   const handlePrint = () => {
@@ -56,20 +48,14 @@ const PreviewTest = () => {
       alert("Please select a question set first!");
       return;
     }
-    const questions =
-      teachersState?.test_questions?.questions_without_answer?.[selectedSet] ||
-      [];
+    const questions = teachersState?.test_questions?.questions_without_answer?.[selectedSet] || [];
 
     if (!questions.length) {
-      alert("No questions found for print!");
+      alert("No questions found for print!")
       return;
     }
 
-    generateQuestionPaperPDF(
-      questions,
-      `${selectedSet}_questions_without_answers.pdf`,
-      false
-    );
+    generateQuestionPaperPDF(questions, `${selectedSet}_questions_without_answers.pdf`,false)
   };
 
 
@@ -86,7 +72,7 @@ const PreviewTest = () => {
   };
 
   return (
-    <div className="p-5 h-100">
+    <div className="p-1 p-md-5 h-100">
       {teachersState?.get_test_questions_loading ? (
         <div className="h-100 row align-items-center justify-content-center">
           <div className="col-6 text-center">

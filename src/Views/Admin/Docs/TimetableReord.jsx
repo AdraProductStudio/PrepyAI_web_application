@@ -1,32 +1,32 @@
 import TimeTableDataCard from 'Components/Card/TimeTableDataCard'
 import { useCommonState, useDispatch } from 'Components/CustomHooks'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {Container, Row } from 'react-bootstrap'
 import { getTitmetableList } from '../Actions/Admin_action'
 import Spinner from 'Components/Spinner/CustomSpinner'
 import Img from 'Components/Img/Img'
 import Image from 'Utils/Image'
+import { update_timetable_tab } from '../Slices/adminSlice'
 
 const TimetableReord = () => {
-  const [tab,setTab ] = useState('teacher')
   const dispatch = useDispatch()
   const {timetable_list} = useCommonState()?.adminState
 
   useEffect(()=>{
-    dispatch(getTitmetableList(tab))
-  },[tab])
+    dispatch(getTitmetableList(timetable_list?.tab))
+  },[timetable_list?.tab])
   return (
     <Container fluid className='h-100'>
       <Row className='w-100 p-3'>
         <div className='d-flex flex-wrap gap-4'>
           <div className=''>
-            <span className={tab === "teacher" ? "timetable_btn_active" : "timetable_btn"}
-            onClick={()=>setTab('teacher')}
+            <span className={timetable_list?.tab === "teacher" ? "timetable_btn_active" : "timetable_btn"}
+            onClick={()=>dispatch(update_timetable_tab('teacher'))}
             >Teacher-wise Time Table</span>
           </div>
           <div className=''>
-            <span className={tab === "classroom" ? "timetable_btn_active" : "timetable_btn"}
-            onClick={()=>setTab('classroom')}
+            <span className={timetable_list?.tab === "classroom" ? "timetable_btn_active" : "timetable_btn"}
+            onClick={()=>dispatch(update_timetable_tab('classroom'))}
             >Classroom-wise Time Table</span>
           </div>
         </div>

@@ -2,13 +2,13 @@ import ButtonComponent from 'Components/Button/Button'
 import { useCommonState, useDispatch } from 'Components/CustomHooks'
 import LinkComponent from 'Components/Router_components/LinkComponent'
 import Spinner from 'Components/Spinner/CustomSpinner'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Container, Row, Col, Card, Form } from 'react-bootstrap'
 import { Inputfunctions } from 'ResuableFunctions/Inputfunctions'
 import Icons from 'Utils/Icons'
 import JsonData from '../Utils/JsonData'
 import { update_app_data, update_error } from 'Views/Common/Slices/Common_slice'
-import { update_template } from '../Slices/adminSlice'
+import { update_template, update_time_table } from '../Slices/adminSlice'
 import { createTimetaleTemplate, getTimetableTemplate } from '../Actions/Admin_action'
 import ButtonSpinner from 'Components/Spinner/ButtonSpinner'
 
@@ -20,10 +20,11 @@ const TimetableTemplate = () => {
     const periods = timetable_templete?.timing || []
     const hasTimetable = timetable_templete?.data && Object.keys(timetable_templete.data)?.length > 0
 
-    useEffect(()=>{
-        dispatch(getTimetableTemplate())
-    },[])
+    const allDays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 
+    useEffect(() => {
+        dispatch(getTimetableTemplate())
+    }, [])
 
     const format12Hour = (time24) => {
         if (!time24) return ""
@@ -37,18 +38,14 @@ const TimetableTemplate = () => {
 
     const handleCreateTimetable = () => {
         dispatch(update_app_data({ type: "validation", data: true }))
-
         const numDays = parseInt(time_table?.days, 10)
         const numPeriods = parseInt(time_table?.period, 10)
-
         if (!numDays || !numPeriods) return
 
-        const dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-        const selectedDays = dayNames.slice(0, numDays)
-
+        const selectedDays = allDays.slice(0, numDays)
         const newTimetable = {}
-        selectedDays?.forEach((day) => {
-            newTimetable[day.toLowerCase()] = Array.from({ length: numPeriods }, () => ({
+        selectedDays.forEach((day) => {
+            newTimetable[day] = Array.from({ length: numPeriods }, () => ({
                 subject_id: null,
                 teacher_id: null,
                 start_time: "",
@@ -62,13 +59,11 @@ const TimetableTemplate = () => {
             period_name: `Period ${i + 1}`,
         }))
 
-        dispatch(update_template({ data: newTimetable, timing,is_editing:true }))
+        dispatch(update_template({ data: newTimetable, timing, is_editing: true }))
     }
 
     const validatePeriods = (periods) => {
-        const missing = periods.filter(
-            (p) => !p.period_name?.trim() || !p.start_time || !p.end_time
-        )
+        const missing = periods.filter((p) => !p.period_name?.trim() || !p.start_time || !p.end_time)
         if (missing.length > 0) {
             const invalidIndexes = missing.map((p) => p.period_id || periods.indexOf(p) + 1)
             dispatch(update_error({ Toast_Type: "error", Err: `Please fill all fields for periods: ${invalidIndexes.join(", ")}` }))
@@ -99,7 +94,57 @@ const TimetableTemplate = () => {
         dispatch(update_template({ timing: updatedTimes }))
     }
 
-   
+
+    const editTemplateLayout = (type, item) => {
+        let updatedDays = { ...timetable_templete.data }
+        let updatedTiming = [...timetable_templete.timing]
+        let updatedDayCount = time_table.days
+        let updatedPeriodCount = time_table.period
+
+        if (item === "days") {
+            const dayNames = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+
+            if (type === "add") {
+                if (updatedDayCount < 7) {
+                    const newDay = dayNames[updatedDayCount]
+                    updatedDays[newDay] = Array.from({ length: updatedPeriodCount }, () => ({
+                        subject_id: null,
+                        teacher_id: null,
+                        start_time: "",
+                        end_time: "",
+                    }))
+                    updatedDayCount += 1
+                }
+            } else if (type === "delete" && updatedDayCount > 1) {
+                const lastDay = dayNames[updatedDayCount - 1]
+                delete updatedDays[lastDay]
+                updatedDayCount -= 1
+            }
+        }
+
+        if (item === "period") {
+            if (type === "add") {
+                updatedTiming = [
+                    ...updatedTiming,
+                    { start_time: "", end_time: "", period_name: `Period ${updatedTiming.length + 1}` }
+                ]
+                Object.keys(updatedDays).forEach((day) => {
+                    updatedDays[day] = [...updatedDays[day], { subject_id: null, teacher_id: null, start_time: "", end_time: "" }]
+                })
+                updatedPeriodCount += 1
+            } else if (type === "delete" && updatedTiming.length > 1) {
+                updatedTiming = updatedTiming.slice(0, -1)
+                Object.keys(updatedDays).forEach((day) => {
+                    updatedDays[day] = updatedDays[day].slice(0, -1)
+                })
+                updatedPeriodCount -= 1
+            }
+        }
+
+        dispatch(update_template({ data: updatedDays, timing: updatedTiming }))
+        dispatch(update_time_table({ days: updatedDayCount, period: updatedPeriodCount }))
+    }
+
 
     return (
         <Container fluid className="w-100 h-100 d-flex flex-column">
@@ -108,11 +153,12 @@ const TimetableTemplate = () => {
                     <LinkComponent
                         to={`/admin_dashboard/timetable`}
                         className="brand-link-color"
+                        onLinkClick={() => dispatch(update_template({ is_editing: false }))}
                     >
                         <span>{Icons.back_button_icon_blue}</span>
                         <span className="align-middle">Back</span>
                     </LinkComponent>
-                    {hasTimetable && (
+                    {(hasTimetable && !timetable_templete?.is_loading) && (
                         <div>
                             <ButtonSpinner
                                 className="btn-brand-color border-0 p-2"
@@ -156,7 +202,7 @@ const TimetableTemplate = () => {
                                                         )}
                                                     </div>
                                                     <div className="d-flex flex-column gap-1">
-                                                        {timetable_templete?.is_editing  ? (
+                                                        {timetable_templete?.is_editing ? (
                                                             <>
                                                                 <Form.Control
                                                                     type="time"
@@ -179,6 +225,14 @@ const TimetableTemplate = () => {
                                                     </div>
                                                 </th>
                                             ))}
+                                            {timetable_templete?.is_editing && (
+                                                <th>
+                                                    <div className='d-flex flex-column gap-2'>
+                                                        <ButtonComponent buttonName={Icons?.timetable_add} className="btn-outline-primary timetable_edit_btn" clickFunction={() => editTemplateLayout("add", "period")} />
+                                                        <ButtonComponent buttonName={Icons?.timetable_delete} className="btn-outline-danger timetable_delete_btn" clickFunction={() => editTemplateLayout("delete", "period")} />
+                                                    </div>
+                                                </th>
+                                            )}
                                         </tr>
                                     </thead>
 
@@ -187,12 +241,20 @@ const TimetableTemplate = () => {
                                             <tr key={day}>
                                                 <td className="text-capitalize fw-bold">{day}</td>
                                                 {timetable_templete?.data[day]?.map((_, idx) => (
-                                                    <td key={idx}>
-                                                        <span>-</span>
-                                                    </td>
+                                                    <td key={idx}><span>-</span></td>
                                                 ))}
                                             </tr>
                                         ))}
+                                        {timetable_templete?.is_editing && (
+                                            <tr>
+                                                <td className='border-bottom-0'>
+                                                    <div className='d-flex gap-3'>
+                                                        <ButtonComponent buttonName={Icons?.timetable_add}className="btn-outline-primary timetable_edit_btn" clickFunction={() => editTemplateLayout("add", "days")} />
+                                                        <ButtonComponent buttonName={Icons?.timetable_delete} className="btn-outline-danger timetable_delete_btn" clickFunction={() => editTemplateLayout("delete", "days")} />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        )}
                                     </tbody>
                                 </table>
                             </div>

@@ -32,18 +32,35 @@ const Subject = () => {
       <div className="h-100">
         <div className="container-fluid">
           <Row  className="d-flex justify-content-between border-bottom pb-3 mt-3">
-            <Col xs={12} md={4} lg={3}  className="d-flex align-items-center mb-2 mb-md-0">
+            <Col xs={12} md={4} lg={3}  className="d-flex align-items-center justify-content-between mb-2 mb-md-0">
               <Link
                 to="/teachers_dashboard/classrooms"
-                className="brand-link-color d-flex align-items-center"
+                className="brand-link-color d-flex align-items-center col-5 col-md-12"
               >
                 <span>{Icons.back_button_icon_blue}</span>
-                <span className="align-middle">Back to Classroom</span>
+                <span className="align-middle d-non">Back to Classroom</span>
               </Link>
+               <ButtonComponent type="button"
+                className="btn-brand-color border py-2 d-flex d-md-none align-items-center justify-content-center col-6"
+                clickFunction={() => {
+                  dispatch(
+                    updateModalShow({
+                      show: true,
+                      close_btn: true,
+                      modal_from: "subjects",
+                      modal_type: "subjects",
+                    })
+                  );
+                  dispatch(getClassroomTeachers({ classroom_id: class_id }));
+                }}
+              >
+                {Icons.add_icon}
+                <span className="align-middle ms-2">Add Subject</span>
+              </ButtonComponent>
             </Col>
-            <Col xs={12} md={8} lg={9} className="d-flex flex-wrap justify-content-md-end align-items-center gap-2 gap-xl-4" >
+            <Col xs={12} md={8} lg={9} className="d-flex flex-wrap justify-content-end align-items-center gap-2 gap-xl-4" >
               <ButtonComponent type="button"
-                className="btn-brand-color border py-2 d-flex align-items-center"
+                className="btn-brand-color border py-2 d-md-flex align-items-center d-none "
                 clickFunction={() => {
                   dispatch(
                     updateModalShow({
