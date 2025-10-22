@@ -678,6 +678,10 @@ const adminSlice = createSlice({
       switch(type){
         case "request":
           state.timetable_templete.is_loading = true
+          state.timetable_templete.data = []
+          state.timetable_templete.timing = []
+          state.time_table.days = null
+          state.time_table.period = null
           break;
         case "response":
           state.timetable_templete.data = data?.template
@@ -688,7 +692,11 @@ const adminSlice = createSlice({
           state.time_table.period = data?.no_of_periods
           break;
         case "failure":
-           state.timetable_templete.is_loading = false
+          state.timetable_templete.is_loading = false
+          state.timetable_templete.data = []
+          state.timetable_templete.timing = []
+          state.time_table.days = null
+          state.time_table.period = null
           break;
       }
     },

@@ -445,7 +445,7 @@ export const getTimetableTemplate = () => async (dispatch) => {
 
             dispatch(get_template({ type: "response", data: payloadData }))
         } else {
-            dispatch(get_template({ type: "failure",message: data?.message || "Failed to get template"  }))
+            dispatch(get_template({ type: "failure"}))
         }
     } catch (error) {
         dispatch(get_template({ type: "failure",message: error?.response?.data?.message || "Failed to get template"}));

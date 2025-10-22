@@ -3,7 +3,7 @@ import { useCommonState, useDispatch } from 'Components/CustomHooks'
 import LinkComponent from 'Components/Router_components/LinkComponent'
 import Spinner from 'Components/Spinner/CustomSpinner'
 import React, { useEffect } from 'react'
-import { Container, Row, Col, Card, Form } from 'react-bootstrap'
+import { Container, Row, Col, Card } from 'react-bootstrap'
 import { Inputfunctions } from 'ResuableFunctions/Inputfunctions'
 import Icons from 'Utils/Icons'
 import JsonData from '../Utils/JsonData'
@@ -11,6 +11,7 @@ import { update_app_data, update_error } from 'Views/Common/Slices/Common_slice'
 import { update_template, update_time_table } from '../Slices/adminSlice'
 import { createTimetaleTemplate, getTimetableTemplate } from '../Actions/Admin_action'
 import ButtonSpinner from 'Components/Spinner/ButtonSpinner'
+import Input from 'Components/Input/Input'
 
 const TimetableTemplate = () => {
     const { time_table, timetable_templete } = useCommonState()?.adminState
@@ -95,56 +96,69 @@ const TimetableTemplate = () => {
     }
 
 
-    const editTemplateLayout = (type, item) => {
-        let updatedDays = { ...timetable_templete.data }
-        let updatedTiming = [...timetable_templete.timing]
-        let updatedDayCount = time_table.days
-        let updatedPeriodCount = time_table.period
+const editTemplateLayout = (type, item) => {
 
-        if (item === "days") {
-            const dayNames = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+    const updatedDays = JSON.parse(JSON.stringify(timetable_templete.data || {}))
+    const updatedTiming = JSON.parse(JSON.stringify(timetable_templete.timing || []))
+    let updatedDayCount = Number(time_table?.days) || Object.keys(updatedDays).length
+    let updatedPeriodCount = Number(time_table?.period) || updatedTiming.length
+    const dayNames = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 
-            if (type === "add") {
-                if (updatedDayCount < 7) {
-                    const newDay = dayNames[updatedDayCount]
-                    updatedDays[newDay] = Array.from({ length: updatedPeriodCount }, () => ({
-                        subject_id: null,
-                        teacher_id: null,
-                        start_time: "",
-                        end_time: "",
-                    }))
-                    updatedDayCount += 1
-                }
-            } else if (type === "delete" && updatedDayCount > 1) {
+
+    if (item === "days") {
+        if (type === "add") {
+            if (updatedDayCount < 7) {
+                const newDay = dayNames[updatedDayCount]
+                updatedDays[newDay] = Array.from({ length: updatedPeriodCount }, () => ({
+                    subject_id: null,
+                    teacher_id: null,
+                    start_time: "",
+                    end_time: "",
+                }))
+                updatedDayCount += 1
+            }
+        } else if (type === "delete") {
+            if (updatedDayCount > 1) {
                 const lastDay = dayNames[updatedDayCount - 1]
-                delete updatedDays[lastDay]
-                updatedDayCount -= 1
+                if (updatedDays[lastDay]) {
+                    delete updatedDays[lastDay]
+                    updatedDayCount -= 1
+                }
             }
         }
+    }
 
-        if (item === "period") {
-            if (type === "add") {
-                updatedTiming = [
-                    ...updatedTiming,
-                    { start_time: "", end_time: "", period_name: `Period ${updatedTiming.length + 1}` }
-                ]
-                Object.keys(updatedDays).forEach((day) => {
-                    updatedDays[day] = [...updatedDays[day], { subject_id: null, teacher_id: null, start_time: "", end_time: "" }]
+    if (item === "period") {
+        if (type === "add") {
+            updatedTiming.push({
+                start_time: "",
+                end_time: "",
+                period_name: `Period ${updatedTiming.length + 1}`,
+            })
+
+            Object.keys(updatedDays).forEach((day) => {
+                updatedDays[day].push({
+                    subject_id: null,
+                    teacher_id: null,
+                    start_time: "",
+                    end_time: "",
                 })
-                updatedPeriodCount += 1
-            } else if (type === "delete" && updatedTiming.length > 1) {
-                updatedTiming = updatedTiming.slice(0, -1)
+            })
+            updatedPeriodCount += 1
+        } else if (type === "delete") {
+            if (updatedTiming.length > 1) {
+                updatedTiming.pop()
                 Object.keys(updatedDays).forEach((day) => {
-                    updatedDays[day] = updatedDays[day].slice(0, -1)
+                    updatedDays[day].pop()
                 })
                 updatedPeriodCount -= 1
             }
         }
-
-        dispatch(update_template({ data: updatedDays, timing: updatedTiming }))
-        dispatch(update_time_table({ days: updatedDayCount, period: updatedPeriodCount }))
     }
 
+    dispatch(update_template({ data: updatedDays, timing: updatedTiming }))
+    dispatch(update_time_table({ days: updatedDayCount, period: updatedPeriodCount }))
+}
 
     return (
         <Container fluid className="w-100 h-100 d-flex flex-column">
@@ -153,7 +167,10 @@ const TimetableTemplate = () => {
                     <LinkComponent
                         to={`/admin_dashboard/timetable`}
                         className="brand-link-color"
-                        onLinkClick={() => dispatch(update_template({ is_editing: false }))}
+                        onLinkClick={() => {
+                            dispatch(update_template({ is_editing: false,data:[],timing:[] }))
+                            dispatch(update_time_table({period:null,days:null}))
+                        }}
                     >
                         <span>{Icons.back_button_icon_blue}</span>
                         <span className="align-middle">Back</span>
@@ -191,12 +208,12 @@ const TimetableTemplate = () => {
                                                 <th key={idx}>
                                                     <div className="mb-1">
                                                         {timetable_templete?.is_editing ? (
-                                                            <Form.Control
-                                                                type="text"
-                                                                value={p.period_name}
-                                                                onChange={(e) => handleChangeTime(idx, "period_name", e.target.value)}
-                                                                className="text-center"
-                                                            />
+                                                            <Input
+                                                                    type="text"
+                                                                    value={p.period_name}
+                                                                    change={(e) => handleChangeTime(idx, "period_name", e.target.value)}
+                                                                    className="text-center"
+                                                                />
                                                         ) : (
                                                             <strong>{p.period_name}</strong>
                                                         )}
@@ -204,15 +221,15 @@ const TimetableTemplate = () => {
                                                     <div className="d-flex flex-column gap-1">
                                                         {timetable_templete?.is_editing ? (
                                                             <>
-                                                                <Form.Control
+                                                                <Input
                                                                     type="time"
                                                                     value={p.start_time}
-                                                                    onChange={(e) => handleChangeTime(idx, "start_time", e.target.value)}
+                                                                    change={(e) => handleChangeTime(idx, "start_time", e.target.value)}
                                                                 />
-                                                                <Form.Control
+                                                                 <Input
                                                                     type="time"
                                                                     value={p.end_time}
-                                                                    onChange={(e) => handleChangeTime(idx, "end_time", e.target.value)}
+                                                                    change={(e) => handleChangeTime(idx, "end_time", e.target.value)}
                                                                 />
                                                             </>
                                                         ) : (
