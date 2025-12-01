@@ -41,9 +41,15 @@ function LegendPayload({ color, value }) {
 
 const StudentsPerformanceChart = ({data}) => {
 
+    const normalizedData = data?.map(item => ({
+        ...item,
+        developing: Number(item.developing),
+        emergent: Number(item.emergent),
+        exemplar: Number(item.exemplar),
+    }));
+
     return (
         <div className="d-flex flex-column h-100 justify-content-between">
-            {/* Legend */}
             <div className='row row-cols-1 row-cols-md-2 row-cols-xxl-3'>
                 <LegendPayload color="#4B3CFA" value="Emergent" />
                 <LegendPayload color="#45D655" value="Developing" />
@@ -53,18 +59,11 @@ const StudentsPerformanceChart = ({data}) => {
             {/* Chart */}
             <div className="col">
                 <ResponsiveContainer width="100%" height={400}>
-                    <LineChart data={data}>
+                    <LineChart data={normalizedData}>
                         {/* Grid */}
                         <CartesianGrid vertical={false} strokeDasharray="3 3" />
 
-                        {/* Highlight the JUL month */}
-                        {/* <ReferenceLine
-                            x="JUL"
-                            stroke="#4B3CFA"
-                            strokeDasharray="3 3"
-                            strokeOpacity={0.3}
-                        /> */}
-
+                        {/* X-axis for months */}
                         <XAxis
                             dataKey="month"
                             padding={{ left: 10, right: 10 }}
@@ -80,10 +79,30 @@ const StudentsPerformanceChart = ({data}) => {
                             }}
                         />
 
-                        {/* Lines */}
-                        <Line type="basis" dataKey="emergent" stroke="#4B3CFA" strokeWidth={4} dot={false} strokeLinecap="round" />
-                        <Line type="basis" dataKey="developing" stroke="#45D655" strokeWidth={4} dot={false} strokeLinecap="round" />
-                        <Line type="basis" dataKey="exemplar" stroke="#EC008C" strokeWidth={4} dot={false} strokeLinecap="round" />
+                        <Line
+                            type="basis"
+                            dataKey="emergent"
+                            stroke="#4B3CFA"
+                            strokeWidth={4}
+                            dot={false}
+                            strokeLinecap="round"
+                        />
+                        <Line
+                            type="basis"
+                            dataKey="developing"
+                            stroke="#45D655"
+                            strokeWidth={4}
+                            dot={false}
+                            strokeLinecap="round"
+                        />
+                        <Line
+                            type="basis"
+                            dataKey="exemplar"
+                            stroke="#EC008C"
+                            strokeWidth={4}
+                            dot={false}
+                            strokeLinecap="round"
+                        />
                     </LineChart>
                 </ResponsiveContainer>
             </div>

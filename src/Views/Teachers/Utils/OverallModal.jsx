@@ -13,7 +13,7 @@ import {
 } from "../Actions/teacherAction";
 import { useParams } from "react-router-dom";
 import Icons from "Utils/Icons";
-import { Form, Button, Spinner } from "react-bootstrap";
+import { Form, Button, Spinner, Tooltip } from "react-bootstrap";
 import { clear_form_fields, handle_attachment_books_upload, setErrors } from "../Slice/teachersSlice";
 import { deleteAttachment, handleDeleteBook, handleUploadBook, uploadBooks } from "../Actions/TeacherActions";
 import SpinnerComponent from "Components/Spinner/Spinner";
@@ -527,6 +527,19 @@ const handleFileChange = (e, type) => {
               <>
                 <div className="row pe-3 ps-3 w-100">
                   {Inputfunctions(jsxJson.createMultiStudets)}
+                   <div className="d-flex justify-content-between align-items-center">
+                    <p className="mb-0 fs-6 text-secondary"><span className="fw-bold">Note: </span>Download the format to create multiple students.</p>
+                    <ButtonComponent className="btn-outline" type="button"
+                      buttonName={Icons.download_question_icon}
+                      clickFunction={() => {
+                        const link = document.createElement('a')
+                        link.href = "/Files/add_student_list.xlsx"
+                        link.download = "add_student_list.xlsx" 
+                        document.body.appendChild(link)
+                        link.click()
+                        document.body.removeChild(link)
+                      }} />
+                  </div>
                 </div>
                 <div className="d-flex mt-3 justify-content-center w-100">
                   <hr />
@@ -551,9 +564,9 @@ const handleFileChange = (e, type) => {
                   {Inputfunctions(jsxJson.createStudent)}
                 </div>
 
-                <div className="d-flex pt-3 mt-3 pe-2 ps-3 w-100 gap-3">
+                <div className="d-flex mt-3 w-100 gap-3">
                   <ButtonComponent
-                    className="btn-md btn-light w-50 p-3"
+                    className="btn-md btn-light w-50"
                     buttonName={"Close"}
                     clickFunction={() =>
                       dispatch(updateModalShow({ show: false }))

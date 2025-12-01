@@ -29,7 +29,7 @@ const McqQuestions = () => {
     try {
       const questionsFromDB = await getAllQuestionsFromDB()
       if (questionsFromDB.length > 0 && !generate_question?.mcq_questions?.test_questions) {
-         const testId = questionsFromDB[0].test_id
+         const testId = questionsFromDB[0]?.test_id
          dispatch(updateGenerateMcqQuestions({test_id: testId,test_questions: questionsFromDB}))
          dispatch(updateGenerateQuestionFields({ test_status: "generated" }))
       }

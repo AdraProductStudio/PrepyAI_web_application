@@ -766,30 +766,30 @@ export const handleGenerateQuestion = (payload,navigate,targetRoute,type_of_ques
         await IndexedDbDeleteFun()
         const {data} = await axiosInstance.post('students/generate_questions',payload)
         if(data?.error_code === 0){
-            const questions = data?.data?.test_questions
             const testId = data?.data?.test_id
+            const updatedQues = data?.data?.test_questions?.map((q)=>{
+                return {
+                    ...q,
+                    id:q.Question_no,
+                    test_id:testId
+                }
+            })      
                  initializeDB(
                 process.env.REACT_APP_INDEXEDDB_DATABASE_NAME,
                 process.env.REACT_APP_INDEXEDDB_DATABASE_VERSION,
                 process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME
-            ).then((db) => {
+            ).then(async(db) => {
                 const transaction = db.transaction(
                     process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME,
                     "readwrite"
                 )
                 const store = transaction.objectStore(process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME)
-
-                questions.forEach((q, index) => {
-                    store.put({
-                        ...q,
-                        id: q.Question_no,
-                        test_id: testId,
-                    })
-                })
+                updatedQues.forEach((item) => store.put(item))
+                await transaction.complete
             })
 
             navigate(targetRoute)
-            dispatch(update_generate_questions({type:"response",data:data?.data,type_of_question}))  
+            dispatch(update_generate_questions({type:"response",data:{test_questions:updatedQues,test_id:testId},type_of_question}))  
         }else{
             dispatch(update_generate_questions({type:"failure",message: data?.message || "Failed to generate questions" }))
         }

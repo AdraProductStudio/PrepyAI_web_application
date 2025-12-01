@@ -239,7 +239,6 @@ export const handleLogin = (formdata, navigate) => async (dispatch) => {
   const { username, password } = formdata;
   if (!username || !password) return dispatch(update_app_data({ type: "validation", data: true }));
 
-  console.log(sha256(password))
   try {
     dispatch(login_endpoint({ type: "request" }));
     const response = await axios.get(process.env.REACT_APP_API_URL + "/login", {

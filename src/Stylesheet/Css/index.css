@@ -1623,3 +1623,16 @@ input::placeholder {
   stroke: red !important;
 }
 
+.profile_circle{
+  border: 1px;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: var(--btn-brand-bg-color);
+  color: #fff;
+}
+.react-dropdown-select-item{
+  /* text-align: start !important; */
+}
+
+/*css-nfp1ut */

@@ -5,7 +5,6 @@ import { useCommonState } from 'Components/CustomHooks';
 import HeaderCard from 'Components/Card/HeaderCard';
 import Img from "Components/Img/Img";
 import Image from "Utils/Image";
-import { decrypt_app_data_logs } from "ResuableFunctions/logs_handler";
 
 const Header = ({
   offcanvasOn, offcanvasOnButton, children,
@@ -26,7 +25,9 @@ const Header = ({
 
         <div className="col d-inline-flex flex-wrap justify-content-end">
           <div className='d-inline-block cursor-pointer' onClick={profileOnClick}>
-            <Img src={commonState?.app_data?.user_image || Image.default_prfile_pic} alt="Profile" className="rounded-circle me-2 pointer header_profile_image" /><br/>
+            <div className="profile_circle d-flex justify-content-center align-items-center">
+              <p className="mb-0 fs-4 p-2">{commonState?.app_data?.user_name?.slice(0,1)?.toUpperCase()}</p>
+            </div>
           </div>
 
           {offcanvasOn ?

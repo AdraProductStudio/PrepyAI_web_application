@@ -19,18 +19,18 @@ const BooksOverviewLayout = () => {
     const dispatch = useDispatch()
     const navigate = useCustomNavigate()
 
-    const book = studentState?.subject_books?.find(b=> b.book_id == book_id)
-    const book_url = studentState?.book_url
-    
-    useEffect(() => {
+   useEffect(() => {
         dispatch(handleGetSubjectBooks(subject_id))
     }, [])
 
+    const book = studentState?.subject_books?.find(b=> b.book_id == book_id)
+    const book_url = studentState?.book_url
+
     useEffect(() => {
-        if (!called && book_id) {
-            dispatch(handleGetBookUrl(book_id, book.owned))
-            dispatch(handleGetBookTestHistory(book_id, book.owned))
-            dispatch(handleGetBookPerformance(book_id, book.owned))
+        if (!called && book_id && book) {
+            dispatch(handleGetBookUrl(book_id, book?.owned))
+            dispatch(handleGetBookTestHistory(book_id, book?.owned))
+            dispatch(handleGetBookPerformance(book_id, book?.owned))
             setCalled(true)
         }
     }, [ called, dispatch])

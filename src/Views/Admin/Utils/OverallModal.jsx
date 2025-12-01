@@ -251,7 +251,20 @@ export function OverallModel() {
                       <small className="text-danger">{adminState.errors.file}</small>
                     )}
                   </div>
-                  <div className="col-12 text-center text-secondary text-muted mt-3">or</div>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <p className="mb-0 fs-6 text-secondary"><span className="fw-bold">Note: </span>Download the format to create multiple staff members.</p>
+                    <ButtonComponent className="btn-outline" type="button"
+                      buttonName={Icons.download_question_icon}
+                      clickFunction={() => {
+                        const link = document.createElement('a')
+                        link.href = "/Files/create_teacher.xlsx"
+                        link.download = "create_teacher.xlsx"
+                        document.body.appendChild(link)
+                        link.click()
+                        document.body.removeChild(link)
+                      }} />
+                  </div>
+                  <div className="col-12 text-center text-secondary text-muted mt-1">or</div>
                   {Inputfunctions(jsxJson?.create_staff_modal)}
                   <ButtonComponent
                     type={"submit"}
@@ -325,6 +338,19 @@ export function OverallModel() {
                   {adminState?.errors.student_file && (
                     <small className="text-danger">{adminState?.errors.student_file}</small>
                   )}
+                  <div className="d-flex justify-content-between align-items-center mt-2">
+                    <p className="mb-0 text-secondary"><span className="fw-bold">Note: </span>Download the format to upload students.</p>
+                    <ButtonComponent className="btn-outline" type="button"
+                      buttonName={Icons.download_question_icon}
+                      clickFunction={() => {
+                        const link = document.createElement('a')
+                        link.href = "/Files/create_student.xlsx"
+                        link.download = "create_student.xlsx"
+                        document.body.appendChild(link)
+                        link.click()
+                        document.body.removeChild(link)
+                      }} />
+                  </div>
                   <div className="col-12 text-center mt-4">
                     <ButtonComponent
                       type={"submit"}

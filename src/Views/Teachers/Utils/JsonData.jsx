@@ -881,7 +881,7 @@ const JsonData = (params) => {
             dispatch(update_Create_student({ name: e.target.value }));
           }
         },
-        divClassName: "col-6 mb-3",
+        divClassName: "col-12 col-md-6 mb-3",
         className: "modal-inputs",
         isMandatory: true,
         disabled:
@@ -904,7 +904,7 @@ const JsonData = (params) => {
             dispatch(update_Create_student({ contact_no: e.target.value }));
           }
         },
-        divClassName: "col-6 mb-3",
+        divClassName: "col-12 col-md-6 mb-3",
         className: "modal-inputs ms-1",
         isMandatory: true,
         disabled:
@@ -952,7 +952,7 @@ const JsonData = (params) => {
             dispatch(update_Create_student({ register_no: value }));
           }
         },
-        divClassName: "col-6 mb-2",
+        divClassName: "col-12 col-md-6 mb-2",
         className: "modal-inputs",
         isMandatory: true,
         disabled:
@@ -977,7 +977,7 @@ const JsonData = (params) => {
         multi: false,
         placeholder: "Select Classroom",
         isMandatory: true,
-        divClassName: "col-6 mb-2",
+        divClassName: "col-12 col-md-6 mb-2",
         className: "modal-inputs ms-1",
         value: teachersState?.teacher_CreateStudents?.data?.classroom_name
           ? [
@@ -1026,7 +1026,7 @@ const JsonData = (params) => {
           dispatch(update_Create_student({ student_file: files }));
           e.target.value = "";
         },
-        fileUploadValue: "Upload Csv,xlxs files",
+        fileUploadValue: "Upload Csv,xlsx files",
         disabled: Object.entries(
           teachersState?.teacher_CreateStudents?.data || {}
         )

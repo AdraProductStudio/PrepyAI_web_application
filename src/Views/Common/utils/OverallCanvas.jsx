@@ -89,7 +89,16 @@ export function OverallCanvas() {
                                                 </div>
                                                 {value?.map((item, index) => (
                                                     <div className="col-12 col-md-6 col-xl-4 col-xxl-3 mt-4 p-1" key={index}>
-                                                        <AttachmentCard className="attachment_books" data={{...item,subject_id}} delete_function={() => console.log("Delete function called")} />
+                                                        <AttachmentCard className="attachment_books" data={{...item,subject_id}} delete_function={() => console.log("Delete function called")} 
+                                                            download_function={() => {
+                                                                const link = document.createElement('a')
+                                                                link.href = item.url
+                                                                link.download = 'file.pdf'
+                                                                document.body.appendChild(link)
+                                                                link.click()
+                                                                document.body.removeChild(link)
+                                                            }}
+                                                        />
                                                     </div>
                                                 ))}
                                             </div >
