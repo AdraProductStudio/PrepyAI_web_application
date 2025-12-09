@@ -4,6 +4,7 @@ import {
     handleDeleteNote,
     handlePostNote,
     handleusernotesdata,
+    logout,
     update_error,
     updateToast, updateToken
  
@@ -82,19 +83,19 @@ export const addAndRemoveFavNotes = (id)=> async(dispatch)=>{
 
 //refresh token
 export const handlerefreshToken = (refresh_token) => async (dispatch) => {
-    return null
     try {
-        const { data } = await axios.get(`/refresh_token`, {
+        const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/refresh_token`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${refresh_token}`,
             }
         });
 
-        if (data?.error_code === 200) dispatch(updateToken(data?.data?.access_token))
-        else dispatch(updateToast({ message: data?.message, type: "error" }))
+        if (data?.error_code === 0) dispatch(updateToken({type:"response" ,data:data?.data}))
+        else if(data?.error_code === 2) dispatch(logout())
+        else dispatch(update_error({Err:data?.message , Toast_Type:"error"}))
     } catch (err) {
-        dispatch(updateToast({ message: err?.message, type: "error" }))
+        dispatch(update_error({Err:"Something went worng", Toast_Type:"error"}))
     }
 }
 

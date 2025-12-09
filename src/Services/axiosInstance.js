@@ -17,11 +17,11 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     try {
       const originalRequest = error.config;
-
+      let token = store?.getState()?.commonState?.app_data?.refresh_token
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         if (error.response.data.message === "Token expired") {
-          await store.dispatch(handlerefreshToken());
+          await store.dispatch(handlerefreshToken(token));
           return axiosInstance(originalRequest);
         }
       }

@@ -19,6 +19,7 @@ export default function SubjectsCard({
                         <p className="text-secondary fs-13 mb-0">{data?.teacher_name || ''}</p>
                     </div>
                     {/teachers_dashboard/.test(window.location.pathname) &&
+                        data?.owned ?
                         <div className="col-2 text-end">
                             <ButtonComponent
                                 type="button"
@@ -26,7 +27,7 @@ export default function SubjectsCard({
                                 buttonName={Icons?.delete_icons}
                                 clickFunction={onclickDelete}
                             />
-                        </div>}
+                        </div> : null} 
                 </div>
             </Card.Title>
             <Card.Body className={cardBodyClassName} onClick={onclickCard}>

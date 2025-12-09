@@ -141,9 +141,7 @@ const Subject = () => {
                     buttonName="View"
                     cardBodyClassName={"pointer"}
                     onclickCard={() =>
-                      navigate(
-                        `/teachers_dashboard/classrooms/${class_id}/${val?.subject_id}`
-                      )
+                      val?.owned ? navigate(`/teachers_dashboard/classrooms/${class_id}/${val?.subject_id}`) : null
                     }
                     onclickDelete={() => {
                       dispatch(

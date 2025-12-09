@@ -246,8 +246,47 @@ const commonSlice = createSlice({
             state.notesdata.title = title
             state.notesdata.content = content
             state.notesdata.id = id
-        }
+        },
+        updateToken(state, action) {
+            const { type, data } = action.payload;
 
+            switch (type) {
+                case "response":
+                    if (data?.access_token) {
+                        state.app_data.token = data.access_token
+                        state.app_data.refresh_token = data.refresh_token
+
+ 
+                        const decrypt_logs = localStorage.getItem("project_log")
+                            ? decryption()
+                            : null
+
+                        const decompressed = decrypt_logs
+                            ? JSON.parse(LZString.decompressFromUTF16(decrypt_logs))
+                            : null
+
+                        const roleKey = state.app_data.user_role
+
+                        if (decompressed?.[roleKey]) {
+                            decompressed[roleKey].token = data.access_token
+                            decompressed[roleKey].refresh_token = data.refresh_token
+                        }
+
+                        const compressed = LZString.compressToUTF16(JSON.stringify(decompressed))
+                        const encrypted_logs = encryption(compressed)
+                        localStorage.setItem("project_log", encrypted_logs)
+                    }
+                    break;
+
+                case "failure":
+                    state.error.Err = "Token refresh failed"
+                    state.error.Toast_Type = "error"
+                    break;
+
+                default:
+                    break;
+            }
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -460,7 +499,7 @@ const { actions, reducer } = commonSlice;
 export const {
     update_app_data, update_error, updateModalShow, update_search,
     logout, handleusernotesdata, handlePostNote, handleDeleteNote,
-    update_note_data, edit_note_data,view_notes_data
+    update_note_data, edit_note_data,view_notes_data,updateToken
 } = actions;
 
 export default reducer
