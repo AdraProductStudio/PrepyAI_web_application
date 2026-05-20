@@ -1,0 +1,1072 @@
+import { useRef } from "react";
+import {
+  update_admin_register, update_create_password, update_forgot_password,
+  update_input_eye, update_learners_register, update_login_data,
+  update_organization_register, update_otp_verification, update_student_register,
+  update_teacher_register,
+} from "Views/Auth/Slices/authSlice";
+import { handleRegister, handleLogin, handleForgetPass, handleCreatePassword } from "Views/Auth/Actions/authActions";
+import { useCommonState, useCustomNavigate, useDispatch } from "Components/CustomHooks";
+import Icons from "Utils/Icons";
+
+const JsonData = () => {
+  const dispatch = useDispatch();
+  const navigate = useCustomNavigate();
+  const { commonState, authState } = useCommonState();
+  const otpRefs = useRef([]);
+  const jsonOnly = {};
+
+  const jsxJson = {
+    login: [
+      {
+        name: "Email",
+        type: "text",
+        category: "input",
+        placeholder: "mail@abc",
+        value: authState?.logindata?.username || "",
+        change: (e) => {
+          if (/^[A-Za-z0-9._@-]*$/.test(e.target.value)) {
+            dispatch(update_login_data({ username: e.target.value }));
+          }
+        },
+        keyDown: (e) => {
+          if (e.key === "Enter")
+            dispatch(handleLogin(authState?.logindata, navigate));
+        },
+
+        divClassName: "mb-3",
+        className: "login-input",
+        isMandatory: false,
+        Err:
+          commonState?.app_data?.validated && !authState?.logindata?.username
+            ? "username required"
+            : null,
+      },
+      {
+        name: "Password",
+        type: authState?.app_data?.shownewPassword ? "text" : "password",
+        category: "input",
+        placeholder: "********",
+        className: "pe-5 login-input",
+        value: authState?.logindata?.password || "",
+        change: (e) =>
+          dispatch(update_login_data({ password: e.target.value })),
+        keyDown: (e) => {
+          if (e.key === "Enter")
+            dispatch(handleLogin(authState?.logindata, navigate));
+        },
+        eyeFunction: () =>
+          dispatch(
+            update_input_eye({
+              shownewPassword: !authState?.app_data?.shownewPassword,
+            })
+          ),
+        eyeIcon: authState?.app_data?.shownewPassword
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
+        divClassName: "mb-1",
+        isMandatory: false,
+        Err:
+          commonState?.app_data?.validated && !authState?.logindata?.password
+            ? "Password required"
+            : commonState?.app_data?.validated &&
+              authState?.logindata?.password?.length < 8
+            ? "Password must be at least 8 characters"
+            : null,
+      },
+    ],
+    learnersRegister: [
+      {
+        name: "First Name",
+        type: "text",
+        category: "input",
+        placeholder: "Enter Your First Name",
+        value: authState?.learnersregisterdata?.first_name || "",
+        change: (e) => {
+          if (/^[A-Za-z]*$/.test(e.target.value)) {
+            dispatch(update_learners_register({ first_name: e.target.value }));
+          }
+        },
+        keyDown: (e) => {
+          if (e.key === "Enter")
+            dispatch(
+              handleRegister(
+                authState?.learnersregisterdata,
+                navigate,
+                `${process.env.REACT_APP_API_URL}/register/learner`
+              )
+            );
+        },
+        divClassName: "mb-3",
+        className: "login-input",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.first_name
+          : null,
+      },
+      {
+        name: "Last Name",
+        type: "text",
+        category: "input",
+        placeholder: "Enter Your Last Name",
+        className: "pe-5 login-input",
+        value: authState?.learnersregisterdata?.last_name || "",
+        change: (e) => {
+          if (/^[A-Za-z]*$/.test(e.target.value)) {
+            dispatch(update_learners_register({ last_name: e.target.value }));
+          }
+        },
+        divClassName: "mb-3",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.last_name
+          : null,
+      },
+      {
+        name: "Email",
+        type: "text",
+        category: "input",
+        placeholder: "mail@abc",
+        value: authState?.learnersregisterdata?.email_id || "",
+        change: (e) => {
+          if (/^[A-Za-z0-9@._-]*$/.test(e.target.value)) {
+            dispatch(update_learners_register({ email_id: e.target.value }));
+          }
+        },
+        divClassName: "mb-3",
+        className: "pe-5 login-input",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.email_id
+          : null,
+      },
+      {
+        name: "New Password",
+        type: authState?.app_data?.shownewPassword ? "text" : "password",
+        category: "input",
+        placeholder: "********",
+        className: "pe-5 login-input",
+        value: authState?.learnersregisterdata?.new_password || "",
+        change: (e) =>
+          dispatch(update_learners_register({ new_password: e.target.value })),
+        eyeFunction: () =>
+          dispatch(
+            update_input_eye({
+              shownewPassword: !authState?.app_data?.shownewPassword,
+            })
+          ),
+        eyeIcon: authState?.app_data?.shownewPassword
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
+        divClassName: "mb-3",
+        isMandatory: true,
+
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.new_password
+          : null,
+      },
+      {
+        name: "Confirm Password",
+        type: authState?.app_data?.showConfirmPassword ? "text" : "password",
+        category: "input",
+        placeholder: "********",
+        className: "pe-5 login-input",
+        value: authState?.learnersregisterdata?.confirm_password || "",
+        change: (e) =>
+          dispatch(
+            update_learners_register({ confirm_password: e.target.value })
+          ),
+        eyeFunction: () =>
+          dispatch(
+            update_input_eye({
+              showConfirmPassword: !authState?.app_data?.showConfirmPassword,
+            })
+          ),
+        eyeIcon: authState?.app_data?.showConfirmPassword
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
+        divClassName: "mb-3",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.confirm_password
+          : null,
+      },
+    ],
+    organizationRegister: [
+      {
+        name: "First Name",
+        type: "text",
+        category: "input",
+        className: "pe-5 login-input",
+        placeholder: "Enter Your First Name",
+        value: authState?.organizationRegisterdata?.first_name || "",
+        change: (e) => {
+          if (/^[A-Za-z]*$/.test(e.target.value)) {
+            dispatch(
+              update_organization_register({ first_name: e.target.value })
+            );
+          }
+        },
+        keyDown: (e) => {
+          if (e.key === "Enter")
+            dispatch(
+              handleRegister(
+                authState?.organizationRegisterdata,
+                navigate,
+                `${process.env.REACT_APP_API_URL}/register/organization`
+              )
+            );
+        },
+        divClassName: "mb-3",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.first_name
+          : null,
+      },
+      {
+        name: "Last Name",
+        type: "text",
+        category: "input",
+        placeholder: "Enter Your Last Name",
+        className: "pe-5 login-input",
+        value: authState?.organizationRegisterdata?.last_name || "",
+        change: (e) =>{
+          if (/^[A-Za-z]*$/.test(e.target.value)) {
+            dispatch(
+              update_organization_register({ last_name: e.target.value })
+            );
+          }
+        },
+        divClassName: "mb-3",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.last_name
+          : null,
+      },
+      {
+        name: "Organization Name",
+        type: "text",
+        category: "input",
+        placeholder: "Enter Your Organization Name",
+        disabled: true,
+        value: authState?.organizationRegisterdata?.organization_name || "",
+        change: (e) =>
+          dispatch(
+            update_organization_register({ organization_name: e.target.value })
+          ),
+        divClassName: "mb-3",
+        className: "login-input",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.organization_name
+          : null,
+      },
+      {
+        name: "Business Email",
+        type: "text",
+        category: "input",
+        placeholder: "mail@abc",
+        disabled: true,
+        value: authState?.organizationRegisterdata?.email_id || "",
+        change: (e) =>
+          dispatch(update_organization_register({ email_id: e.target.value })),
+        divClassName: "mb-3 ",
+        className: "pe-5 login-input",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.email_id
+          : null,
+      },
+      {
+        name: "Phone Number",
+        type: "text",
+        category: "input",
+        placeholder: "999-999-9999",
+        value: authState?.organizationRegisterdata?.phone_number || "",
+        change: (e) => {
+          if (/^\d{0,10}$/.test(e.target.value)) {
+            dispatch(
+              update_organization_register({ phone_number: e.target.value })
+            );
+          }
+        },
+        divClassName: "mb-3",
+        className: "pe-5 login-input",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.phone_number
+          : null,
+      },
+      {
+        name: "Location",
+        type: "text",
+        category: "input",
+        placeholder: "Enter Organization Location",
+        value: authState?.organizationRegisterdata?.location || "",
+        change: (e) =>{
+          if(/^[A-Za-z\s]*$/.test(e.target.value)){
+            dispatch(update_organization_register({ location: e.target.value }))
+          }
+        },
+        divClassName: "mb-3",
+        className: "pe-5 login-input",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.location
+          : null,
+      },
+      {
+        name: "Password",
+        type: authState?.app_data?.shownewPassword ? "text" : "password",
+        category: "input",
+        placeholder: "********",
+        className: "pe-5 login-input",
+        value: authState?.organizationRegisterdata?.new_password || "",
+        change: (e) =>
+          dispatch(
+            update_organization_register({ new_password: e.target.value })
+          ),
+        eyeFunction: () =>
+          dispatch(
+            update_input_eye({
+              shownewPassword: !authState?.app_data?.shownewPassword,
+            })
+          ),
+        eyeIcon: authState?.app_data?.shownewPassword
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
+        divClassName: "mb-3",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.new_password
+          : null,
+      },
+      {
+        name: "Confirm Password",
+        type: authState?.app_data?.showConfirmPassword ? "text" : "password",
+        category: "input",
+        placeholder: "********",
+        className: "pe-5 login-input",
+        value: authState?.organizationRegisterdata?.confirm_password || "",
+        change: (e) =>
+          dispatch(
+            update_organization_register({ confirm_password: e.target.value })
+          ),
+        eyeFunction: () =>
+          dispatch(
+            update_input_eye({
+              showConfirmPassword: !authState?.app_data?.showConfirmPassword,
+            })
+          ),
+        eyeIcon: authState?.app_data?.showConfirmPassword
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
+        divClassName: "mb-3",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.confirm_password
+          : null,
+      },
+    ],
+    adminRegister: [
+      {
+        name: "First Name",
+        type: "text",
+        category: "input",
+        placeholder: "Enter Your First Name",
+        value: authState?.adminRegisterdata?.first_name || "",
+        change: (e) =>{
+          if (/^[A-Za-z]*$/.test(e.target.value)) {
+            dispatch(update_admin_register({ first_name: e.target.value }));
+          }
+        },
+        keyDown: (e) => {
+          if (e.key === "Enter")
+            dispatch(
+              handleRegister(
+                authState?.adminRegisterdata,
+                navigate,
+                "/register/admin"
+              )
+            );
+        },
+        divClassName: "mb-3",
+        className: "login-input",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.first_name
+          : null,
+      },
+      {
+        name: "Last Name",
+        type: "text",
+        category: "input",
+        placeholder: "Enter Your Last Name",
+        className: "pe-5 login-input",
+        value: authState?.adminRegisterdata?.last_name || "",
+        change: (e) =>{
+          if (/^[A-Za-z]*$/.test(e.target.value)) {
+            dispatch(update_admin_register({ last_name: e.target.value }));
+          }
+        },
+        divClassName: "mb-3",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.last_name
+          : null,
+      },
+      {
+        name: "Institute Name",
+        type: "text",
+        category: "input",
+        placeholder: "Enter Your Institute Name",
+        value: authState?.adminRegisterdata?.institute_name || "",
+        change: (e) =>
+          dispatch(update_admin_register({ institute_name: e.target.value })),
+        divClassName: "mb-3",
+        disabled: true,
+        className: "login-input",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.institute_name
+          : null,
+      },
+      {
+        name: "Email",
+        disabled: true,
+        type: "text",
+        category: "input",
+        placeholder: "mail@abc",
+        value: authState?.adminRegisterdata?.email_id || "",
+        change: (e) => dispatch(update_admin_register({ email_id: e.target.value })),
+        divClassName: "mb-3 ",
+        className: "pe-5 login-input",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.email_id
+          : null,
+      },
+      {
+        name: "Phone Number",
+        type: "text",
+        category: "input",
+        placeholder: "999-999-9999",
+        value: authState?.adminRegisterdata?.phone_number || "",
+        change: (e) =>{
+          if (/^\d{0,10}$/.test(e.target.value)) {
+            dispatch(
+              update_admin_register({ phone_number: e.target.value })
+            );
+          }
+        },
+        divClassName: "mb-3",
+        className: "pe-5 login-input",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.phone_number
+          : null,
+      },
+      {
+        name: "Location",
+        type: "text",
+        category: "input",
+        placeholder: "Enter Institute Location",
+        value: authState?.adminRegisterdata?.location || "",
+        change: (e) =>{
+          if(/^[A-Za-z\s]*$/.test(e.target.value)){
+            dispatch(update_admin_register({ location: e.target.value }))
+          }
+        },
+        divClassName: "mb-3 ",
+        className: "pe-5 login-input",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.location
+          : null,
+      },
+      {
+        name: "Password",
+        type: authState?.app_data?.shownewPassword ? "text" : "password",
+        category: "input",
+        placeholder: "********",
+        className: "pe-5 login-input",
+        value: authState?.adminRegisterdata?.new_password || "",
+        change: (e) =>
+          dispatch(update_admin_register({ new_password: e.target.value })),
+        eyeFunction: () =>
+          dispatch(
+            update_input_eye({
+              shownewPassword: !authState?.app_data?.shownewPassword,
+            })
+          ),
+        eyeIcon: authState?.app_data?.shownewPassword
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
+        divClassName: "mb-3",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.new_password
+          : null,
+      },
+      {
+        name: "Confirm Password",
+        type: authState?.app_data?.showConfirmPassword ? "text" : "password",
+        category: "input",
+        placeholder: "********",
+        className: "pe-5 login-input",
+        value: authState?.adminRegisterdata?.confirm_password || "",
+        change: (e) =>
+          dispatch(update_admin_register({ confirm_password: e.target.value })),
+        eyeFunction: () =>
+          dispatch(
+            update_input_eye({
+              showConfirmPassword: !authState?.app_data?.showConfirmPassword,
+            })
+          ),
+        eyeIcon: authState?.app_data?.showConfirmPassword
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
+        divClassName: "mb-3",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.confirm_password
+          : null,
+      },
+    ],
+    teacherRegister: [
+      {
+        name: "First Name",
+        type: "text",
+        category: "input",
+        placeholder: "Enter Your First Name",
+        value: authState?.teacherRegisterdata?.first_name || "",
+        change: (e) =>{
+          if (/^[A-Za-z]*$/.test(e.target.value)) {
+          dispatch(update_teacher_register({ first_name: e.target.value }))
+        }
+      },
+        keyDown: (e) => {
+          if (e.key === "Enter")
+            dispatch(
+              handleRegister(
+                authState?.teacherRegisterdata,
+                navigate,
+                "/register/teacher"
+              )
+            );
+        },
+        divClassName: "mb-3",
+        className: "login-input",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.first_name
+          : null,
+      },
+      {
+        name: "Last Name",
+        type: "text",
+        category: "input",
+        placeholder: "Enter Your Last Name",
+        className: "pe-5 login-input",
+        value: authState?.teacherRegisterdata?.last_name || "",
+        change: (e) =>{
+          if (/^[A-Za-z]*$/.test(e.target.value)) {
+            dispatch(
+              update_teacher_register({ last_name: e.target.value })
+            );
+          }
+        },
+        divClassName: "mb-3",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.last_name
+          : null,
+      },
+      {
+        name: "Institute Name",
+        type: "text",
+        category: "input",
+        placeholder: "Enter Your Institute Name",
+        value: authState?.teacherRegisterdata?.institute_name || "",
+        change: (e) =>
+          dispatch(update_teacher_register({ institute_name: e.target.value })),
+        divClassName: "mb-3",
+        disabled: true,
+        className: "login-input",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.institute_name
+          : null,
+      },
+      {
+        name: "Email",
+        type: "text",
+        category: "input",
+        placeholder: "mail@abc",
+        value: authState?.teacherRegisterdata?.email_id || "",
+        change: (e) =>
+          dispatch(update_teacher_register({ email_id: e.target.value })),
+        divClassName: "mb-3",
+        disabled: true,
+        className: "pe-5 login-input",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.email_id
+          : null,
+      },
+      {
+        name: "Phone Number",
+        type: "text",
+        category: "input",
+        placeholder: "999-999-9999",
+        value: authState?.teacherRegisterdata?.phone_number || "",
+        change: (e) =>{
+          if (/^\d{0,10}$/.test(e.target.value)) {
+            dispatch(
+              update_teacher_register({ phone_number: e.target.value })
+            );
+          }
+        },
+        divClassName: "mb-3",
+        className: "pe-5 login-input",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.phone_number
+          : null,
+      },
+      {
+        name: "Password",
+        type: authState?.app_data?.shownewPassword ? "text" : "password",
+        category: "input",
+        placeholder: "********",
+        className: "pe-5 login-input",
+        value: authState?.teacherRegisterdata?.new_password || "",
+        change: (e) =>
+          dispatch(update_teacher_register({ new_password: e.target.value })),
+        eyeFunction: () =>
+          dispatch(
+            update_input_eye({
+              shownewPassword: !authState?.app_data?.shownewPassword,
+            })
+          ),
+        eyeIcon: authState?.app_data?.shownewPassword
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
+        divClassName: "mb-3",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.new_password
+          : null,
+      },
+      {
+        name: "Confirm Password",
+        type: authState?.app_data?.showConfirmPassword ? "text" : "password",
+        category: "input",
+        placeholder: "********",
+        className: "pe-5 login-input",
+        value: authState?.teacherRegisterdata?.confirm_password || "",
+        change: (e) =>
+          dispatch(
+            update_teacher_register({ confirm_password: e.target.value })
+          ),
+        eyeFunction: () =>
+          dispatch(
+            update_input_eye({
+              showConfirmPassword: !authState?.app_data?.showConfirmPassword,
+            })
+          ),
+        eyeIcon: authState?.app_data?.showConfirmPassword
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
+        divClassName: "mb-3",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.confirm_password
+          : null,
+      },
+    ],
+    studentRegister: [
+      {
+        name: "First Name",
+        type: "text",
+        category: "input",
+        placeholder: "Enter Your First Name",
+        value: authState?.studentRegisterdata?.first_name || "",
+        change: (e) =>{
+          if (/^[A-Za-z]*$/.test(e.target.value)) {
+            dispatch(
+              update_student_register({ first_name: e.target.value })
+            );
+          }
+        },
+        keyDown: (e) => {
+          if (e.key === "Enter")
+            dispatch(
+              handleRegister(
+                authState?.studentRegisterdata,
+                navigate,
+                "/register/student"
+              )
+            );
+        },
+        divClassName: "mb-3",
+        className: "login-input",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.first_name
+          : null,
+      },
+      {
+        name: "Last Name",
+        type: "text",
+        category: "input",
+        placeholder: "Enter Your Last Name",
+        className: "pe-5 login-input",
+        value: authState?.studentRegisterdata?.last_name || "",
+        change: (e) =>{
+          if (/^[A-Za-z]*$/.test(e.target.value)) {
+            dispatch(
+              update_student_register({ last_name: e.target.value })
+            );
+          }
+        },
+        divClassName: "mb-3",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.last_name
+          : null,
+      },
+      {
+        name: "Institute Name",
+        type: "text",
+        category: "input",
+        placeholder: "Enter Your Institute Name",
+        value: authState?.studentRegisterdata?.institute_name || "",
+        change: (e) =>
+          dispatch(update_student_register({ institute_name: e.target.value })),
+        divClassName: "mb-3",
+        className: "login-input",
+        disabled: true,
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.institute_name
+          : null,
+      },
+      {
+        name: "Email",
+        type: "text",
+        category: "input",
+        placeholder: "mail@abc",
+        value: authState?.studentRegisterdata?.email_id || "",
+        change: (e) =>
+          dispatch(update_student_register({ email_id: e.target.value })),
+        divClassName: "mb-3",
+        className: "pe-5 login-input",
+        disabled: true,
+
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.email_id
+          : null,
+      },
+      {
+        name: "Phone Number",
+        type: "text",
+        category: "input",
+        placeholder: "999-999-9999",
+        value: authState?.studentRegisterdata?.phone_number || "",
+        change: (e) =>{
+          if (/^\d{0,10}$/.test(e.target.value)) {
+            dispatch(
+              update_student_register({ phone_number: e.target.value })
+            );
+          }
+        },
+        divClassName: "mb-3",
+        className: "pe-5 login-input",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.phone_number
+          : null,
+      },
+      {
+        name: "Password",
+        type: authState?.app_data?.shownewPassword ? "text" : "password",
+        category: "input",
+        placeholder: "********",
+        className: "pe-5 login-input",
+        value: authState?.studentRegisterdata?.new_password || "",
+        change: (e) =>
+          dispatch(update_student_register({ new_password: e.target.value })),
+        eyeFunction: () =>
+          dispatch(
+            update_input_eye({
+              shownewPassword: !authState?.app_data?.shownewPassword,
+            })
+          ),
+        eyeIcon: authState?.app_data?.shownewPassword
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
+        divClassName: "mb-3",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.new_password
+          : null,
+      },
+      {
+        name: "Confirm Password",
+        type: authState?.app_data?.showConfirmPassword ? "text" : "password",
+        category: "input",
+        placeholder: "********",
+        className: "pe-5 login-input",
+        value: authState?.studentRegisterdata?.confirm_password || "",
+        change: (e) =>
+          dispatch(
+            update_student_register({ confirm_password: e.target.value })
+          ),
+        eyeFunction: () =>
+          dispatch(
+            update_input_eye({
+              showConfirmPassword: !authState?.app_data?.showConfirmPassword,
+            })
+          ),
+        eyeIcon: authState?.app_data?.showConfirmPassword
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
+        divClassName: "mb-3",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.confirm_password
+          : null,
+      },
+    ],
+    forgot: [
+      {
+        name: "Email",
+        type: "text",
+        category: "input",
+        placeholder: "mail@abc",
+        value: authState?.forgotPassworddata?.email_id || "",
+        change: (e) =>{
+          if (/^[A-Za-z0-9@._-]*$/.test(e.target.value)) {
+            dispatch(update_forgot_password({ email_id: e.target.value }));
+          }
+        },
+        keyDown: (e) => {
+          if (e.key === "Enter")
+            dispatch(
+              handleForgetPass(
+                authState?.forgotPassworddata,
+                navigate,
+                "/forget_password"
+              )
+            );
+        },
+        divClassName: "mb-1",
+        className: "login-input",
+        isMandatory: false,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.email_id
+          : null,
+      },
+    ],
+    createPassword: [
+      {
+        name: "New Password",
+        type: authState?.app_data?.shownewPassword ? "text" : "password",
+        category: "input",
+        placeholder: "********",
+        className: "pe-5 login-input",
+        value: authState?.createPassworddata?.new_password || "",
+        change: (e) =>
+          dispatch(update_create_password({ new_password: e.target.value })),
+        // keyDown: (e) => {
+        //     if (e.key === 'Enter') dispatch(handleCreatePassword(authState?.createPassworddata, routeState, navigate, "/reset_password"))
+        // },
+        eyeFunction: () =>
+          dispatch(
+            update_input_eye({
+              shownewPassword: !authState?.app_data?.shownewPassword,
+            })
+          ),
+        eyeIcon: authState?.app_data?.shownewPassword
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
+        divClassName: "mb-3",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.new_password
+          : null,
+      },
+      {
+        name: "Confirm Password",
+        type: authState?.app_data?.showConfirmPassword ? "text" : "password",
+        category: "input",
+        placeholder: "********",
+        className: "pe-5 login-input",
+        value: authState?.createPassworddata?.confirm_password || "",
+        change: (e) =>
+          dispatch(
+            update_create_password({ confirm_password: e.target.value })
+          ),
+        eyeFunction: () =>
+          dispatch(
+            update_input_eye({
+              showConfirmPassword: !authState?.app_data?.showConfirmPassword,
+            })
+          ),
+        eyeIcon: authState?.app_data?.showConfirmPassword
+          ? Icons?.EyeOpen
+          : Icons?.EyeClose,
+        divClassName: "mb-3",
+        isMandatory: true,
+        Err: commonState?.app_data?.validated
+          ? commonState?.app_data?.validationMessage?.confirm_password
+          : null,
+      },
+    ],
+    otpVerfication: [
+      {
+        name: "",
+        type: "text",
+        category: "input",
+        value: authState?.otpVerificationdata?.otp1 || "",
+        change: (e) => {
+          let v = e.target.value.replace(/\D/g, "");
+
+          if (v.length > 1) v = v[0];
+
+          dispatch(update_otp_verification({ otp1: v }));
+
+          if (v && otpRefs.current[1]) {
+            otpRefs.current[1].focus();
+          }
+        },
+        ref: (el) => (otpRefs.current[0] = el),
+        keyDown: (e) => {
+          if (e.key === "Backspace") {
+            const val = authState?.otpVerificationdata?.otp1;
+            if (val) {
+              dispatch(update_otp_verification({ otp1: "" }));
+            } else if (otpRefs.current[0]) {
+              otpRefs.current[0].focus();
+            }
+          }
+        },
+        divClassName: "mb-1",
+        className: "otp-input",
+        isMandatory: false,
+        placeholder: "-",
+      },
+      {
+        name: "",
+        type: "text",
+        category: "input",
+        value: authState?.otpVerificationdata?.otp2 || "",
+        change: (e) => {
+          let v = e.target.value;
+
+          v = v.replace(/\D/g, "");
+
+          if (v.length > 1) v = v[0];
+
+          dispatch(update_otp_verification({ otp2: v }));
+          if (v && otpRefs.current[2]) {
+            otpRefs.current[2].focus();
+          }
+        },
+        ref: (el) => (otpRefs.current[1] = el),
+        keyDown: (e) => {
+          if (e.key === "Backspace") {
+            const val = authState?.otpVerificationdata?.otp2;
+            if (val) {
+              dispatch(update_otp_verification({ otp2: "" }));
+            } else {
+              otpRefs.current[0]?.focus();
+            }
+          }
+        },
+        divClassName: "mb-1",
+        className: "otp-input",
+        isMandatory: false,
+        placeholder: "-",
+      },
+      {
+        name: "",
+        type: "text",
+        category: "input",
+        value: authState?.otpVerificationdata?.otp3 || "",
+        change: (e) => {
+          let v = e.target.value;
+
+          v = v.replace(/\D/g, "");
+
+          if (v.length > 1) v = v[0];
+
+          dispatch(update_otp_verification({ otp3: v }));
+          if (v && otpRefs.current[3]) {
+            otpRefs.current[3].focus();
+          }
+        },
+        ref: (el) => (otpRefs.current[2] = el),
+
+        keyDown: (e) => {
+          if (e.key === "Backspace") {
+            const val = authState?.otpVerificationdata?.otp3;
+            if (val) {
+              dispatch(update_otp_verification({ otp3: "" }));
+            } else {
+              otpRefs.current[1]?.focus();
+            }
+          }
+        },
+        divClassName: "mb-1",
+        className: "otp-input",
+        isMandatory: false,
+        placeholder: "-",
+      },
+      {
+        name: "",
+        type: "text",
+        category: "input",
+        value: authState?.otpVerificationdata?.otp4 || "",
+        change: (e) => {
+          let v = e.target.value;
+
+          v = v.replace(/\D/g, "");
+
+          if (v.length > 1) v = v[0];
+
+          dispatch(update_otp_verification({ otp4: v }));
+          if (v && otpRefs.current[4]) {
+            otpRefs.current[4].focus();
+          }
+        },
+        ref: (el) => (otpRefs.current[3] = el),
+
+        keyDown: (e) => {
+          if (e.key === "Backspace") {
+            const val = authState?.otpVerificationdata?.otp4;
+            if (val) {
+              dispatch(update_otp_verification({ otp4: "" }));
+            } else {
+              otpRefs.current[2]?.focus();
+            }
+          }
+        },
+        divClassName: "mb-1",
+        className: "otp-input",
+        isMandatory: false,
+        placeholder: "-",
+      },
+    ],
+  };
+
+  return {
+    jsonOnly: jsonOnly,
+    jsxJson: jsxJson,
+  };
+};
+
+export default JsonData;
+
