@@ -4,6 +4,12 @@ import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import axiosInstance from 'Services/axiosInstance';
+import { speakText } from 'Views/Common/Actions/voiceAgentActions';
+import { updateModalShow } from 'Views/Common/Slices/Common_slice';
+import { handleGetCreateClassroomModalTeachers } from 'Views/Admin/Actions/Admin_action';
+import { clearClassroomForm, onChangeClassroomForm } from 'Views/Admin/Slices/adminSlice';
+
+const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 /**
  * ADMIN WebMCP TOOLS
@@ -11,6 +17,7 @@ import axiosInstance from 'Services/axiosInstance';
  */
 const AdminTools = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     // ── Navigate ────────────────────────────────────────────────────────────
     useWebMCP({
@@ -32,16 +39,17 @@ const AdminTools = () => {
         inputSchema: {},
         handler: async () => {
             const res = await axiosInstance.get('/admin/get_classrooms');
+            console.log('RAW CLASSROOM DATA:', JSON.stringify(res.data.data?.[0], null, 2));
             if (res.data.success && res.data.data?.length) {
                 navigate('/admin_dashboard/classrooms');
                 return {
                     success: true,
                     total: res.data.data.length,
                     classrooms: res.data.data.map((c) => ({
-                        id: c.class_id,
-                        name: c.class_name,
+                        id: c.id,
+                        name: c.classroom_name,
                         teacher: c.teacher_name,
-                        student_count: c.student_count,
+                        student_count: c.no_of_student_count,
                     })),
                 };
             }
@@ -55,19 +63,32 @@ const AdminTools = () => {
         description: 'Get all teachers in the institution.',
         inputSchema: {},
         handler: async () => {
+
             const res = await axiosInstance.get('/admin/get_all_teachers');
+
+            console.log(
+                "TEACHERS API RESPONSE",
+                JSON.stringify(res.data, null, 2)
+            );
+
             if (res.data.success && res.data.data?.length) {
+
                 return {
                     success: true,
                     total: res.data.data.length,
                     teachers: res.data.data.map((t) => ({
                         id: t.teacher_id,
-                        name: `${t.first_name} ${t.last_name}`,
+                        name: t.teacher_name,
                         email: t.email_id,
                     })),
                 };
+
             }
-            return { success: false, message: 'No teachers found' };
+
+            return {
+                success: false,
+                message: 'No teachers found'
+            };
         },
     });
 
@@ -76,10 +97,10 @@ const AdminTools = () => {
         name: 'admin_classroom_details',
         description: 'Get details of a specific classroom including students and teachers.',
         inputSchema: {
-            class_id: z.string().describe('Classroom ID'),
+            classroom_id: z.string().describe('Classroom ID'),
         },
-        handler: async ({ class_id }) => {
-            const res = await axiosInstance.post('/admin/get_classroom_details', { class_id });
+        handler: async ({ classroom_id }) => {
+            const res = await axiosInstance.post('/admin/get_classroom_details', { classroom_id });
             if (res.data.success) {
                 return { success: true, details: res.data.data };
             }
@@ -92,10 +113,10 @@ const AdminTools = () => {
         name: 'admin_classroom_performance',
         description: 'Get test performance data for a classroom.',
         inputSchema: {
-            class_id: z.string().describe('Classroom ID'),
+            classroom_id: z.string().describe('Classroom ID'),
         },
-        handler: async ({ class_id }) => {
-            const res = await axiosInstance.post('/admin/get_classroom_test_performance', { class_id });
+        handler: async ({ classroom_id }) => {
+            const res = await axiosInstance.post('/admin/get_classroom_test_performance', { classroom_id });
             if (res.data.success) {
                 return { success: true, performance: res.data.data };
             }
@@ -121,18 +142,80 @@ const AdminTools = () => {
     // ── Create classroom ────────────────────────────────────────────────────
     useWebMCP({
         name: 'admin_create_classroom',
-        description: 'Create a new classroom in the institution.',
+        description: `Open the Create Classroom modal in /admin_dashboard/classrooms.
+Use this for the admin "create classroom" flow. Prefill class name and selected teachers when provided.
+The admin must manually upload the student CSV/XLSX file in the modal and click Create.`,
         inputSchema: {
-            class_name: z.string().describe('Classroom name'),
-            teacher_id: z.string().optional().describe('Assign a teacher to the classroom'),
+            classroom_name: z.string().optional().describe('Classroom name to prefill'),
+            teacher_ids: z.array(z.union([z.number(), z.string()])).default([]).describe('Teacher IDs to preselect. If a spoken teacher name is accidentally provided here, the tool will match it by name.'),
+            teacher_names: z.array(z.string()).default([]).describe('Teacher names to match and preselect when IDs are unknown'),
         },
-        handler: async (payload) => {
-            const res = await axiosInstance.post('/admin/create_classroom', payload);
-            if (res.data.success) {
+        handler: async ({ classroom_name = '', teacher_ids = [], teacher_names = [] }) => {
                 navigate('/admin_dashboard/classrooms');
-                return { success: true, message: 'Classroom created' };
+
+            dispatch(clearClassroomForm());
+            dispatch(handleGetCreateClassroomModalTeachers());
+
+            const numericTeacherIds = [];
+            const spokenTeacherNames = [...teacher_names];
+
+            teacher_ids.forEach(value => {
+                const teacherValue = value?.toString().trim();
+                if (!teacherValue) return;
+
+                if (/^\d+$/.test(teacherValue)) {
+                    numericTeacherIds.push(teacherValue);
+                } else {
+                    spokenTeacherNames.push(teacherValue);
+                }
+            });
+
+            let selectedTeacherIds = [...numericTeacherIds];
+
+            if (spokenTeacherNames.length) {
+                const res = await axiosInstance.get('/admin/get_all_teachers');
+                const teachers = Array.isArray(res?.data?.data) ? res.data.data : [];
+                const wantedNames = spokenTeacherNames.map(name => name.toLowerCase().trim());
+
+                const matchedTeacherIds = teachers
+                    .filter(teacher => wantedNames.includes((teacher.teacher_name || '').toLowerCase().trim()))
+                    .map(teacher => (teacher.id ?? teacher.teacher_id)?.toString())
+                    .filter(Boolean);
+
+                selectedTeacherIds = [...new Set([...selectedTeacherIds, ...matchedTeacherIds])];
             }
-            return { success: false, message: 'Could not create classroom' };
+
+            await wait(300);
+
+            if (classroom_name) {
+                dispatch(onChangeClassroomForm({ field: 'class_name', data: classroom_name }));
+            }
+
+            if (selectedTeacherIds.length) {
+                dispatch(onChangeClassroomForm({ field: 'teachers', data: selectedTeacherIds }));
+            }
+
+            dispatch(updateModalShow({
+                show: true,
+                close_btn: true,
+                modal_from: 'admin',
+                modal_type: 'create_classroom',
+            }));
+
+            const message = classroom_name
+                ? `Create Classroom is open and prefilled for ${classroom_name}. Please upload the student file and click Create.`
+                : 'Create Classroom is open. Please enter the class name, select teachers, upload the student file, and click Create.';
+
+            dispatch(speakText(message));
+
+            return {
+                success: true,
+                summary: message,
+                navigated_to: '/admin_dashboard/classrooms',
+                classroom_name,
+                teacher_ids: selectedTeacherIds,
+                next_step: 'Admin uploads the student CSV/XLSX file in the modal, then clicks Create.',
+            };
         },
     });
 
@@ -158,7 +241,7 @@ const AdminTools = () => {
         description: 'Send email invitations to students.',
         inputSchema: {
             emails: z.array(z.string()).describe('List of student email addresses'),
-            class_id: z.string().optional().describe('Assign to a specific classroom'),
+            classroom_id: z.string().optional().describe('Assign to a specific classroom'),
         },
         handler: async (payload) => {
             const res = await axiosInstance.post('/admin/invite_students', payload);
@@ -191,10 +274,12 @@ const AdminTools = () => {
         name: 'admin_delete_classroom',
         description: 'Delete a classroom. Always confirm before calling this.',
         inputSchema: {
-            class_id: z.string().describe('Classroom ID to delete'),
+            classroom_id: z.number().describe('Classroom ID to delete'),
         },
-        handler: async ({ class_id }) => {
-            const res = await axiosInstance.delete('/admin/delete_classroom', { data: { class_id } });
+        handler: async ({ classroom_id }) => {
+            const res = await axiosInstance.delete(
+                `/admin/delete_classroom?classroom_id=${Number(classroom_id)}`
+            );
             if (res.data.success) {
                 navigate('/admin_dashboard/classrooms');
                 return { success: true, message: 'Classroom deleted' };

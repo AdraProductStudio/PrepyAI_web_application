@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import axiosInstance from 'Services/axiosInstance';
 import { speakText } from 'Views/Common/Actions/voiceAgentActions';
-import ModalComponent from '../../Modal/Modal';
 import { updateModalShow } from 'Views/Common/Slices/Common_slice';
 
 /**
@@ -291,7 +290,7 @@ const StudentTools = () => {
             subject_name: z.string().optional()
                 .describe('The subject name e.g. Physics, Maths — include this so the response is clear'),
         },
-        handler: async ({ subject_id }) => {
+        handler: async ({ subject_id, subject_name }) => {
             const id = String(subject_id);  // ← safety convert
             const res = await axiosInstance.get(`/students/get_subject_books?subject_id=${id}`);
             if (res.data.success && res.data.data?.length) {

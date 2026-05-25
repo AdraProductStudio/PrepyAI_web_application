@@ -281,29 +281,7 @@ const TeacherTools = () => {
         },
     });
 
-    // POST /teachers/add_subject
-    // useWebMCP({
-    //     name: 'teacher_add_subject',
-    //     description: 'Add a new subject to a classroom and assign a teacher to it.',
-    //     inputSchema: {
-    //         classroom_id: z.number().describe('Classroom ID'),
-    //         subject_name: z.string().describe('Subject name e.g. "Physics"'),
-    //         teachers_id: z.number().describe('User ID of the teacher to assign'),
-    //     },
-    //     handler: async ({ classroom_id, subject_name, teachers_id }) => {
-    //         navigate(`/teachers_dashboard/classrooms/${classroom_id}`);
-    //         const res = await axiosInstance.post('/teachers/add_subject', { classroom_id, subject_name, teachers_id });
-    //         if (isSuccessResponse(res)) {
-    //             const msg = `Subject ${subject_name} has been added to the classroom successfully.`;
-    //             dispatch(speakText(msg));
-    //             return { success: true, summary: msg };
-    //         }
-    //         const err = getResponseMessage(res, 'Could not create subject.');
-    //         dispatch(speakText(err));
-    //         return { success: false, message: err };
-    //     },
-    // });
-
+    
     useWebMCP({
         name: 'teacher_add_subject',
         description: 'Add a new subject to a classroom and assign a teacher to it.',
@@ -683,83 +661,7 @@ const TeacherTools = () => {
         },
     });
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // TESTS
-    // ─────────────────────────────────────────────────────────────────────────
-
-    // POST /teachers/save_schedule — generates questions + saves test draft
-    // useWebMCP({
-    //     name: 'teacher_save_test_schedule',
-    //     description: `Generate test questions and save a test draft.
-
-    // STRICT SEQUENCE — you must complete ALL steps before calling this:
-    // STEP 1: teacher_fetch_classrooms → get classroom_id
-    // STEP 2: teacher_fetch_subjects (classroom_id) → get subject_id
-    // STEP 3: teacher_fetch_books (classroom_id, subject_id) → get book_id
-    // STEP 4: teacher_fetch_book_chapters (book_id) → get chapter_range from bookmarks
-    // STEP 5: Ask teacher for test name, date (YYYY-MM-DD), time (HH:MM:SS), difficulty, duration, question type
-    // STEP 6: Call THIS tool with all collected values
-    // STEP 7: Call teacher_send_invitations with the returned test_id
-
-    // DO NOT call this tool if any step above is incomplete.`,
-
-    //     inputSchema: {
-    //         test_name:        z.string().describe('Name of the test'),
-    //         classroom_id:     z.number().describe('From teacher_fetch_classrooms'),
-    //         subject_id:       z.number().describe('From teacher_fetch_subjects'),
-    //         book_id:          z.number().describe('From teacher_fetch_books'),
-    //         chapters:         z.array(z.string()).optional().describe('Chapter title strings'),
-    //         chapter_range:    z.array(z.array(z.number())).describe('Page ranges from teacher_fetch_book_chapters'),
-    //         start_date:       z.string().describe('YYYY-MM-DD'),
-    //         start_time:       z.string().describe('HH:MM:SS'),
-    //         type_of_questions: z.enum(['mcq', 'long_answer']),
-    //         level_of_test:    z.enum(['easy', 'medium', 'hard']),
-    //         no_of_questions:  z.number().default(10),
-    //         set_questions:    z.number().default(1),
-    //         total_duration:   z.number().default(60),
-    //         students:         z.union([z.array(z.number()), z.array(z.string())]).default(['all']),
-    //     },
-    //     handler: async (payload) => {
-    //         navigate(subjectChildRoute(payload.classroom_id, payload.subject_id, 'create_test'));
-    //         dispatch(speakText('Generating test questions, this may take a moment...'));
-    //         const res = await axiosInstance.post('/teachers/save_schedule', {
-    //             ...payload,
-    //             mode_of_test: payload.type_of_questions === 'mcq' ? 'Online' : 'Offline',
-    //         });
-    //         if (isSuccessResponse(res)) {
-    //             const testId = getResponseData(res)?.test_id;
-    //             if (testId) {
-    //                 navigate(subjectChildRoute(payload.classroom_id, payload.subject_id, `preview_test/${testId}`));
-    //             }
-    //             const msg = `Test "${payload.test_name}" generated${testId ? ` with ID ${testId}` : ''}. You can now send invitations.`;
-    //             dispatch(speakText(msg));
-    //             return { success: true, summary: msg, test_id: testId };
-    //         }
-    //         const err = getResponseMessage(res, 'Could not save test.');
-    //         dispatch(speakText(err));
-    //         return { success: false, message: err };
-    //     },
-    // });
-
-    // useWebMCP({
-    //     name: 'teacher_send_invitations',
-    //     description: 'Send test invitations to students. Call ONLY after teacher_save_test_schedule returns a test_id.',
-    //     inputSchema: {
-    //         test_id: z.number().describe('test_id returned from teacher_save_test_schedule'),
-    //     },
-    //     handler: async ({ test_id }) => {
-    //         const res = await axiosInstance.post('/teachers/schedule_test', { test_id });
-    //         if (isSuccessResponse(res)) {
-    //             const msg = 'Invitations sent to all students successfully.';
-    //             dispatch(speakText(msg));
-    //             return { success: true, summary: msg };
-    //         }
-    //         const err = getResponseMessage(res, 'Could not send invitations.');
-    //         dispatch(speakText(err));
-    //         return { success: false, message: err };
-    //     },
-    // });
-    // POST /teachers/get_test_questions
+  
     useWebMCP({
         name: 'teacher_fetch_test_questions',
         description: 'Get both the student-facing questions and the answer key for a test.',

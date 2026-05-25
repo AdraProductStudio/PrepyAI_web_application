@@ -15,7 +15,7 @@ const normalizeAction = (name, payload = {}) => {
 
     return { name, payload };
 };
-
+const globalContextRef = { current: {} };
 export const useVoiceAgent = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -358,6 +358,7 @@ export const useVoiceAgent = () => {
         while (true) {
             const result = await dispatch(chatWithAgent(message, session_id, {
                 available_tools: tools,
+                collected_context: globalContextRef.current,
             }));
 
             console.log("AGENT LOOP RESULT:", result);

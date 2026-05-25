@@ -24,6 +24,7 @@ const client = new Client({
 const transport = new TabClientTransport("mcp", {
   clientInstanceId: "prepyai-web",
   timeout: 120000,
+  serverOrigin: process.env.REACT_APP_MCP_ORIGIN || window.location.origin,
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
