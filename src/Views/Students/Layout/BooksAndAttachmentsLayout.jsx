@@ -1,0 +1,119 @@
+import Icons from "Utils/Icons";
+import { Card } from "react-bootstrap";
+import JsonData from "Views/Students/Utils/JsonData";
+import { Outlet, useLocation, useParams } from "react-router-dom";
+import ActivityCard from "Components/Card/ActivtyCard";
+import { SearchComponent } from "ResuableFunctions/SearchFun";
+import NavLinkComp from "Components/Router_components/NavLink";
+import LinkComponent from "Components/Router_components/LinkComponent";
+import TestPerformanceChartStudent from "Components/Charts/TestPerformanceChart_student";
+import { CustomUseLocationHook, useCommonState, useDispatch } from "Components/CustomHooks";
+import { useEffect } from "react";
+import { handleGetSubjectAttachments, handleGetSubjectBooks, handleGetSubjectPerformance, handleGetUpcomingTests } from "../Actions/StudentAction";
+import { updateModalShow } from "Views/Common/Slices/Common_slice";
+import { updateTestId } from "../Slices/StudentSlice";
+import Img from "Components/Img/Img";
+import Image from "Utils/Image";
+import Spinner from "Components/Spinner/CustomSpinner";
+
+
+const BooksAndAttachmentsLayout = () => {
+    const { subject_id} = useParams();
+    const { jsonOnly } = JsonData({ subject_id});
+    const dispatch = useDispatch()
+    const {studentState} = useCommonState()
+    const location = CustomUseLocationHook();
+    
+    useEffect(() => {
+        if(!subject_id) return 
+        dispatch(handleGetSubjectBooks(subject_id))
+        dispatch(handleGetSubjectAttachments(subject_id))
+        dispatch(handleGetUpcomingTests(subject_id))
+        dispatch(handleGetSubjectPerformance(subject_id))
+    }, [])
+
+    return (
+        <div className="container-fluid">
+            <div className="w-100 border-bottom pb-3">
+                <LinkComponent to='/student_dashboard/subjects' className="brand-link-color">
+                    <span>{Icons.back_button_icon_blue}</span>
+                    <span className="align-middle">Subjects</span>
+                </LinkComponent>
+            </div>
+
+            <div className="w-100 h-100 small_header_content_main d-flex flex-column flex-xxl-row overflowY">
+                <div className="col-12 col-xxl-8 p-1">
+                    <Card className="border-0 rounded-3 shadow-sm px-3 h-100">
+                        <Card.Header className="bg-transparent border-0 border-bottom d-flex flex-column flex-md-row align-items-center">
+                            <div className="col-12 col-md-8 d-flex flex-wrap">
+                                {jsonOnly.book_attachment_navlink?.map((link, link_index) => (
+                                    <div className="col-6 col-md-3 col-lg-2" key={link_index}>
+                                        <NavLinkComp to={link.route} className="text-decoration-none book_attachment_navlink" end={true}>
+                                            <span className="text-secondary">{link.name}</span>
+                                        </NavLinkComp>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className={`text-end ${location.includes("attachments") ? "invisible" : "col-12 col-md-4 mt-4 mt-md-0"}`}>
+                                <SearchComponent placeholder="Search..." />
+                            </div>
+
+                        </Card.Header>
+                        <Card.Body style={{ height: "calc(100% - 3rem)" }} className="overflowY">
+                            <Outlet />
+                        </Card.Body>
+                    </Card>
+                </div>
+
+                <div className="col-12 col-xxl-4">
+                    <div className="col p-2">
+                        <Card className="rounded-4 shadow-sm border-0">
+                            <Card.Header className="bg-transparent border-0 py-2">
+                                <h5>Performance</h5>
+                            </Card.Header>
+                            <Card.Body>
+                                <TestPerformanceChartStudent data={studentState?.subject_performance}/>
+                            </Card.Body>
+                        </Card>
+                    </div>
+
+                    <div className="col p-2">
+                        <Card className="rounded-4 shadow-sm border-0">
+                            <Card.Header className="bg-transparent border-0 py-2">
+                                <h5>Upcoming Tests</h5>
+                            </Card.Header>
+                            <Card.Body className="upcoming_test_history_body">
+                                { studentState?.loading['upcoming_tests'] ? 
+                                    <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "200px" }}>
+                                        <div className="col-5 text-center">
+                                            <Spinner />
+                                        </div>
+                                    </div> 
+                                    :
+                                    studentState?.upcoming_tests.length > 0 ? (
+                                        studentState?.upcoming_tests.map((test, idx)=> (
+                                            <ActivityCard key={idx} data={test} 
+                                                startFunction={() => {
+                                                    dispatch(updateModalShow({ show: true, close_btn: true, modal_from: "dashboard", modal_type: "start_test" }))
+                                                    dispatch(updateTestId({ id: test.test_id }))
+                                                }}
+                                            />
+                                        ))
+                                    ) : (
+                                        <div className="d-flex flex-column justify-content-center align-items-center w-100" style={{ minHeight: '200px' }}>
+                                            <span><Img src={Image.no_data_found} width={80} /></span>
+                                            <p>No upcoming tests</p>
+                                        </div>
+                                    )
+                                }
+                            </Card.Body>
+                        </Card>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default BooksAndAttachmentsLayout;
