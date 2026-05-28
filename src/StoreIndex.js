@@ -8,6 +8,10 @@ import superadminReducer from 'Views/Superadmin/Slices/SuperAdmin_slice'
 import adminReducer from 'Views/Admin/Slices/adminSlice';
 
 
+import voiceAgentReducer from 'Views/Common/Slices/voiceAgentSlice';
+
+
+
 const reducers = combineReducers({
     commonState: commonReducer,
     studentState: StudentReducer,
@@ -16,7 +20,8 @@ const reducers = combineReducers({
     organisationState: organisationReducer,
     superadminState:superadminReducer,
     adminState: adminReducer,
-    attachment: teachersReducer
+    attachment: teachersReducer,
+    voiceAgentState: voiceAgentReducer
      
 })
 

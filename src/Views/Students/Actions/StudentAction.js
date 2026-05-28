@@ -47,6 +47,9 @@ import {
 import { IndexedDbDeleteFun } from "../IndexDbDeleteFun";
 import sha256 from "sha256";
 
+
+import { speakText } from "Views/Common/Actions/voiceAgentActions";
+
 const validateUploadTestPaper = (values) => {
   
   const errors = {}
@@ -595,15 +598,22 @@ export const handleUploadLearnerBook = (formData) => async (dispatch, getState) 
             dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
             dispatch(handleGetLearnerBooks({page:1}))
             dispatch(update_error({ Err: data.message, Toast_Type: "success" }))
+            window.__uploadBookResolve?.({ success: true, message: data.message })
+            window.__uploadBookResolve = null
+
         } else {
             dispatch(setUploadLearnerBook({ type: "failure", loading: false }))
             dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
             dispatch(update_error({ Err: data.message, Toast_Type: "error" }))
+            window.__uploadBookResolve?.({ success: false, message: data.message })
+            window.__uploadBookResolve = null
         }
     } catch (error) {
         dispatch(setUploadLearnerBook({ type: "failure", loading: false }))
         dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
         dispatch(update_error({ Err: 'Something went wrong', Toast_Type: "error" }))
+        window.__uploadBookResolve?.({ success: false, message: 'Something went wrong' })
+        window.__uploadBookResolve = null
     }
 }
 

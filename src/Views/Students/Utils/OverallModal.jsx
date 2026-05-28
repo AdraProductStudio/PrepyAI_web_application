@@ -22,6 +22,9 @@ import ButtonSpinner from "Components/Spinner/ButtonSpinner";
 import Textbox from "Components/Input/textbox";
 import { type } from "@testing-library/user-event/dist/type";
 
+
+import { speakText } from "Views/Common/Actions/voiceAgentActions";
+
 export function OverallModel() {
     const { commonState, studentState } = useCommonState();
     const fileInputRef = useRef(null)
@@ -222,10 +225,29 @@ export function OverallModel() {
                                     className="btn btn-brand-color px-5"
                                     title="Upload"
                                     is_spinner={studentState?.upload_learner_book?.loading}
+                                  
                                     clickFunction={() => {
-                                            handleUpload('learner_book')
-                                             dispatch(update_app_data({type:"validation",data:true}))
-                                        }}
+                                        const { book_name, book_file } = studentState?.upload_learner_book || {};
+
+                                        if (!book_name && (!book_file || (Array.isArray(book_file) && book_file.length === 0))) {
+                                            dispatch(speakText("Please enter the book name and select a file to upload."));
+                                            dispatch(update_error({ Err: "Please enter book name and select a file", Toast_Type: "error" }));
+                                            return;
+                                        }
+                                        if (!book_name) {
+                                            dispatch(speakText("Please enter the book name."));
+                                            dispatch(update_error({ Err: "Please enter the book name", Toast_Type: "error" }));
+                                            return;
+                                        }
+                                        if (!book_file || (Array.isArray(book_file) && book_file.length === 0)) {
+                                            dispatch(speakText("Please select a PDF file to upload."));
+                                            dispatch(update_error({ Err: "Please select a PDF file to upload", Toast_Type: "error" }));
+                                            return;
+                                        }
+
+                                        dispatch(update_app_data({type:"validation", data:true}));
+                                        handleUpload('learner_book');
+                                    }}
                                     />
                                 </div>
                             </div>

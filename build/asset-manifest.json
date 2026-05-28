@@ -1,0 +1,38 @@
+{
+  "files": {
+    "main.css": "/static/css/main.0598f83e.css",
+    "main.js": "/static/js/main.87e29cd7.js",
+    "static/js/239.ec684b2c.chunk.js": "/static/js/239.ec684b2c.chunk.js",
+    "static/js/977.0231392d.chunk.js": "/static/js/977.0231392d.chunk.js",
+    "static/js/455.f89b809e.chunk.js": "/static/js/455.f89b809e.chunk.js",
+    "static/media/organizationScreen.png": "/static/media/organizationScreen.e86094b80ea73be6d6ef.png",
+    "static/media/learnersScreen.png": "/static/media/learnersScreen.b0b05dc03f30dd9468a6.png",
+    "static/media/forgotpasswordScreen.png": "/static/media/forgotpasswordScreen.be28fe354017bfb0df94.png",
+    "static/media/loginScreen.png": "/static/media/loginScreen.0864f394042ec488ed80.png",
+    "static/media/rocket.svg": "/static/media/rocket.d8c45d8705327634b814a9e8b0969f4b.svg",
+    "static/media/no_subjects_added.jpg": "/static/media/no_subjects_added.00dfde98b8e9af20ef5e.jpg",
+    "static/media/book.png": "/static/media/book.ef34c9be5798fa9e069f.png",
+    "static/media/recording.png": "/static/media/recording.19e172dd5c5dada3d069.png",
+    "static/media/record.png": "/static/media/record.5687426e5f60ae0bd6ac.png",
+    "static/media/timetable.png": "/static/media/timetable.6c2e14c5b96e6be00cce.png",
+    "static/media/record_Isolation.png": "/static/media/record_Isolation.eea84e4465cc218b1459.png",
+    "static/media/start_test_pic.png": "/static/media/start_test_pic.b11fd43b15a7f6f7d1ab.png",
+    "static/media/Task_empty.png": "/static/media/Task_empty.ed1f36ca1a63d4fe4726.png",
+    "static/media/no_data_found.png": "/static/media/no_data_found.ed1f36ca1a63d4fe4726.png",
+    "static/media/logo.png": "/static/media/logo.3fdb45883f7362fb796f.png",
+    "static/media/default_prfile_pic.png": "/static/media/default_prfile_pic.8b00650c96cc280f8666.png",
+    "static/media/PrepyAI.svg": "/static/media/PrepyAI.bae2483215ee42a2b516f9b7e4bf6ce3.svg",
+    "static/media/Stroke.svg": "/static/media/Stroke.379909823d308b9cef34ab71619adddc.svg",
+    "index.html": "/index.html",
+    "static/media/Vector.svg": "/static/media/Vector.03f6d7203d94eec7c751cc75d4b0d577.svg",
+    "main.0598f83e.css.map": "/static/css/main.0598f83e.css.map",
+    "main.87e29cd7.js.map": "/static/js/main.87e29cd7.js.map",
+    "239.ec684b2c.chunk.js.map": "/static/js/239.ec684b2c.chunk.js.map",
+    "977.0231392d.chunk.js.map": "/static/js/977.0231392d.chunk.js.map",
+    "455.f89b809e.chunk.js.map": "/static/js/455.f89b809e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0598f83e.css",
+    "static/js/main.87e29cd7.js"
+  ]
+}

@@ -105,13 +105,26 @@ import EditClasroomTimetable from "Views/Admin/Docs/EditClasroomTimetable";
 import EditTeacherTimetable from "Views/Admin/Docs/EditTeacherTimetable";
 
 
+import VoiceWidget from 'Components/VoiceAgent/VoiceWidget';
+import StudentTools from 'Components/VoiceAgent/tools/StudentTools';
+import TeacherTools from 'Components/VoiceAgent/tools/TeacherTools';
+import AdminTools from 'Components/VoiceAgent/tools/AdminTools';
+import OrganisationTools from 'Components/VoiceAgent/tools/OrganisationTools';
+import { useSelector } from 'react-redux';
+
 
 
 
 function App() {
+  const user_role = useSelector((s) => s.commonState?.app_data?.user_role);
   return (
     <Fragment>
       <ToastContainer theme="light" />
+      <VoiceWidget />
+        {user_role === "STUDENT" && <StudentTools />}
+        {user_role === "TEACHER" && <TeacherTools />}
+        {user_role === "ADMIN" && <AdminTools />}
+        {user_role === "ORGANIZATION" && <OrganisationTools />}
       <Routes>
         <Route element={<InitializeProjectSetup />}>
           {/* Auth */}
