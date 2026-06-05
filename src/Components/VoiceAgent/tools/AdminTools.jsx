@@ -4,6 +4,8 @@ import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import axiosInstance from 'Services/axiosInstance';
+import { updateModalShow } from 'Views/Common/Slices/Common_slice';
+import { getCreateClassroomModalTeachers } from 'Views/Admin/Slices/adminSlice';
 
 /**
  * ADMIN WebMCP TOOLS
@@ -11,6 +13,7 @@ import axiosInstance from 'Services/axiosInstance';
  */
 const AdminTools = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     // ── Navigate ────────────────────────────────────────────────────────────
     useWebMCP({
@@ -27,21 +30,23 @@ const AdminTools = () => {
 
     // ── Fetch classrooms ────────────────────────────────────────────────────
     useWebMCP({
-        name: 'admin_fetch_classrooms',
+        name: 'admin_getall_classrooms',
         description: 'Get all classrooms in the institution.',
         inputSchema: {},
         handler: async () => {
             const res = await axiosInstance.get('/admin/get_classrooms');
+            console.log("CLASSROOM SAMPLE:", res.data.data?.[0]);
             if (res.data.success && res.data.data?.length) {
                 navigate('/admin_dashboard/classrooms');
                 return {
                     success: true,
                     total: res.data.data.length,
                     classrooms: res.data.data.map((c) => ({
-                        id: c.class_id,
-                        name: c.class_name,
-                        teacher: c.teacher_name,
-                        student_count: c.student_count,
+                        id: c.id,
+                        name: c.classroom_name,
+                        //student_count: c.no_of_students,
+                        //subject_count: c.no_of_subjects,
+                        //created_at: c.created_at,
                     })),
                 };
             }
@@ -56,14 +61,14 @@ const AdminTools = () => {
         inputSchema: {},
         handler: async () => {
             const res = await axiosInstance.get('/admin/get_all_teachers');
+            
             if (res.data.success && res.data.data?.length) {
                 return {
                     success: true,
                     total: res.data.data.length,
                     teachers: res.data.data.map((t) => ({
-                        id: t.teacher_id,
-                        name: `${t.first_name} ${t.last_name}`,
-                        email: t.email_id,
+                        id: t.id,
+                        name: t.teacher_name,
                     })),
                 };
             }
@@ -73,14 +78,18 @@ const AdminTools = () => {
 
     // ── Fetch classroom details ─────────────────────────────────────────────
     useWebMCP({
-        name: 'admin_classroom_details',
-        description: 'Get details of a specific classroom including students and teachers.',
+        name: 'admin_specific_classroom_details',
+        description: 'Get details of a specific classroom. IMPORTANT: You must call admin_getall_classrooms first to get the correct numeric class_id. Never guess the class_id.',
         inputSchema: {
-            class_id: z.string().describe('Classroom ID'),
+            classroom_id: z.string().describe('Classroom ID as a string'),
         },
-        handler: async ({ class_id }) => {
-            const res = await axiosInstance.post('/admin/get_classroom_details', { class_id });
+        handler: async ({ classroom_id }) => {
+            
+            const res = await axiosInstance.post('/admin/get_classroom_details', { classroom_id: String(classroom_id) } );
+            console.log("CLASSROOM DETAILS:", JSON.stringify(res.data, null, 2));
+            
             if (res.data.success) {
+                navigate(`/admin_dashboard/classrooms/${classroom_id}/teachers`);
                 return { success: true, details: res.data.data };
             }
             return { success: false, message: 'Could not load classroom details' };
@@ -119,22 +128,54 @@ const AdminTools = () => {
     });
 
     // ── Create classroom ────────────────────────────────────────────────────
+    // useWebMCP({
+    //     name: 'admin_create_classroom',
+    //     description: 'Create a new classroom in the institution.',
+    //     inputSchema: {
+    //         class_name: z.string().describe('Classroom name'),
+    //         teacher_id: z.string().optional().describe('Assign a teacher to the classroom'),
+    //     },
+    //     handler: async (payload) => {
+    //         const res = await axiosInstance.post('/admin/create_classroom', payload);
+    //         if (res.data.success) {
+    //             navigate('/admin_dashboard/classrooms');
+    //             return { success: true, message: 'Classroom created' };
+    //         }
+    //         return { success: false, message: 'Could not create classroom' };
+    //     },
+    // });
+
     useWebMCP({
         name: 'admin_create_classroom',
-        description: 'Create a new classroom in the institution.',
-        inputSchema: {
-            class_name: z.string().describe('Classroom name'),
-            teacher_id: z.string().optional().describe('Assign a teacher to the classroom'),
-        },
-        handler: async (payload) => {
-            const res = await axiosInstance.post('/admin/create_classroom', payload);
+        description: 'Create a new classroom. Opens the create classroom modal where admin can enter classroom name, select teacher, and upload student CSV file.',
+        inputSchema: {},
+        handler: async () => {
+            navigate('/admin_dashboard/classrooms');
+            
+            // Fetch teachers for the dropdown
+            const res = await axiosInstance.get('/admin/get_all_teachers');
             if (res.data.success) {
-                navigate('/admin_dashboard/classrooms');
-                return { success: true, message: 'Classroom created' };
+                dispatch(getCreateClassroomModalTeachers({ 
+                    type: 'response', 
+                    data: res.data.data 
+                }));
             }
-            return { success: false, message: 'Could not create classroom' };
+            
+            dispatch(updateModalShow({
+                show: true,
+                modal_from: 'admin',
+                modal_type: 'create_classroom',
+                close_btn: true,
+                size: 'md',
+            }));
+            
+            return { 
+                success: true, 
+                message: 'Opened create classroom form. Please enter the classroom name, select a teacher, and upload a student CSV file.' 
+            };
         },
     });
+    
 
     // ── Invite teachers ─────────────────────────────────────────────────────
     useWebMCP({

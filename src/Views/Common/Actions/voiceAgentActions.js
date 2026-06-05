@@ -53,7 +53,8 @@ export const endVoiceSession = (session_id) => async (dispatch) => {
 
 // ─── Speech to text ───────────────────────────────────────────────────────────
 
-export const transcribeAudio = (audioBlob, session_id) => async (dispatch) => {
+// ← Added `language` parameter (default "en-IN")
+export const transcribeAudio = (audioBlob, session_id, language = "en-IN") => async (dispatch) => {
     try {
         dispatch(setListening(false));
         dispatch(setLoading(true));
@@ -61,6 +62,7 @@ export const transcribeAudio = (audioBlob, session_id) => async (dispatch) => {
         const formData = new FormData();
         formData.append("audio", audioBlob, "audio.wav");
         formData.append("session_id", session_id);
+        formData.append("language", language);  // ← NEW: tell Sarvam which language
 
         const res = await axiosInstance.post("/voice_agent/stt", formData, {
             headers: { "Content-Type": "multipart/form-data" }
@@ -84,7 +86,8 @@ export const transcribeAudio = (audioBlob, session_id) => async (dispatch) => {
 
 // ─── Chat with AI ─────────────────────────────────────────────────────────────
 
-export const chatWithAgent = (message, session_id, context = {}) => async (dispatch) => {
+// ← Added `language` parameter (default "en-IN")
+export const chatWithAgent = (message, session_id, context = {}, language = "en-IN") => async (dispatch) => {
     try {
         dispatch(setLoading(true));
 
@@ -92,15 +95,17 @@ export const chatWithAgent = (message, session_id, context = {}) => async (dispa
             session_id,
             message,
             context,
+            language,  // ← NEW: tell AI to reply in this language
         });
 
         if (res.data.success) {
-            const { reply, intent, action, action_id } = res.data.data;
+            const { reply, intent, action, action_id, language: replyLanguage } = res.data.data;
             dispatch(setAgentReply(reply));
             dispatch(setIntent(intent));
             dispatch(setAction(action));
             dispatch(addConversation({ speaker: "agent", message: reply }));
-            return { reply, intent, action, action_id };
+            // ← Return replyLanguage so the caller can pass it to speakText
+            return { reply, intent, action, action_id, language: replyLanguage || language };
         }
         return null;
     } catch (e) {
@@ -114,11 +119,15 @@ export const chatWithAgent = (message, session_id, context = {}) => async (dispa
 
 // ─── Text to speech ───────────────────────────────────────────────────────────
 
-export const speakText = (text) => async (dispatch) => {
+// ← Added `language` parameter (default "en-IN")
+export const speakText = (text, language = "en-IN") => async (dispatch) => {
     try {
         dispatch(setSpeaking(true));
 
-        const res = await axiosInstance.post("/voice_agent/tts", { text });
+        const res = await axiosInstance.post("/voice_agent/tts", {
+            text,
+            language,  // ← NEW: tell Sarvam which language voice to use
+        });
 
         if (res.data.success) {
             const { audio_base64 } = res.data.data;
@@ -157,5 +166,3 @@ export const logActionResult = (action_id, result, error_message = null) => asyn
         console.error("logActionResult error:", e);
     }
 };
-
-

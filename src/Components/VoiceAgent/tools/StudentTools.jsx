@@ -432,7 +432,88 @@ const StudentTools = () => {
             };
         },
     });
-        
+    
+
+
+
+    // ── Upload book - collect details and validate ──────────────────────────
+    useWebMCP({
+        name: 'student_upload_book_submit',
+        description: 'Submit the book upload with book name and file. Call this ONLY after the student has provided both a book name AND selected a PDF file. If either is missing, ask the student to provide it before calling this tool.',
+        inputSchema: {
+            book_name: z.string().min(1).describe('The name of the book the student wants to upload'),
+            file_base64: z.string().describe('The base64 encoded PDF file content'),
+            file_name: z.string().describe('The original file name e.g. physics.pdf'),
+        },
+        handler: async ({ book_name, file_base64, file_name }) => {
+            if (!book_name?.trim()) {
+                dispatch(speakText("Please tell me the name of the book."));
+                return { success: false, missing: 'book_name', message: 'Book name is required. Please ask the student to provide the book name.' };
+            }
+
+            if (!file_base64 || !file_name) {
+                dispatch(speakText("Please select a PDF file to upload."));
+                return { success: false, missing: 'file', message: 'PDF file is required. Please ask the student to select a PDF file.' };
+            }
+
+            try {
+                // Convert base64 back to file
+                const byteString = atob(file_base64);
+                const ab = new ArrayBuffer(byteString.length);
+                const ia = new Uint8Array(ab);
+                for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+                const blob = new Blob([ab], { type: 'application/pdf' });
+                const file = new File([blob], file_name, { type: 'application/pdf' });
+
+                const formData = new FormData();
+                formData.append('book_name', book_name.trim());
+                formData.append('book', file);
+
+                const res = await axiosInstance.post('/students/upload_learner_book', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                });
+
+                if (res.data.success) {
+                    dispatch(speakText(`${book_name} has been uploaded successfully.`));
+                    dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }));
+                    return { success: true, message: `Book "${book_name}" uploaded successfully.` };
+                }
+
+                return { success: false, message: res.data.message || 'Upload failed. Please try again.' };
+
+            } catch (err) {
+                return { success: false, message: 'Something went wrong during upload. Please try again.' };
+            }
+        },
+    });
+
+    // ── Ask student for missing upload details ──────────────────────────────
+    useWebMCP({
+        name: 'student_upload_book_validate',
+        description: 'Check if the student has provided book name and file. Call this after opening the upload modal to guide the student step by step. Use this to ask for book name if missing, or ask for file if book name is given but no file.',
+        inputSchema: {
+            book_name_provided: z.boolean().describe('Whether the student has provided a book name'),
+            file_provided: z.boolean().describe('Whether the student has selected/provided a PDF file'),
+        },
+        handler: async ({ book_name_provided, file_provided }) => {
+            if (!book_name_provided && !file_provided) {
+                dispatch(speakText("Please enter the book name and select a PDF file to upload."));
+                return { success: false, next_step: 'ask_both', message: 'Ask the student: What is the book name? Also ask them to select a PDF file.' };
+            }
+
+            if (!book_name_provided) {
+                dispatch(speakText("Please tell me the name of the book."));
+                return { success: false, next_step: 'ask_book_name', message: 'Ask the student: What would you like to name this book?' };
+            }
+
+            if (!file_provided) {
+                dispatch(speakText("Please select a PDF file to upload."));
+                return { success: false, next_step: 'ask_file', message: 'Ask the student to select a PDF file from their device.' };
+            }
+
+            return { success: true, next_step: 'submit', message: 'Both book name and file are provided. Proceed to call student_upload_book_submit.' };
+        },
+    });
 
     // ── Fetch timetable ─────────────────────────────────────────────────────
     useWebMCP({

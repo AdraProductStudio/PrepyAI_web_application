@@ -11,6 +11,8 @@ import {
 } from "Views/Common/Actions/voiceAgentActions";
 import { setListening, setError } from "Views/Common/Slices/voiceAgentSlice";
 
+const LANGUAGE = "ta-IN";
+
 const normalizeAction = (name, payload = {}) => {
 
     return { name, payload };
@@ -58,7 +60,7 @@ export const useVoiceAgent = () => {
 
     const startSession = useCallback(() => {
         dispatch(startVoiceSession((greeting) => {
-            dispatch(speakText(greeting));
+            dispatch(speakText(greeting,LANGUAGE));
         }));
     }, [dispatch]);
 
@@ -286,6 +288,7 @@ export const useVoiceAgent = () => {
                 arguments: payload || {},
             });
             console.log("MCP TOOL RESULT:", toolResult);
+            console.log("RAW TOOL RESULT:", JSON.stringify(toolResult, null, 2)); // ← add this
 
             const resultText = toolResult?.content
                 ?.filter((b) => b.type === "text")
@@ -306,71 +309,27 @@ export const useVoiceAgent = () => {
     }, [client, isConnected, dispatch]);
 
 
-    // ─── Agent loop — runs until Claude returns no action ────────────────────
-    // const runAgentLoop = useCallback(async (userMessage, tools) => {
-    //     let message = userMessage;
-
-    //     while (true) {
-    //         const result = await dispatch(chatWithAgent(message, session_id, {
-    //             available_tools: tools,
-    //         }));
-
-    //         console.log("AGENT LOOP RESULT:", result);
-
-    //         if (!result) {
-    //             dispatch(speakText("Something went wrong. Please try again."));
-    //             return;
-    //         }
-
-    //         const { reply, action, action_id } = result;
-
-    //         // Claude is done — no more tools to call
-    //         if (!action) {
-    //             dispatch(speakText(reply));
-    //             return;
-    //         }
-
-    //         // Speak intermediate reply if any
-    //         if (reply) dispatch(speakText(reply));
-
-    //         // Execute the tool Claude asked for
-    //         const outcome = await executeAction(action, action_id);
-
-    //         if (!outcome) {
-    //             message = `Tool ${action.name} failed unexpectedly. Inform the user and stop.`;
-    //             continue;
-    //         }
-
-    //         // Feed result back into Claude
-    //         message = outcome.isError
-    //             ? `Tool ${outcome.name} returned an error: ${outcome.resultText}. Handle this appropriately.`
-    //             : `Tool ${outcome.name} returned: ${outcome.resultText}`;
-    //     }
-
-    // }, [session_id, dispatch, executeAction]);
-
-
     const contextRef = useRef({});  // add this near the top of useVoiceAgent
 
-    const runAgentLoop = useCallback(async (userMessage, tools) => {
+    const runAgentLoop = useCallback(async (userMessage, tools,language = "ta-IN") => {
         let message = userMessage;
 
         while (true) {
             const result = await dispatch(chatWithAgent(message, session_id, {
                 available_tools: tools,
-            }));
+            },language));
 
             console.log("AGENT LOOP RESULT:", result);
 
             if (!result) {
-                dispatch(speakText("Something went wrong. Please try again."));
+                dispatch(speakText("Something went wrong. Please try again.",language));
                 return;
             }
 
             const { reply, action, action_id } = result;
 
             if (!action) {
-                dispatch(speakText(reply));
+                dispatch(speakText(reply,language));
                 return;
             }
 
@@ -381,7 +340,8 @@ export const useVoiceAgent = () => {
 
             const enrichedAction = {
                 ...action,
-                payload: { ...contextRef.current, ...action.payload },
+                //payload: { ...contextRef.current, ...action.payload },
+                payload: action.payload,
             };
 
             console.log("ENRICHED PAYLOAD:", enrichedAction.payload);
@@ -414,13 +374,13 @@ export const useVoiceAgent = () => {
 
         const tools = await getAvailableTools();
 
-        const transcript = await dispatch(transcribeAudio(audioBlob, session_id));
+        const transcript = await dispatch(transcribeAudio(audioBlob, session_id,LANGUAGE));
         if (!transcript) {
             dispatch(speakText("Sorry, I couldn't hear that clearly. Could you say it again?"));
             return;
         }
 
-        await runAgentLoop(transcript, tools);
+        await runAgentLoop(transcript, tools,LANGUAGE);
 
     }, [session_id, dispatch, getAvailableTools, runAgentLoop]);
 
@@ -431,7 +391,7 @@ export const useVoiceAgent = () => {
         console.log("VOICE TEXT MESSAGE:", text);
 
         const tools = await getAvailableTools();
-        await runAgentLoop(text, tools);
+        await runAgentLoop(text, tools,LANGUAGE);
 
     }, [session_id, dispatch, getAvailableTools, runAgentLoop]);
 

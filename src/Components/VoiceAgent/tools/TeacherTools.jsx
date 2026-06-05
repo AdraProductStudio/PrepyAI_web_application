@@ -62,7 +62,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 const d = getResponseData(res);
                 const msg = `Dashboard loaded. You have ${d?.total_no_of_classrooms ?? 0} classroom${d?.total_no_of_classrooms !== 1 ? 's' : ''} and ${d?.total_no_of_students ?? 0} student${d?.total_no_of_students !== 1 ? 's' : ''}.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, data: d };
             }
             const err = getResponseMessage(res, 'Could not load dashboard.');
@@ -87,7 +87,7 @@ const TeacherTools = () => {
                 const data = getResponseData(res);
                 const classrooms = toArray(data?.classrooms ?? data);
                 const msg = `You have ${classrooms.length} classroom${classrooms.length !== 1 ? 's' : ''}. ${classrooms.slice(0, 3).map(c => c.classroom_name).join(', ')}${classrooms.length > 3 ? ' and more.' : '.'}`;
-                dispatch(speakText(msg));
+                
                 return {
                     success: true,
                     summary: msg,
@@ -101,7 +101,7 @@ const TeacherTools = () => {
                 };
             }
             const err = getResponseMessage(res, 'No classrooms found.');
-            dispatch(speakText(err));
+            
             return { success: false, message: err };
         },
     });
@@ -117,11 +117,11 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 const list = toArray(getResponseData(res, []));
                 const msg = `You own ${list.length} classroom${list.length !== 1 ? 's' : ''}.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, classrooms: list };
             }
             const err = getResponseMessage(res, 'No classrooms found.');
-            dispatch(speakText(err));
+           
             return { success: false, message: err };
         },
     });
@@ -137,7 +137,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 const list = toArray(getResponseData(res, []));
                 const msg = `Found ${list.length} total classroom${list.length !== 1 ? 's' : ''} under your institution.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, classrooms: list };
             }
             const err = getResponseMessage(res, 'No classrooms found.');
@@ -158,7 +158,7 @@ const TeacherTools = () => {
     //     handler: async ({ classroom_name, teacher_ids }) => {
     //         navigate('/teachers_dashboard/classrooms');
     //         const msg = `Ready to create a new classroom called ${classroom_name}. Please open the classroom form, attach the student file, and submit it.`;
-    //         dispatch(speakText(msg));
+    //         
     //         return { success: true, summary: msg, prefill: { classroom_name, teacher_ids } };
     //     },
     // });
@@ -188,7 +188,7 @@ const TeacherTools = () => {
 
             if (!targetClassroomId) {
                 const msg = 'Classroom not found. Please give me the exact classroom name or classroom ID.';
-                dispatch(speakText(msg));
+                
                 return { success: false, message: msg };
             }
 
@@ -203,7 +203,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 navigate('/teachers_dashboard/classrooms');
                 const msg = `Classroom renamed to ${new_classroom_name}.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, classroom_id: targetClassroomId };
             }
 
@@ -225,7 +225,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 navigate('/teachers_dashboard/classrooms');
                 const msg = 'Classroom deleted successfully.';
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg };
             }
             const err = getResponseMessage(res, 'Could not delete classroom.');
@@ -253,7 +253,7 @@ const TeacherTools = () => {
                 const subjects = toArray(data?.subjects);
                 const code = data?.classroom_code ?? '';
                 const msg = `This classroom has ${subjects.length} subject${subjects.length !== 1 ? 's' : ''}: ${subjects.map(s => s.subject_name).join(', ')}. Classroom code is ${code}.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, classroom_code: code, subjects };
             }
             const err = getResponseMessage(res, 'No subjects found.');
@@ -272,7 +272,7 @@ const TeacherTools = () => {
             const res = await axiosInstance.get('/teachers/get_all_subjects');
             if (isSuccessResponse(res)) {
                 const msg = 'All subjects loaded successfully.';
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, subjects_by_classroom: getResponseData(res, {}) };
             }
             const err = getResponseMessage(res, 'No subjects found.');
@@ -295,7 +295,7 @@ const TeacherTools = () => {
     //         const res = await axiosInstance.post('/teachers/add_subject', { classroom_id, subject_name, teachers_id });
     //         if (isSuccessResponse(res)) {
     //             const msg = `Subject ${subject_name} has been added to the classroom successfully.`;
-    //             dispatch(speakText(msg));
+    //             
     //             return { success: true, summary: msg };
     //         }
     //         const err = getResponseMessage(res, 'Could not create subject.');
@@ -362,7 +362,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 navigate('/teachers_dashboard/classrooms');
                 const msg = 'Subject deleted successfully.';
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg };
             }
             const err = getResponseMessage(res, 'Could not delete subject.');
@@ -376,11 +376,43 @@ const TeacherTools = () => {
     // ─────────────────────────────────────────────────────────────────────────
 
     // POST /teachers/get_students_by_subject
+    // useWebMCP({
+    //     name: 'teacher_fetch_students_by_subject',
+    //     description: 'Get paginated students enrolled in a specific subject.',
+    //     inputSchema: {
+    //         // classroom_id: z.array(z.number()).optional().describe('Classroom IDs'),
+    //         subject_id: z.number().int().describe('Subject ID'),
+    //         search_query: z.string().optional().describe('Search by name or email'),
+    //         show_entries: z.number().optional().describe('Per page (default 8)'),
+    //         page: z.number().optional().describe('Page number (default 1)'),
+    //         sort_by: z.string().optional().describe('Sort field e.g. joined_at'),
+    //         sort_order: z.enum(['asc', 'desc']).optional(),
+    //     },
+    //     handler: async (payload) => {
+    //         navigate('/teachers_dashboard/students_details');
+    //         const res = await axiosInstance.post('/teachers/get_students_by_subject', {
+    //             ...payload,
+    //             page: payload.page ?? 1,
+    //             show_entries: payload.show_entries ?? 8,
+    //             search_query: payload.search_query ?? '',
+    //             sort_by: payload.sort_by ?? 'joined_at',
+    //             sort_order: payload.sort_order ?? 'desc',
+    //         });
+    //         if (isSuccessResponse(res)) {
+    //             const d = getResponseData(res);
+    //             const msg = `Found ${d?.total_count ?? 0} student${d?.total_count !== 1 ? 's' : ''} in ${d?.classroom_name ?? 'this subject'}. Showing page ${d?.current_page ?? 1} of ${d?.total_pages ?? 1}.`;
+                
+    //             return { success: true, summary: msg, ...d };
+    //         }
+    //         const err = getResponseMessage(res, 'No students found.');
+    //         dispatch(speakText(err));
+    //         return { success: false, message: err };
+    //     },
+    // });
     useWebMCP({
         name: 'teacher_fetch_students_by_subject',
         description: 'Get paginated students enrolled in a specific subject.',
         inputSchema: {
-            // classroom_id: z.array(z.number()).optional().describe('Classroom IDs'),
             subject_id: z.number().int().describe('Subject ID'),
             search_query: z.string().optional().describe('Search by name or email'),
             show_entries: z.number().optional().describe('Per page (default 8)'),
@@ -391,7 +423,7 @@ const TeacherTools = () => {
         handler: async (payload) => {
             navigate('/teachers_dashboard/students_details');
             const res = await axiosInstance.post('/teachers/get_students_by_subject', {
-                ...payload,
+                subject_id: payload.subject_id,
                 page: payload.page ?? 1,
                 show_entries: payload.show_entries ?? 8,
                 search_query: payload.search_query ?? '',
@@ -400,13 +432,37 @@ const TeacherTools = () => {
             });
             if (isSuccessResponse(res)) {
                 const d = getResponseData(res);
-                const msg = `Found ${d?.total_count ?? 0} student${d?.total_count !== 1 ? 's' : ''} in ${d?.classroom_name ?? 'this subject'}. Showing page ${d?.current_page ?? 1} of ${d?.total_pages ?? 1}.`;
-                dispatch(speakText(msg));
-                return { success: true, summary: msg, ...d };
+
+                // ✅ Voice-friendly: only first names, no emails/reg numbers
+                const names = (d?.students ?? [])
+                    .map(s => s.first_name)
+                    .join(', ');
+
+                const msg = `Found ${d?.total_count ?? 0} student${d?.total_count !== 1 ? 's' : ''} ` +
+                            `in ${d?.classroom_name ?? 'this subject'}. ` +
+                            `Page ${d?.current_page ?? 1} of ${d?.total_pages ?? 1}. ` +
+                            `Students are: ${names}.`;
+
+                // ✅ Return only what Claude needs — not full student objects
+                return {
+                    success: true,
+                    summary: msg,
+                    total_count: d?.total_count,
+                    total_pages: d?.total_pages,
+                    current_page: d?.current_page,
+                    subject_id: d?.subject_id,
+                    classroom_name: d?.classroom_name,
+                    // Return minimal student info only
+                    students: (d?.students ?? []).map(s => ({
+                        student_id: s.student_id,
+                        name: `${s.first_name} ${s.last_name ?? ''}`.trim(),
+                        status: s.status,
+                    })),
+                };
             }
-            const err = getResponseMessage(res, 'No students found.');
-            dispatch(speakText(err));
-            return { success: false, message: err };
+
+            // ✅ No dispatch(speakText()) — agent loop handles speaking
+            return { success: false, message: getResponseMessage(res, 'No students found.') };
         },
     });
 
@@ -415,7 +471,7 @@ const TeacherTools = () => {
         name: 'teacher_fetch_students',
         description: 'Get all students taught by this teacher. Supports filtering by classroom, search, and pagination.',
         inputSchema: {
-            classroom_id: z.union([z.string(), z.array(z.union([z.number(), z.string()]))]).optional().describe('Classroom ID(s) or "all_classrooms"'),
+            classroom_id: z.union([ z.number(),z.string(), z.array(z.union([z.number(), z.string()]))]).optional().describe('Classroom ID(s) or "all_classrooms"'),
             search_query: z.string().optional(),
             show_entries: z.number().optional().describe('Per page (default 10)'),
             page: z.number().describe('Page number (required)'),
@@ -427,7 +483,7 @@ const TeacherTools = () => {
             const res = await axiosInstance.post('/teachers/get_students_by_teacher', {
                 classroom_id: payload.classroom_id ?? ['all_classrooms'],
                 search_query: payload.search_query ?? '',
-                show_entries: payload.show_entries ?? 10,
+                show_entries: payload.show_entries ?? 20,
                 page: payload.page,
                 sort_by: payload.sort_by ?? 'student_name',
                 sort_order: payload.sort_order ?? 'desc',
@@ -435,7 +491,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 const d = getResponseData(res);
                 const msg = `Found ${d?.total_count ?? 0} student${d?.total_count !== 1 ? 's' : ''}. Showing page ${d?.current_page ?? 1} of ${d?.total_pages ?? 1}.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, total_count: d?.total_count, total_pages: d?.total_pages, students: d?.students ?? [] };
             }
             const err = getResponseMessage(res, 'No students found.');
@@ -469,7 +525,7 @@ const TeacherTools = () => {
             });
             if (isSuccessResponse(res)) {
                 const msg = `Student ${payload.firstName} ${payload.lastName ?? ''} has been added to ${payload.classroomName} successfully.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg };
             }
             const err = getResponseMessage(res, 'Could not add student.');
@@ -494,7 +550,7 @@ const TeacherTools = () => {
             const res = await axiosInstance.post('/teachers/edit_student', payload);
             if (isSuccessResponse(res)) {
                 const msg = `Student details for ${payload.first_name} ${payload.last_name} have been updated successfully.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg };
             }
             const err = getResponseMessage(res, 'Could not update student.');
@@ -515,7 +571,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 navigate('/teachers_dashboard/students_details');
                 const msg = 'Student removed successfully.';
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg };
             }
             const err = getResponseMessage(res, 'Could not remove student.');
@@ -534,7 +590,7 @@ const TeacherTools = () => {
         handler: async ({ classroom_id }) => {
             navigate('/teachers_dashboard/students_details');
             const msg = `Ready to invite students for classroom ${classroom_id}. Please use the student upload form to attach a CSV or XLSX file.`;
-            dispatch(speakText(msg));
+            
             return { success: true, summary: msg };
         },
     });
@@ -554,7 +610,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 const list = toArray(getResponseData(res, []));
                 const msg = `Found ${list.length} teacher${list.length !== 1 ? 's' : ''} in your institution.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, teachers: list };
             }
             const err = getResponseMessage(res, 'No teachers found.');
@@ -573,7 +629,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 const list = toArray(getResponseData(res, []));
                 const msg = `There are ${list.length} other teacher${list.length !== 1 ? 's' : ''} available to assign.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, teachers: list };
             }
             const err = getResponseMessage(res, 'No teachers found.');
@@ -595,7 +651,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 const list = toArray(getResponseData(res, []));
                 const msg = `This classroom has ${list.length} teacher${list.length !== 1 ? 's' : ''} assigned.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, teachers: list };
             }
             const err = getResponseMessage(res, 'No teachers found.');
@@ -628,7 +684,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 const books = toArray(getResponseData(res)?.books);
                 const msg = `Found ${books.length} book${books.length !== 1 ? 's' : ''}. ${books.slice(0, 3).map(b => b.book_name).join(', ')}${books.length > 3 ? ' and more.' : '.'}`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, books };
             }
             const err = getResponseMessage(res, 'No books found.');
@@ -649,7 +705,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 navigate('/teachers_dashboard/classrooms');
                 const msg = 'Book deleted successfully.';
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg };
             }
             const err = getResponseMessage(res, 'Could not delete book.');
@@ -671,7 +727,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 const bookmarks = toArray(getResponseData(res)?.bookmarks);
                 const msg = `This book has ${bookmarks.length} chapter${bookmarks.length !== 1 ? 's' : ''}. ${bookmarks.slice(0, 3).map(b => b.title).join(', ')}${bookmarks.length > 3 ? ' and more.' : '.'}`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, bookmarks,
                          chapters: bookmarks.map(b => b.title),
                          chapter_range: bookmarks.map(b => b.chapter_range ?? [b.start_page, b.end_page]),
@@ -732,7 +788,7 @@ const TeacherTools = () => {
     //                 navigate(subjectChildRoute(payload.classroom_id, payload.subject_id, `preview_test/${testId}`));
     //             }
     //             const msg = `Test "${payload.test_name}" generated${testId ? ` with ID ${testId}` : ''}. You can now send invitations.`;
-    //             dispatch(speakText(msg));
+    //             
     //             return { success: true, summary: msg, test_id: testId };
     //         }
     //         const err = getResponseMessage(res, 'Could not save test.');
@@ -751,7 +807,7 @@ const TeacherTools = () => {
     //         const res = await axiosInstance.post('/teachers/schedule_test', { test_id });
     //         if (isSuccessResponse(res)) {
     //             const msg = 'Invitations sent to all students successfully.';
-    //             dispatch(speakText(msg));
+    //             
     //             return { success: true, summary: msg };
     //         }
     //         const err = getResponseMessage(res, 'Could not send invitations.');
@@ -774,7 +830,7 @@ const TeacherTools = () => {
                 const withAns = data?.question_with_answer ?? {};
                 const sets = Object.keys(withAns).length;
                 const msg = `Test questions loaded. This test has ${sets} set${sets !== 1 ? 's' : ''} of questions.`;
-                dispatch(speakText(msg));
+                
                 return {
                     success: true,
                     summary: msg,
@@ -802,7 +858,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 const history = toArray(getResponseData(res)?.history);
                 const msg = `Found ${history.length} ${type} test${history.length !== 1 ? 's' : ''}.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, history };
             }
             const err = getResponseMessage(res, 'No test history found.');
@@ -824,7 +880,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 const students = toArray(getResponseData(res)?.students);
                 const msg = `This classroom has ${students.length} student${students.length !== 1 ? 's' : ''} available for the test.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, students };
             }
             const err = getResponseMessage(res, 'No students found.');
@@ -848,7 +904,7 @@ const TeacherTools = () => {
                 const students = toArray(getResponseData(res, []));
                 const attempted = students.filter(s => s.test_status !== 'pending').length;
                 const msg = `${students.length} student${students.length !== 1 ? 's' : ''} in this test. ${attempted} have attempted it so far.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, students };
             }
             const err = getResponseMessage(res, 'No students found.');
@@ -869,7 +925,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 navigate('/teachers_dashboard/classrooms');
                 const msg = 'Test deleted successfully.';
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg };
             }
             const err = getResponseMessage(res, 'Could not delete test.');
@@ -890,7 +946,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 navigate('/teachers_dashboard/classrooms');
                 const msg = 'Test has been cancelled successfully.';
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg };
             }
             const err = getResponseMessage(res, 'Could not cancel test.');
@@ -910,7 +966,7 @@ const TeacherTools = () => {
         handler: async ({ test_id, student_id }) => {
             navigate('/teachers_dashboard/classrooms');
             const msg = `Ready to validate paper for test ${test_id} and student ${student_id}. Please open the related test from the classroom screen and upload the student PDF.`;
-            dispatch(speakText(msg));
+            
             return { success: true, summary: msg };
         },
     });
@@ -939,7 +995,7 @@ const TeacherTools = () => {
                 const d = getResponseData(res);
                 const count = d?.total_count ?? 0;
                 const msg = `Performance data loaded for ${count} student${count !== 1 ? 's' : ''}.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, students: d?.students, test_dates: d?.test_dates, total_count: count };
             }
             const err = getResponseMessage(res, 'Could not load performance data.');
@@ -966,7 +1022,7 @@ const TeacherTools = () => {
             const res = await axiosInstance.post('/teachers/get_students_self_test_performance_by_teacher', payload);
             if (isSuccessResponse(res)) {
                 const msg = 'Self-test performance data loaded successfully.';
-                dispatch(speakText(msg));
+                
                 const data = getResponseData(res);
                 return { success: true, summary: msg, students: data?.students, test_dates: data?.test_dates };
             }
@@ -988,7 +1044,7 @@ const TeacherTools = () => {
             const res = await axiosInstance.post('/teachers/classroom_performance', { classroom_id });
             if (isSuccessResponse(res)) {
                 const msg = 'Classroom performance data loaded. Check the screen for the full breakdown.';
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, data: getResponseData(res) };
             }
             const err = getResponseMessage(res, 'Could not load classroom performance.');
@@ -1016,7 +1072,7 @@ const TeacherTools = () => {
             const res = await axiosInstance.post('/teachers/get_student_performance_by_subject', { classroom_id, subject_id });
             if (isSuccessResponse(res)) {
                 const msg = 'Monthly subject performance data loaded successfully.';
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, data: getResponseData(res) };
             }
             const err = getResponseMessage(res, 'No performance data found.');
@@ -1045,7 +1101,7 @@ const TeacherTools = () => {
                 } else {
                     msg = 'No test performance data found for this student yet.';
                 }
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, data: d };
             }
             const err = 'No performance data found for this student.';
@@ -1077,7 +1133,7 @@ const TeacherTools = () => {
                 } else {
                     msg = 'No overall performance data found for this student.';
                 }
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, data: d };
             }
             const err = 'No performance data found for this student.';
@@ -1104,7 +1160,7 @@ const TeacherTools = () => {
                 const msg = overall
                     ? `This student has attempted ${overall.no_of_tests ?? 0} total test${overall.no_of_tests !== 1 ? 's' : ''} across ${overall.no_of_books ?? 0} book${overall.no_of_books !== 1 ? 's' : ''}.`
                     : 'No test count data found for this student.';
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, data: d };
             }
             const err = 'No test data found for this student.';
@@ -1126,7 +1182,7 @@ const TeacherTools = () => {
             const res = await axiosInstance.post('/teachers/get_per_student_spending_hrs', { student_id, subject_id });
             if (isSuccessResponse(res)) {
                 const msg = 'Study hours data loaded for this student. Check the screen for the full breakdown.';
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, data: getResponseData(res) };
             }
             const err = 'No study hours data found for this student.';
@@ -1156,7 +1212,7 @@ const TeacherTools = () => {
                 } else {
                     msg = `No test data found for this student on ${payload.test_date}.`;
                 }
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, data: d };
             }
             const err = `No data found for ${payload.test_date}.`;
@@ -1182,7 +1238,7 @@ const TeacherTools = () => {
                 const msg = Array.isArray(d) && d.length
                     ? `Self-test data found for ${payload.test_date}. ${d.length} record${d.length !== 1 ? 's' : ''} available. Check the screen for details.`
                     : `No self-test data found for this student on ${payload.test_date}.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, data: d };
             }
             const err = `No self-test data found for ${payload.test_date}.`;
@@ -1208,7 +1264,7 @@ const TeacherTools = () => {
             const res = await axiosInstance.post('/teachers/get_test_calendar', { type, datetime });
             if (isSuccessResponse(res)) {
                 const msg = `Test calendar for this ${type} loaded. Check the screen for the schedule.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, schedule: getResponseData(res) };
             }
             const err = getResponseMessage(res, 'No calendar data found.');
@@ -1233,7 +1289,7 @@ const TeacherTools = () => {
             const res = await axiosInstance.post('/teachers/create_event', payload);
             if (isSuccessResponse(res)) {
                 const msg = `Event "${payload.title}" has been created for ${payload.schedule_date} at ${payload.schedule_time}.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg };
             }
             const err = getResponseMessage(res, 'Could not create event.');
@@ -1255,7 +1311,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 const classrooms = toArray(getResponseData(res)?.classrooms ?? getResponseData(res));
                 const msg = `You have ${classrooms.length} classroom${classrooms.length !== 1 ? 's' : ''}: ${classrooms.map(c => c.classroom_name).join(', ')}. Which classroom is this test for?`;
-                dispatch(speakText(msg));
+                
                 return {
                     success: true,
                     next_step: 'User will pick a classroom by name. Match to classroom_id from classrooms_map, then immediately call test_step2_get_subjects.',
@@ -1285,7 +1341,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 const subjects = toArray(getResponseData(res)?.subjects);
                 const msg = `This classroom has ${subjects.length} subject${subjects.length !== 1 ? 's' : ''}: ${subjects.map(s => s.subject_name).join(', ')}. Which subject is this test for?`;
-                dispatch(speakText(msg));
+                
                 return {
                     success: true,
                     next_step: 'User will pick a subject by name. Match to subject_id from subjects_map, then immediately call test_step3_get_books with classroom_id AND subject_id.',
@@ -1317,7 +1373,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 const books = toArray(getResponseData(res)?.books);
                 const msg = `Found ${books.length} book${books.length !== 1 ? 's' : ''}: ${books.map(b => b.book_name).join(', ')}. Which book should the test be based on?`;
-                dispatch(speakText(msg));
+                
                 return {
                     success: true,
                     next_step: 'User will pick a book by name. Match to book_id from books_map, then immediately call test_step4_get_chapters with classroom_id, subject_id AND book_id.',
@@ -1348,7 +1404,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 const bookmarks = toArray(getResponseData(res)?.bookmarks);
                 const msg = `This book has ${bookmarks.length} chapter${bookmarks.length !== 1 ? 's' : ''}: ${bookmarks.map(b => b.title).join(', ')}. Which chapters should the test cover? You can say "all" or name specific ones.`;
-                dispatch(speakText(msg));
+                
                 return {
                     success: true,
                     next_step: 'User will pick chapters by name. Match to chapter_range from chapters_map. If user says "all", use all chapters and chapter_range. Then immediately call test_step5_collect_details with classroom_id, subject_id, book_id, chapters and chapter_range.',
@@ -1407,7 +1463,7 @@ const TeacherTools = () => {
         },
         handler: async (payload) => {
             const msg = `Got it. Test "${payload.test_name}" — ${payload.level_of_test} difficulty, ${payload.type_of_questions}, ${payload.no_of_questions} questions, ${payload.total_duration} mins. Shall I create the test now?`;
-            dispatch(speakText(msg));
+            
             return {
                 success: true,
                 next_step: 'Teacher will confirm. Once confirmed call test_step6_create with the exact same payload.',
@@ -1450,7 +1506,7 @@ const TeacherTools = () => {
                     navigate(subjectChildRoute(payload.classroom_id, payload.subject_id, `preview_test/${testId}`));
                 }
                 const msg = `Test "${payload.test_name}" created successfully${testId ? ` with ID ${testId}` : ''}. Say "send invitations" when ready.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, test_id: testId };
             }
             const err = getResponseMessage(res, 'Could not create test.');
@@ -1470,7 +1526,7 @@ const TeacherTools = () => {
             const res = await axiosInstance.post('/teachers/schedule_test', { test_id });
             if (isSuccessResponse(res)) {
                 const msg = 'Invitations sent to all students successfully. The test is now scheduled.';
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg };
             }
             const err = getResponseMessage(res, 'Could not send invitations.');
@@ -1493,7 +1549,7 @@ const TeacherTools = () => {
                 const events = getResponseData(res, []);
                 const count = Array.isArray(events) ? events.length : Object.keys(events).length;
                 const msg = `Found ${count} event${count !== 1 ? 's' : ''} for this ${type}.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, events };
             }
             const err = getResponseMessage(res, 'No events found.');
@@ -1514,7 +1570,7 @@ const TeacherTools = () => {
             const res = await axiosInstance.get('/teachers/timetable');
             if (isSuccessResponse(res)) {
                 const msg = 'Timetable loaded. Check the screen for your full schedule.';
-                dispatch(speakText(msg));
+                
                 const data = getResponseData(res);
                 return { success: true, summary: msg, timetable: data?.timetable, timing: data?.timing };
             }
@@ -1542,7 +1598,7 @@ const TeacherTools = () => {
                 const grouped = getResponseData(res, {});
                 const totalDates = Object.keys(grouped).length;
                 const msg = `Attachments found across ${totalDates} date${totalDates !== 1 ? 's' : ''}. Check the screen for the full list.`;
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg, attachments: grouped };
             }
             const err = getResponseMessage(res, 'No attachments found.');
@@ -1562,7 +1618,7 @@ const TeacherTools = () => {
         handler: async ({ classroom_id, subject_id }) => {
             navigate(subjectChildRoute(classroom_id, subject_id));
             const msg = 'Navigated to attachment upload page. Please select a file and provide a name.';
-            dispatch(speakText(msg));
+            
             return { success: true, summary: msg };
         },
     });
@@ -1579,7 +1635,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 navigate('/teachers_dashboard/classrooms');
                 const msg = 'Attachment deleted successfully.';
-                dispatch(speakText(msg));
+                
                 return { success: true, summary: msg };
             }
             const err = getResponseMessage(res, 'Could not delete attachment.');
