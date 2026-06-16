@@ -53,7 +53,6 @@ export const endVoiceSession = (session_id) => async (dispatch) => {
 
 // ─── Speech to text ───────────────────────────────────────────────────────────
 
-// ← Added `language` parameter (default "en-IN")
 export const transcribeAudio = (audioBlob, session_id, language = "en-IN") => async (dispatch) => {
     try {
         dispatch(setListening(false));
@@ -62,7 +61,7 @@ export const transcribeAudio = (audioBlob, session_id, language = "en-IN") => as
         const formData = new FormData();
         formData.append("audio", audioBlob, "audio.wav");
         formData.append("session_id", session_id);
-        formData.append("language", language);  // ← NEW: tell Sarvam which language
+        formData.append("language", language);  
 
         const res = await axiosInstance.post("/voice_agent/stt", formData, {
             headers: { "Content-Type": "multipart/form-data" }
@@ -95,7 +94,7 @@ export const chatWithAgent = (message, session_id, context = {}, language = "en-
             session_id,
             message,
             context,
-            language,  // ← NEW: tell AI to reply in this language
+            language,  
         });
 
         if (res.data.success) {
@@ -119,14 +118,14 @@ export const chatWithAgent = (message, session_id, context = {}, language = "en-
 
 // ─── Text to speech ───────────────────────────────────────────────────────────
 
-// ← Added `language` parameter (default "en-IN")
+
 export const speakText = (text, language = "en-IN") => async (dispatch) => {
     try {
         dispatch(setSpeaking(true));
 
         const res = await axiosInstance.post("/voice_agent/tts", {
             text,
-            language,  // ← NEW: tell Sarvam which language voice to use
+            language,  
         });
 
         if (res.data.success) {

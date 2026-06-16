@@ -146,22 +146,7 @@ const TeacherTools = () => {
         },
     });
 
-    // // POST /teachers/create_classroom  (multipart — navigate + prefill)
-    // useWebMCP({
-    //     name: 'teacher_create_classroom',
-    //     description:
-    //         'Create a new classroom. Navigates to the creation page. Requires classroom_name and optional co-teacher IDs. A student CSV/XLSX file must be uploaded via the form.',
-    //     inputSchema: {
-    //         classroom_name: z.string().describe('Name of the new classroom e.g. "Biology 2025"'),
-    //         teacher_ids: z.array(z.number()).describe('Co-teacher user IDs. Use [] if none.'),
-    //     },
-    //     handler: async ({ classroom_name, teacher_ids }) => {
-    //         navigate('/teachers_dashboard/classrooms');
-    //         const msg = `Ready to create a new classroom called ${classroom_name}. Please open the classroom form, attach the student file, and submit it.`;
-    //         
-    //         return { success: true, summary: msg, prefill: { classroom_name, teacher_ids } };
-    //     },
-    // });
+    
 
     useWebMCP({
         name: 'teacher_edit_classroom',
@@ -281,29 +266,7 @@ const TeacherTools = () => {
         },
     });
 
-    // POST /teachers/add_subject
-    // useWebMCP({
-    //     name: 'teacher_add_subject',
-    //     description: 'Add a new subject to a classroom and assign a teacher to it.',
-    //     inputSchema: {
-    //         classroom_id: z.number().describe('Classroom ID'),
-    //         subject_name: z.string().describe('Subject name e.g. "Physics"'),
-    //         teachers_id: z.number().describe('User ID of the teacher to assign'),
-    //     },
-    //     handler: async ({ classroom_id, subject_name, teachers_id }) => {
-    //         navigate(`/teachers_dashboard/classrooms/${classroom_id}`);
-    //         const res = await axiosInstance.post('/teachers/add_subject', { classroom_id, subject_name, teachers_id });
-    //         if (isSuccessResponse(res)) {
-    //             const msg = `Subject ${subject_name} has been added to the classroom successfully.`;
-    //             
-    //             return { success: true, summary: msg };
-    //         }
-    //         const err = getResponseMessage(res, 'Could not create subject.');
-    //         dispatch(speakText(err));
-    //         return { success: false, message: err };
-    //     },
-    // });
-
+    
     useWebMCP({
         name: 'teacher_add_subject',
         description: 'Add a new subject to a classroom and assign a teacher to it.',
@@ -375,40 +338,6 @@ const TeacherTools = () => {
     // STUDENTS
     // ─────────────────────────────────────────────────────────────────────────
 
-    // POST /teachers/get_students_by_subject
-    // useWebMCP({
-    //     name: 'teacher_fetch_students_by_subject',
-    //     description: 'Get paginated students enrolled in a specific subject.',
-    //     inputSchema: {
-    //         // classroom_id: z.array(z.number()).optional().describe('Classroom IDs'),
-    //         subject_id: z.number().int().describe('Subject ID'),
-    //         search_query: z.string().optional().describe('Search by name or email'),
-    //         show_entries: z.number().optional().describe('Per page (default 8)'),
-    //         page: z.number().optional().describe('Page number (default 1)'),
-    //         sort_by: z.string().optional().describe('Sort field e.g. joined_at'),
-    //         sort_order: z.enum(['asc', 'desc']).optional(),
-    //     },
-    //     handler: async (payload) => {
-    //         navigate('/teachers_dashboard/students_details');
-    //         const res = await axiosInstance.post('/teachers/get_students_by_subject', {
-    //             ...payload,
-    //             page: payload.page ?? 1,
-    //             show_entries: payload.show_entries ?? 8,
-    //             search_query: payload.search_query ?? '',
-    //             sort_by: payload.sort_by ?? 'joined_at',
-    //             sort_order: payload.sort_order ?? 'desc',
-    //         });
-    //         if (isSuccessResponse(res)) {
-    //             const d = getResponseData(res);
-    //             const msg = `Found ${d?.total_count ?? 0} student${d?.total_count !== 1 ? 's' : ''} in ${d?.classroom_name ?? 'this subject'}. Showing page ${d?.current_page ?? 1} of ${d?.total_pages ?? 1}.`;
-                
-    //             return { success: true, summary: msg, ...d };
-    //         }
-    //         const err = getResponseMessage(res, 'No students found.');
-    //         dispatch(speakText(err));
-    //         return { success: false, message: err };
-    //     },
-    // });
     useWebMCP({
         name: 'teacher_fetch_students_by_subject',
         description: 'Get paginated students enrolled in a specific subject.',
@@ -433,7 +362,7 @@ const TeacherTools = () => {
             if (isSuccessResponse(res)) {
                 const d = getResponseData(res);
 
-                // ✅ Voice-friendly: only first names, no emails/reg numbers
+               
                 const names = (d?.students ?? [])
                     .map(s => s.first_name)
                     .join(', ');
@@ -443,7 +372,7 @@ const TeacherTools = () => {
                             `Page ${d?.current_page ?? 1} of ${d?.total_pages ?? 1}. ` +
                             `Students are: ${names}.`;
 
-                // ✅ Return only what Claude needs — not full student objects
+              
                 return {
                     success: true,
                     summary: msg,
@@ -461,7 +390,7 @@ const TeacherTools = () => {
                 };
             }
 
-            // ✅ No dispatch(speakText()) — agent loop handles speaking
+            
             return { success: false, message: getResponseMessage(res, 'No students found.') };
         },
     });
@@ -471,7 +400,7 @@ const TeacherTools = () => {
         name: 'teacher_fetch_students',
         description: 'Get all students taught by this teacher. Supports filtering by classroom, search, and pagination.',
         inputSchema: {
-            classroom_id: z.union([ z.number(),z.string(), z.array(z.union([z.number(), z.string()]))]).optional().describe('Classroom ID(s) or "all_classrooms"'),
+           classroom_id: z.union([ z.string(), z.array(z.union([z.number(), z.string()]))]).optional().describe('Array of classroom IDs e.g. [2] or [2,7]. Always send as an array, never a plain number.'),
             search_query: z.string().optional(),
             show_entries: z.number().optional().describe('Per page (default 10)'),
             page: z.number().describe('Page number (required)'),
@@ -488,6 +417,7 @@ const TeacherTools = () => {
                 sort_by: payload.sort_by ?? 'student_name',
                 sort_order: payload.sort_order ?? 'desc',
             });
+            
             if (isSuccessResponse(res)) {
                 const d = getResponseData(res);
                 const msg = `Found ${d?.total_count ?? 0} student${d?.total_count !== 1 ? 's' : ''}. Showing page ${d?.current_page ?? 1} of ${d?.total_pages ?? 1}.`;
@@ -1468,7 +1398,7 @@ const TeacherTools = () => {
                 success: true,
                 next_step: 'Teacher will confirm. Once confirmed call test_step6_create with the exact same payload.',
                 summary: msg,
-                ...payload,  // spread so contextRef picks up all fields
+                ...payload,  
             };
         },
     });

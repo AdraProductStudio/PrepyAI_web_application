@@ -7,12 +7,11 @@ import axiosInstance from 'Services/axiosInstance';
 import { speakText } from 'Views/Common/Actions/voiceAgentActions';
 import ModalComponent from '../../Modal/Modal';
 import { updateModalShow } from 'Views/Common/Slices/Common_slice';
-
+import { handleGenerateQuestion } from "Views/Students/Actions/StudentAction"
+import { initializeDB } from "Components/CustomHooks"; 
+import { update_generate_questions } from 'Views/Students/Slices/StudentSlice';
 /**
  * STUDENT WebMCP TOOLS
- * Mount this component inside any Student layout/page.
- * Tools auto-register when mounted, auto-cleanup when unmounted.
- * The AI discovers and calls these tools automatically.
  */
 const StudentTools = () => {
     const navigate = useNavigate();
@@ -32,72 +31,6 @@ const StudentTools = () => {
             return { success: true, navigated_to: route };
         },
     });
-
-    // // ── Fetch all tests ─────────────────────────────────────────────────────
-    // useWebMCP({
-    //     name: 'student_fetch_tests',
-    //     description: 'Fetch all available tests for the student. Call this when student asks about tests, wants to attend a test, or asks what tests are available.',
-    //     inputSchema: {},
-    //     handler: async () => {
-    //         const res = await axiosInstance.get('/students/get_all_tests');
-    //         if (res.data.success && res.data.data) {
-    //             const tests = Object.values(res.data.data).flat();
-    //             navigate('/student_dashboard/test');
-    //             return {
-    //                 success: true,
-    //                 total: tests.length,
-    //                 tests: tests.map((t) => ({
-    //                     id: t.test_id,
-    //                     name: t.test_name,
-    //                     subject: t.subject_name,
-    //                     date: t.test_date,
-    //                     duration: t.total_duration,
-    //                 })),
-    //             };
-    //         }
-    //         return { success: false, message: 'No tests found' };
-    //     },
-    // });
-
-    // // ── Fetch upcoming tests ────────────────────────────────────────────────
-    // useWebMCP({
-    //     name: 'student_upcoming_tests',
-    //     description: 'Get upcoming scheduled tests for the student, optionally filtered by subject ID.',
-    //     inputSchema: {
-    //         type: 'object',
-    //         properties: {
-    //             subject_id: {
-    //                 type: 'number',
-    //                 description: 'Subject ID to filter tests. Omit to get all upcoming tests.',
-    //             },
-    //         },
-    //     },
-    //     handler: async ({ subject_id } = {}) => {
-    //         const params = {};
-    //         if (subject_id) params.subject_id = subject_id;
-
-    //         const res = await axiosInstance.get('/students/get_upcoming_test', { params });
-
-    //         console.log('RAW API RESPONSE:', JSON.stringify(res.data, null, 2));
-
-    //         if (res.data.success && res.data.data?.length) {
-    //             const today = new Date().toISOString().split('T')[0];
-    //             return {
-    //                 success: true,
-    //                 today,
-    //                 tests: res.data.data.map((t) => ({
-    //                     id: t.test_id,
-    //                     name: t.test_name,
-    //                     date: t.test_date,
-    //                     subject: t.subject_name,
-    //                 })),
-    //             };
-    //         }
-    //         return { success: false, message: res.data.message || 'No upcoming tests' };
-    //     },
-    // });
-
-
 
 
     // ── Fetch upcoming tests ────────────────────────────────────────────────
@@ -186,7 +119,9 @@ const StudentTools = () => {
     // ── Get test question ───────────────────────────────────────────────────
     useWebMCP({
         name: 'student_get_question',
-        description: 'Get a specific question from an ongoing test by index. Use this to read questions aloud during test.',
+        description: `Get a question from an ONGOING TEACHER-ASSIGNED test only.
+        ONLY call after student_start_test succeeds.
+        NEVER call after student_generate_questions — self-test questions come from student_get_test_context.`,
         inputSchema: {
             test_id: z.string().describe('The test ID'),
             index: z.number().describe('Question index starting from 0'),
@@ -298,7 +233,7 @@ const StudentTools = () => {
                 navigate(`/student_dashboard/subjects/${id}`);
                 return {
                     success: true,
-                    subject: res.subject_name || id, 
+                    subject: res.subject_name || id,
                     books: res.data.data.map((b) => ({
                         id: b.book_id,
                         name: b.book_name,
@@ -400,19 +335,220 @@ const StudentTools = () => {
     });
 
     // ── Generate questions ──────────────────────────────────────────────────
+    
     useWebMCP({
         name: 'student_generate_questions',
-        description: 'Navigate to the generate questions page for a book.',
+        description: `Generate MCQ or long answer questions from a book.
+        MANDATORY: After this tool returns, you MUST call student_get_test_context as your very next action before speaking to the user.
+        Do NOT call student_start_test or student_get_question after this.`,
         inputSchema: {
-            book_id: z.string().optional().describe('Book ID to generate questions from'),
+            book_id: z.number().describe('Book ID to generate questions from'),
+            chapter_range: z.array(z.array(z.number())).describe('MUST be array of [start_page, end_page] pairs. Example: [[5, 30]] for one chapter, [[5,30],[62,87]] for multiple. Get these values from student_get_bookmarks chapter_range field. NEVER pass a single number.'),
+            type_of_question: z.enum(['mcq', 'long_answer']).optional().default('mcq'),
+            level_of_test: z.enum(['easy', 'medium', 'hard']).optional().default('easy'),
+            no_of_questions: z.number().optional().default(10),
+            chapters: z.array(z.string()).optional().default([]),
+            test_language: z.string().optional().default('english'),
         },
-        handler: async ({ book_id }) => {
-            navigate(`/student_dashboard/generate_question/${book_id || ''}`);
-            return { success: true, message: 'Navigated to generate questions' };
+        handler: async ({ book_id, chapter_range, type_of_question = 'mcq', level_of_test = 'easy', no_of_questions = 10, chapters = [], test_language = 'english' }) => {
+            console.log("STEP 1: MCP tool started");
+            const targetRoute = `/student_dashboard/generate_question/${book_id}/${
+                type_of_question === 'mcq' ? 'mcq_questions' : 'long_questions'
+            }`
+            
+            // Fire in background — no await
+            await dispatch(handleGenerateQuestion(
+                { book_id, chapter_range, type_of_question, level_of_test, no_of_questions, chapters, test_language },
+                () => {},       // no-op navigate — we handle navigation below
+                targetRoute,
+                type_of_question
+            ));
+            console.log("STEP 2: handleGenerateQuestion dispatched");
+            //Poll IndexedDB until questions are written by handleGenerateQuestion
+            await new Promise((resolve) => {
+                const maxWait = 120000   // 110s max
+                const interval = 2000    // check every 2s
+                let elapsed = 0
+            console.log("STEP 3: Polling completed");
+
+                const check = setInterval(async () => {
+                    try {
+                        const db = await initializeDB(
+                            process.env.REACT_APP_INDEXEDDB_DATABASE_NAME,
+                            process.env.REACT_APP_INDEXEDDB_DATABASE_VERSION,
+                            process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME
+                        )
+                        const transaction = db.transaction(
+                            process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME,
+                            "readonly"
+                        )
+                        const store = transaction.objectStore(
+                            process.env.REACT_APP_INDEXEDDB_DATABASE_STORENAME
+                        )
+                        const countRequest = store.count()
+                        countRequest.onsuccess = () => {
+                            if (countRequest.result > 0) {
+                                clearInterval(check)
+                                resolve()           // ← questions ready, proceed
+                            }
+                        }
+                    } catch (e) {
+                        // DB not ready yet, keep polling
+                    }
+
+                    elapsed += interval
+                    if (elapsed >= maxWait) {
+                        clearInterval(check)
+                        resolve()               // ← timeout, navigate anyway
+                    }
+                }, interval)
+            })
+
+            // Navigate only after IndexedDB has data
+            //console.log("BEFORE NAVIGATION");
+            //navigate(targetRoute)
+            //console.log("AFTER NAVIGATION");
+            console.log("STEP 4: Returning MCP result");
+
+
+            return { success: true, message: 'Questions generated successfully',navigate_to:targetRoute }
+        },
+     
+    });
+
+
+
+    useWebMCP({
+        name: 'student_get_test_context',
+        description: `ALWAYS call this immediately after student_generate_questions — no exceptions.
+        Retrieves the test_id and confirms questions are ready.
+        Store the test_id for student_validate_self_test.
+        Do NOT call student_start_test or student_get_question.`,
+        inputSchema: {
+            type_of_question: z.enum(['mcq', 'long_answer']),
+        },
+        handler: async ({ type_of_question }) => {
+            try {
+                if (!window.__generateQuestionsPromise) {
+                    return { success: false, message: 'No generation in progress. Call student_generate_questions first.' };
+                }
+
+                const { data } = await window.__generateQuestionsPromise;
+                window.__generateQuestionsPromise = null;
+
+                if (data?.error_code === 0) {
+                    const test_id = data?.data?.test_id;
+                    const test_questions = data?.data?.test_questions;
+
+                    const updatedQues = test_questions?.map((q) => ({
+                        ...q,
+                        id: q.Question_no,
+                        test_id,
+                    }));
+
+                    dispatch(update_generate_questions({
+                        type: 'response',
+                        data: { test_questions: updatedQues, test_id },
+                        type_of_question,
+                    }));
+
+                    return {
+                        success: true,
+                        test_id,
+                        type_of_question,
+                        total_questions: test_questions?.length,
+                        message: `Test ready. test_id is ${test_id}. Use this with student_validate_self_test when student submits.`,
+                    };
+                }
+
+                window.__generateQuestionsPromise = null;
+                return { success: false, message: data?.message || 'Generation failed' };
+
+            } catch (err) {
+                window.__generateQuestionsPromise = null;
+                return { success: false, message: 'Error retrieving generated questions' };
+            }
         },
     });
 
- 
+
+
+    useWebMCP({
+        name: 'student_get_bookmarks',
+        description: `Get chapter list and page ranges for a book.
+    Call this after getting book_id, BEFORE student_generate_questions.
+    Use the chapter_range values from the response in student_generate_questions.
+    Ask the student which chapter(s) they want to practice.`,
+        inputSchema: {
+            book_id: z.number().describe('Book ID from student_fetch_books or student_fetch_learner_books'),
+        },
+        handler: async ({ book_id }) => {
+            try {
+                const { data } = await axiosInstance.post('/students/get_bookmarks', { book_id });
+
+                if (data?.error_code === 0) {
+                    const bookmarks = data?.data?.bookmarks || [];
+                    const chapters = bookmarks.map((ch) => ({
+                        index: ch.index,
+                        title: ch.title,
+                        chapter_range: [ch.chapter_range],
+                        subchapters: ch.subchapters?.map(s => ({
+                            index: s.index,
+                            title: s.title,
+                            chapter_range: s.chapter_range,
+                        })) || [],
+                    }));
+
+                    return {
+                        success: true,
+                        book_id,
+                        book_title: data?.data?.book_title,
+                        chapters,
+                    };
+                }
+                return { success: false, message: 'Could not load chapters' };
+            } catch (err) {
+                return { success: false, message: 'Something went wrong loading chapters' };
+            }
+        },
+    });
+
+
+    //student self test validation
+
+    useWebMCP({
+        name: 'student_validate_self_test',
+        description: `Submit and validate answers for a self-generated test.
+    ONLY use this after student_generate_questions — never for teacher-assigned tests.
+    Use the exact test_id from student_get_test_context.
+    MCQ responses: [{ Question_no: 1, clicked_answer: 3 }, ...]
+    Long answer responses: [{ Question_no: 1, Answer: "..." }, ...]`,
+        inputSchema: {
+            test_id: z.number().describe('test_id from student_get_test_context'),
+            type_of_question: z.enum(['mcq', 'long_answer']),
+            responses: z.array(
+                z.union([
+                    z.object({ Question_no: z.number(), clicked_answer: z.number().optional() }),
+                    z.object({ Question_no: z.number(), Answer: z.string().optional() }),
+                ])
+            ),
+        },
+        handler: async ({ test_id, type_of_question, responses }) => {
+            try {
+                const { data } = await axiosInstance.post('students/validate_self_test', {
+                    test_id, type_of_question, responses,
+                });
+
+                if (data?.error_code === 0) {
+                    return { success: true, message: 'Test validated successfully', result: data.data };
+                }
+                return { success: false, message: data?.message || 'Validation failed' };
+            } catch (err) {
+                return { success: false, message: 'Something went wrong during validation' };
+            }
+        },
+    });
+
     useWebMCP({
         name: 'student_upload_book',
         description: 'Open the upload book modal where the student can upload a PDF book. Call this tool IMMEDIATELY when the student says they want to upload a book. Do NOT ask for book name or file details first — the modal will collect that information from the student directly.',
@@ -447,12 +583,12 @@ const StudentTools = () => {
         },
         handler: async ({ book_name, file_base64, file_name }) => {
             if (!book_name?.trim()) {
-                dispatch(speakText("Please tell me the name of the book."));
+                
                 return { success: false, missing: 'book_name', message: 'Book name is required. Please ask the student to provide the book name.' };
             }
 
             if (!file_base64 || !file_name) {
-                dispatch(speakText("Please select a PDF file to upload."));
+                
                 return { success: false, missing: 'file', message: 'PDF file is required. Please ask the student to select a PDF file.' };
             }
 
@@ -497,18 +633,18 @@ const StudentTools = () => {
         },
         handler: async ({ book_name_provided, file_provided }) => {
             if (!book_name_provided && !file_provided) {
-                dispatch(speakText("Please enter the book name and select a PDF file to upload."));
-                return { success: false, next_step: 'ask_both', message: 'Ask the student: What is the book name? Also ask them to select a PDF file.' };
+               
+                return { success: false, next_step: 'ask_both', message: 'Respond in ta-IN language only. Ask the student for book name and PDF file.' };
             }
 
             if (!book_name_provided) {
-                dispatch(speakText("Please tell me the name of the book."));
-                return { success: false, next_step: 'ask_book_name', message: 'Ask the student: What would you like to name this book?' };
+                
+                return { success: false, next_step: 'ask_book_name', message: 'Respond in ta-IN language only. Ask the student for the book name.'  };
             }
 
             if (!file_provided) {
-                dispatch(speakText("Please select a PDF file to upload."));
-                return { success: false, next_step: 'ask_file', message: 'Ask the student to select a PDF file from their device.' };
+                
+                return { success: false, next_step: 'ask_file', message: 'Respond in ta-IN language only. Ask the student to select a PDF file.'  };
             }
 
             return { success: true, next_step: 'submit', message: 'Both book name and file are provided. Proceed to call student_upload_book_submit.' };
@@ -543,7 +679,7 @@ const StudentTools = () => {
         },
     });
 
-    return null; // No UI — just tool registration
+    return null; 
 };
 
 export default StudentTools;

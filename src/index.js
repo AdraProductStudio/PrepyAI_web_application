@@ -21,9 +21,15 @@ const client = new Client({
   version: "1.0.0",
 });
 
-const transport = new TabClientTransport("mcp", {
-  clientInstanceId: "prepyai-web",
-  timeout: 120000,
+// const transport = new TabClientTransport("mcp", {
+//   clientInstanceId: "prepyai-web",
+//   requestTimeout:300000,
+// });
+// console.log("TRANSPORT KEYS:", Object.keys(transport));
+//console.log("TRANSPORT:", transport);
+
+const transport = new TabClientTransport({
+  requestTimeout: 300000,
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

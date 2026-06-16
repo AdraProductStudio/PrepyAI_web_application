@@ -774,7 +774,9 @@ export const handleGenerateQuestion = (payload,navigate,targetRoute,type_of_ques
         dispatch(updateModalShow({ show: false, close_btn: false, modal_from: null, modal_type: null }))
         dispatch(update_generate_questions({type:"request"}))
         await IndexedDbDeleteFun()
+        console.log("Before API");
         const {data} = await axiosInstance.post('students/generate_questions',payload)
+        console.log("After API");
         if(data?.error_code === 0){
             const testId = data?.data?.test_id
             const updatedQues = data?.data?.test_questions?.map((q)=>{
@@ -798,7 +800,7 @@ export const handleGenerateQuestion = (payload,navigate,targetRoute,type_of_ques
                 await transaction.complete
             })
 
-            navigate(targetRoute)
+            //navigate(targetRoute)
             dispatch(update_generate_questions({type:"response",data:{test_questions:updatedQues,test_id:testId},type_of_question}))  
         }else{
             dispatch(update_generate_questions({type:"failure",message: data?.message || "Failed to generate questions" }))
